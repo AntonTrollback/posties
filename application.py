@@ -26,11 +26,26 @@ def index():
 ###############
 #  API CALLS  #
 ###############
-@application.route('/api/createPost', methods=['GET', 'POST'])
-def api_post():
+@application.route('/api/createUser', methods=['GET', 'POST'])
+def api_create_user():
 	jsonPost = request.json
-	print "PRINTING REQUEST"
-	print request.json
+	email = jsonPost['email']
+	username = jsonPost['username']
+	password = jsonPost['password']
+
+	result = r.table(TABLE_NAME_USERS).insert({ 
+		'email' : email,
+		'username' : username,
+		'password' : password, 
+		'created' : r.now()}).run(conn)
+
+	jsonPost['id'] = result['generated_keys'][0]
+
+	return json.dumps(jsonPost)
+
+@application.route('/api/createPost', methods=['GET', 'POST'])
+def api_create_text():
+	jsonPost = request.json
 	contentText = jsonPost['contentText']
 
 	result = r.table(TABLE_NAME_POSTS).insert({ 

@@ -2,10 +2,38 @@ $(document).ready(function() {
 
 	var isUserLoggedIn = false;
 
-	function initModuleTextContent() {
+	function initModuleCreateText() {
 		var contentText = $('#contentText');
 		contentText.html(posties.util.trimText(contentText.html()));
 		contentText.fadeIn();
+	}
+
+	function initModuleCreateUser() {
+		$('#createUser').submit(function(event) {
+			event.preventDefault();
+
+			var form = $(this);
+			var jsonPost = JSON.stringify({ 
+					'email' : $('#email').val(),
+					'username' : $('#username').val(),
+					'password' : $('#password').val()
+			});
+			
+			$.ajax({
+				contentType: 'application/json;charset=UTF-8',
+				type: form.attr('method'),
+				url: form.attr('action'),
+				data: jsonPost,
+				success: function(jsonResponse) {
+					console.log(jsonResponse);
+				},
+				error: function(jsonResponse) {
+					console.log(jsonResponse);
+				}
+			});
+
+			$('.modal').fadeOut();
+		});
 	}
 
 	function initModals() {
@@ -36,10 +64,11 @@ $(document).ready(function() {
 				}
 			});
 		} else {
-			$('#createUser').fadeIn();
+			$('.modal.createUser').fadeIn();
 		}
 	});
 
-	initModuleTextContent();
+	initModuleCreateText();
+	initModuleCreateUser();
 	initModals();
 });
