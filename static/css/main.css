@@ -10,6 +10,9 @@ body {
 	background: #f5f5f5;
 	color: #181818;
 }
+h1, h2, h3 {
+	color: #555;
+}
 a, a:visited {
 	text-decoration: none;
 	color: #444;
@@ -47,7 +50,26 @@ header a {
 	color: #8a8a8a;
 	margin-bottom: 4rem;
 }
-#publish {
+
+label {
+	width: 120px;
+	display: inline-block;
+	font-size: 2rem;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+	padding: 8px;
+	font-size: 2rem;
+	border: 1px solid #ddd;
+}
+fieldset {
+	margin-bottom: 1rem;
+}
+fieldset:last-child {
+	margin-top: 3rem;
+}
+button {
 	font-size: 3rem;
 	border: 0;
 	padding: 1rem;
@@ -56,4 +78,20 @@ header a {
 	color: #8a8a8a;
 	margin: 0 auto;
 	display: block;
+}
+
+.modal {
+	display: none;
+	position: absolute;
+	top: 0;
+	background: #fff;
+	border: 1px solid #ddd;
+	width: 60%;
+	left: 20%;
+	top: 5%;
+	padding: 2rem;
+}
+.modal h2 {
+	margin-bottom: 2rem;
+	text-align: center;
 }
