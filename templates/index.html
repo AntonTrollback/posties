@@ -1,0 +1,16 @@
+{% include 'modules/head.html' %}
+<body>
+	{% include 'modules/header.html' %}
+	<div id="body">
+		<form id="createPost" class="form" method="post" action="/api/createPost">
+			<div id="contentText" contenteditable="true">Hello,
+				I'm a text that you can edit.
+				Add images and text until you're happy with the results.
+				Then click publish and your new website is done!
+			</div>
+			<a href="#" id="add">+ Add image</a>
+			<button id="publish">Publish</button>
+		</form>
+	</div>
+</body>
+{% include 'modules/footer.html' %}
