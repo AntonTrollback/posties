@@ -8,7 +8,6 @@ $(document).ready(function() {
 			if($('.page.index').length) {
 				$('#createPostText').fadeIn();
 			}
-				
 		}
 	}
 
@@ -70,6 +69,27 @@ $(document).ready(function() {
 		}
 	}
 
+	function initPosts() {
+		$('#posts .delete').click(function(event) {
+			event.preventDefault();
+
+			var jsonPost = JSON.stringify({ 'id' : $(event.target).data('id') });
+
+			$.ajax({
+				contentType: 'application/json;charset=UTF-8',
+				type: 'post',
+				url: '/api/delete',
+				data: jsonPost,
+				success: function(jsonResponse) {
+					console.log(jsonResponse);
+				},
+				error: function(jsonResponse) {
+					console.log(jsonResponse);
+				}
+			});
+		});
+	}
+
 	function initAddPostTypes() {
 		$('.add.postText').click(function() {
 			console.log("add post text")
@@ -89,5 +109,6 @@ $(document).ready(function() {
 	initModuleCreateUser();
 	initPublishButton();
 	initAddPostTypes();
+	initPosts();
 	initModals();
 });

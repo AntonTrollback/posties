@@ -2,13 +2,7 @@
 {% include 'modules/header.html' %}
 	<div id="body" class="page postsByUser">
 		{% if current_user and current_user.is_authenticated() %}
-			<form id="createPostText" class="form" method="post" action="/api/createPostText">
-				<div id="postText" contenteditable="true">Hello,
-					I'm a text that you can edit.
-					Add images and text until you're happy with the results.
-					Then click publish and your new website is done!
-				</div>
-			</form>	
+			{% include 'modules/createPostText.html' %}
 			{% include 'modules/postTypes.html' %}
 			<button id="publish">Publish</button>
 		{% endif %}
@@ -18,7 +12,8 @@
 				<li>No posts found</li>
 			{% else %}
 				{% for post in posts %}
-					<li class="post">
+					<li class="post text">
+						<a href="#" class="delete" data-id="{{post.id}}">delete</a>
 						<p>{{post.content}}</p>
 					</li>
 				{% endfor %}

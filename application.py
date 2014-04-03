@@ -105,6 +105,15 @@ def api_create_user():
 	else:
 		abort(401)
 
+@application.route('/api/delete', methods=['POST'])
+def api_delete():
+	jsonPost = request.json
+	id = jsonPost['id']
+
+	result = r.table(TABLE_NAME_POSTS).get(id).delete().run(conn)
+
+	return json.dumps(result)		
+
 @application.route('/api/createPostText', methods=['GET', 'POST'])
 @login_required
 def api_create_post_text():

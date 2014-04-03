@@ -1,13 +1,7 @@
 {% include 'modules/head.html' %}
 {% include 'modules/header.html' %}
 	<div id="body" class="page index">
-		<form id="createPostText" class="form" method="post" action="/api/createPostText">
-			<div id="postText" contenteditable="true">Hello,
-				I'm a text that you can edit.
-				Add images and text until you're happy with the results.
-				Then click publish and your new website is done!
-			</div>
-		</form>	
+		{% include 'modules/createPostText.html' %}
 		{% include 'modules/postTypes.html' %}
 		<button id="publish">Publish</button>
 	</div>

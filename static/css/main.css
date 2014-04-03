@@ -17,6 +17,9 @@ a, a:visited {
 	text-decoration: none;
 	color: #444;
 }
+p {
+	margin: 0;
+}
 header {
 	height: 60px;
 }
@@ -57,13 +60,21 @@ header a {
 .postTypes li a {
 	font-size: 2rem;
 }
-#posts p {
+.post {
+	position: relative;
+}
+.post .delete {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+}
+.post.text p {
 	border: 0;
 	background: #fff;
 	font-size: 2rem;
-	padding: 2rem 2rem 8rem 2rem;
+	padding: 2rem;
 	box-shadow: 1px 2px 5px #ddd;
-	margin-bottom: 4rem;
+	margin: 0 0 4rem 0;
 	line-height: 1.2;
 	white-space: pre;
 }
