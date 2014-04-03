@@ -1,6 +1,8 @@
 import os
 from flask import Flask
 from flask import render_template, session, abort, redirect, request, url_for
+from flask.ext.login import LoginManager, login_user, logout_user 
+from flask.ext.login import current_user, login_required
 from datetime import datetime
 from user import User
 import json
@@ -17,6 +19,18 @@ conn = r.connect(host='localhost',
 	port=28015,
 	auth_key='',
 	db='posties')
+
+application.config['SECRET_KEY'] = '123456790'
+
+login_manager = LoginManager()
+login_manager.init_app(application)
+login_manager.login_view = '/login'
+
+@login_manager.user_loader
+def load_user(id):
+	user = r.table(TABLE_NAME_USERS).get(id).run(conn)
+
+	return User(user['id'], user['email'], user['username'])
 
 ###############
 #  WEB VIEWS  #
@@ -39,6 +53,9 @@ def login():
 
 	if not current_user:
 		return redirect(url_for('login'))
+
+	current_user = User(current_user[0]['id'], current_user[0]['email'], current_user[0]['username'])
+	login_user(current_user)
 
 	return redirect(url_for('index'))
 
