@@ -1,13 +1,15 @@
 import os
 from flask import Flask
-from flask import render_template, session, abort, redirect, request
+from flask import render_template, session, abort, redirect, request, url_for
 from datetime import datetime
+from user import User
 import json
 import time
 import random, string
 import rethinkdb as r
 
 application = Flask(__name__, static_folder='static')
+application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_NAME_POSTS = 'posts'
 TABLE_NAME_USERS = 'users'
 
@@ -22,6 +24,23 @@ conn = r.connect(host='localhost',
 @application.route('/', methods=['GET'])
 def index():
 	return render_template('index.html')
+
+@application.route('/login', methods=['GET','POST'])
+def login():
+	if request.method == 'GET':
+		return render_template('login.html')
+	
+	email = request.form['email']
+	password = request.form['password']
+
+	current_user = list(r.table(TABLE_NAME_USERS).filter(
+		(r.row['email'] == email) &
+		(r.row['password'] == password)).run(conn))
+
+	if not current_user:
+		return redirect(url_for('login'))
+
+	return redirect(url_for('index'))
 
 ###############
 #  API CALLS  #
@@ -43,8 +62,8 @@ def api_create_user():
 
 	return json.dumps(jsonPost)
 
-@application.route('/api/createPost', methods=['GET', 'POST'])
-def api_create_text():
+@application.route('/api/createContentText', methods=['GET', 'POST'])
+def api_create_content_text():
 	jsonPost = request.json
 	contentText = jsonPost['contentText']
 

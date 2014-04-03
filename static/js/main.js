@@ -1,11 +1,13 @@
 $(document).ready(function() {
 
-	var isUserLoggedIn = false;
+	var isUserLoggedIn = true;
 
 	function initModuleCreateText() {
 		var contentText = $('#contentText');
-		contentText.html(posties.util.trimText(contentText.html()));
-		contentText.fadeIn();
+		if(contentText.length) {
+			contentText.html(posties.util.trimText(contentText.html()));
+			contentText.fadeIn();
+		}
 	}
 
 	function initModuleCreateUser() {
@@ -44,7 +46,7 @@ $(document).ready(function() {
 		});
 	}
 
-	$('#createPost').submit(function(event) {
+	$('#createContentText').submit(function(event) {
 		event.preventDefault();
 
 		if(isUserLoggedIn) {
