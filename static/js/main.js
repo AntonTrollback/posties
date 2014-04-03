@@ -1,9 +1,7 @@
 $(document).ready(function() {
 
-	var isUserLoggedIn = true;
-
-	function initModuleCreateText() {
-		var contentText = $('#contentText');
+	function initModuleCreatePostText() {
+		var contentText = $('#postText');
 		if(contentText.length) {
 			contentText.html(posties.util.trimText(contentText.html()));
 			contentText.fadeIn();
@@ -16,9 +14,9 @@ $(document).ready(function() {
 
 			var form = $(this);
 			var jsonPost = JSON.stringify({ 
-					'email' : $('#email').val(),
-					'username' : $('#username').val(),
-					'password' : $('#password').val()
+				'email' : $('#email').val(),
+				'username' : $('#username').val(),
+				'password' : $('#password').val()
 			});
 			
 			$.ajax({
@@ -46,12 +44,12 @@ $(document).ready(function() {
 		});
 	}
 
-	$('#createContentText').submit(function(event) {
+	$('#createPostText').submit(function(event) {
 		event.preventDefault();
 
-		if(isUserLoggedIn) {
+		if(posties.util.isUserLoggedIn()) {
 			var form = $(this);
-			var jsonPost = JSON.stringify({ 'contentText' : posties.util.trimText($('#contentText').html())});
+			var jsonPost = JSON.stringify({ 'content' : posties.util.trimText($('#postText').html())});
 			
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
@@ -70,7 +68,7 @@ $(document).ready(function() {
 		}
 	});
 
-	initModuleCreateText();
+	initModuleCreatePostText();
 	initModuleCreateUser();
 	initModals();
 });

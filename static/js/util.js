@@ -9,7 +9,12 @@ posties.util = (function() {
                    .replace(/(<([^>]+)>)/ig, "") //remove remaining HTML tags;
     };
 
+    var isUserLoggedIn = function() {
+        return $('body:eq(0)').hasClass('authenticated');
+    }
+
     return {
-        trimText : trimText
+        trimText : trimText,
+        isUserLoggedIn : isUserLoggedIn
     };
 }());

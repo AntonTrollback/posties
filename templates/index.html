@@ -1,9 +1,8 @@
 {% include 'modules/head.html' %}
-<body>
-	{% include 'modules/header.html' %}
+{% include 'modules/header.html' %}
 	<div id="body">
-		<form id="createContentText" class="form" method="post" action="/api/createContentText">
-			<div id="contentText" contenteditable="true">Hello,
+		<form id="createPostText" class="form" method="post" action="/api/createPostText">
+			<div id="postText" contenteditable="true">Hello,
 				I'm a text that you can edit.
 				Add images and text until you're happy with the results.
 				Then click publish and your new website is done!
