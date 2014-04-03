@@ -43,14 +43,28 @@ header a {
 	white-space: pre;
 	display: none;
 }
-#add {
-	font-size: 2rem;
-	display: block;
-	text-align: center;
+.postTypes {
 	color: #8a8a8a;
 	margin-bottom: 4rem;
+	text-align: center;
 }
-
+.postTypes li {
+	display: inline-block;
+	margin-right: 2rem;
+}
+.postTypes li a {
+	font-size: 2rem;
+}
+#posts p {
+	border: 0;
+	background: #fff;
+	font-size: 2rem;
+	padding: 2rem 2rem 8rem 2rem;
+	box-shadow: 1px 2px 5px #ddd;
+	margin-bottom: 4rem;
+	line-height: 1.2;
+	white-space: pre;
+}
 label {
 	width: 120px;
 	display: inline-block;

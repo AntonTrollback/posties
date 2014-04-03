@@ -61,12 +61,16 @@ def login():
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
-	result = list(
+	posts = list(
 		r.table(TABLE_NAME_POSTS).filter(
 		(r.row['username'] == username))
 	.run(conn))
 
-	return render_template('postsByUser.html', posts = result)	
+	return render_template('postsByUser.html', posts = posts)
+
+@application.route('/userNotFound', methods=['GET'])
+def user_not_found():
+	return render_template('errorUserNotFound.html')
 
 @application.route('/logout', methods=['GET'])
 def logout():
@@ -119,8 +123,7 @@ def api_create_post_text():
 #STATUS CODE HANDLERS
 @application.errorhandler(404)
 def not_found(error):
-    response = {"error" : "page not found"}
-    return json.dumps(response)
+	return redirect(url_for('user_not_found'))
 
 @application.errorhandler(401)
 def resource_exists(error):
