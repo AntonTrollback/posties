@@ -32,6 +32,9 @@ header a {
 	font-size: 2rem;
 	color: #c6c6c5;
 }
+#createPostText {
+	display: none;
+}
 #postText {
 	border: 0;
 	background: #fff;
@@ -41,7 +44,6 @@ header a {
 	margin-bottom: 4rem;
 	line-height: 1.2;
 	white-space: pre;
-	display: none;
 }
 .postTypes {
 	color: #8a8a8a;
@@ -108,4 +110,10 @@ button {
 .modal h2 {
 	margin-bottom: 2rem;
 	text-align: center;
+}
+
+/* PAGES */
+.page.postsByUser #createPostText,
+.page.postsByUser #publish {
+	display: none;
 }

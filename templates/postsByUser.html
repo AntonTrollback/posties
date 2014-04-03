@@ -1,6 +1,6 @@
 {% include 'modules/head.html' %}
 {% include 'modules/header.html' %}
-	<div id="body">
+	<div id="body" class="page postsByUser">
 		{% if current_user and current_user.is_authenticated() %}
 			<form id="createPostText" class="form" method="post" action="/api/createPostText">
 				<div id="postText" contenteditable="true">Hello,
@@ -8,18 +8,11 @@
 					Add images and text until you're happy with the results.
 					Then click publish and your new website is done!
 				</div>
-				<ul class="postTypes">
-					<li>
-						<a href="#" id="addPostText">+ Add Text</a>
-					</li>
-					<li>
-						<a href="#" id="addPostImage">+ Add image</a>
-					</li>
-				</ul>
-				<button id="publish">Publish</button>
-			</form>
+			</form>	
+			{% include 'modules/postTypes.html' %}
+			<button id="publish">Publish</button>
 		{% endif %}
-		<h2>Your posts</h2>
+		<h2>Posts</h2>
 		<ul id="posts">
 			{% if not posts %}
 				<li>No posts found</li>

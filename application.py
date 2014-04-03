@@ -57,14 +57,15 @@ def login():
 	user = User(user[0]['id'], user[0]['email'], user[0]['username'])
 	login_user(user)
 
-	return redirect(url_for('index'))
+	return redirect(url_for('get_posts_by_username', username = user.username))
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
 	posts = list(
 		r.table(TABLE_NAME_POSTS).filter(
 		(r.row['username'] == username))
-	.run(conn))
+		.order_by(r.desc('created'))
+		.run(conn))
 
 	return render_template('postsByUser.html', posts = posts)
 

@@ -4,8 +4,20 @@ $(document).ready(function() {
 		var contentText = $('#postText');
 		if(contentText.length) {
 			contentText.html(posties.util.trimText(contentText.html()));
-			contentText.fadeIn();
+
+			if($('.page.index').length) {
+				$('#createPostText').fadeIn();
+			}
+				
 		}
+	}
+
+	function initPublishButton() {
+		$('#publish').click(function(event) {
+			event.preventDefault();
+
+			createPostText();
+		})
 	}
 
 	function initModuleCreateUser() {
@@ -36,19 +48,9 @@ $(document).ready(function() {
 		});
 	}
 
-	function initModals() {
-		$(document).keydown(function(e) {
-			if (e.keyCode == 27) { 
-				$('.modal').fadeOut();
-			}
-		});
-	}
-
-	$('#createPostText').submit(function(event) {
-		event.preventDefault();
-
+	function createPostText() {
 		if(posties.util.isUserLoggedIn()) {
-			var form = $(this);
+			var form = $('#createPostText');
 			var jsonPost = JSON.stringify({ 'content' : posties.util.trimText($('#postText').html())});
 			
 			$.ajax({
@@ -66,9 +68,26 @@ $(document).ready(function() {
 		} else {
 			$('.modal.createUser').fadeIn();
 		}
-	});
+	}
+
+	function initAddPostTypes() {
+		$('.add.postText').click(function() {
+			console.log("add post text")
+			$('#createPostText').fadeIn();
+		})
+	}
+
+	function initModals() {
+		$(document).keydown(function(e) {
+			if (e.keyCode == 27) { 
+				$('.modal').fadeOut();
+			}
+		});
+	}
 
 	initModuleCreatePostText();
 	initModuleCreateUser();
+	initPublishButton();
+	initAddPostTypes();
 	initModals();
 });
