@@ -1,0 +1,11 @@
+<ul id="posts">
+	{% if not posts %}
+		<li>No posts found</li>
+	{% else %}
+		{% for post in posts %}
+			<li class="post">
+				<p>{{post.content}}</p>
+			</li>
+		{% endfor %}
+	{% endif %}
+</ul>
