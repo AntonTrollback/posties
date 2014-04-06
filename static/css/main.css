@@ -23,17 +23,23 @@ p {
 header {
 	height: 60px;
 }
-header h1 {
+h1 {
 	margin: 1rem 0;
 	float: left;
 	width: 60%;
 	overflow: hidden;
 }
-header a {
+h1 a {
+	font-size: 2.8rem;
+}
+#toggleMenu {
 	float: right;
 	margin-top: 1.5rem;
 	font-size: 2rem;
 	color: #c6c6c5;
+}
+#login {
+	float: right;
 }
 #createPostText {
 	display: none;
@@ -105,6 +111,11 @@ button {
 	color: #8a8a8a;
 	margin: 0 auto;
 	display: block;
+}
+
+#formLogin button {
+	display: inline-block;
+	margin: auto;
 }
 
 .modal {

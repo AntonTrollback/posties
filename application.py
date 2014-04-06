@@ -67,7 +67,12 @@ def get_posts_by_username(username = None):
 		.order_by(r.desc('created'))
 		.run(conn))
 
-	return render_template('postsByUser.html', posts = posts)
+	if current_user and current_user.is_authenticated():
+		user_owns_page = username == current_user.username
+	else:
+		user_owns_page = False	
+
+	return render_template('postsByUser.html', posts = posts, user_owns_page = user_owns_page)
 
 @application.route('/userNotFound', methods=['GET'])
 def user_not_found():

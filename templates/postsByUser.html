@@ -1,7 +1,7 @@
 {% include 'modules/head.html' %}
 {% include 'modules/header.html' %}
 	<div id="body" class="page postsByUser">
-		{% if current_user and current_user.is_authenticated() %}
+		{% if current_user and current_user.is_authenticated() and user_owns_page %}
 			{% include 'modules/createPostText.html' %}
 			{% include 'modules/postTypes.html' %}
 			<button id="publish">Publish</button>
@@ -13,7 +13,9 @@
 			{% else %}
 				{% for post in posts %}
 					<li class="post text">
-						<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+						{% if current_user and current_user.is_authenticated() and user_owns_page %}
+							<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+						{% endif %}
 						<p>{{post.content}}</p>
 					</li>
 				{% endfor %}

@@ -20,6 +20,7 @@
 {% endif %}
 {% if current_user and current_user.is_anonymous() %}
     <p>User is anonymous</p>
-{% else %}
-    <p>User isn't anonymous</p>
+{% endif %}
+{% if current_user and not current_user.is_anonymous() %}
+    <p>{{current_user.username}}</p>
 {% endif %}
