@@ -16,9 +16,9 @@ application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_NAME_POSTS = 'posts'
 TABLE_NAME_USERS = 'users'
 
-conn = r.connect(host='localhost', 
+conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 	port=28015,
-	auth_key='',
+	auth_key='SteveJobs007Amazon',
 	db='posties')
 
 application.config['SECRET_KEY'] = '123456790'

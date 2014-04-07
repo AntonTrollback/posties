@@ -3,4 +3,3 @@ curl -X POST -H "Content-Type: application/json" -d '{ "email" : "test@gmail.com
 
 == Ajax create post ==
 curl -X POST -H "Content-Type: application/json" -d '{ "contentText" : "hello" }' http://localhost:5000/api/createPost
-
