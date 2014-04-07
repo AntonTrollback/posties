@@ -59,7 +59,11 @@ $(document).ready(function() {
 				url: form.attr('action'),
 				data: jsonPost,
 				success: function(jsonResponse) {
-					console.log(jsonResponse);
+					var tmpPostText = $('#tmpPostText').html();
+					Mustache.parse(tmpPostText);
+					var html = Mustache.render(tmpPostText, { post : jsonResponse });
+
+					$('#posts').prepend($(html).fadeIn());
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);

@@ -136,3 +136,8 @@ button {
 .page.postsByUser #publish {
 	display: none;
 }
+
+/* UTIL */
+.hidden {
+	display: none;
+}

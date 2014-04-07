@@ -86,13 +86,13 @@ def logout():
 ###############
 #  API CALLS  #
 ###############
-@application.route('/api/createUser', methods=['GET', 'POST'])
+@application.route('/api/users', methods=['POST'])
 def api_create_user():
-	jsonPost = request.json
-	email = jsonPost['email']
-	username = jsonPost['username']
-	password = jsonPost['password']
-	postText = jsonPost['postText']
+	jsonData = request.json
+	email = jsonData['email']
+	username = jsonData['username']
+	password = jsonData['password']
+	postText = jsonData['postText']
 
 	result = r.table(TABLE_NAME_USERS).insert({ 
 		'email' : email,
@@ -114,25 +114,16 @@ def api_create_user():
 			'username' : username,
 			'created' : r.now()}).run(conn)
 
-		jsonPost['id'] = generated_id
-		return jsonify(jsonPost)
+		jsonData['id'] = generated_id
+		return jsonify(jsonData)
 	else:
 		abort(401)
 
-@application.route('/api/posts', methods=['DELETE'])
-def api_delete():
-	jsonPost = request.json
-	id = jsonPost['id']
-
-	result = r.table(TABLE_NAME_POSTS).get(id).delete().run(conn)
-
-	return json.dumps(result)		
-
-@application.route('/api/createPostText', methods=['GET', 'POST'])
+@application.route('/api/postText', methods=['POST'])
 @login_required
-def api_create_post_text():
-	jsonPost = request.json
-	content = jsonPost['content']
+def api_post_text():
+	jsonData = request.json
+	content = jsonData['content']
 	username = current_user.username
 
 	result = r.table(TABLE_NAME_POSTS).insert({ 
@@ -140,9 +131,18 @@ def api_create_post_text():
 		'username' : username,
 		'created' : r.now()}).run(conn)
 
-	jsonPost['id'] = result['generated_keys'][0]
+	jsonData['id'] = result['generated_keys'][0]
 
-	return json.dumps(jsonPost)
+	return jsonify(jsonData)
+
+@application.route('/api/posts', methods=['DELETE'])
+def api_delete():
+	jsonData = request.json
+	id = jsonData['id']
+
+	result = r.table(TABLE_NAME_POSTS).get(id).delete().run(conn)
+
+	return json.dumps(result)	
 
 #STATUS CODE HANDLERS
 @application.errorhandler(404)
