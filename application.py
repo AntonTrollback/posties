@@ -72,7 +72,7 @@ def get_posts_by_username(username = None):
 	else:
 		user_owns_page = False	
 
-	return render_template('postsByUser.html', posts = posts, user_owns_page = user_owns_page)
+	return render_template('postsByUser.html', posts = posts, user_owns_page = user_owns_page, username = username)
 
 @application.route('/userNotFound', methods=['GET'])
 def user_not_found():
@@ -89,8 +89,8 @@ def logout():
 @application.route('/api/users', methods=['POST'])
 def api_create_user():
 	jsonData = request.json
-	email = jsonData['email']
-	username = jsonData['username']
+	email = jsonData['email'].lower()
+	username = jsonData['username'].lower()
 	password = jsonData['password']
 	postText = jsonData['postText']
 

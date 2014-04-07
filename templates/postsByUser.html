@@ -4,9 +4,11 @@
 		{% if current_user and current_user.is_authenticated() and user_owns_page %}
 			{% include 'modules/createPostText.html' %}
 			{% include 'modules/postTypes.html' %}
-			<button id="publish">Publish</button>
+			<div id="btnPublishContainer">
+				<button>Publish</button>
+			</div>
 		{% endif %}
-		<h2>Posts</h2>
+		<h2>Posts by {{username}}</h2>
 		<ul id="posts">
 			{% if not posts %}
 				<li>No posts found</li>

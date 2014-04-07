@@ -51,8 +51,11 @@ h1 a {
 	padding: 2rem 2rem 8rem 2rem;
 	box-shadow: 1px 2px 5px #ddd;
 	margin-bottom: 4rem;
-	line-height: 1.2;
+	line-height: 1.3;
 	white-space: pre;
+	width: 100%;
+	color: #444;
+	font-weight: lighter;
 }
 .postTypes {
 	color: #8a8a8a;
@@ -124,16 +127,15 @@ button {
 }
 .modal h2 {
 	margin-bottom: 2rem;
-	text-align: center;
 }
 
-#publish {
+#btnPublishContainer {
 	display: block;
-	margin: 0 auto;
+	text-align: center;
 }
 /* PAGES */
 .page.postsByUser #createPostText,
-.page.postsByUser #publish {
+.page.postsByUser #btnPublishContainer {
 	display: none;
 }
 

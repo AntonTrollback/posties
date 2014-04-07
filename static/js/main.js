@@ -12,7 +12,7 @@ $(document).ready(function() {
 	}
 
 	function initPublishButton() {
-		$('#body').on('click', '#publish', function(event) {
+		$('#body').on('click', '#btnPublishContainer button', function(event) {
 			event.preventDefault();
 
 			createPostText();
@@ -25,10 +25,10 @@ $(document).ready(function() {
 
 			var form = $(this);
 			var jsonPost = JSON.stringify({ 
-				'email' : $('#email').val(),
-				'username' : $('#username').val(),
+				'email' : $('#email').val().toLowerCase(),
+				'username' : $('#username').val().toLowerCase(),
 				'password' : $('#password').val(),
-				'postText' : posties.util.trimText($('#postText').html())
+				'postText' : posties.util.trimText($('#postText').val())
 			});
 			
 			$.ajax({
@@ -51,8 +51,8 @@ $(document).ready(function() {
 	function createPostText() {
 		if(posties.util.isUserLoggedIn()) {
 			var form = $('#createPostText');
-			var jsonPost = JSON.stringify({ 'content' : posties.util.trimText($('#postText').html())});
-			
+			var jsonPost = JSON.stringify({ 'content' : posties.util.trimText($('#postText').val())});
+
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
 				type: form.attr('method'),
@@ -62,8 +62,10 @@ $(document).ready(function() {
 					var tmpPostText = $('#tmpPostText').html();
 					Mustache.parse(tmpPostText);
 					var html = Mustache.render(tmpPostText, { post : jsonResponse });
-
-					$('#posts').prepend($(html).fadeIn());
+					
+					$.when($('#createPostText, #btnPublishContainer').fadeOut()).done(function() {
+						$('#posts').prepend($(html).fadeIn());
+					});
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
@@ -74,7 +76,7 @@ $(document).ready(function() {
 		}
 	}
 
-	function initPosts() {
+	function initGetPosts() {
 		$('#posts .delete').click(function(event) {
 			event.preventDefault();
 
@@ -86,7 +88,7 @@ $(document).ready(function() {
 				url: '/api/posts',
 				data: jsonPost,
 				success: function(jsonResponse) {
-					console.log(jsonResponse);
+					location.reload(true);
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
@@ -113,10 +115,10 @@ $(document).ready(function() {
 	function initPagePostsByUser() {
 		if($('.page.postsByUser').length) {
 			initModuleCreatePostText();
-			initPosts();
+			initGetPosts();
 
 			$('.add.postText').click(function() {
-				$('#createPostText, #publish').fadeIn();
+				$('#createPostText, #btnPublishContainer').fadeIn();
 			})
 		}
 	}
