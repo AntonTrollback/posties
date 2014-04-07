@@ -70,7 +70,7 @@ def get_posts_by_username(username = None):
 	if current_user and current_user.is_authenticated():
 		user_owns_page = username == current_user.username
 	else:
-		user_owns_page = False	
+		user_owns_page = False
 
 	return render_template('postsByUser.html', posts = posts, user_owns_page = user_owns_page, username = username)
 
@@ -136,13 +136,18 @@ def api_post_text():
 	return jsonify(jsonData)
 
 @application.route('/api/posts', methods=['DELETE'])
+@login_required
 def api_delete():
 	jsonData = request.json
 	id = jsonData['id']
 
-	result = r.table(TABLE_NAME_POSTS).get(id).delete().run(conn)
+	post_to_delete = r.table(TABLE_NAME_POSTS).get(id).run(conn);
 
-	return json.dumps(result)	
+	if post_to_delete['username'] == current_user.username:
+		post_to_delete = r.table(TABLE_NAME_POSTS).get(id).delete().run(conn)
+		return json.dumps(post_to_delete)
+	else:
+		abort(401)	
 
 #STATUS CODE HANDLERS
 @application.errorhandler(404)
@@ -151,7 +156,7 @@ def not_found(error):
 
 @application.errorhandler(401)
 def resource_exists(error):
-    response = {"error" : "you need to log in to post"}
+    response = {"error" : "permission denied"}
     return json.dumps(response)
 
 @application.errorhandler(400)

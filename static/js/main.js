@@ -77,7 +77,7 @@ $(document).ready(function() {
 	}
 
 	function initGetPosts() {
-		$('#posts .delete').click(function(event) {
+		$('#posts').on('click', '.delete', function(event) {
 			event.preventDefault();
 
 			var jsonPost = JSON.stringify({ 'id' : $(event.target).data('id') });
@@ -88,7 +88,7 @@ $(document).ready(function() {
 				url: '/api/posts',
 				data: jsonPost,
 				success: function(jsonResponse) {
-					location.reload(true);
+					$(event.target).parents('li:eq(0)').fadeOut();
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
