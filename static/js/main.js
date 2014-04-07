@@ -1,12 +1,24 @@
 $(document).ready(function() {
 
+	function initModuleTopMenu() {
+		$('#toggleMenu').click(function(event) {
+			event.preventDefault();
+
+			$('#menu').fadeToggle();
+		});
+	}
+
 	function initModuleCreatePostText() {
 		var contentText = $('#postText');
 		if(contentText.length) {
 			contentText.html(posties.util.trimText(contentText.html()));
 
 			if($('.page.index').length) {
-				$('#createPostText').fadeIn();
+				$('#createPostText').fadeIn(function() {
+					$('#postTypes').fadeIn(function() {
+						$('#btnPublishContainer').fadeIn();
+					});
+				});
 			}
 		}
 	}
@@ -123,7 +135,8 @@ $(document).ready(function() {
 		}
 	}
 
-	/* MODULES */
+	/* GLOBAL MODULES */
+	initModuleTopMenu();
 	initPublishButton();
 	initModals();
 
