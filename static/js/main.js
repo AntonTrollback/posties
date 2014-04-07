@@ -12,7 +12,7 @@ $(document).ready(function() {
 	}
 
 	function initPublishButton() {
-		$('#publish').click(function(event) {
+		$('#body').on('click', '#publish', function(event) {
 			event.preventDefault();
 
 			createPostText();
@@ -27,7 +27,8 @@ $(document).ready(function() {
 			var jsonPost = JSON.stringify({ 
 				'email' : $('#email').val(),
 				'username' : $('#username').val(),
-				'password' : $('#password').val()
+				'password' : $('#password').val(),
+				'postText' : posties.util.trimText($('#postText').html())
 			});
 			
 			$.ajax({
@@ -36,7 +37,7 @@ $(document).ready(function() {
 				url: form.attr('action'),
 				data: jsonPost,
 				success: function(jsonResponse) {
-					console.log(jsonResponse);
+					window.location = "/by/" + jsonResponse.username;
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
@@ -77,8 +78,8 @@ $(document).ready(function() {
 
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
-				type: 'post',
-				url: '/api/delete',
+				type: 'delete',
+				url: '/api/posts',
 				data: jsonPost,
 				success: function(jsonResponse) {
 					console.log(jsonResponse);
@@ -90,13 +91,6 @@ $(document).ready(function() {
 		});
 	}
 
-	function initAddPostTypes() {
-		$('.add.postText').click(function() {
-			console.log("add post text")
-			$('#createPostText').fadeIn();
-		})
-	}
-
 	function initModals() {
 		$(document).keydown(function(e) {
 			if (e.keyCode == 27) { 
@@ -105,10 +99,29 @@ $(document).ready(function() {
 		});
 	}
 
-	initModuleCreatePostText();
-	initModuleCreateUser();
+	function initPageIndex() {
+		if($('.page.index').length) {
+			initModuleCreatePostText();
+			initModuleCreateUser();
+		}
+	}
+
+	function initPagePostsByUser() {
+		if($('.page.postsByUser').length) {
+			initModuleCreatePostText();
+			initPosts();
+
+			$('.add.postText').click(function() {
+				$('#createPostText, #publish').fadeIn();
+			})
+		}
+	}
+
+	/* MODULES */
 	initPublishButton();
-	initAddPostTypes();
-	initPosts();
 	initModals();
+
+	/* PAGES */
+	initPageIndex();
+	initPagePostsByUser();
 });

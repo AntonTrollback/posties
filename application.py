@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from flask import render_template, session, abort, redirect, request, url_for
+from flask import render_template, session, abort, redirect, request, url_for, jsonify
 from flask.ext import login
 from flask.ext.login import login_user, logout_user, current_user
 from flask.ext.login import login_required
@@ -92,6 +92,7 @@ def api_create_user():
 	email = jsonPost['email']
 	username = jsonPost['username']
 	password = jsonPost['password']
+	postText = jsonPost['postText']
 
 	result = r.table(TABLE_NAME_USERS).insert({ 
 		'email' : email,
@@ -103,14 +104,22 @@ def api_create_user():
 	generated_id = result['generated_keys'][0]
 	user = r.table(TABLE_NAME_USERS).get(generated_id).run(conn)
 
+	#User exists, create initial post content
 	if user:
 		user = User(user['id'], user['email'], user['username'])
 		login_user(user)
-		return json.dumps(user)
+
+		result = r.table(TABLE_NAME_POSTS).insert({ 
+			'content' : postText, 
+			'username' : username,
+			'created' : r.now()}).run(conn)
+
+		jsonPost['id'] = generated_id
+		return jsonify(jsonPost)
 	else:
 		abort(401)
 
-@application.route('/api/delete', methods=['POST'])
+@application.route('/api/posts', methods=['DELETE'])
 def api_delete():
 	jsonPost = request.json
 	id = jsonPost['id']

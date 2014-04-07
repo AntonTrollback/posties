@@ -108,14 +108,7 @@ button {
 	padding: 1rem;
 	background: #fff;
 	box-shadow: 1px 2px 5px #ddd;
-	color: #8a8a8a;
-	margin: 0 auto;
-	display: block;
-}
-
-#formLogin button {
-	display: inline-block;
-	margin: auto;
+	color: #8a8a8a;	
 }
 
 .modal {
@@ -134,6 +127,10 @@ button {
 	text-align: center;
 }
 
+#publish {
+	display: block;
+	margin: 0 auto;
+}
 /* PAGES */
 .page.postsByUser #createPostText,
 .page.postsByUser #publish {
