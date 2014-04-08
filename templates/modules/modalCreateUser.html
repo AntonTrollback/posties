@@ -1,6 +1,6 @@
 <div class="modal createUser">
 	<h3>To publish, you'll need an account</h3>
-	<form id="createUser" class="form" method="post" action="/api/users">
+	<form id="createUser" class="form" method="put" action="/api/settings">
 		<fieldset>
 			<input type="text" id="email" placeholder="email" required pattern=".{5,}" />
 		</fieldset>
@@ -10,7 +10,7 @@
 		<fieldset>
 			<input type="text" id="password" placeholder="password" required pattern=".{5,}" />
 		</fieldset>
-		<fieldset>
+		<fieldset class="buttonContainer">
 			<button>Create account</button>
 		</fieldset>
 	</form>

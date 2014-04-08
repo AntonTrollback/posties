@@ -50,11 +50,16 @@ h1 a {
 }
 
 /*** GLOBAL FORMS ***/
+select,
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-	padding: 8px;
 	font-size: 2rem;
+	padding: 8px;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"] {
 	border: none;
 	border-bottom: 1px solid #ddd;
 	font-style: italic;
@@ -71,6 +76,15 @@ fieldset {
 }
 fieldset:last-child {
 	margin-top: 3rem;
+}
+label + select {
+	display: block;
+	border: 1px solid #ddd;
+	color: #666;
+	outline: none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
 }
 
 /** UNIQUES **/
@@ -133,6 +147,7 @@ fieldset:last-child {
 	left: 20%;
 	top: 5%;
 	padding: 2rem 3rem;
+	z-index: 10;
 }
 .modal h3 {
 	text-align: center;
@@ -145,10 +160,34 @@ fieldset:last-child {
 .modal input[type="password"] {
 	width: 95%;
 }
+.modal .buttonContainer {
+	clear: both;
+	width: 100%;
+}
 .modal button {
 	background: #888;
 	color: #fff;
 }
+.modal.settings fieldset {
+	width: 46%;
+	float: left;
+	margin-bottom: 2rem;
+}
+.modal.settings fieldset:nth-child(even) {
+	float: right;
+}
+.modal.settings label {
+	margin-bottom: .8rem;
+	display: inline-block;
+}
+.modal.settings input[type="text"],
+.modal.settings input[type="email"],
+.modal.settings input[type="password"] {
+	width: 60%;
+	border: 1px solid #ddd;
+	display: block;
+}
+
 .post {
 	position: relative;
 }
