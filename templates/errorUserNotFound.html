@@ -1,15 +1,9 @@
 {% include 'modules/head.html' %}
 {% include 'modules/header.html' %}
-	<div id="body">
-		<form id="createPostText" class="form" method="post" action="/api/createPostText">
-			<div id="postText" contenteditable="true">This user couldn't be found.
-				But you can claim this account by editing this text any way you'd like.
-				Click publish when done, and your new website is ready!
-			</div>
-			<a href="#" id="add">+ Add image</a>
-			<button id="publish">Publish</button>
-		</form>
+	<div id="body" class="page userNotFound">
+		<textarea id="postText">
+			Sorry, this user couldn't be found. But you can claim the username by publishing your first postie
+		</textarea>
 	</div>
-	{% include 'modules/modalCreateUser.html' %}
 </body>
 {% include 'modules/footer.html' %}

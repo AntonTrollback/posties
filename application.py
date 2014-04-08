@@ -16,9 +16,14 @@ application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_NAME_POSTS = 'posts'
 TABLE_NAME_USERS = 'users'
 
-conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
+#conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
+#	port=28015,
+#	auth_key='SteveJobs007Amazon',
+#	db='posties')
+
+conn = r.connect(host='localhost',
 	port=28015,
-	auth_key='SteveJobs007Amazon',
+	auth_key='',
 	db='posties')
 
 application.config['SECRET_KEY'] = '123456790'
@@ -39,11 +44,8 @@ def load_user(id):
 def index():
 	return render_template('index.html')
 
-@application.route('/login', methods=['GET','POST'])
+@application.route('/login', methods=['POST'])
 def login():
-	if request.method == 'GET':
-		return render_template('login.html')
-	
 	email = request.form['email']
 	password = request.form['password']
 
@@ -61,13 +63,19 @@ def login():
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
+	user = list(r.table(TABLE_NAME_USERS).filter(
+		(r.row['username'] == username)).run(conn))
+
+	if not user:
+		abort(404)
+
 	posts = list(
 		r.table(TABLE_NAME_POSTS).filter(
 		(r.row['username'] == username))
 		.order_by(r.desc('created'))
 		.run(conn))
 
-	if current_user and current_user.is_authenticated():
+	if current_user.is_authenticated():
 		user_owns_page = username == current_user.username
 	else:
 		user_owns_page = False

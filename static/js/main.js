@@ -1,17 +1,31 @@
 $(document).ready(function() {
 
-	function initModuleTopMenu() {
-		$('#toggleMenu').click(function(event) {
+	function initPublishButton() {
+		$('#body').on('click', '#btnPublishContainer button', function(event) {
 			event.preventDefault();
 
-			$('#menu').fadeToggle();
+			createPostText();
+		})
+	}
+
+	function initTogglers() {
+		$('body').on('click', '.toggler', function(event) {
+			event.preventDefault();
+
+			$($(this).attr('href')).fadeToggle();
+		});
+
+		$(document).keydown(function(e) {
+			if (e.keyCode == 27) { 
+				$('.modal').fadeOut();
+			}
 		});
 	}
 
 	function initModuleCreatePostText() {
 		var contentText = $('#postText');
 		if(contentText.length) {
-			contentText.html(posties.util.trimText(contentText.html()));
+			//contentText.html(posties.util.trimText(contentText.html()));
 
 			if($('.page.index').length) {
 				$('#createPostText').fadeIn(function() {
@@ -21,14 +35,6 @@ $(document).ready(function() {
 				});
 			}
 		}
-	}
-
-	function initPublishButton() {
-		$('#body').on('click', '#btnPublishContainer button', function(event) {
-			event.preventDefault();
-
-			createPostText();
-		})
 	}
 
 	function initModuleCreateUser() {
@@ -63,8 +69,8 @@ $(document).ready(function() {
 	function createPostText() {
 		if(posties.util.isUserLoggedIn()) {
 			var form = $('#createPostText');
-			var jsonPost = JSON.stringify({ 'content' : posties.util.trimText($('#postText').val())});
-
+			var jsonPost = JSON.stringify({ 'content' : $('#postText').val().linkify() });
+			console.log(jsonPost);
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
 				type: form.attr('method'),
@@ -109,14 +115,6 @@ $(document).ready(function() {
 		});
 	}
 
-	function initModals() {
-		$(document).keydown(function(e) {
-			if (e.keyCode == 27) { 
-				$('.modal').fadeOut();
-			}
-		});
-	}
-
 	function initPageIndex() {
 		if($('.page.index').length) {
 			initModuleCreatePostText();
@@ -135,12 +133,18 @@ $(document).ready(function() {
 		}
 	}
 
+	function initPageErrorUserNotFound() {
+		if($('.page.userNotFound').length) {
+			initModuleCreatePostText();
+		}
+	}
+
 	/* GLOBAL MODULES */
-	initModuleTopMenu();
 	initPublishButton();
-	initModals();
+	initTogglers();
 
 	/* PAGES */
 	initPageIndex();
 	initPagePostsByUser();
+	initPageErrorUserNotFound();
 });
