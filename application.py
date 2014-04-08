@@ -132,11 +132,11 @@ def api_create_user():
 def api_post_text():
 	jsonData = request.json
 	content = jsonData['content']
-	username = current_user.username
+	jsonData['username'] = current_user.username
 
 	result = r.table(TABLE_NAME_POSTS).insert({ 
 		'content' : content, 
-		'username' : username,
+		'username' : current_user.username,
 		'created' : r.now()}).run(conn)
 
 	jsonData['id'] = result['generated_keys'][0]

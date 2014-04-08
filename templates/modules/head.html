@@ -18,9 +18,3 @@
 {% else %}
     <body>
 {% endif %}
-{% if current_user and current_user.is_anonymous() %}
-    <p>anonymous</p>
-{% endif %}
-{% if current_user and not current_user.is_anonymous() %}
-    <p>{{current_user.username}}</p>
-{% endif %}

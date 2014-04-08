@@ -25,8 +25,6 @@ $(document).ready(function() {
 	function initModuleCreatePostText() {
 		var contentText = $('#postText');
 		if(contentText.length) {
-			//contentText.html(posties.util.trimText(contentText.html()));
-
 			if($('.page.index').length) {
 				$('#createPostText').fadeIn(function() {
 					$('#postTypes').fadeIn(function() {
@@ -46,7 +44,7 @@ $(document).ready(function() {
 				'email' : $('#email').val().toLowerCase(),
 				'username' : $('#username').val().toLowerCase(),
 				'password' : $('#password').val(),
-				'postText' : posties.util.trimText($('#postText').val())
+				'postText' : $('#postText').val().linkify()
 			});
 			
 			$.ajax({
@@ -70,20 +68,26 @@ $(document).ready(function() {
 		if(posties.util.isUserLoggedIn()) {
 			var form = $('#createPostText');
 			var jsonPost = JSON.stringify({ 'content' : $('#postText').val().linkify() });
-			console.log(jsonPost);
+			
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
 				type: form.attr('method'),
 				url: form.attr('action'),
 				data: jsonPost,
 				success: function(jsonResponse) {
-					var tmpPostText = $('#tmpPostText').html();
-					Mustache.parse(tmpPostText);
-					var html = Mustache.render(tmpPostText, { post : jsonResponse });
+
+					if(posties.util.isPage('postsByUser')) {
+						var tmpPostText = $('#tmpPostText').html();
+						Mustache.parse(tmpPostText);
+						var html = Mustache.render(tmpPostText, { post : jsonResponse });
+						
+						$.when($('#createPostText, #btnPublishContainer').fadeOut()).done(function() {
+							$('#posts').prepend($(html).fadeIn());
+						});
+					} else if(posties.util.isPage('index')) {
+						window.location = "/by/" + jsonResponse.username;
+					}
 					
-					$.when($('#createPostText, #btnPublishContainer').fadeOut()).done(function() {
-						$('#posts').prepend($(html).fadeIn());
-					});
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
@@ -116,14 +120,14 @@ $(document).ready(function() {
 	}
 
 	function initPageIndex() {
-		if($('.page.index').length) {
+		if(posties.util.isPage('index')) {
 			initModuleCreatePostText();
 			initModuleCreateUser();
 		}
 	}
 
 	function initPagePostsByUser() {
-		if($('.page.postsByUser').length) {
+		if(posties.util.isPage('postsByUser')) {
 			initModuleCreatePostText();
 			initGetPosts();
 
@@ -134,7 +138,7 @@ $(document).ready(function() {
 	}
 
 	function initPageErrorUserNotFound() {
-		if($('.page.userNotFound').length) {
+		if(posties.util.isPage('userNotFound')) {
 			initModuleCreatePostText();
 		}
 	}

@@ -14,9 +14,14 @@ posties.util = (function() {
         return $('body:eq(0)').hasClass('authenticated');
     }
 
+    var isPage = function(pageClass) {
+      return $('.page.' + pageClass).length;
+    }
+
     return {
         trimText : trimText,
-        isUserLoggedIn : isUserLoggedIn
+        isUserLoggedIn : isUserLoggedIn,
+        isPage : isPage
     };
 }());
 

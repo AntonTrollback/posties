@@ -27,6 +27,18 @@ header {
 	height: 60px;
 	position: relative;
 }
+header > a {
+	float: right;
+	margin-top: 1.5rem;
+	font-size: 2rem;
+	color: #c6c6c5;
+}
+header > a:visited {
+	color: #555;
+}
+header .toggler.menu {
+	margin-left: 1rem;
+}
 h1 {
 	margin: 1rem 0;
 	float: left;
@@ -98,6 +110,9 @@ fieldset:last-child {
 #postTypes li a {
 	font-size: 2rem;
 }
+#btnPublishContainer {
+	text-align: center;
+}
 #btnPublishContainer button {
 	font-size: 3rem;
 	border: 0;
@@ -133,13 +148,6 @@ fieldset:last-child {
 .modal button {
 	background: #888;
 	color: #fff;
-}
-.toggler.login,
-.toggler.menu {
-	float: right;
-	margin-top: 1.5rem;
-	font-size: 2rem;
-	color: #c6c6c5;
 }
 .post {
 	position: relative;
