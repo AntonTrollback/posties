@@ -6,66 +6,13 @@
 		<div id="modalMenu" class="modal menu">
 			<ul>
 				<li><a href="/logout">Logout</a></li>
-				<li><a href="#modalSettings" class="toggler settings">Settings</a></li>
+				<li><a href="#modalUpdateSettings" class="toggler settings">Settings</a></li>
 			</ul>
 		</div>
-		<div id="modalSettings" class="modal settings">
-			<form id="settings">
-				<fieldset>
-					<label for="textColor">Text color</label>
-					<input id="textColor" type="text" />
-				</fieldset>
-				<fieldset>	
-					<label for="typeface">Font</label>
-					<select id="typeface">
-						<option>Typeface 01</option>
-						<option>Typeface 02</option>
-						<option>Typeface 03</option>
-					</select>
-				</fieldset>
-				<fieldset>
-					<label for="postBackgroundColor">Post background</label>
-					<input id="postBackgroundColor" type="text" />
-				</fieldset>
-				<fieldset>	
-					<label for="pageHasPostShadows">Post shadows</label>
-					<select id="pageHasPostShadows">
-						<option>On</option>
-						<option>Off</option>
-					</select>
-				</fieldset>
-				<fieldset>
-					<label for="pageBackgroundColor">Page background</label>
-					<input id="pageBackgroundColor" type="text" />
-				</fieldset>
-				<fieldset>	
-					<label for="pageHasLogo">Posties logo</label>
-					<select id="pageHasLogo">
-						<option>On</option>
-						<option>Off</option>
-					</select>
-				</fieldset>
-				<fieldset class="buttonContainer">
-					<button>Done</button>
-				</fieldset>
-			</form>
-		</div>
+		{% include 'modules/modalSettings.html' %}
 	{% else %}
 		<a href="#modalLogin" class="toggler login">Login</a>
-		<div id="modalLogin" class="modal login">
-			<h3>Login</h3>
-			<form id="formLogin" class="form" method="post" action="/login">
-				<fieldset>
-					<input type="text" id="email" name="email" placeholder="email" required pattern=".{5,}" />
-				</fieldset>
-				<fieldset>
-					<input type="text" id="password" name="password" placeholder="password" required pattern=".{5,}" />
-				</fieldset>
-				<fieldset class="buttonContainer">
-					<button>Login</button>
-				</fieldset>
-			</form>
-		</div>
+		{% include 'modules/modalLogin.html' %}
 	{% endif %}
 	<div id="statusBar"></div>
 </header>

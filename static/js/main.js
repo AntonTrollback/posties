@@ -64,6 +64,35 @@ $(document).ready(function() {
 		});
 	}
 
+	function initModuleUpdateSettings() {
+		$('#updateSettings').submit(function(event) {
+			event.preventDefault();
+
+			var form = $(this);
+
+			var jsonPost = JSON.stringify({ 
+				'postTextColor' : $('#postTextColor').val().toLowerCase(),
+				'postBackgroundColor' : $('#postBackgroundColor').val().toLowerCase(),
+				'pageBackgroundColor' : $('#pageBackgroundColor').val().toLowerCase(),
+				'typeface' : $('#typeface option:selected').text()
+			});
+
+			$.ajax({
+				contentType: 'application/json;charset=UTF-8',
+				type: form.attr('method'),
+				url: form.attr('action'),
+				data: jsonPost,
+				success: function(jsonResponse) {
+					$('.modal').fadeOut();
+				},
+				error: function(jsonResponse) {
+					console.log(jsonResponse);
+				}
+			});
+		});
+
+	}
+
 	function createPostText() {
 		if(posties.util.isUserLoggedIn()) {
 			var form = $('#createPostText');

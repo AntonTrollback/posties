@@ -141,7 +141,7 @@ def api_create_user():
 			'posttextcolor' : '#181818',
 			'postbackgroundcolor' : '#ffffff',
 			'pagebackgroundcolor' : '#f5f5f5', 
-			'haspostshadows' : True,
+			'pagehaspostshadows' : True,
 			'created' : r.now()}).run(conn)
 
 		jsonData['id'] = generated_id
@@ -164,6 +164,29 @@ def api_post_text():
 	jsonData['id'] = result['generated_keys'][0]
 
 	return jsonify(jsonData)
+
+@application.route('/api/settings', methods=['PUT'])
+@login_required
+def api_update_settings():
+	jsonData = request.json
+	post_text_color = jsonData['postTextColor']
+	post_background_color = jsonData['postBackgroundColor']
+	page_background_color = jsonData['pageBackgroundColor']
+	typeface = jsonData['typeface']
+
+	settings = list(
+		r.table(TABLE_NAME_USERS_SETTINGS).filter(
+		(r.row['username'] == current_user.username))
+		.run(conn))
+
+	result = settings[0].update({
+			'typeface' : typeface,
+			'posttextcolor' : post_text_color,
+			'postbackgroundcolor' : post_background_color,
+			'pagebackgroundcolor' : page_background_color,
+			'created' : r.now()}).run(conn)
+
+	return jsonify(result)
 
 @application.route('/api/posts', methods=['DELETE'])
 @login_required

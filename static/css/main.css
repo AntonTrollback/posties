@@ -168,21 +168,21 @@ label + select {
 	background: #888;
 	color: #fff;
 }
-.modal.settings fieldset {
+.modal.updateSettings fieldset {
 	width: 46%;
 	float: left;
 	margin-bottom: 2rem;
 }
-.modal.settings fieldset:nth-child(even) {
+.modal.updateSettings fieldset:nth-child(even) {
 	float: right;
 }
-.modal.settings label {
+.modal.updateSettings label {
 	margin-bottom: .8rem;
 	display: inline-block;
 }
-.modal.settings input[type="text"],
-.modal.settings input[type="email"],
-.modal.settings input[type="password"] {
+.modal.updateSettings input[type="text"],
+.modal.updateSettings input[type="email"],
+.modal.updateSettings input[type="password"] {
 	width: 60%;
 	border: 1px solid #ddd;
 	display: block;
