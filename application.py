@@ -15,6 +15,7 @@ application = Flask(__name__, static_folder='static')
 application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_NAME_POSTS = 'posts'
 TABLE_NAME_USERS = 'users'
+TABLE_NAME_USERS_SETTINGS = 'users_settings'
 
 #conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
@@ -63,8 +64,13 @@ def login():
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
-	user = list(r.table(TABLE_NAME_USERS).filter(
-		(r.row['username'] == username)).run(conn))
+	users_result = r.table(TABLE_NAME_USERS).filter(
+		(r.row['username'] == username)).run(conn)
+
+	user = None
+
+	for user_obj in users_result:
+		user = user_obj
 
 	if not user:
 		abort(404)
@@ -75,12 +81,19 @@ def get_posts_by_username(username = None):
 		.order_by(r.desc('created'))
 		.run(conn))
 
+	settings = list(
+		r.table(TABLE_NAME_USERS_SETTINGS).filter(
+		(r.row['username'] == username))
+		.run(conn))
+
+	user['settings'] = settings[0]
+
 	if current_user.is_authenticated():
 		user_owns_page = username == current_user.username
 	else:
 		user_owns_page = False
 
-	return render_template('postsByUser.html', posts = posts, user_owns_page = user_owns_page, username = username)
+	return render_template('postsByUser.html', posts = posts, user_owns_page = user_owns_page, user = user)
 
 @application.route('/userNotFound', methods=['GET'])
 def user_not_found():
@@ -112,7 +125,7 @@ def api_create_user():
 	generated_id = result['generated_keys'][0]
 	user = r.table(TABLE_NAME_USERS).get(generated_id).run(conn)
 
-	#User exists, create initial post content
+	#User was created, create initial post content and settings
 	if user:
 		user = User(user['id'], user['email'], user['username'])
 		login_user(user)
@@ -120,6 +133,15 @@ def api_create_user():
 		result = r.table(TABLE_NAME_POSTS).insert({ 
 			'content' : postText, 
 			'username' : username,
+			'created' : r.now()}).run(conn)
+
+		result = r.table(TABLE_NAME_USERS_SETTINGS).insert({
+			'username' : username,
+			'typeface' : False,
+			'posttextcolor' : '#181818',
+			'postbackgroundcolor' : '#ffffff',
+			'pagebackgroundcolor' : '#f5f5f5', 
+			'haspostshadows' : True,
 			'created' : r.now()}).run(conn)
 
 		jsonData['id'] = generated_id
