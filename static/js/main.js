@@ -12,7 +12,11 @@ $(document).ready(function() {
 		$('body').on('click', '.toggler', function(event) {
 			event.preventDefault();
 
-			$($(this).attr('href')).fadeToggle();
+			if($(this).attr('href')) {
+				$($(this).attr('href')).fadeToggle();
+			} else {
+				$($(this).data('target')).fadeToggle();
+			}
 		});
 
 		$(document).keydown(function(e) {
@@ -41,9 +45,9 @@ $(document).ready(function() {
 
 			var form = $(this);
 			var jsonPost = JSON.stringify({ 
-				'email' : $('#email').val().toLowerCase(),
-				'username' : $('#username').val().toLowerCase(),
-				'password' : $('#password').val(),
+				'email' : $('#createUser .email:eq(0)').val(),
+				'username' : $('#createUser .username:eq(0)').val(),
+				'password' : $('#createUser .password:eq(0)').val(),
 				'postText' : $('#postText').val().linkify()
 			});
 			
@@ -65,6 +69,23 @@ $(document).ready(function() {
 	}
 
 	function initModuleUpdateSettings() {
+		$('#modalMenu').on('click', '.toggler.settings', function() {
+			$.ajax({
+				contentType: 'application/json;charset=UTF-8',
+				type: 'get',
+				url: '/api/settings',
+				success: function(jsonResponse) {
+					$('#postTextColor').val(jsonResponse.posttextcolor);
+					$('#postBackgroundColor').val(jsonResponse.postbackgroundcolor);
+					$('#pageBackgroundColor').val(jsonResponse.pagebackgroundcolor);
+				},
+				error: function(jsonResponse) {
+					console.log(jsonResponse);
+				}
+			});
+		});
+
+		//PUT user settings
 		$('#updateSettings').submit(function(event) {
 			event.preventDefault();
 
@@ -90,7 +111,6 @@ $(document).ready(function() {
 				}
 			});
 		});
-
 	}
 
 	function createPostText() {
@@ -175,6 +195,8 @@ $(document).ready(function() {
 	/* GLOBAL MODULES */
 	initPublishButton();
 	initTogglers();
+	initModuleCreatePostText();
+	initModuleUpdateSettings();
 
 	/* PAGES */
 	initPageIndex();

@@ -31,7 +31,7 @@ application.config['SECRET_KEY'] = '123456790'
 
 login_manager = login.LoginManager()
 login_manager.init_app(application)
-login_manager.login_view = '/login'
+#login_manager.login_view = '/api/login'
 
 @login_manager.user_loader
 def load_user(id):
@@ -44,23 +44,6 @@ def load_user(id):
 @application.route('/', methods=['GET'])
 def index():
 	return render_template('index.html')
-
-@application.route('/login', methods=['POST'])
-def login():
-	email = request.form['email']
-	password = request.form['password']
-
-	user = list(r.table(TABLE_NAME_USERS).filter(
-		(r.row['email'] == email) &
-		(r.row['password'] == password)).run(conn))
-
-	if not user:
-		return redirect(url_for('login'))
-
-	user = User(user[0]['id'], user[0]['email'], user[0]['username'])
-	login_user(user)
-
-	return redirect(url_for('get_posts_by_username', username = user.username))
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
@@ -107,6 +90,23 @@ def logout():
 ###############
 #  API CALLS  #
 ###############
+@application.route('/api/login', methods=['POST'])
+def api_login():
+	email = request.form['email']
+	password = request.form['password']
+
+	user = list(r.table(TABLE_NAME_USERS).filter(
+		(r.row['email'] == email) &
+		(r.row['password'] == password)).run(conn))
+
+	if not user:
+		return redirect(url_for('api_login'))
+
+	user = User(user[0]['id'], user[0]['email'], user[0]['username'])
+	login_user(user)
+
+	return redirect(url_for('get_posts_by_username', username = user.username))
+
 @application.route('/api/users', methods=['POST'])
 def api_create_user():
 	jsonData = request.json
@@ -174,12 +174,8 @@ def api_update_settings():
 	page_background_color = jsonData['pageBackgroundColor']
 	typeface = jsonData['typeface']
 
-	settings = list(
-		r.table(TABLE_NAME_USERS_SETTINGS).filter(
-		(r.row['username'] == current_user.username))
-		.run(conn))
-
-	result = settings[0].update({
+	result = r.table(TABLE_NAME_USERS_SETTINGS).filter(
+		r.row['username'] == current_user.username).update({
 			'typeface' : typeface,
 			'posttextcolor' : post_text_color,
 			'postbackgroundcolor' : post_background_color,
@@ -187,6 +183,16 @@ def api_update_settings():
 			'created' : r.now()}).run(conn)
 
 	return jsonify(result)
+
+@application.route('/api/settings', methods=['GET'])
+@login_required
+def api_get_settings():
+	settings = list(
+		r.table(TABLE_NAME_USERS_SETTINGS).filter(
+		(r.row['username'] == current_user.username))
+		.run(conn))
+
+	return jsonify(settings[0])	
 
 @application.route('/api/posts', methods=['DELETE'])
 @login_required

@@ -2,7 +2,17 @@
 	<form id="updateSettings" method="put" action="/api/settings">
 		<fieldset>
 			<label for="postTextColor">Text color</label>
-			<input id="postTextColor" type="text" name="postTextColor" />
+			<input id="postTextColor" type="text" value="" name="postTextColor" class="toggler" data-target="#colorPickerPostTextColor" />
+			<div class="colorPicker" id="colorPickerPostTextColor">
+				<ul>
+					<li><a href="#" class="red"></a></li>
+					<li><a href="#" class="green"></a></li>
+					<li><a href="#" class="blue"></a></li>
+					<li><a href="#" class="yellow"></a></li>
+					<li><a href="#" class="black"></a></li>
+					<li><a href="#" class="white"></a></li>
+				</ul>
+			</div>
 		</fieldset>
 		<fieldset>
 			<label for="typeface">Font</label>
@@ -17,7 +27,17 @@
 		</fieldset>
 		<fieldset>
 			<label for="postBackgroundColor">Post background</label>
-			<input id="postBackgroundColor" type="text" name="postBackgroundColor" />
+			<input id="postBackgroundColor" type="text" value="" name="postBackgroundColor" class="toggler" data-target="#colorPickerPostBackgroundColor" />
+			<div class="colorPicker" id="colorPickerPostBackgroundColor">
+				<ul>
+					<li><a href="#" class="red"></a></li>
+					<li><a href="#" class="green"></a></li>
+					<li><a href="#" class="blue"></a></li>
+					<li><a href="#" class="yellow"></a></li>
+					<li><a href="#" class="black"></a></li>
+					<li><a href="#" class="white"></a></li>
+				</ul>
+			</div>
 		</fieldset>
 		<fieldset>	
 			<label for="pageHasPostShadows">Post shadows</label>
@@ -28,7 +48,17 @@
 		</fieldset>
 		<fieldset>
 			<label for="pageBackgroundColor">Page background</label>
-			<input id="pageBackgroundColor" type="text" name="pageBackgroundColor" />
+			<input id="pageBackgroundColor" type="text" value="" name="pageBackgroundColor" class="toggler" data-target="#colorPickerPageBackgroundColor" />
+			<div class="colorPicker" id="colorPickerPageBackgroundColor">
+				<ul>
+					<li><a href="#" class="red"></a></li>
+					<li><a href="#" class="green"></a></li>
+					<li><a href="#" class="blue"></a></li>
+					<li><a href="#" class="yellow"></a></li>
+					<li><a href="#" class="black"></a></li>
+					<li><a href="#" class="white"></a></li>
+				</ul>
+			</div>
 		</fieldset>
 		<fieldset>	
 			<label for="pageHasLogo">Posties logo</label>

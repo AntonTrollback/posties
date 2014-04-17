@@ -172,6 +172,7 @@ label + select {
 	width: 46%;
 	float: left;
 	margin-bottom: 2rem;
+	position: relative;
 }
 .modal.updateSettings fieldset:nth-child(even) {
 	float: right;
@@ -187,6 +188,28 @@ label + select {
 	border: 1px solid #ddd;
 	display: block;
 }
+.modal.updateSettings .colorPicker {
+	display: none;
+	width: 300px;
+	position: absolute;
+	z-index: 20;
+	left: 0;
+	top: 0;
+}
+.modal.updateSettings .colorPicker li {
+	display: inline-block;
+}
+.modal.updateSettings .colorPicker a {
+	display: inline-block;
+	padding: 20px;
+	border: 1px solid #ddd;
+}
+.red { background: #db2727; }
+.green { background: #80db27; }
+.blue { background: #2773db; } 
+.yellow { background: #e0fe3b; }
+.black { background: #141414; }
+.white { background: #ffffff; }
 
 .post {
 	position: relative;

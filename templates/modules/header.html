@@ -3,12 +3,7 @@
 	{% if current_user and current_user.is_authenticated() %}
 		<a href="#modalMenu" class="toggler menu">||||</a>
 		<a href="/by/{{current_user.username}}">{{current_user.username}}</a>
-		<div id="modalMenu" class="modal menu">
-			<ul>
-				<li><a href="/logout">Logout</a></li>
-				<li><a href="#modalUpdateSettings" class="toggler settings">Settings</a></li>
-			</ul>
-		</div>
+		{% include 'modules/modalMenu.html' %}
 		{% include 'modules/modalSettings.html' %}
 	{% else %}
 		<a href="#modalLogin" class="toggler login">Login</a>
