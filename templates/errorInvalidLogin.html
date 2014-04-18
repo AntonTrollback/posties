@@ -1,0 +1,18 @@
+{% include 'modules/head.html' %}
+{% include 'modules/header.html' %}
+	<div id="body" class="page errorInvalidLogin">
+		<h3>Username/password was invalid, please try again:</h3>
+		<form id="formLogin" class="form" method="post" action="/api/login">
+			<fieldset>
+				<input type="text" class="email" name="email" placeholder="email" required pattern=".{5,}" />
+			</fieldset>
+			<fieldset>
+				<input type="text" class="password" name="password" placeholder="password" required pattern=".{5,}" />
+			</fieldset>
+			<fieldset class="buttonContainer">
+				<button>Login</button>
+			</fieldset>
+	</form>
+	</div>
+</body>
+{% include 'modules/footer.html' %}

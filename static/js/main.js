@@ -37,6 +37,8 @@ $(document).ready(function() {
 			$(this).parents('fieldset:eq(0)').find('input:eq(0)')
 				.attr('data-color', $(this).data('color'))
 				.css('background', $(this).data('color'));
+
+			$(this).parents('.colorPicker').hide();
 		});
 	}
 
@@ -206,7 +208,7 @@ $(document).ready(function() {
 	}
 
 	function initPageErrorUserNotFound() {
-		if(posties.util.isPage('userNotFound')) {
+		if(posties.util.isPage('errorUserNotFound')) {
 			initModuleCreatePostText();
 		}
 	}

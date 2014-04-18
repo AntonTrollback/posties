@@ -16,7 +16,7 @@ application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_NAME_POSTS = 'posts'
 TABLE_NAME_USERS = 'users'
 TABLE_NAME_USERS_SETTINGS = 'users_settings'
-WHITELIST_COLORS = ['#db2727', '#80db27', '#2773db', '#dddddd', '#141414', '#ffffff']
+WHITELIST_COLORS = ['#db2727', '#80db27', '#2773db', '#f5f5f5', '#141414', '#ffffff']
 
 #conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
@@ -79,10 +79,6 @@ def get_posts_by_username(username = None):
 
 	return render_template('postsByUser.html', posts = posts, user_owns_page = user_owns_page, user = user)
 
-@application.route('/userNotFound', methods=['GET'])
-def user_not_found():
-	return render_template('errorUserNotFound.html')
-
 @application.route('/logout', methods=['GET'])
 def logout():
 	logout_user()
@@ -101,7 +97,7 @@ def api_login():
 		(r.row['password'] == password)).run(conn))
 
 	if not user:
-		return redirect(url_for('api_login'))
+		return render_template('errorInvalidLogin.html')
 
 	user = User(user[0]['id'], user[0]['email'], user[0]['username'])
 	login_user(user)
@@ -211,21 +207,28 @@ def api_delete():
 		post_to_delete = r.table(TABLE_NAME_POSTS).get(id).delete().run(conn)
 		return json.dumps(post_to_delete)
 	else:
-		abort(401)	
+		abort(401)
 
-#STATUS CODE HANDLERS
+#STATUS CODE HANDLERS AND ERROR PAGES
+@application.route('/userNotFound', methods=['GET'])
+def error_user_not_found():
+	return render_template('errorUserNotFound.html')
+
+@application.route('/errorInvalidLogin', methods=['GET'])
+def error_invalid_login():
+	return render_template('errorInvalidLogin.html')	
+
 @application.errorhandler(404)
 def not_found(error):
-	return redirect(url_for('user_not_found'))
+	return redirect(url_for('error_user_not_found'))
+
+@application.errorhandler(403)
+def not_found(error):
+	return redirect(url_for('error_invalid_login'))
 
 @application.errorhandler(401)
-def resource_exists(error):
+def unauthorized(error):
     response = {"error" : "permission denied"}
-    return json.dumps(response)
-
-@application.errorhandler(400)
-def resource_exists(error):
-    response = {"error" : "resource doesn't exist"}
     return json.dumps(response)
 
 #NON VIEW METHODS
