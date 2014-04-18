@@ -190,24 +190,35 @@ label + select {
 }
 .modal.updateSettings .colorPicker {
 	display: none;
-	width: 300px;
+	width: auto;
 	position: absolute;
 	z-index: 20;
 	left: 0;
 	top: 0;
+	padding: 1rem;
+}
+.modal.updateSettings .colorPicker ul {
+	margin: 0;
 }
 .modal.updateSettings .colorPicker li {
-	display: inline-block;
+	float: left;
+	margin-right: 5px;
+}
+.modal.updateSettings .colorPicker li:nth-child(3n) {
+	margin: 0;
+}
+.modal.updateSettings .colorPicker li:nth-child(4) {
+	clear: left;
 }
 .modal.updateSettings .colorPicker a {
 	display: inline-block;
-	padding: 20px;
+	padding: 15px;
 	border: 1px solid #ddd;
 }
 .red { background: #db2727; }
 .green { background: #80db27; }
 .blue { background: #2773db; } 
-.yellow { background: #e0fe3b; }
+.gray { background: #dddddd; }
 .black { background: #141414; }
 .white { background: #ffffff; }
 

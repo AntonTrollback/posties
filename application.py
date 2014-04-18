@@ -16,6 +16,7 @@ application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_NAME_POSTS = 'posts'
 TABLE_NAME_USERS = 'users'
 TABLE_NAME_USERS_SETTINGS = 'users_settings'
+WHITELIST_COLORS = ['#db2727', '#80db27', '#2773db', '#dddddd', '#141414', '#ffffff']
 
 #conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
@@ -174,15 +175,19 @@ def api_update_settings():
 	page_background_color = jsonData['pageBackgroundColor']
 	typeface = jsonData['typeface']
 
-	result = r.table(TABLE_NAME_USERS_SETTINGS).filter(
-		r.row['username'] == current_user.username).update({
-			'typeface' : typeface,
-			'posttextcolor' : post_text_color,
-			'postbackgroundcolor' : post_background_color,
-			'pagebackgroundcolor' : page_background_color,
-			'created' : r.now()}).run(conn)
+	if post_text_color in WHITELIST_COLORS and post_background_color in WHITELIST_COLORS and page_background_color in WHITELIST_COLORS:
 
-	return jsonify(result)
+		result = r.table(TABLE_NAME_USERS_SETTINGS).filter(
+			r.row['username'] == current_user.username).update({
+				'typeface' : typeface,
+				'posttextcolor' : post_text_color,
+				'postbackgroundcolor' : post_background_color,
+				'pagebackgroundcolor' : page_background_color,
+				'created' : r.now()}).run(conn)
+
+		return jsonify(result)
+	else:
+		abort(401)
 
 @application.route('/api/settings', methods=['GET'])
 @login_required

@@ -15,7 +15,13 @@ $(document).ready(function() {
 			if($(this).attr('href')) {
 				$($(this).attr('href')).fadeToggle();
 			} else {
-				$($(this).data('target')).fadeToggle();
+				var target = $($(this).data('target'));
+
+				if(target.hasClass('colorPicker')) {
+					$('.colorPicker').hide();
+				}
+
+				target.fadeToggle();
 			}
 		});
 
@@ -23,6 +29,14 @@ $(document).ready(function() {
 			if (e.keyCode == 27) { 
 				$('.modal').fadeOut();
 			}
+		});
+	}
+
+	function initColorPickers() {
+		$('.colorPicker').on('click', 'a', function(event) {
+			$(this).parents('fieldset:eq(0)').find('input:eq(0)')
+				.attr('data-color', $(this).data('color'))
+				.css('background', $(this).data('color'));
 		});
 	}
 
@@ -75,9 +89,14 @@ $(document).ready(function() {
 				type: 'get',
 				url: '/api/settings',
 				success: function(jsonResponse) {
-					$('#postTextColor').val(jsonResponse.posttextcolor);
-					$('#postBackgroundColor').val(jsonResponse.postbackgroundcolor);
-					$('#pageBackgroundColor').val(jsonResponse.pagebackgroundcolor);
+					$('#postTextColor').attr('data-color', jsonResponse.posttextcolor)
+					.css('background', jsonResponse.posttextcolor);
+
+					$('#postBackgroundColor').attr('data-color', jsonResponse.postbackgroundcolor)
+					.css('background', jsonResponse.postbackgroundcolor);
+
+					$('#pageBackgroundColor').attr('data-color', jsonResponse.pagebackgroundcolor)
+					.css('background', jsonResponse.pagebackgroundcolor);
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
@@ -92,9 +111,9 @@ $(document).ready(function() {
 			var form = $(this);
 
 			var jsonPost = JSON.stringify({ 
-				'postTextColor' : $('#postTextColor').val().toLowerCase(),
-				'postBackgroundColor' : $('#postBackgroundColor').val().toLowerCase(),
-				'pageBackgroundColor' : $('#pageBackgroundColor').val().toLowerCase(),
+				'postTextColor' : $('#postTextColor').data('color').toLowerCase(),
+				'postBackgroundColor' : $('#postBackgroundColor').data('color').toLowerCase(),
+				'pageBackgroundColor' : $('#pageBackgroundColor').data('color').toLowerCase(),
 				'typeface' : $('#typeface option:selected').text()
 			});
 
@@ -195,6 +214,7 @@ $(document).ready(function() {
 	/* GLOBAL MODULES */
 	initPublishButton();
 	initTogglers();
+	initColorPickers();
 	initModuleCreatePostText();
 	initModuleUpdateSettings();
 
