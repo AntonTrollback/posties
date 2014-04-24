@@ -3,12 +3,12 @@
 and (min-device-width : 320px) 
 and (max-device-width : 480px) {
 	.modal {
-		width: 80%;
+		width: 90%;
 		padding: 1rem;
 	}
-	.modal .close {
+	.modal p.close a {
 		top: -10px;
-		right: -10px;
+		right: -11px;
 	}
 }
 

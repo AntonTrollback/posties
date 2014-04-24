@@ -86,7 +86,11 @@ label + select {
 	border: 1px solid #ddd;
 	color: #666;
 	outline: none;
-	max-width: 175px;
+	width: 85%;
+	font-size: 1.4rem;
+	border-radius: 0;
+	background: #fff;
+	padding: 10px 4px;
     -webkit-appearance:none;
     -moz-appearance:none;
     appearance:none;
@@ -185,6 +189,7 @@ label + select {
 	padding: 4px 8px;
 	font-weight: bold;
 	font-size: 2rem;
+	text-decoration: none;
 }
 
 .modal.updateSettings fieldset {

@@ -17,16 +17,17 @@ TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_COLORS = ['#db2727', '#80db27', '#2773db', '#f5f5f5', '#141414', '#ffffff']
+WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
 
-conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
-	port=28015,
-	auth_key='SteveJobs007Amazon',
-	db='posties')
-
-#conn = r.connect(host='localhost',
+#conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
-#	auth_key='',
+#	auth_key='SteveJobs007Amazon',
 #	db='posties')
+
+conn = r.connect(host='localhost',
+	port=28015,
+	auth_key='',
+	db='posties')
 
 application.config['SECRET_KEY'] = '123456790'
 
@@ -171,7 +172,10 @@ def api_update_settings():
 	page_background_color = jsonData['pageBackgroundColor']
 	typeface = jsonData['typeface']
 
-	if post_text_color in WHITELIST_COLORS and post_background_color in WHITELIST_COLORS and page_background_color in WHITELIST_COLORS:
+	if (post_text_color in WHITELIST_COLORS 
+	and post_background_color in WHITELIST_COLORS 
+	and page_background_color in WHITELIST_COLORS 
+	and typeface in WHITELIST_TYPEFACES):
 
 		result = r.table(TABLE_USERS_SETTINGS).filter(
 			r.row['username'] == current_user.username).update({
@@ -236,4 +240,4 @@ def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 if __name__ == '__main__':
-    application.run(host = '0.0.0.0', debug = False)
+    application.run(host = '0.0.0.0', debug = True)
