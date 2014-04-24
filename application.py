@@ -16,7 +16,6 @@ application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
-WHITELIST_COLORS = ['#db2727', '#80db27', '#2773db', '#f5f5f5', '#141414', '#ffffff']
 WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
 
 #conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
@@ -172,9 +171,9 @@ def api_update_settings():
 	page_background_color = jsonData['pageBackgroundColor']
 	typeface = jsonData['typeface']
 
-	if (post_text_color in WHITELIST_COLORS 
-	and post_background_color in WHITELIST_COLORS 
-	and page_background_color in WHITELIST_COLORS 
+	if (len(post_text_color) is 7
+	and len(post_background_color) is 7 
+	and len(page_background_color) is 7 
 	and typeface in WHITELIST_TYPEFACES):
 
 		result = r.table(TABLE_USERS_SETTINGS).filter(

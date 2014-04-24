@@ -110,7 +110,6 @@ label + select {
 #postText {
 	border: 0;
 	background: #fff;
-	font-size: 2rem;
 	padding: 2rem 2rem 8rem 2rem;
 	box-shadow: 1px 2px 5px #ddd;
 	margin-bottom: 4rem;
@@ -118,6 +117,7 @@ label + select {
 	white-space: pre;
 	width: 100%;
 	color: #444;
+	font-size: 2rem;
 	box-sizing: border-box;
 	font-weight: lighter;
 }
@@ -212,33 +212,6 @@ label + select {
 	border: 1px solid #ddd;
 	display: block;
 }
-.modal.updateSettings .colorPicker {
-	display: none;
-	width: auto;
-	position: absolute;
-	z-index: 20;
-	left: 0;
-	top: 0;
-	padding: 1rem;
-}
-.modal.updateSettings .colorPicker ul {
-	margin: 0;
-}
-.modal.updateSettings .colorPicker li {
-	float: left;
-	margin-right: 5px;
-}
-.modal.updateSettings .colorPicker li:nth-child(3n) {
-	margin: 0;
-}
-.modal.updateSettings .colorPicker li:nth-child(4) {
-	clear: left;
-}
-.modal.updateSettings .colorPicker a {
-	display: inline-block;
-	padding: 15px;
-	border: 1px solid #ddd;
-}
 .modal.createUser .url {
 	font-size: 2rem;
 	padding: 8px;
@@ -268,7 +241,7 @@ label + select {
 	line-height: 1.2;
 	white-space: pre-line;
 	width: 100%;
-	box-sizing: border-box;
+ 	box-sizing: border-box;
 }
 
 /*** PAGES ***/

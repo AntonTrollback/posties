@@ -17,10 +17,6 @@ $(document).ready(function() {
 			} else {
 				var target = $($(this).data('target'));
 
-				if(target.hasClass('colorPicker')) {
-					$('.colorPicker').hide();
-				}
-
 				target.fadeToggle();
 			}
 		});
@@ -37,12 +33,15 @@ $(document).ready(function() {
 	}
 
 	function initColorPickers() {
-		$('.colorPicker').on('click', 'a', function(event) {
-			$(this).parents('fieldset:eq(0)').find('input:eq(0)')
-				.attr('data-color', $(this).data('color'))
-				.css('background', $(this).data('color'));
+		$('.colorpicker').colpick({ 
+			layout : 'hex', 
+			onSubmit: function(hsb, hex, rgb, el) {
+				$(el).parents('fieldset:eq(0)').find('input:eq(0)')
+				.attr('data-color', '#' + hex)
+				.css('background', '#' + hex);
 
-			$(this).parents('.colorPicker').hide();
+				$(el).colpickHide();
+			}
 		});
 	}
 

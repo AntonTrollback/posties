@@ -3,24 +3,15 @@
 	<form id="updateSettings" method="put" action="/api/settings">
 		<fieldset>
 			<label for="postTextColor">Text color</label>
-			<input id="postTextColor" type="text" value="" name="postTextColor" class="toggler" data-target="#colorPickerPostTextColor" />
-			<div class="modal colorPicker" id="colorPickerPostTextColor">
-				{% include 'modules/colorPicker.html' %}
-			</div>
+			<input id="postTextColor" type="text" value="" name="postTextColor" class="colorpicker" data-target="#colorPickerPostTextColor" />
 		</fieldset>
 		<fieldset>
 			<label for="postBackgroundColor">Post color</label>
-			<input id="postBackgroundColor" type="text" value="" name="postBackgroundColor" class="toggler" data-target="#colorPickerPostBackgroundColor" />
-			<div class="modal colorPicker" id="colorPickerPostBackgroundColor">
-				{% include 'modules/colorPicker.html' %}
-			</div>
+			<input id="postBackgroundColor" type="text" value="" name="postBackgroundColor" class="colorpicker" data-target="#colorPickerPostBackgroundColor" />
 		</fieldset>
 		<fieldset>
 			<label for="pageBackgroundColor">Page color</label>
-			<input id="pageBackgroundColor" type="text" value="" name="pageBackgroundColor" class="toggler" data-target="#colorPickerPageBackgroundColor" />
-			<div class="modal colorPicker" id="colorPickerPageBackgroundColor">
-				{% include 'modules/colorPicker.html' %}
-			</div>
+			<input id="pageBackgroundColor" type="text" value="" name="pageBackgroundColor" class="colorpicker" data-target="#colorPickerPageBackgroundColor" />
 		</fieldset>
 		<fieldset>
 			<label for="typeface">Font</label>
