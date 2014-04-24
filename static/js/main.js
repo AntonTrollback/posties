@@ -147,6 +147,7 @@ $(document).ready(function() {
 				data: jsonPost,
 				success: function(jsonResponse) {
 					$('.modal').fadeOut();
+					location.reload();
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
