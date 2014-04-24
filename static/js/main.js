@@ -56,7 +56,14 @@ $(document).ready(function() {
 	}
 
 	function initModuleCreateUser() {
-		$('#createUser').submit(function(event) {
+		var form = $('#createUser');
+		var inputUsername = form.find('.username:eq(0)'); 
+
+		inputUsername.keyup(function() {
+			form.find('.url span').text($(this).val());
+		});
+
+		form.submit(function(event) {
 			event.preventDefault();
 
 			var form = $(this);

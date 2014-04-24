@@ -13,9 +13,9 @@ import rethinkdb as r
 
 application = Flask(__name__, static_folder='static')
 application.config['SECRET_KEY'] = 'secretmonkey123'
-TABLE_NAME_POSTS = 'posts'
-TABLE_NAME_USERS = 'users'
-TABLE_NAME_USERS_SETTINGS = 'users_settings'
+TABLE_POSTS = 'posts'
+TABLE_USERS = 'users'
+TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_COLORS = ['#db2727', '#80db27', '#2773db', '#f5f5f5', '#141414', '#ffffff']
 
 #conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
@@ -36,7 +36,7 @@ login_manager.init_app(application)
 
 @login_manager.user_loader
 def load_user(id):
-	user = r.table(TABLE_NAME_USERS).get(id).run(conn)
+	user = r.table(TABLE_USERS).get(id).run(conn)
 	return User(user['id'], user['email'], user['username'])
 
 ###############
@@ -48,7 +48,7 @@ def index():
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
-	users_result = r.table(TABLE_NAME_USERS).filter(
+	users_result = r.table(TABLE_USERS).filter(
 		(r.row['username'] == username)).run(conn)
 
 	user = None
@@ -60,13 +60,13 @@ def get_posts_by_username(username = None):
 		abort(404)
 
 	posts = list(
-		r.table(TABLE_NAME_POSTS).filter(
+		r.table(TABLE_POSTS).filter(
 		(r.row['username'] == username))
 		.order_by(r.desc('created'))
 		.run(conn))
 
 	settings = list(
-		r.table(TABLE_NAME_USERS_SETTINGS).filter(
+		r.table(TABLE_USERS_SETTINGS).filter(
 		(r.row['username'] == username))
 		.run(conn))
 
@@ -92,7 +92,7 @@ def api_login():
 	email = request.form['email']
 	password = request.form['password']
 
-	user = list(r.table(TABLE_NAME_USERS).filter(
+	user = list(r.table(TABLE_USERS).filter(
 		(r.row['email'] == email) &
 		(r.row['password'] == password)).run(conn))
 
@@ -112,7 +112,7 @@ def api_create_user():
 	password = jsonData['password']
 	postText = jsonData['postText']
 
-	result = r.table(TABLE_NAME_USERS).insert({ 
+	result = r.table(TABLE_USERS).insert({ 
 		'email' : email,
 		'username' : username,
 		'password' : password, 
@@ -120,21 +120,21 @@ def api_create_user():
 
 	#For assertion, lookup user based on generated ID
 	generated_id = result['generated_keys'][0]
-	user = r.table(TABLE_NAME_USERS).get(generated_id).run(conn)
+	user = r.table(TABLE_USERS).get(generated_id).run(conn)
 
 	#User was created, create initial post content and settings
 	if user:
 		user = User(user['id'], user['email'], user['username'])
 		login_user(user)
 
-		result = r.table(TABLE_NAME_POSTS).insert({ 
+		result = r.table(TABLE_POSTS).insert({ 
 			'content' : postText, 
 			'username' : username,
 			'created' : r.now()}).run(conn)
 
-		result = r.table(TABLE_NAME_USERS_SETTINGS).insert({
+		result = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
-			'typeface' : False,
+			'typeface' : 'sans-serif',
 			'posttextcolor' : '#181818',
 			'postbackgroundcolor' : '#ffffff',
 			'pagebackgroundcolor' : '#f5f5f5', 
@@ -153,7 +153,7 @@ def api_post_text():
 	content = jsonData['content']
 	jsonData['username'] = current_user.username
 
-	result = r.table(TABLE_NAME_POSTS).insert({ 
+	result = r.table(TABLE_POSTS).insert({ 
 		'content' : content, 
 		'username' : current_user.username,
 		'created' : r.now()}).run(conn)
@@ -173,7 +173,7 @@ def api_update_settings():
 
 	if post_text_color in WHITELIST_COLORS and post_background_color in WHITELIST_COLORS and page_background_color in WHITELIST_COLORS:
 
-		result = r.table(TABLE_NAME_USERS_SETTINGS).filter(
+		result = r.table(TABLE_USERS_SETTINGS).filter(
 			r.row['username'] == current_user.username).update({
 				'typeface' : typeface,
 				'posttextcolor' : post_text_color,
@@ -189,7 +189,7 @@ def api_update_settings():
 @login_required
 def api_get_settings():
 	settings = list(
-		r.table(TABLE_NAME_USERS_SETTINGS).filter(
+		r.table(TABLE_USERS_SETTINGS).filter(
 		(r.row['username'] == current_user.username))
 		.run(conn))
 
@@ -201,10 +201,10 @@ def api_delete():
 	jsonData = request.json
 	id = jsonData['id']
 
-	post_to_delete = r.table(TABLE_NAME_POSTS).get(id).run(conn);
+	post_to_delete = r.table(TABLE_POSTS).get(id).run(conn);
 
 	if post_to_delete['username'] == current_user.username:
-		post_to_delete = r.table(TABLE_NAME_POSTS).get(id).delete().run(conn)
+		post_to_delete = r.table(TABLE_POSTS).get(id).delete().run(conn)
 		return json.dumps(post_to_delete)
 	else:
 		abort(401)

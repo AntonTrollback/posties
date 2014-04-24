@@ -4,17 +4,18 @@
 			<label for="postTextColor">Text color</label>
 			<input id="postTextColor" type="text" value="" name="postTextColor" class="toggler" data-target="#colorPickerPostTextColor" />
 			<div class="modal colorPicker" id="colorPickerPostTextColor">
-				{% include 'modules/colors.html' %}
+				{% include 'modules/colorPicker.html' %}
 			</div>
 		</fieldset>
 		<fieldset>
 			<label for="typeface">Font</label>
 			<select id="typeface">
-				<option>Nothing+You+Could+Do</option>
-				<option>Cutive+Mono</option>
-				<option>Kite+One</option>
-				<option>Josefin+Sans</option>
-				<option>Fanwood+Text</option>
+				<option>sans-serif</option>
+				<option>NothingYouCouldDo</option>
+				<option>CutiveMono</option>
+				<option>KiteOne</option>
+				<option>JosefinSans</option>
+				<option>FanwoodText</option>
 				<option>Delius</option>
 			</select>
 		</fieldset>
@@ -22,7 +23,7 @@
 			<label for="postBackgroundColor">Post background</label>
 			<input id="postBackgroundColor" type="text" value="" name="postBackgroundColor" class="toggler" data-target="#colorPickerPostBackgroundColor" />
 			<div class="modal colorPicker" id="colorPickerPostBackgroundColor">
-				{% include 'modules/colors.html' %}
+				{% include 'modules/colorPicker.html' %}
 			</div>
 		</fieldset>
 		<fieldset>	
@@ -36,7 +37,7 @@
 			<label for="pageBackgroundColor">Page background</label>
 			<input id="pageBackgroundColor" type="text" value="" name="pageBackgroundColor" class="toggler" data-target="#colorPickerPageBackgroundColor" />
 			<div class="modal colorPicker" id="colorPickerPageBackgroundColor">
-				{% include 'modules/colors.html' %}
+				{% include 'modules/colorPicker.html' %}
 			</div>
 		</fieldset>
 		<fieldset>	

@@ -91,7 +91,7 @@ label + select {
     appearance:none;
 }
 
-/** UNIQUES **/
+/*** UNIQUES ***/
 #statusBar {
 	display: none;
 	font-size: 1.4rem;
@@ -216,6 +216,10 @@ label + select {
 	display: inline-block;
 	padding: 15px;
 	border: 1px solid #ddd;
+}
+.modal.createUser .url {
+	font-size: 2rem;
+	padding: 8px;
 }
 .red { background: #db2727; }
 .green { background: #80db27; }
