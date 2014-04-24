@@ -145,11 +145,12 @@ label + select {
 .modal {
 	display: none;
 	position: absolute;
-	top: 0;
 	background: #fff;
 	border: 1px solid #ddd;
 	width: 60%;
-	left: 20%;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
 	top: 5%;
 	padding: 2rem 3rem;
 	z-index: 10;
@@ -161,7 +162,7 @@ label + select {
 .modal input[type="text"],
 .modal input[type="email"],
 .modal input[type="password"] {
-	width: 95%;
+	width: 90%;
 }
 .modal .buttonContainer {
 	clear: both;
@@ -171,6 +172,21 @@ label + select {
 	background: #888;
 	color: #fff;
 }
+.modal p.close {
+	position: relative;
+}
+.modal p.close a {
+	cursor: pointer;
+	float: right;
+	position: absolute;
+	top: -20px;
+	right: -30px;
+	background: #ddd;
+	padding: 4px 8px;
+	font-weight: bold;
+	font-size: 2rem;
+}
+
 .modal.updateSettings fieldset {
 	width: 46%;
 	float: left;
@@ -245,7 +261,9 @@ label + select {
 	padding: 2rem;
 	margin: 0 0 4rem 0;
 	line-height: 1.2;
-	white-space: pre;
+	white-space: pre-line;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 /*** PAGES ***/

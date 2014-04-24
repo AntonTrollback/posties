@@ -30,6 +30,10 @@ $(document).ready(function() {
 				$('.modal').fadeOut();
 			}
 		});
+
+		$('body').on('click', '.close', function(event) {
+			$(event.target).closest('.modal').fadeOut();
+		});
 	}
 
 	function initColorPickers() {
