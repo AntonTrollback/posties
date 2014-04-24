@@ -8,6 +8,20 @@
 			</div>
 		</fieldset>
 		<fieldset>
+			<label for="postBackgroundColor">Post background</label>
+			<input id="postBackgroundColor" type="text" value="" name="postBackgroundColor" class="toggler" data-target="#colorPickerPostBackgroundColor" />
+			<div class="modal colorPicker" id="colorPickerPostBackgroundColor">
+				{% include 'modules/colorPicker.html' %}
+			</div>
+		</fieldset>
+		<fieldset>
+			<label for="pageBackgroundColor">Page background</label>
+			<input id="pageBackgroundColor" type="text" value="" name="pageBackgroundColor" class="toggler" data-target="#colorPickerPageBackgroundColor" />
+			<div class="modal colorPicker" id="colorPickerPageBackgroundColor">
+				{% include 'modules/colorPicker.html' %}
+			</div>
+		</fieldset>
+		<fieldset>
 			<label for="typeface">Font</label>
 			<select id="typeface">
 				<option>sans-serif</option>
@@ -17,34 +31,6 @@
 				<option>JosefinSans</option>
 				<option>FanwoodText</option>
 				<option>Delius</option>
-			</select>
-		</fieldset>
-		<fieldset>
-			<label for="postBackgroundColor">Post background</label>
-			<input id="postBackgroundColor" type="text" value="" name="postBackgroundColor" class="toggler" data-target="#colorPickerPostBackgroundColor" />
-			<div class="modal colorPicker" id="colorPickerPostBackgroundColor">
-				{% include 'modules/colorPicker.html' %}
-			</div>
-		</fieldset>
-		<fieldset>	
-			<label for="pageHasPostShadows">Post shadows</label>
-			<select id="pageHasPostShadows" name="pageHasPostShadows">
-				<option>On</option>
-				<option>Off</option>
-			</select>
-		</fieldset>
-		<fieldset>
-			<label for="pageBackgroundColor">Page background</label>
-			<input id="pageBackgroundColor" type="text" value="" name="pageBackgroundColor" class="toggler" data-target="#colorPickerPageBackgroundColor" />
-			<div class="modal colorPicker" id="colorPickerPageBackgroundColor">
-				{% include 'modules/colorPicker.html' %}
-			</div>
-		</fieldset>
-		<fieldset>	
-			<label for="pageHasLogo">Posties logo</label>
-			<select id="pageHasLogo" name="pageHasLogo">
-				<option>On</option>
-				<option>Off</option>
 			</select>
 		</fieldset>
 		<fieldset class="buttonContainer">

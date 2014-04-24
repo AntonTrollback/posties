@@ -86,6 +86,7 @@ label + select {
 	border: 1px solid #ddd;
 	color: #666;
 	outline: none;
+	max-width: 175px;
     -webkit-appearance:none;
     -moz-appearance:none;
     appearance:none;

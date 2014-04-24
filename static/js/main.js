@@ -56,17 +56,15 @@ $(document).ready(function() {
 	}
 
 	function initModuleCreateUser() {
-		var form = $('#createUser');
-		var inputUsername = form.find('.username:eq(0)'); 
+		var formCreateUser = $('#createUser');
+		var inputUsername = formCreateUser.find('.username:eq(0)'); 
 
 		inputUsername.keyup(function() {
-			form.find('.url span').text($(this).val());
+			formCreateUser.find('.url span').text($(this).val());
 		});
 
-		form.submit(function(event) {
+		formCreateUser.submit(function(event) {
 			event.preventDefault();
-
-			var form = $(this);
 			var jsonPost = JSON.stringify({ 
 				'email' : $('#createUser .email:eq(0)').val(),
 				'username' : $('#createUser .username:eq(0)').val(),
@@ -76,8 +74,8 @@ $(document).ready(function() {
 			
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
-				type: form.attr('method'),
-				url: form.attr('action'),
+				type: formCreateUser.attr('method'),
+				url: formCreateUser.attr('action'),
 				data: jsonPost,
 				success: function(jsonResponse) {
 					window.location = "/by/" + jsonResponse.username;
@@ -92,20 +90,38 @@ $(document).ready(function() {
 	}
 
 	function initModuleUpdateSettings() {
+		var formUpdateSettings = $('#updateSettings');
+
+		//GET user settings
 		$('#modalMenu').on('click', '.toggler.settings', function() {
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
 				type: 'get',
 				url: '/api/settings',
 				success: function(jsonResponse) {
-					$('#postTextColor').attr('data-color', jsonResponse.posttextcolor)
+					formUpdateSettings.find('#postTextColor').attr('data-color', jsonResponse.posttextcolor)
 					.css('background', jsonResponse.posttextcolor);
 
-					$('#postBackgroundColor').attr('data-color', jsonResponse.postbackgroundcolor)
+					formUpdateSettings.find('#postBackgroundColor').attr('data-color', jsonResponse.postbackgroundcolor)
 					.css('background', jsonResponse.postbackgroundcolor);
 
-					$('#pageBackgroundColor').attr('data-color', jsonResponse.pagebackgroundcolor)
+					formUpdateSettings.find('#pageBackgroundColor').attr('data-color', jsonResponse.pagebackgroundcolor)
 					.css('background', jsonResponse.pagebackgroundcolor);
+
+					var selectTypeface = formUpdateSettings.find('#typeface');
+
+					selectTypeface.css('font-family', jsonResponse.typeface);
+
+					selectTypeface.find('option').each(function() {
+						if($(this).val() == jsonResponse.typeface) {
+							$(this).attr('selected', true);
+							return false; //break 'each' loop
+						}
+					});
+
+					selectTypeface.change(function() {
+						$(this).css('font-family', $(this).find(':selected').text());
+					});
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
@@ -114,10 +130,8 @@ $(document).ready(function() {
 		});
 
 		//PUT user settings
-		$('#updateSettings').submit(function(event) {
+		formUpdateSettings.submit(function(event) {
 			event.preventDefault();
-
-			var form = $(this);
 
 			var jsonPost = JSON.stringify({ 
 				'postTextColor' : $('#postTextColor').data('color').toLowerCase(),
@@ -128,8 +142,8 @@ $(document).ready(function() {
 
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
-				type: form.attr('method'),
-				url: form.attr('action'),
+				type: formUpdateSettings.attr('method'),
+				url: formUpdateSettings.attr('action'),
 				data: jsonPost,
 				success: function(jsonResponse) {
 					$('.modal').fadeOut();

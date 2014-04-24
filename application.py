@@ -135,7 +135,7 @@ def api_create_user():
 		result = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
 			'typeface' : 'sans-serif',
-			'posttextcolor' : '#181818',
+			'posttextcolor' : '#141414',
 			'postbackgroundcolor' : '#ffffff',
 			'pagebackgroundcolor' : '#f5f5f5', 
 			'pagehaspostshadows' : True,
