@@ -264,6 +264,7 @@ header div.menu li {
 .page.index #btnPublishContainer,
 .page.index .add.postText,
 .page.postsByUser #createPostText,
+.page.postsByUser #createPostImage,
 .page.postsByUser #btnPublishContainer {
 	display: none;
 }

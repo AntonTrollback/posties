@@ -2,14 +2,13 @@ import os
 from flask import Flask
 from flask import render_template, session, abort, redirect, request, url_for, jsonify
 from flask.ext import login
-from flask.ext.login import login_user, logout_user, current_user
-from flask.ext.login import login_required
-from datetime import datetime
+from flask.ext.login import login_user, logout_user, current_user, login_required
+from werkzeug.utils import secure_filename
 from user import User
 import json
-import time
-import random, string
 import rethinkdb as r
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
 
 application = Flask(__name__, static_folder='static')
 application.config['SECRET_KEY'] = 'secretmonkey123'
@@ -161,6 +160,21 @@ def api_post_text():
 	jsonData['id'] = result['generated_keys'][0]
 
 	return jsonify(jsonData)
+
+@application.route('/api/postImage', methods=['POST'])
+@login_required
+def api_post_image():
+	file = request.files['postImage']
+	filename = secure_filename(file.filename)
+	filename = os.path.join("/Users/nima/Desktop/projects/posties/tmp", filename)
+	file.save(filename)
+
+	s3_conn = S3Connection('AKIAJB3M66B6RPZ5UWGQ', 'EYhaGnC/gZjdqn5SyrLlRiZ49czj5B/G4D/Bh091')
+	k = Key(s3_conn.get_bucket('posties'))
+	k.key = filename
+	k.set_contents_from_file(request.files['postImage'], rewind=True)
+	
+	return redirect(url_for('get_posts_by_username', username = current_user.username))
 
 @application.route('/api/settings', methods=['PUT'])
 @login_required

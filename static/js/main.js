@@ -4,8 +4,12 @@ $(document).ready(function() {
 		$('#body').on('click', '#btnPublishContainer button', function(event) {
 			event.preventDefault();
 
-			createPostText();
-		})
+			if($('#createPostText').is(':visible')) {
+				createPostText();
+			} else if($('#createPostImage').is(':visible')) {
+				createPostImage();
+			}
+		});
 	}
 
 	function initFlash() {
@@ -61,6 +65,56 @@ $(document).ready(function() {
 					});
 				});
 			}
+		}
+	}
+
+	function createPostText() {
+		if(posties.util.isUserLoggedIn()) {
+			var form = $('#createPostText');
+			var jsonPost = JSON.stringify({ 'content' : $('#postText').val().linkify() });
+			
+			$.ajax({
+				contentType: 'application/json;charset=UTF-8',
+				type: form.attr('method'),
+				url: form.attr('action'),
+				data: jsonPost,
+				success: function(jsonResponse) {
+
+					if(posties.util.isPage('postsByUser')) {
+						var tmpPostText = $('#tmpPostText').html();
+						Mustache.parse(tmpPostText);
+						var html = Mustache.render(tmpPostText, { post : jsonResponse });
+						
+						$.when($('#createPostText, #btnPublishContainer').fadeOut()).done(function() {
+							$('#posts').prepend($(html).fadeIn());
+						});
+					} else if(posties.util.isPage('index')) {
+						window.location = "/by/" + jsonResponse.username;
+					}
+					
+				},
+				error: function(jsonResponse) {
+					console.log(jsonResponse);
+				}
+			});
+		} else {
+			$('.modal.createUser').fadeIn();
+		}
+	}
+
+	function initModuleCreatePostImage() {
+		$('.add.postImage').click(function() {
+			$('#createPostImage, #btnPublishContainer').fadeIn();
+		})
+	}
+
+	function createPostImage() {
+		if(posties.util.isUserLoggedIn()) {
+			var form = $('#createPostImage');
+
+			form.submit();
+		} else {
+			$('.modal.createUser').fadeIn();
 		}
 	}
 
@@ -165,40 +219,6 @@ $(document).ready(function() {
 		});
 	}
 
-	function createPostText() {
-		if(posties.util.isUserLoggedIn()) {
-			var form = $('#createPostText');
-			var jsonPost = JSON.stringify({ 'content' : $('#postText').val().linkify() });
-			
-			$.ajax({
-				contentType: 'application/json;charset=UTF-8',
-				type: form.attr('method'),
-				url: form.attr('action'),
-				data: jsonPost,
-				success: function(jsonResponse) {
-
-					if(posties.util.isPage('postsByUser')) {
-						var tmpPostText = $('#tmpPostText').html();
-						Mustache.parse(tmpPostText);
-						var html = Mustache.render(tmpPostText, { post : jsonResponse });
-						
-						$.when($('#createPostText, #btnPublishContainer').fadeOut()).done(function() {
-							$('#posts').prepend($(html).fadeIn());
-						});
-					} else if(posties.util.isPage('index')) {
-						window.location = "/by/" + jsonResponse.username;
-					}
-					
-				},
-				error: function(jsonResponse) {
-					console.log(jsonResponse);
-				}
-			});
-		} else {
-			$('.modal.createUser').fadeIn();
-		}
-	}
-
 	function initGetPosts() {
 		$('#posts').on('click', '.delete', function(event) {
 			event.preventDefault();
@@ -257,6 +277,7 @@ $(document).ready(function() {
 	initTogglers();
 	initColorPickers();
 	initModuleCreatePostText();
+	initModuleCreatePostImage();
 	initModuleUpdateSettings();
 
 	/* PAGES */

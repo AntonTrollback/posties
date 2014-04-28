@@ -18,6 +18,7 @@
 	<div id="body" class="page postsByUser">
 		{% if current_user and current_user.is_authenticated() and user_owns_page %}
 			{% include 'modules/createPostText.html' %}
+			{% include 'modules/createPostImage.html' %}
 			{% include 'modules/postTypes.html' %}
 			<div id="btnPublishContainer">
 				<button>Publish</button>
