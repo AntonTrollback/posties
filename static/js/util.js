@@ -14,6 +14,22 @@ posties.util = (function() {
         return $('body:eq(0)').hasClass('authenticated');
     }
 
+    var getQueryParamByName = function(parameterName) {
+        var qs = (function(a) {
+            if (a == "") return {};
+            var b = {};
+            for (var i = 0; i < a.length; ++i)
+            {
+                var p=a[i].split('=');
+                if (p.length != 2) continue;
+                b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+            }
+            return b;
+        })(window.location.search.substr(1).split('&'));
+
+        return qs[parameterName];
+    }
+
     var isPage = function(pageClass) {
       return $('.page.' + pageClass).length;
     }
@@ -21,6 +37,7 @@ posties.util = (function() {
     return {
         trimText : trimText,
         isUserLoggedIn : isUserLoggedIn,
+        getQueryParamByName : getQueryParamByName, 
         isPage : isPage
     };
 }());

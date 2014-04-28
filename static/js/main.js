@@ -8,6 +8,12 @@ $(document).ready(function() {
 		})
 	}
 
+	function initFlash() {
+		$('#flash').on('click', '.close', function() {
+			$('#flash').fadeOut();
+		});
+	}
+
 	function initTogglers() {
 		$('body').on('click', '.toggler', function(event) {
 			event.preventDefault();
@@ -81,7 +87,7 @@ $(document).ready(function() {
 				url: formCreateUser.attr('action'),
 				data: jsonPost,
 				success: function(jsonResponse) {
-					window.location = "/by/" + jsonResponse.username;
+					window.location = "/by/" + jsonResponse.username + "?intro=true";
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
@@ -96,7 +102,7 @@ $(document).ready(function() {
 		var formUpdateSettings = $('#updateSettings');
 
 		//GET user settings
-		$('#modalMenu').on('click', '.toggler.settings', function() {
+		$('#menu').on('click', '.toggler.settings', function() {
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
 				type: 'get',
@@ -226,6 +232,13 @@ $(document).ready(function() {
 			initModuleCreatePostText();
 			initGetPosts();
 
+			if(posties.util.getQueryParamByName('intro')) {
+				var tmpFlashUserCreated = $('#tmpFlashUserCreated').html();
+				Mustache.parse(tmpFlashUserCreated);
+				var html = Mustache.render(tmpFlashUserCreated);
+				$('#flash').append(html).fadeIn();
+			}
+
 			$('.add.postText').click(function() {
 				$('#createPostText, #btnPublishContainer').fadeIn();
 			})
@@ -240,6 +253,7 @@ $(document).ready(function() {
 
 	/* GLOBAL MODULES */
 	initPublishButton();
+	initFlash();
 	initTogglers();
 	initColorPickers();
 	initModuleCreatePostText();
