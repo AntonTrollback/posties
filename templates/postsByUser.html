@@ -4,12 +4,7 @@
 		body {
 			background-color: {{user.settings.pagebackgroundcolor}};
 		}
-		{% if not user.settings.pagehaspostshadows %}
-			.post {
-	        	box-shadow: none;
-			}
-		{% endif %}
-        .post.text p {
+        .post {
         	color: {{user.settings.posttextcolor}};
         	background-color: {{user.settings.postbackgroundcolor}};
         	font-family: {{user.settings.typeface}}
@@ -30,12 +25,21 @@
 				<li>No posts found</li>
 			{% else %}
 				{% for post in posts %}
-					<li class="post text">
-						{% if current_user and current_user.is_authenticated() and user_owns_page %}
-							<a href="#" class="delete" data-id="{{post.id}}">delete</a>
-						{% endif %}
-						<p>{{post.content|safe}}</p>
-					</li>
+					{% if post.type == 0 %}
+						<li class="post text">
+							{% if current_user and current_user.is_authenticated() and user_owns_page %}
+								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+							{% endif %}
+							<p>{{post.content|safe}}</p>
+						</li>
+					{% elif post.type == 1 %}
+						<li class="post image">
+							{% if current_user and current_user.is_authenticated() and user_owns_page %}
+								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+							{% endif %}
+							<img src="https://s3-eu-west-1.amazonaws.com/posties/{{post.key}}" alt="image" />
+						</li>
+					{% endif %}
 				{% endfor %}
 			{% endif %}
 		</ul>

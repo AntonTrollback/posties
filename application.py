@@ -5,7 +5,7 @@ from flask.ext import login
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from user import User
-import json
+import json, string, random, os
 import rethinkdb as r
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
@@ -129,6 +129,7 @@ def api_create_user():
 		result = r.table(TABLE_POSTS).insert({ 
 			'content' : postText, 
 			'username' : username,
+			'type' : 0,
 			'created' : r.now()}).run(conn)
 
 		result = r.table(TABLE_USERS_SETTINGS).insert({
@@ -155,6 +156,7 @@ def api_post_text():
 	result = r.table(TABLE_POSTS).insert({ 
 		'content' : content, 
 		'username' : current_user.username,
+		'type' : 0,
 		'created' : r.now()}).run(conn)
 
 	jsonData['id'] = result['generated_keys'][0]
@@ -171,8 +173,21 @@ def api_post_image():
 
 	s3_conn = S3Connection('AKIAJB3M66B6RPZ5UWGQ', 'EYhaGnC/gZjdqn5SyrLlRiZ49czj5B/G4D/Bh091')
 	k = Key(s3_conn.get_bucket('posties'))
-	k.key = filename
+	generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6))
+	k.key = generated_filename
 	k.set_contents_from_file(request.files['postImage'], rewind=True)
+	k.set_acl("public-read")
+
+	if os.path.isfile(filename):
+		os.remove(filename)
+	else:
+		abort(401)
+
+	result = r.table(TABLE_POSTS).insert({ 
+		'key' : generated_filename, 
+		'username' : current_user.username,
+		'type' : 1,
+		'created' : r.now()}).run(conn)
 	
 	return redirect(url_for('get_posts_by_username', username = current_user.username))
 
