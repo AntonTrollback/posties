@@ -255,6 +255,7 @@ header div.menu li {
 	padding: 2rem;
 	margin: 0 0 4rem 0;
 	line-height: 1.2;
+	box-sizing: border-box;
 	white-space: pre-line;
 	width: 100%;
 }
