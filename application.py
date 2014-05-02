@@ -17,15 +17,15 @@ TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
 
-conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
-	port=28015,
-	auth_key='SteveJobs007Amazon',
-	db='posties')
-
-#conn = r.connect(host='localhost',
+#conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
-#	auth_key='',
+#	auth_key='SteveJobs007Amazon',
 #	db='posties')
+
+conn = r.connect(host='localhost',
+	port=28015,
+	auth_key='',
+	db='posties')
 
 application.config['SECRET_KEY'] = '123456790'
 
@@ -61,7 +61,7 @@ def get_posts_by_username(username = None):
 	posts = list(
 		r.table(TABLE_POSTS).filter(
 		(r.row['username'] == username))
-		.order_by(r.desc('created'))
+		.order_by(r.asc('created'))
 		.run(conn))
 
 	settings = list(
@@ -198,6 +198,23 @@ def api_post_image():
 	
 	return redirect(url_for('get_posts_by_username', username = current_user.username))
 
+@application.route('/api/postHeadline', methods=['POST'])
+@login_required
+def api_post_headline():
+	jsonData = request.json
+	content = jsonData['content']
+	jsonData['username'] = current_user.username
+
+	result = r.table(TABLE_POSTS).insert({ 
+		'content' : content, 
+		'username' : current_user.username,
+		'type' : 2,
+		'created' : r.now()}).run(conn)
+
+	jsonData['id'] = result['generated_keys'][0]
+
+	return jsonify(jsonData)	
+
 @application.route('/api/settings', methods=['PUT'])
 @login_required
 def api_update_settings():
@@ -275,4 +292,4 @@ def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 if __name__ == '__main__':
-    application.run(host = '0.0.0.0', debug = False)
+    application.run(host = '0.0.0.0', debug = True)

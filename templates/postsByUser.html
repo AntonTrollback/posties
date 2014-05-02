@@ -11,14 +11,6 @@
         }
 	</style>
 	<div id="body" class="page postsByUser">
-		{% if current_user and current_user.is_authenticated() and user_owns_page %}
-			{% include 'modules/createPostText.html' %}
-			{% include 'modules/createPostImage.html' %}
-			{% include 'modules/postTypes.html' %}
-			<div id="btnPublishContainer">
-				<button>Publish</button>
-			</div>
-		{% endif %}
 		<h2>Posts by {{user.username}}</h2>
 		<ul id="posts">
 			{% if not posts %}
@@ -39,10 +31,26 @@
 							{% endif %}
 							<img src="https://s3-eu-west-1.amazonaws.com/posties/{{post.key}}" alt="image" />
 						</li>
+					{% elif post.type == 2 %}
+						<li class="post headline">
+							{% if current_user and current_user.is_authenticated() and user_owns_page %}
+								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+							{% endif %}
+							<h5>{{post.content|safe}}</h5>
+						</li>	
 					{% endif %}
 				{% endfor %}
 			{% endif %}
 		</ul>
+		{% if current_user and current_user.is_authenticated() and user_owns_page %}
+			{% include 'modules/createPostText.html' %}
+			{% include 'modules/createPostHeadline.html' %}
+			{% include 'modules/createPostImage.html' %}
+			{% include 'modules/postTypes.html' %}
+			<div id="btnPublishContainer">
+				<button>Publish</button>
+			</div>
+		{% endif %}
 	</div>
 	{% include 'modules/jsTemplates/postText.html' %}
 	{% include 'modules/jsTemplates/flashUserCreated.html' %}

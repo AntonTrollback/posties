@@ -8,7 +8,26 @@ $(document).ready(function() {
 				createPostText();
 			} else if($('#createPostImage').is(':visible')) {
 				createPostImage();
+			} else if($('#createPostHeadline').is(':visible')) {
+				createPostHeadline();
 			}
+		});
+	}
+
+	function initAddPostButton() {
+		var btnAddPost = $('#addPost');
+		var postTypes = $('#postTypes');
+
+		btnAddPost.click(function(event) {
+			event.preventDefault();
+
+			postTypes.show();
+			$(this).hide();
+		});
+
+		postTypes.mouseleave(function() {
+			$(this).hide();
+			btnAddPost.show();
 		});
 	}
 
@@ -60,9 +79,7 @@ $(document).ready(function() {
 		if(contentText.length) {
 			if($('.page.index').length) {
 				$('#createPostText').fadeIn(function() {
-					$('#postTypes').fadeIn(function() {
-						$('#btnPublishContainer').fadeIn();
-					});
+					$('#btnPublishContainer').fadeIn();
 				});
 			}
 		}
@@ -86,7 +103,7 @@ $(document).ready(function() {
 						var html = Mustache.render(tmpPostText, { post : jsonResponse });
 						
 						$.when($('#createPostText, #btnPublishContainer').fadeOut()).done(function() {
-							$('#posts').prepend($(html).fadeIn());
+							$('#posts').append($(html).fadeIn());
 						});
 					} else if(posties.util.isPage('index')) {
 						window.location = "/by/" + jsonResponse.username;
@@ -102,9 +119,52 @@ $(document).ready(function() {
 		}
 	}
 
+	function createPostHeadline() {
+		if(posties.util.isUserLoggedIn()) {
+			var form = $('#createPostHeadline');
+			var jsonPost = JSON.stringify({ 'content' : $('#postHeadline').val().linkify() });
+			
+			$.ajax({
+				contentType: 'application/json;charset=UTF-8',
+				type: form.attr('method'),
+				url: form.attr('action'),
+				data: jsonPost,
+				success: function(jsonResponse) {
+
+					if(posties.util.isPage('postsByUser')) {
+						var tmpPostHeadline = $('#tmpPostHeadline').html();
+						Mustache.parse(tmpPostHeadline);
+						var html = Mustache.render(tmpPostHeadline, { post : jsonResponse });
+						
+						$.when($('#createPostHeadline, #btnPublishContainer').fadeOut()).done(function() {
+							$('#posts').append($(html).fadeIn());
+						});
+					} else if(posties.util.isPage('index')) {
+						window.location = "/by/" + jsonResponse.username;
+					}
+
+				},
+				error: function(jsonResponse) {
+					console.log(jsonResponse);
+				}
+			});
+		} else {
+			$('.modal.createUser').fadeIn();
+		}
+	}
+
+	function initModuleCreatePostHeadline() {
+		$('.add.postHeadline').click(function() {
+			$('#createPostHeadline').show();
+			$('#btnPublishContainer').fadeIn();
+		});
+	}
+
 	function initModuleCreatePostImage() {
 		$('.add.postImage').click(function() {
-			$('#createPostImage, #btnPublishContainer').fadeIn();
+			$('#createPostImage input').click();
+			$('#postTypes').hide();
+			$('#btnPublishContainer').fadeIn();
 		})
 	}
 
@@ -261,6 +321,8 @@ $(document).ready(function() {
 
 			$('.add.postText').click(function() {
 				$('#createPostText, #btnPublishContainer').fadeIn();
+				$('#postTypes').hide();
+				$('#addPost').show();
 			})
 		}
 	}
@@ -273,10 +335,12 @@ $(document).ready(function() {
 
 	/* GLOBAL MODULES */
 	initPublishButton();
+	initAddPostButton();
 	initFlash();
 	initTogglers();
 	initColorPickers();
 	initModuleCreatePostText();
+	initModuleCreatePostHeadline();
 	initModuleCreatePostImage();
 	initModuleUpdateSettings();
 
