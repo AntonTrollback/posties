@@ -12,36 +12,6 @@
 	</style>
 	<div id="body" class="page postsByUser">
 		<h2>Posts by {{user.username}}</h2>
-		<ul id="posts">
-			{% if not posts %}
-				<li>No posts found</li>
-			{% else %}
-				{% for post in posts %}
-					{% if post.type == 0 %}
-						<li class="post text">
-							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
-							{% endif %}
-							<p>{{post.content|safe}}</p>
-						</li>
-					{% elif post.type == 1 %}
-						<li class="post image">
-							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
-							{% endif %}
-							<img src="https://s3-eu-west-1.amazonaws.com/posties/{{post.key}}" alt="image" />
-						</li>
-					{% elif post.type == 2 %}
-						<li class="post headline">
-							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
-							{% endif %}
-							<h5>{{post.content|safe}}</h5>
-						</li>	
-					{% endif %}
-				{% endfor %}
-			{% endif %}
-		</ul>
 		{% if current_user and current_user.is_authenticated() and user_owns_page %}
 			{% include 'modules/createPostText.html' %}
 			{% include 'modules/createPostHeadline.html' %}
@@ -51,8 +21,51 @@
 				<button>Publish</button>
 			</div>
 		{% endif %}
+		<ul id="posts">
+			{% if not posts %}
+				<li>No posts found</li>
+			{% else %}
+				{% for post in posts %}
+					{% if post.type == 0 %}
+						<li class="post text" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
+							{% if current_user and current_user.is_authenticated() and user_owns_page %}
+								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+								<div class="sorter">
+									<a href="#" class="up">&#x25B2;</a>
+									<a href="#" class="down">&#x25BC;</a>
+								</div>
+							{% endif %}
+							<p>{{post.content|safe}}</p>
+						</li>
+					{% elif post.type == 1 %}
+						<li class="post image" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
+							{% if current_user and current_user.is_authenticated() and user_owns_page %}
+								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+								<div class="sorter">
+									<a href="#" class="up">&#x25B2;</a>
+									<a href="#" class="down">&#x25BC;</a>
+								</div>
+							{% endif %}
+							<img src="https://s3-eu-west-1.amazonaws.com/posties/{{post.key}}" alt="image" />
+						</li>
+					{% elif post.type == 2 %}
+						<li class="post headline" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
+							{% if current_user and current_user.is_authenticated() and user_owns_page %}
+								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+								<div class="sorter">
+									<a href="#" class="up">&#x25B2;</a>
+									<a href="#" class="down">&#x25BC;</a>
+								</div>
+							{% endif %}
+							<h5>{{post.content|safe}}</h5>
+						</li>	
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</ul>
 	</div>
 	{% include 'modules/jsTemplates/postText.html' %}
+	{% include 'modules/jsTemplates/postHeadline.html' %}
 	{% include 'modules/jsTemplates/flashUserCreated.html' %}
 </body>
 {% include 'modules/footer.html' %}

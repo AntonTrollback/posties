@@ -17,15 +17,15 @@ TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
 
-conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
-	port=28015,
-	auth_key='SteveJobs007Amazon',
-	db='posties')
-
-#conn = r.connect(host='localhost',
+#conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
-#	auth_key='',
+#	auth_key='SteveJobs007Amazon',
 #	db='posties')
+
+conn = r.connect(host='localhost',
+	port=28015,
+	auth_key='',
+	db='posties')
 
 application.config['SECRET_KEY'] = '123456790'
 
@@ -61,7 +61,7 @@ def get_posts_by_username(username = None):
 	posts = list(
 		r.table(TABLE_POSTS).filter(
 		(r.row['username'] == username))
-		.order_by(r.asc('created'))
+		.order_by(r.desc('sortrank'))
 		.run(conn))
 
 	settings = list(
@@ -129,6 +129,7 @@ def api_create_user():
 		result = r.table(TABLE_POSTS).insert({ 
 			'content' : postText, 
 			'username' : username,
+			'sortrank' : 1,
 			'type' : 0,
 			'created' : r.now()}).run(conn)
 
@@ -153,15 +154,22 @@ def api_post_text():
 	content = jsonData['content']
 	jsonData['username'] = current_user.username
 
+	sort_rank = r.table(TABLE_POSTS).filter(
+		(r.row['username'] == current_user.username)).count().run(conn)
+
+	if not sort_rank:
+		sort_rank = 1
+	else:
+		sort_rank = sort_rank + 1
+
 	result = r.table(TABLE_POSTS).insert({ 
 		'content' : content, 
 		'username' : current_user.username,
+		'sortrank' : sort_rank,
 		'type' : 0,
-		'created' : r.now()}).run(conn)
+		'created' : r.now()}, return_vals = True).run(conn)
 
-	jsonData['id'] = result['generated_keys'][0]
-
-	return jsonify(jsonData)
+	return jsonify(result['new_val'])
 
 @application.route('/api/postImage', methods=['POST'])
 @login_required
@@ -190,13 +198,41 @@ def api_post_image():
 	else:
 		abort(401)
 
+	sort_rank = r.table(TABLE_POSTS).filter(
+		(r.row['username'] == current_user.username)).count().run(conn)
+
+	if not sort_rank:
+		sort_rank = 1
+	else:
+		sort_rank = sort_rank + 1
+
 	result = r.table(TABLE_POSTS).insert({ 
 		'key' : generated_filename, 
 		'username' : current_user.username,
+		'sortrank' : sort_rank,
 		'type' : 1,
 		'created' : r.now()}).run(conn)
 	
 	return redirect(url_for('get_posts_by_username', username = current_user.username))
+
+@application.route('/api/postrank', methods=['POST'])
+@login_required
+def api_post_rank():
+	jsonData = request.json
+	up_ranked_id = jsonData['upRankedID']
+	up_ranked_val = jsonData['upRankedValue'] + 1
+	down_ranked_id = jsonData['downRankedID']
+	down_ranked_val = jsonData['downRankedValue'] - 1
+ 
+	r.table(TABLE_POSTS).get(up_ranked_id).update({
+		'sortrank' : up_ranked_val
+		}).run(conn);
+
+	r.table(TABLE_POSTS).get(down_ranked_id).update({
+		'sortrank' : down_ranked_val
+		}).run(conn);
+
+	return jsonify("")
 
 @application.route('/api/postHeadline', methods=['POST'])
 @login_required
@@ -205,15 +241,22 @@ def api_post_headline():
 	content = jsonData['content']
 	jsonData['username'] = current_user.username
 
+	sort_rank = r.table(TABLE_POSTS).filter(
+		(r.row['username'] == current_user.username)).count().run(conn)
+
+	if not sort_rank:
+		sort_rank = 1
+	else:
+		sort_rank = sort_rank + 1
+
 	result = r.table(TABLE_POSTS).insert({ 
 		'content' : content, 
 		'username' : current_user.username,
+		'sortrank' : sort_rank,
 		'type' : 2,
-		'created' : r.now()}).run(conn)
+		'created' : r.now()}, return_vals = True).run(conn)
 
-	jsonData['id'] = result['generated_keys'][0]
-
-	return jsonify(jsonData)	
+	return jsonify(result['new_val'])
 
 @application.route('/api/settings', methods=['PUT'])
 @login_required

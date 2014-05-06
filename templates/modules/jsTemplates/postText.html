@@ -1,6 +1,10 @@
 <script id="tmpPostText" type="x-tmpl-mustache">
-	<li class="post text hidden">
+	<li class="post text hidden" data-id="[[post.id]]" data-rank="[[post.sortrank]]">
 		<a href="#" class="delete" data-id="[[post.id]]">delete</a>
+		<div class="sorter">
+			<a href="#" class="up">&#x25B2;</a>
+			<a href="#" class="down">&#x25BC;</a>
+		</div>
 		<p>[[post.content]]</p>
 	</li>
 </script>

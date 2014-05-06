@@ -269,6 +269,25 @@ header div.menu li {
 	margin-bottom: 4rem;
 	box-sizing: border-box;
 }
+.post .sorter {
+	position: absolute;
+	top: 25px;
+	right: 20px;
+}
+.post .sorter a {
+	position: absolute;
+	color: #a9a9a9;
+}
+.post:first-child .sorter a:first-child,
+.post:last-child .sorter a:last-child {
+	display: none;
+}
+.post .sorter .up {
+	top: 0;
+}
+.post .sorter .down {
+	top: 20px;
+}
 .post .delete {
 	position: absolute;
 	top: 8px;

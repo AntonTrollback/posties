@@ -103,7 +103,7 @@ $(document).ready(function() {
 						var html = Mustache.render(tmpPostText, { post : jsonResponse });
 						
 						$.when($('#createPostText, #btnPublishContainer').fadeOut()).done(function() {
-							$('#posts').append($(html).fadeIn());
+							$('#posts').prepend($(html).fadeIn());
 						});
 					} else if(posties.util.isPage('index')) {
 						window.location = "/by/" + jsonResponse.username;
@@ -137,7 +137,7 @@ $(document).ready(function() {
 						var html = Mustache.render(tmpPostHeadline, { post : jsonResponse });
 						
 						$.when($('#createPostHeadline, #btnPublishContainer').fadeOut()).done(function() {
-							$('#posts').append($(html).fadeIn());
+							$('#posts').prepend($(html).fadeIn());
 						});
 					} else if(posties.util.isPage('index')) {
 						window.location = "/by/" + jsonResponse.username;
@@ -297,6 +297,51 @@ $(document).ready(function() {
 					console.log(jsonResponse);
 				}
 			});
+		});
+
+		$('#posts').on('click', '.sorter a', function(event) {
+			event.preventDefault();
+
+			var thisPost = $(this).parents('li:eq(0)');
+			var prevPost = thisPost.prev();
+			var nextPost = thisPost.next()
+
+			//See if there's a prev and next to re-order by
+			var hasPrev = prevPost.length !== 0;
+			var hasNext = nextPost.length !== 0;
+
+			var jsonPost = false;
+
+			if($(this).hasClass('up') && hasPrev) {
+				jsonPost = JSON.stringify({
+					'upRankedID' : thisPost.data('id'),
+					'upRankedValue' : thisPost.data('rank'),
+					'downRankedID' : prevPost.data('id'),
+					'downRankedValue' : prevPost.data('rank'),
+				});
+			} else if($(this).hasClass('down') && hasNext) {
+				jsonPost = JSON.stringify({
+					'upRankedID' : nextPost.data('id'),
+					'upRankedValue' : nextPost.data('rank'),
+					'downRankedID' : thisPost.data('id'),
+					'downRankedValue' : thisPost.data('rank'),
+				});
+			}
+
+			if(jsonPost) {
+				$.ajax({
+					contentType: 'application/json;charset=UTF-8',
+					type: 'post',
+					url: '/api/postrank',
+					data: jsonPost,
+					success: function(jsonResponse) {
+						location.reload();
+					},
+					error: function(jsonResponse) {
+						console.log(jsonResponse);
+					}
+				});
+			}
 		});
 	}
 
