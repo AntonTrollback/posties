@@ -234,12 +234,9 @@ header div.menu li {
 
 .modal.updateSettings fieldset {
 	width: 46%;
-	float: left;
+	display: inline-block;
 	margin-bottom: 2rem;
 	position: relative;
-}
-.modal.updateSettings fieldset:nth-child(even) {
-	float: right;
 }
 .modal.updateSettings label {
 	margin-bottom: .8rem;

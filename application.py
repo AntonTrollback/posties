@@ -17,15 +17,15 @@ TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
 
-#conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
-#	port=28015,
-#	auth_key='SteveJobs007Amazon',
-#	db='posties')
-
-conn = r.connect(host='localhost',
+conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 	port=28015,
-	auth_key='',
+	auth_key='SteveJobs007Amazon',
 	db='posties')
+
+#conn = r.connect(host='localhost',
+#	port=28015,
+#	auth_key='',
+#	db='posties')
 
 application.config['SECRET_KEY'] = '123456790'
 
@@ -135,7 +135,8 @@ def api_create_user():
 
 		result = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
-			'typeface' : 'sans-serif',
+			'typefaceparagraph' : 'sans-serif',
+			'typefaceheadline' : 'sans-serif',
 			'posttextcolor' : '#141414',
 			'postbackgroundcolor' : '#ffffff',
 			'pagebackgroundcolor' : '#f5f5f5', 
@@ -265,16 +266,19 @@ def api_update_settings():
 	post_text_color = jsonData['postTextColor']
 	post_background_color = jsonData['postBackgroundColor']
 	page_background_color = jsonData['pageBackgroundColor']
-	typeface = jsonData['typeface']
+	typeface_paragraph = jsonData['typefaceParagraph']
+	typeface_headline = jsonData['typefaceHeadline']
 
 	if (len(post_text_color) is 7
 	and len(post_background_color) is 7 
 	and len(page_background_color) is 7 
-	and typeface in WHITELIST_TYPEFACES):
+	and typeface_paragraph in WHITELIST_TYPEFACES
+	and typeface_headline in WHITELIST_TYPEFACES):
 
 		result = r.table(TABLE_USERS_SETTINGS).filter(
 			r.row['username'] == current_user.username).update({
-				'typeface' : typeface,
+				'typefaceparagraph' : typeface_paragraph,
+				'typefaceheadline' : typeface_headline,
 				'posttextcolor' : post_text_color,
 				'postbackgroundcolor' : post_background_color,
 				'pagebackgroundcolor' : page_background_color,
@@ -335,4 +339,4 @@ def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 if __name__ == '__main__':
-    application.run(host = '0.0.0.0', debug = True)
+    application.run(host = '0.0.0.0', debug = False)

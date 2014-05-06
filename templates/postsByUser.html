@@ -7,7 +7,14 @@
         .post {
         	color: {{user.settings.posttextcolor}};
         	background-color: {{user.settings.postbackgroundcolor}};
-        	font-family: {{user.settings.typeface}}
+        }
+        .post.text p,
+        #createPostText textarea {
+        	font-family: {{user.settings.typefaceparagraph}}
+        }
+        .post.headline h5,
+        #createPostHeadline input {
+        	font-family: {{user.settings.typefaceheadline}}
         }
 	</style>
 	<div id="body" class="page postsByUser">
@@ -29,7 +36,7 @@
 					{% if post.type == 0 %}
 						<li class="post text" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
 							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+								<a href="#" class="delete">delete</a>
 								<div class="sorter">
 									<a href="#" class="up">&#x25B2;</a>
 									<a href="#" class="down">&#x25BC;</a>
@@ -40,7 +47,7 @@
 					{% elif post.type == 1 %}
 						<li class="post image" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
 							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+								<a href="#" class="delete">delete</a>
 								<div class="sorter">
 									<a href="#" class="up">&#x25B2;</a>
 									<a href="#" class="down">&#x25BC;</a>
@@ -51,7 +58,7 @@
 					{% elif post.type == 2 %}
 						<li class="post headline" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
 							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete" data-id="{{post.id}}">delete</a>
+								<a href="#" class="delete">delete</a>
 								<div class="sorter">
 									<a href="#" class="up">&#x25B2;</a>
 									<a href="#" class="down">&#x25BC;</a>

@@ -164,6 +164,7 @@ $(document).ready(function() {
 		$('.add.postImage').click(function() {
 			$('#createPostImage input').click();
 			$('#postTypes').hide();
+			$('#createPostImage').show();
 			$('#btnPublishContainer').fadeIn();
 		})
 	}
@@ -171,7 +172,6 @@ $(document).ready(function() {
 	function createPostImage() {
 		if(posties.util.isUserLoggedIn()) {
 			var form = $('#createPostImage');
-
 			form.submit();
 		} else {
 			$('.modal.createUser').fadeIn();
@@ -231,18 +231,27 @@ $(document).ready(function() {
 					formUpdateSettings.find('#pageBackgroundColor').attr('data-color', jsonResponse.pagebackgroundcolor)
 					.css('background', jsonResponse.pagebackgroundcolor);
 
-					var selectTypeface = formUpdateSettings.find('#typeface');
-
-					selectTypeface.css('font-family', jsonResponse.typeface);
-
-					selectTypeface.find('option').each(function() {
-						if($(this).val() == jsonResponse.typeface) {
+					var selectTypefaceParagraph = formUpdateSettings.find('#typefaceParagraph');
+					selectTypefaceParagraph.css('font-family', jsonResponse.typefaceparagraph);
+					selectTypefaceParagraph.find('option').each(function() {
+						if($(this).val() == jsonResponse.typefaceparagraph) {
 							$(this).attr('selected', true);
 							return false; //break 'each' loop
 						}
 					});
+					selectTypefaceParagraph.change(function() {
+						$(this).css('font-family', $(this).find(':selected').text());
+					});
 
-					selectTypeface.change(function() {
+					var selectTypefaceHeadline = formUpdateSettings.find('#typefaceHeadline');
+					selectTypefaceHeadline.css('font-family', jsonResponse.typefaceheadline);
+					selectTypefaceHeadline.find('option').each(function() {
+						if($(this).val() == jsonResponse.typefaceheadline) {
+							$(this).attr('selected', true);
+							return false; //break 'each' loop
+						}
+					});
+					selectTypefaceHeadline.change(function() {
 						$(this).css('font-family', $(this).find(':selected').text());
 					});
 				},
@@ -260,8 +269,11 @@ $(document).ready(function() {
 				'postTextColor' : $('#postTextColor').data('color').toLowerCase(),
 				'postBackgroundColor' : $('#postBackgroundColor').data('color').toLowerCase(),
 				'pageBackgroundColor' : $('#pageBackgroundColor').data('color').toLowerCase(),
-				'typeface' : $('#typeface option:selected').text()
+				'typefaceParagraph' : $('#typefaceParagraph option:selected').text(),
+				'typefaceHeadline' : $('#typefaceHeadline option:selected').text()
 			});
+
+			console.log(jsonPost);
 
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
@@ -283,7 +295,9 @@ $(document).ready(function() {
 		$('#posts').on('click', '.delete', function(event) {
 			event.preventDefault();
 
-			var jsonPost = JSON.stringify({ 'id' : $(event.target).data('id') });
+			var thisPost = $(this).parents('li:eq(0)');
+
+			var jsonPost = JSON.stringify({ 'id' : thisPost.data('id') });
 
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
