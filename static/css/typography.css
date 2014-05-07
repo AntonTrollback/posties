@@ -1,4 +1,11 @@
 @font-face {
+  font-family: 'Akkurat';
+  src: url('../font/Akkurat.eot?') format('eot'), 
+       url('../font/Akkurat.woff') format('woff'), 
+       url('../font/Akkurat.ttf')  format('truetype'),
+       url('../font/Akkurat.svg#Akkurat') format('svg');
+}
+@font-face {
   font-family: 'NothingYouCouldDo';
   font-style: normal;
   font-weight: 400;
