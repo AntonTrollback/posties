@@ -171,6 +171,20 @@ label + select {
 	text-align: center;
 	margin: 2rem 0;
 }
+.add {
+	width: 110px;
+	padding-top: 50px;
+	padding-bottom: 8px;
+}
+.add.postText {
+	background: url('../img/iconAddText.png') #faf8c6 no-repeat center 16px;
+}
+.add.postHeadline {
+	background: url('../img/iconAddHeadline.png') #faf8c6 no-repeat center 16px;
+}
+.add.postImage {
+	background: url('../img/iconAddImage.png') #faf8c6 no-repeat center 12px;
+}
 #btnPublishContainer button {
 	border: 0;
 	padding: 1rem 1rem 1rem 4rem;
@@ -268,8 +282,9 @@ header div.menu li {
 }
 .post .sorter {
 	position: absolute;
-	top: 25px;
-	right: 20px;
+	top: 3px;
+	right: 60px;
+	font-size: 22px;
 }
 .post .sorter a {
 	position: absolute;
@@ -277,18 +292,22 @@ header div.menu li {
 }
 .post:first-child .sorter a:first-child,
 .post:last-child .sorter a:last-child {
-	display: none;
+	color: #e3e3e3;
+	pointer-events: none;
 }
 .post .sorter .up {
 	top: 0;
 }
 .post .sorter .down {
-	top: 20px;
+	top: 3px;
+	left: -28px;
 }
 .post .delete {
 	position: absolute;
 	top: 8px;
 	right: 8px;
+	background: url('../img/iconDeletePost.png') no-repeat 0 0;
+	padding: 10px;
 }
 .post.headline h5 {
 	border: 0;

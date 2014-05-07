@@ -17,15 +17,15 @@ TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
 
-conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
-	port=28015,
-	auth_key='SteveJobs007Amazon',
-	db='posties')
-
-#conn = r.connect(host='localhost',
+#conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
-#	auth_key='',
+#	auth_key='SteveJobs007Amazon',
 #	db='posties')
+
+conn = r.connect(host='localhost',
+	port=28015,
+	auth_key='',
+	db='posties')
 
 application.config['SECRET_KEY'] = '123456790'
 
@@ -339,4 +339,4 @@ def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 if __name__ == '__main__':
-    application.run(host = '0.0.0.0', debug = False)
+    application.run(host = '0.0.0.0', debug = True)

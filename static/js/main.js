@@ -273,8 +273,6 @@ $(document).ready(function() {
 				'typefaceHeadline' : $('#typefaceHeadline option:selected').text()
 			});
 
-			console.log(jsonPost);
-
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
 				type: formUpdateSettings.attr('method'),
