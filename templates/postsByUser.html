@@ -9,23 +9,19 @@
         	background-color: {{user.settings.postbackgroundcolor}};
         }
         .post.text p,
-        #createPostText textarea {
-        	font-family: {{user.settings.typefaceparagraph}}
+        .createPostText textarea {
+        	font-family: {{user.settings.typefaceparagraph}};
+        	background-color: {{user.settings.postbackgroundcolor}};
         }
         .post.headline h5,
-        #createPostHeadline input {
-        	font-family: {{user.settings.typefaceheadline}}
+        .createPostHeadline input {
+        	font-family: {{user.settings.typefaceheadline}};
+        	background-color: {{user.settings.postbackgroundcolor}};
         }
 	</style>
 	<div id="body" class="page postsByUser">
 		{% if current_user and current_user.is_authenticated() and user_owns_page %}
-			{% include 'modules/createPostText.html' %}
-			{% include 'modules/createPostHeadline.html' %}
-			{% include 'modules/createPostImage.html' %}
 			{% include 'modules/postTypes.html' %}
-			<div id="btnPublishContainer">
-				<button>Publish</button>
-			</div>
 		{% endif %}
 		<ul id="posts">
 			{% if not posts %}
@@ -40,8 +36,12 @@
 									<a href="#" class="up">&#x25B2;</a>
 									<a href="#" class="down">&#x25BC;</a>
 								</div>
+								<form class="form createPostText" method="put" action="/api/postText">
+									<textarea class="postText">{{post.content|safe}}</textarea>
+								</form>
+							{% else %}
+								<p>{{post.content|safe}}</p>
 							{% endif %}
-							<p>{{post.content|safe}}</p>
 						</li>
 					{% elif post.type == 1 %}
 						<li class="post image" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
@@ -62,8 +62,12 @@
 									<a href="#" class="up">&#x25B2;</a>
 									<a href="#" class="down">&#x25BC;</a>
 								</div>
+								<form class="form createPostHeadline" method="put" action="/api/postHeadline">
+									<input type="text" class="postHeadline" value="{{post.content|safe}}" />
+								</form>
+							{% else %}
+								<h5>{{post.content|safe}}</h5>
 							{% endif %}
-							<h5>{{post.content|safe}}</h5>
 						</li>	
 					{% endif %}
 				{% endfor %}
@@ -72,6 +76,7 @@
 	</div>
 	{% include 'modules/jsTemplates/postText.html' %}
 	{% include 'modules/jsTemplates/postHeadline.html' %}
+	{% include 'modules/jsTemplates/postImage.html' %}
 	{% include 'modules/jsTemplates/flashUserCreated.html' %}
 </body>
 {% include 'modules/footer.html' %}

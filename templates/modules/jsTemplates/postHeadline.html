@@ -1,10 +1,13 @@
+<input type="text" class="postHeadline valueHolder" value="This is your headline..." />
 <script id="tmpPostHeadline" type="x-tmpl-mustache">
 	<li class="post headline hidden" data-id="[[post.id]]" data-rank="[[post.sortrank]]">
-		<a href="#" class="delete" data-id="[[post.id]]"></a>
+		<a href="#" class="delete"></a>
 		<div class="sorter">
 			<a href="#" class="up">&#x25B2;</a>
 			<a href="#" class="down">&#x25BC;</a>
 		</div>
-		<h5>[[post.content]]</h5>
+		<form class="form createPostHeadline" method="put" action="/api/postHeadline">
+			<input type="text" class="postHeadline" value="This is your headline..." />
+		</form>
 	</li>
 </script>

@@ -1,4 +1,14 @@
-<div id="flash"><p class="close"><a>X</a></p></div>
+<div id="flash">
+	<div id="flashIntro">
+		<p class="close"><a></a></p>
+		<h5>Congratulations!</h5>
+		<p>Your site is now live!</p>
+	</div>
+	<div id="flashSaved">
+		<p class="close"><a></a></p>
+		<p>Saved...</p>
+	</div>
+</div>
 <header>
 	<h1 id="logo"><a href="/">Posti.es</a></h1>
 	{% if current_user and current_user.is_authenticated() %}

@@ -58,16 +58,16 @@ h1 a {
 }
 
 /*** GLOBAL FORMS ***/
-select,
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+fieldset select,
+fieldset input[type="text"],
+fieldset input[type="email"],
+fieldset input[type="password"] {
 	font-size: 2rem;
 	padding: 8px;
 }
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+fieldset input[type="text"],
+fieldset input[type="email"],
+fieldset input[type="password"] {
 	border: none;
 	border-bottom: 1px solid #ddd;
 	font-style: italic;
@@ -81,6 +81,9 @@ button {
 	background: #faf8c6;
 	color: #8a8a8a;
 	box-shadow: 1px 2px 3px rgba(128, 128, 128, 0.5);
+}
+textarea {
+	resize: none;	
 }
 fieldset {
 	margin-bottom: 1rem;
@@ -105,48 +108,46 @@ label + select {
 
 /*** UNIQUES ***/
 #flash {
+	z-index: 100;
+	position: fixed;
+	width: 50%;
+	left: 25%;
+	margin: 0 auto;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+#flash div {
 	display: none;
-	position: relative;
-	padding: 1.4rem .6rem;
+	padding: .6rem;
 	margin-top: 1rem;
 	font-size: 1.4rem;
-	color: #444;
-	border-top: 1px solid #dfdfdf;
-	border-bottom: 1px solid #dfdfdf;
+	color: #fff;
 	text-align: center;
 }
-#flash p.close a {
+#flash div p.close a {
 	top: 0;
 	right: 0;
+	padding: 10px;
+	background: url('../img/iconDeletePost.png') no-repeat 0 0;
 }
-#createPostText {
-	display: none;
-}
-#postText {
+.postText {
 	border: 0;
-	background: #fff;
 	padding: 2rem 2rem 8rem 2rem;
 	box-shadow: 1px 2px 5px #ddd;
-	margin-bottom: 4rem;
 	line-height: 1.3;
 	white-space: pre;
 	width: 100%;
-	color: #444;
 	font-size: 2.3rem;
 	min-height: 170px;
 	box-sizing: border-box;
 	font-weight: lighter;
 }
-#postHeadline {
+.postHeadline {
 	border: 0;
-	background: #fff;
 	padding: 2rem;
 	box-shadow: 1px 2px 5px #ddd;
-	margin-bottom: 4rem;
 	line-height: 1.3;
 	white-space: pre;
 	width: 100%;
-	color: #444;
 	font-size: 4rem;
 	min-height: 100px;
 	box-sizing: border-box;
@@ -167,32 +168,20 @@ label + select {
 	display: inline-block;
 	margin-right: 2rem;
 }
-#btnPublishContainer {
-	text-align: center;
-	margin: 2rem 0;
-}
-.add {
+#postTypes button {
 	width: 110px;
 	padding-top: 50px;
 	padding-bottom: 8px;
 }
-.add.postText {
+.addPostText {
 	background: url('../img/iconAddText.png') #faf8c6 no-repeat center 16px;
 }
-.add.postHeadline {
+.addPostHeadline {
 	background: url('../img/iconAddHeadline.png') #faf8c6 no-repeat center 16px;
 }
-.add.postImage {
+.addPostImage {
 	background: url('../img/iconAddImage.png') #faf8c6 no-repeat center 12px;
 }
-#btnPublishContainer button {
-	border: 0;
-	padding: 1rem 1rem 1rem 4rem;
-	background-image: url('../img/iconPublish.png');
-	background-position: 8px center;
-	background-repeat: no-repeat;
-}
-
 /*** GLOBAL CLASSES ***/
 header div.menu {
 	position: absolute;
@@ -333,16 +322,17 @@ header div.menu li {
 	max-height: 100%;
 	max-width: 100%;
 }
+#postForms {
+	display: none;
+}
 /*** PAGES ***/
 .page.index #btnPublishContainer,
-.page.postsByUser #createPostText,
-.page.postsByUser #createPostHeadline,
-.page.postsByUser #createPostImage,
-.page.postsByUser #btnPublishContainer {
+#posts .btnPublishContainer {
 	display: none;
 }
 
 /*** CSS UTIL ***/
-.hidden {
+.hidden,
+.valueHolder {
 	display: none;
 }

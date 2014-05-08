@@ -148,27 +148,33 @@ def api_create_user():
 	else:
 		abort(401)
 
-@application.route('/api/postText', methods=['POST'])
+@application.route('/api/postText', methods=['POST', 'PUT'])
 @login_required
 def api_post_text():
 	jsonData = request.json
 	content = jsonData['content']
-	jsonData['username'] = current_user.username
 
-	sort_rank = r.table(TABLE_POSTS).filter(
-		(r.row['username'] == current_user.username)).count().run(conn)
+	if request.method == 'POST':
+		jsonData['username'] = current_user.username
 
-	if not sort_rank:
-		sort_rank = 1
-	else:
-		sort_rank = sort_rank + 1
+		sort_rank = r.table(TABLE_POSTS).filter(
+			(r.row['username'] == current_user.username)).count().run(conn)
 
-	result = r.table(TABLE_POSTS).insert({ 
-		'content' : content, 
-		'username' : current_user.username,
-		'sortrank' : sort_rank,
-		'type' : 0,
-		'created' : r.now()}, return_vals = True).run(conn)
+		if not sort_rank:
+			sort_rank = 1
+		else:
+			sort_rank = sort_rank + 1
+
+		result = r.table(TABLE_POSTS).insert({ 
+			'content' : content, 
+			'username' : current_user.username,
+			'sortrank' : sort_rank,
+			'type' : 0,
+			'created' : r.now()}, return_vals = True).run(conn)
+	elif request.method == 'PUT':
+		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
+			'content' : content
+			}, return_vals = True).run(conn);
 
 	return jsonify(result['new_val'])
 
@@ -235,27 +241,32 @@ def api_post_rank():
 
 	return jsonify("")
 
-@application.route('/api/postHeadline', methods=['POST'])
+@application.route('/api/postHeadline', methods=['POST', 'PUT'])
 @login_required
 def api_post_headline():
 	jsonData = request.json
 	content = jsonData['content']
-	jsonData['username'] = current_user.username
+	if request.method == 'POST':
+		jsonData['username'] = current_user.username
 
-	sort_rank = r.table(TABLE_POSTS).filter(
-		(r.row['username'] == current_user.username)).count().run(conn)
+		sort_rank = r.table(TABLE_POSTS).filter(
+			(r.row['username'] == current_user.username)).count().run(conn)
 
-	if not sort_rank:
-		sort_rank = 1
-	else:
-		sort_rank = sort_rank + 1
+		if not sort_rank:
+			sort_rank = 1
+		else:
+			sort_rank = sort_rank + 1
 
-	result = r.table(TABLE_POSTS).insert({ 
-		'content' : content, 
-		'username' : current_user.username,
-		'sortrank' : sort_rank,
-		'type' : 2,
-		'created' : r.now()}, return_vals = True).run(conn)
+		result = r.table(TABLE_POSTS).insert({ 
+			'content' : content, 
+			'username' : current_user.username,
+			'sortrank' : sort_rank,
+			'type' : 2,
+			'created' : r.now()}, return_vals = True).run(conn)
+	elif request.method == 'PUT':
+		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
+			'content' : content
+			}, return_vals = True).run(conn);	
 
 	return jsonify(result['new_val'])
 

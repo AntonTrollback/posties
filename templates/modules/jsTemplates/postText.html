@@ -1,10 +1,21 @@
+<textarea class="postText valueHolder">Hello,
+I'm a text that you can edit.
+
+Add images and text until you're happy with the results.
+Then click publish and your new website is done!</textarea>
 <script id="tmpPostText" type="x-tmpl-mustache">
 	<li class="post text hidden" data-id="[[post.id]]" data-rank="[[post.sortrank]]">
-		<a href="#" class="delete" data-id="[[post.id]]"></a>
+		<a href="#" class="delete"></a>
 		<div class="sorter">
 			<a href="#" class="up">&#x25B2;</a>
 			<a href="#" class="down">&#x25BC;</a>
 		</div>
-		<p>[[post.content]]</p>
+		<form class="form createPostText" method="put" action="/api/postText">
+			<textarea class="postText">Hello,
+I'm a text that you can edit.
+
+Add images and text until you're happy with the results.
+Then click publish and your new website is done!</textarea>
+		</form>
 	</li>
 </script>

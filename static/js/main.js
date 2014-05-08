@@ -1,17 +1,13 @@
 $(document).ready(function() {
 
-	function initPublishButton() {
-		$('#body').on('click', '#btnPublishContainer button', function(event) {
-			event.preventDefault();
-
-			if($('#createPostText').is(':visible')) {
-				createPostText();
-			} else if($('#createPostImage').is(':visible')) {
-				createPostImage();
-			} else if($('#createPostHeadline').is(':visible')) {
-				createPostHeadline();
-			}
-		});
+	function initPublishing() {
+		/*if($('#createPostText').is(':visible')) {
+			createPostText();
+		} else if($('#createPostImage').is(':visible')) {
+			createPostImage();
+		} else if($('#createPostHeadline').is(':visible')) {
+			createPostHeadline();
+		}*/
 	}
 
 	function initAddPostButton() {
@@ -33,7 +29,7 @@ $(document).ready(function() {
 
 	function initFlash() {
 		$('#flash').on('click', '.close', function() {
-			$('#flash').fadeOut();
+			$('#flash > div').fadeOut();
 		});
 	}
 
@@ -87,13 +83,12 @@ $(document).ready(function() {
 
 	function createPostText() {
 		if(posties.util.isUserLoggedIn()) {
-			var form = $('#createPostText');
-			var jsonPost = JSON.stringify({ 'content' : $('#postText').val().linkify() });
+			var jsonPost = JSON.stringify({ 'content' : $('.postText.valueHolder').val().linkify() });
 			
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
-				type: form.attr('method'),
-				url: form.attr('action'),
+				type: 'post',
+				url: '/api/postText',
 				data: jsonPost,
 				success: function(jsonResponse) {
 
@@ -101,10 +96,7 @@ $(document).ready(function() {
 						var tmpPostText = $('#tmpPostText').html();
 						Mustache.parse(tmpPostText);
 						var html = Mustache.render(tmpPostText, { post : jsonResponse });
-						
-						$.when($('#createPostText, #btnPublishContainer').fadeOut()).done(function() {
-							$('#posts').prepend($(html).fadeIn());
-						});
+						$('#posts').prepend($(html).fadeIn());
 					} else if(posties.util.isPage('index')) {
 						window.location = "/by/" + jsonResponse.username;
 					}
@@ -121,13 +113,12 @@ $(document).ready(function() {
 
 	function createPostHeadline() {
 		if(posties.util.isUserLoggedIn()) {
-			var form = $('#createPostHeadline');
-			var jsonPost = JSON.stringify({ 'content' : $('#postHeadline').val().linkify() });
+			var jsonPost = JSON.stringify({ 'content' : $('.postHeadline.valueHolder').val().linkify() });
 			
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
-				type: form.attr('method'),
-				url: form.attr('action'),
+				type: 'post',
+				url: '/api/postHeadline',
 				data: jsonPost,
 				success: function(jsonResponse) {
 
@@ -135,10 +126,7 @@ $(document).ready(function() {
 						var tmpPostHeadline = $('#tmpPostHeadline').html();
 						Mustache.parse(tmpPostHeadline);
 						var html = Mustache.render(tmpPostHeadline, { post : jsonResponse });
-						
-						$.when($('#createPostHeadline, #btnPublishContainer').fadeOut()).done(function() {
-							$('#posts').prepend($(html).fadeIn());
-						});
+						$('#posts').prepend($(html).fadeIn());
 					} else if(posties.util.isPage('index')) {
 						window.location = "/by/" + jsonResponse.username;
 					}
@@ -154,18 +142,26 @@ $(document).ready(function() {
 	}
 
 	function initModuleCreatePostHeadline() {
-		$('.add.postHeadline').click(function() {
-			$('#createPostHeadline').show();
-			$('#btnPublishContainer').fadeIn();
+		$('.addPostHeadline').click(function() {
+			createPostHeadline();
 		});
 	}
 
 	function initModuleCreatePostImage() {
-		$('.add.postImage').click(function() {
-			$('#createPostImage input').click();
+		$('.addPostImage').click(function() {
+			var tmpPostImage = $('#tmpPostImage').html();
+			Mustache.parse(tmpPostImage);
+			var html = Mustache.render(tmpPostImage);
+			var imageForm = $(html);
+			$('#posts').prepend(imageForm).fadeIn();
+			imageForm.find('input').click();
+			imageForm.find('input').change(function() {
+				imageForm.find('form').submit();
+			});
+
+			console.log(imageForm);
+
 			$('#postTypes').hide();
-			$('#createPostImage').show();
-			$('#btnPublishContainer').fadeIn();
 		})
 	}
 
@@ -290,7 +286,9 @@ $(document).ready(function() {
 	}
 
 	function initGetPosts() {
-		$('#posts').on('click', '.delete', function(event) {
+		var posts = $('#posts');
+
+		posts.on('click', '.delete', function(event) {
 			event.preventDefault();
 
 			var thisPost = $(this).parents('li:eq(0)');
@@ -311,7 +309,7 @@ $(document).ready(function() {
 			});
 		});
 
-		$('#posts').on('click', '.sorter a', function(event) {
+		posts.on('click', '.sorter a', function(event) {
 			event.preventDefault();
 
 			var thisPost = $(this).parents('li:eq(0)');
@@ -355,6 +353,34 @@ $(document).ready(function() {
 				});
 			}
 		});
+
+		posts.on('propertychange, input', 'input, textarea', function(e) {
+		    $(this).attr('data-changed', true);
+		});
+
+		posts.on('blur', 'input, textarea', function() {
+			if($(this).data('changed') == true) {
+				var formContainer = $(this).parents('li:eq(0)');
+				var form = formContainer.find('form:eq(0)');
+				var jsonPost = JSON.stringify({ 
+					'content' : $(this).val().linkify(),
+					'id' : formContainer.data('id')
+				});
+				
+				$.ajax({
+					contentType: 'application/json;charset=UTF-8',
+					type: form.attr('method'),
+					url: form.attr('action'),
+					data: jsonPost,
+					success: function(jsonResponse) {
+						$('#flashSaved').fadeIn().delay(500).fadeOut();
+					},
+					error: function(jsonResponse) {
+						console.log(jsonResponse);
+					}
+				});
+			}
+		});
 	}
 
 	function initPageIndex() {
@@ -370,16 +396,11 @@ $(document).ready(function() {
 			initGetPosts();
 
 			if(posties.util.getQueryParamByName('intro')) {
-				var tmpFlashUserCreated = $('#tmpFlashUserCreated').html();
-				Mustache.parse(tmpFlashUserCreated);
-				var html = Mustache.render(tmpFlashUserCreated);
-				$('#flash').append(html).fadeIn();
+				$('#flashIntro').fadeIn();
 			}
 
-			$('.add.postText').click(function() {
-				$('#createPostText, #btnPublishContainer').fadeIn();
-				$('#postTypes').hide();
-				$('#addPost').show();
+			$('.addPostText').click(function() {
+				createPostText();
 			})
 		}
 	}
@@ -391,7 +412,6 @@ $(document).ready(function() {
 	}
 
 	/* GLOBAL MODULES */
-	initPublishButton();
 	initAddPostButton();
 	initFlash();
 	initTogglers();
