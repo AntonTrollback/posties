@@ -11,23 +11,15 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
 application = Flask(__name__, static_folder='static')
-application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
 
-conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
+conn = r.connect(host='localhost',
 	port=28015,
-	auth_key='SteveJobs007Amazon',
+	auth_key='',
 	db='posties')
-
-#conn = r.connect(host='localhost',
-#	port=28015,
-#	auth_key='',
-#	db='posties')
-
-application.config['SECRET_KEY'] = '123456790'
 
 login_manager = login.LoginManager()
 login_manager.init_app(application)
@@ -350,4 +342,4 @@ def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 if __name__ == '__main__':
-    application.run(host = '0.0.0.0', debug = False)
+    application.run(host = '0.0.0.0', debug = True)
