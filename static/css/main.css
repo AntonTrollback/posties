@@ -91,9 +91,6 @@ button {
 	color: #8a8a8a;
 	box-shadow: 1px 2px 3px rgba(128, 128, 128, 0.5);
 }
-textarea {
-	resize: none;	
-}
 fieldset {
 	margin-bottom: 1rem;
 }
@@ -149,9 +146,7 @@ label + select {
 	min-height: 170px;
 	box-sizing: border-box;
 	font-weight: lighter;
-}
-.postText + pre {
-	white-space: pre-wrap;
+	background: #fff;
 }
 .postHeadline {
 	border: 0;
@@ -165,6 +160,7 @@ label + select {
 	box-sizing: border-box;
 	font-weight: lighter;
 	font-style: normal;
+	background: #fff;
 }
 #addPost {
 	display: block;
@@ -294,7 +290,9 @@ header div.menu li {
 	color: #a9a9a9;
 }
 .post:first-child .sorter a:first-child,
-.post:last-child .sorter a:last-child {
+.post.firstChild .sorter a:first-child,
+.post:last-child .sorter a:last-child,
+.post.lastChild .sorter a:last-child {
 	color: #e3e3e3;
 	pointer-events: none;
 }
@@ -340,14 +338,7 @@ header div.menu li {
 #postForms {
 	display: none;
 }
-/*** PAGES ***/
-body.index #btnPublishContainer,
-#posts .btnPublishContainer {
-	display: none;
-}
-
 /*** CSS UTIL ***/
-.hidden,
-.valueHolder {
+.hidden {
 	display: none;
 }

@@ -1,14 +1,8 @@
 $(document).ready(function() {
 
-	function initPublishing() {
-		/*if($('#createPostText').is(':visible')) {
-			createPostText();
-		} else if($('#createPostImage').is(':visible')) {
-			createPostImage();
-		} else if($('#createPostHeadline').is(':visible')) {
-			createPostHeadline();
-		}*/
-	}
+	var posts = $('#posts');
+
+	function initPublishing() {}
 
 	function initAddPostButton() {
 		var btnAddPost = $('#addPost');
@@ -70,20 +64,9 @@ $(document).ready(function() {
 		});
 	}
 
-	function initModuleCreatePostText() {
-		var contentText = $('#postText');
-		if(contentText.length) {
-			if($('.page.index').length) {
-				$('#createPostText').fadeIn(function() {
-					$('#btnPublishContainer').fadeIn();
-				});
-			}
-		}
-	}
-
 	function createPostText() {
 		if(posties.util.isUserLoggedIn()) {
-			var jsonPost = JSON.stringify({ 'content' : $('.postText.valueHolder').val().linkify() });
+			var jsonPost = JSON.stringify({ 'content' : $('#postTextValueHolder').val().linkify() });
 			
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
@@ -91,29 +74,32 @@ $(document).ready(function() {
 				url: '/api/postText',
 				data: jsonPost,
 				success: function(jsonResponse) {
-
-					if(posties.util.isPage('postsByUser')) {
-						var tmpPostText = $('#tmpPostText').html();
-						Mustache.parse(tmpPostText);
-						var html = Mustache.render(tmpPostText, { post : jsonResponse });
-						$('#posts').prepend($(html).fadeIn());
-					} else if(posties.util.isPage('index')) {
-						window.location = "/by/" + jsonResponse.username;
-					}
-					
+					var tmpPostText = $('#tmpPostText').html();
+					Mustache.parse(tmpPostText);
+					var html = Mustache.render(tmpPostText, { post : jsonResponse });
+					posts.prepend($(html).fadeIn());
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
 				}
 			});
 		} else {
-			$('.modal.createUser').fadeIn();
+			var jsonPost = {
+				'id' : 123,
+				'sortrank' : posts.find('li').length + 1,
+				'content' : $('#postTextValueHolder').val().linkify()
+			};
+
+			var tmpPostText = $('#tmpPostText').html();
+			Mustache.parse(tmpPostText);
+			var html = Mustache.render(tmpPostText, { post : jsonPost });
+			posts.prepend($(html).fadeIn());
 		}
 	}
 
 	function createPostHeadline() {
 		if(posties.util.isUserLoggedIn()) {
-			var jsonPost = JSON.stringify({ 'content' : $('.postHeadline.valueHolder').val().linkify() });
+			var jsonPost = JSON.stringify({ 'content' : $('#postHeadlineValueHolder').val().linkify() });
 			
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
@@ -121,30 +107,27 @@ $(document).ready(function() {
 				url: '/api/postHeadline',
 				data: jsonPost,
 				success: function(jsonResponse) {
-
-					if(posties.util.isPage('postsByUser')) {
-						var tmpPostHeadline = $('#tmpPostHeadline').html();
-						Mustache.parse(tmpPostHeadline);
-						var html = Mustache.render(tmpPostHeadline, { post : jsonResponse });
-						$('#posts').prepend($(html).fadeIn());
-					} else if(posties.util.isPage('index')) {
-						window.location = "/by/" + jsonResponse.username;
-					}
-
+					var tmpPostHeadline = $('#tmpPostHeadline').html();
+					Mustache.parse(tmpPostHeadline);
+					var html = Mustache.render(tmpPostHeadline, { post : jsonResponse });
+					posts.prepend($(html).fadeIn());
 				},
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
 				}
 			});
 		} else {
-			$('.modal.createUser').fadeIn();
-		}
-	}
+			var jsonPost = {
+				'id' : 123,
+				'sortrank' : posts.find('li').length + 1,
+				'content' : $('#postHeadlineValueHolder').val().linkify()
+			};
 
-	function initModuleCreatePostHeadline() {
-		$('.addPostHeadline').click(function() {
-			createPostHeadline();
-		});
+			var tmpPostHeadline = $('#tmpPostHeadline').html();
+			Mustache.parse(tmpPostHeadline);
+			var html = Mustache.render(tmpPostHeadline, { post : jsonPost });
+			posts.prepend($(html).fadeIn());
+		}
 	}
 
 	function initModuleCreatePostImage() {
@@ -153,13 +136,11 @@ $(document).ready(function() {
 			Mustache.parse(tmpPostImage);
 			var html = Mustache.render(tmpPostImage);
 			var imageForm = $(html);
-			$('#posts').prepend(imageForm).fadeIn();
+			posts.prepend(imageForm).fadeIn();
 			imageForm.find('input').click();
 			imageForm.find('input').change(function() {
 				imageForm.find('form').submit();
 			});
-
-			console.log(imageForm);
 
 			$('#postTypes').hide();
 		})
@@ -285,9 +266,70 @@ $(document).ready(function() {
 		});
 	}
 
-	function initGetPosts() {
-		var posts = $('#posts');
+	function initSortPosts() {
+		posts.on('click', '.sorter a', function(event) {
+			event.preventDefault();
 
+			var thisPost = $(this).parents('li:eq(0)');
+			var prevPost = thisPost.prev();
+			var nextPost = thisPost.next();
+
+			//See if there's a prev and next to place before or after
+			var hasPrev = prevPost.length != 0;
+			var hasNext = nextPost.length != 0;
+
+			var isUpSortable = $(this).hasClass('up') && hasPrev;
+			var isDownSortable = $(this).hasClass('down') && hasNext;
+
+			if(posties.util.isUserLoggedIn()) {
+				var jsonPost = false;
+
+				if(isUpSortable) {
+					jsonPost = JSON.stringify({
+						'upRankedID' : thisPost.data('id'),
+						'upRankedValue' : thisPost.data('rank'),
+						'downRankedID' : prevPost.data('id'),
+						'downRankedValue' : prevPost.data('rank'),
+					});
+				} else if(isDownSortable) {
+					jsonPost = JSON.stringify({
+						'upRankedID' : nextPost.data('id'),
+						'upRankedValue' : nextPost.data('rank'),
+						'downRankedID' : thisPost.data('id'),
+						'downRankedValue' : thisPost.data('rank'),
+					});
+				}
+
+				if(jsonPost) {
+					$.ajax({
+						contentType: 'application/json;charset=UTF-8',
+						type: 'post',
+						url: '/api/postrank',
+						data: jsonPost,
+						success: function(jsonResponse) {
+							location.reload();
+						},
+						error: function(jsonResponse) {
+							console.log(jsonResponse);
+						}
+					});
+				}	
+			} else {
+				if(isUpSortable) {
+					thisPost.insertBefore(prevPost);
+				} else if(isDownSortable) {
+					thisPost.insertAfter(nextPost);
+				}
+
+				posts.find('li.firstChild').removeClass('firstChild');
+				posts.find('li:first-child').addClass('firstChild');
+				posts.find('li.lastChild').removeClass('lastChild');
+				posts.find('li:last-child').addClass('lastChild');
+			}
+		});
+	}
+
+	function initGetPosts() {
 		posts.on('click', '.delete', function(event) {
 			event.preventDefault();
 
@@ -307,51 +349,6 @@ $(document).ready(function() {
 					console.log(jsonResponse);
 				}
 			});
-		});
-
-		posts.on('click', '.sorter a', function(event) {
-			event.preventDefault();
-
-			var thisPost = $(this).parents('li:eq(0)');
-			var prevPost = thisPost.prev();
-			var nextPost = thisPost.next()
-
-			//See if there's a prev and next to re-order by
-			var hasPrev = prevPost.length !== 0;
-			var hasNext = nextPost.length !== 0;
-
-			var jsonPost = false;
-
-			if($(this).hasClass('up') && hasPrev) {
-				jsonPost = JSON.stringify({
-					'upRankedID' : thisPost.data('id'),
-					'upRankedValue' : thisPost.data('rank'),
-					'downRankedID' : prevPost.data('id'),
-					'downRankedValue' : prevPost.data('rank'),
-				});
-			} else if($(this).hasClass('down') && hasNext) {
-				jsonPost = JSON.stringify({
-					'upRankedID' : nextPost.data('id'),
-					'upRankedValue' : nextPost.data('rank'),
-					'downRankedID' : thisPost.data('id'),
-					'downRankedValue' : thisPost.data('rank'),
-				});
-			}
-
-			if(jsonPost) {
-				$.ajax({
-					contentType: 'application/json;charset=UTF-8',
-					type: 'post',
-					url: '/api/postrank',
-					data: jsonPost,
-					success: function(jsonResponse) {
-						location.reload();
-					},
-					error: function(jsonResponse) {
-						console.log(jsonResponse);
-					}
-				});
-			}
 		});
 
 		posts.on('propertychange, input', 'pre', function(e) {
@@ -385,23 +382,35 @@ $(document).ready(function() {
 
 	function initPageIndex() {
 		if(posties.util.isPage('index')) {
-			initModuleCreatePostText();
+			$('.addPostText').click(function() {
+				createPostText();
+			});
+
+			$('.addPostHeadline').click(function() {
+				createPostHeadline();
+			});
+
+			initSortPosts();
 			initModuleCreateUser();
 		}
 	}
 
 	function initPagePostsByUser() {
 		if(posties.util.isPage('postsByUser')) {
-			initModuleCreatePostText();
-			initGetPosts();
+			$('.addPostText').click(function() {
+				createPostText();
+			});
+
+			$('.addPostHeadline').click(function() {
+				createPostHeadline();
+			});
 
 			if(posties.util.getQueryParamByName('intro')) {
 				$('#flashIntro').fadeIn();
 			}
 
-			$('.addPostText').click(function() {
-				createPostText();
-			})
+			initGetPosts();
+			initSortPosts();
 		}
 	}
 
@@ -416,8 +425,6 @@ $(document).ready(function() {
 	initFlash();
 	initTogglers();
 	initColorPickers();
-	initModuleCreatePostText();
-	initModuleCreatePostHeadline();
 	initModuleCreatePostImage();
 	initModuleUpdateSettings();
 

@@ -6,12 +6,16 @@
 {% endif %}
 {% include 'modules/header.html' %}
 	<div id="body" class="page">
-		{% include 'modules/createPostText.html' %}
 		{% include 'modules/postTypes.html' %}
 		<div id="btnPublishContainer">
 			<button>Publish</button>
 		</div>
+		<ul id="posts">
+		</ul>
 	</div>
+	{% include 'modules/jsTemplates/postText.html' %}
+	{% include 'modules/jsTemplates/postHeadline.html' %}
+	{% include 'modules/jsTemplates/postImage.html' %}
 	{% include 'modules/modalCreateUser.html' %}
 </body>
 {% include 'modules/footer.html' %}
