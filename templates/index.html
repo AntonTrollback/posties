@@ -1,6 +1,11 @@
 {% include 'modules/head.html' %}
+{% if current_user and current_user.is_authenticated() %}
+    <body class="index authenticated">
+{% else %}
+    <body class="index">
+{% endif %}
 {% include 'modules/header.html' %}
-	<div id="body" class="page index">
+	<div id="body" class="page">
 		{% include 'modules/createPostText.html' %}
 		{% include 'modules/postTypes.html' %}
 		<div id="btnPublishContainer">

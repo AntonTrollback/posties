@@ -10,9 +10,8 @@
 	</div>
 </div>
 <header>
-	<h1 id="logo"><a href="/">Posti.es</a></h1>
+	<a id="logo" class="toggler menu" href="#menu">&nbsp;</a>
 	{% if current_user and current_user.is_authenticated() %}
-		<a href="#menu" class="toggler menu">||||</a>
 		<a href="/by/{{current_user.username}}">{{current_user.username}}</a>
 		<div id="menu" class="menu">
 			<ul>
@@ -25,4 +24,5 @@
 		<a href="#modalLogin" class="toggler login">Login</a>
 		{% include 'modules/modalLogin.html' %}
 	{% endif %}
+	<p><a href="#">Register</a> or <a href="#">learn more</a></p>
 </header>

@@ -1,4 +1,9 @@
 {% include 'modules/head.html' %}
+{% if current_user and current_user.is_authenticated() %}
+    <body class="postsByUser authenticated">
+{% else %}
+    <body class="postsByUser">
+{% endif %}
 {% include 'modules/header.html' %}
 	<style>
 		body {
@@ -9,17 +14,17 @@
         	background-color: {{user.settings.postbackgroundcolor}};
         }
         .post.text p,
-        .createPostText textarea {
+        .createPostText pre {
         	font-family: {{user.settings.typefaceparagraph}};
         	background-color: {{user.settings.postbackgroundcolor}};
         }
         .post.headline h5,
-        .createPostHeadline input {
+        .createPostHeadline pre {
         	font-family: {{user.settings.typefaceheadline}};
         	background-color: {{user.settings.postbackgroundcolor}};
         }
 	</style>
-	<div id="body" class="page postsByUser">
+	<div id="body" class="page">
 		{% if current_user and current_user.is_authenticated() and user_owns_page %}
 			{% include 'modules/postTypes.html' %}
 		{% endif %}
@@ -37,7 +42,7 @@
 									<a href="#" class="down">&#x25BC;</a>
 								</div>
 								<form class="form createPostText" method="put" action="/api/postText">
-									<textarea class="postText">{{post.content|safe}}</textarea>
+									<pre class="postText" contenteditable="true">{{post.content|safe}}</pre>
 								</form>
 							{% else %}
 								<p>{{post.content|safe}}</p>
@@ -63,7 +68,7 @@
 									<a href="#" class="down">&#x25BC;</a>
 								</div>
 								<form class="form createPostHeadline" method="put" action="/api/postHeadline">
-									<input type="text" class="postHeadline" value="{{post.content|safe}}" />
+									<pre class="postHeadline" contenteditable="true">{{post.content|safe}}</pre>
 								</form>
 							{% else %}
 								<h5>{{post.content|safe}}</h5>

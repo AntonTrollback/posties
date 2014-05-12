@@ -11,10 +11,16 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
 application = Flask(__name__, static_folder='static')
+application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
+
+#conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
+#	port=28015,
+#	auth_key='SteveJobs007Amazon',
+#	db='posties')
 
 conn = r.connect(host='localhost',
 	port=28015,

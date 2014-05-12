@@ -354,16 +354,16 @@ $(document).ready(function() {
 			}
 		});
 
-		posts.on('propertychange, input', 'input, textarea', function(e) {
+		posts.on('propertychange, input', 'pre', function(e) {
 		    $(this).attr('data-changed', true);
 		});
 
-		posts.on('blur', 'input, textarea', function() {
+		posts.on('blur', 'pre', function() {
 			if($(this).data('changed') == true) {
 				var formContainer = $(this).parents('li:eq(0)');
 				var form = formContainer.find('form:eq(0)');
 				var jsonPost = JSON.stringify({ 
-					'content' : $(this).val().linkify(),
+					'content' : $(this).text().linkify(),
 					'id' : formContainer.data('id')
 				});
 				

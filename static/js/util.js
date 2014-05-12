@@ -31,7 +31,7 @@ posties.util = (function() {
     }
 
     var isPage = function(pageClass) {
-      return $('.page.' + pageClass).length;
+      return $('body.' + pageClass).length;
     }
 
     return {
@@ -44,6 +44,9 @@ posties.util = (function() {
 
 if(!String.linkify) {
   String.prototype.linkify = function() {
+
+    var htmlTagsPattern = /(<([^>]+)>)/ig;
+
     // http://, https://, ftp://
     var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
 
@@ -53,8 +56,11 @@ if(!String.linkify) {
     // Email addresses
     var emailAddressPattern = /\w+@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6})+/gim;
 
+    var newlinePattern = /<br\s*[\/]?>/gi;
+
     return this
-        .replace(/(<([^>]+)>)/ig, "") //Replace all HTML tags
+        .replace(newlinePattern, "\n")
+        .replace(htmlTagsPattern, "")
         .replace(urlPattern, '<a href="$&">$&</a>')
         .replace(pseudoUrlPattern, '$1<a href="http://$2">$2</a>')
         .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
