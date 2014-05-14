@@ -329,57 +329,6 @@ $(document).ready(function() {
 		});
 	}
 
-	function initGetPosts() {
-		posts.on('click', '.delete', function(event) {
-			event.preventDefault();
-
-			var thisPost = $(this).parents('li:eq(0)');
-
-			var jsonPost = JSON.stringify({ 'id' : thisPost.data('id') });
-
-			$.ajax({
-				contentType: 'application/json;charset=UTF-8',
-				type: 'delete',
-				url: '/api/posts',
-				data: jsonPost,
-				success: function(jsonResponse) {
-					$(event.target).parents('li:eq(0)').fadeOut();
-				},
-				error: function(jsonResponse) {
-					console.log(jsonResponse);
-				}
-			});
-		});
-
-		posts.on('propertychange, input', 'pre', function(e) {
-		    $(this).attr('data-changed', true);
-		});
-
-		posts.on('blur', 'pre', function() {
-			if($(this).data('changed') == true) {
-				var formContainer = $(this).parents('li:eq(0)');
-				var form = formContainer.find('form:eq(0)');
-				var jsonPost = JSON.stringify({ 
-					'content' : $(this).text().linkify(),
-					'id' : formContainer.data('id')
-				});
-				
-				$.ajax({
-					contentType: 'application/json;charset=UTF-8',
-					type: form.attr('method'),
-					url: form.attr('action'),
-					data: jsonPost,
-					success: function(jsonResponse) {
-						$('#flashSaved').fadeIn().delay(500).fadeOut();
-					},
-					error: function(jsonResponse) {
-						console.log(jsonResponse);
-					}
-				});
-			}
-		});
-	}
-
 	function initPageIndex() {
 		if(posties.util.isPage('index')) {
 			$('.addPostText').click(function() {
@@ -388,6 +337,19 @@ $(document).ready(function() {
 
 			$('.addPostHeadline').click(function() {
 				createPostHeadline();
+			});
+
+			posts.on('propertychange, input', 'pre', function(e) {
+				$(this).attr('data-changed', true);
+			});
+
+			posts.on('blur', 'pre', function() {
+				var $this = $(this);
+				console.log($this)
+				if($this.data('changed')) {
+					$('#flashSaved').fadeIn().delay(500).fadeOut();
+					$this.attr('data-changed', false);
+				}
 			});
 
 			initSortPosts();
@@ -409,7 +371,57 @@ $(document).ready(function() {
 				$('#flashIntro').fadeIn();
 			}
 
-			initGetPosts();
+			posts.on('click', '.delete', function(event) {
+				event.preventDefault();
+
+				var thisPost = $(this).parents('li:eq(0)');
+
+				var jsonPost = JSON.stringify({ 'id' : thisPost.data('id') });
+
+				$.ajax({
+					contentType: 'application/json;charset=UTF-8',
+					type: 'delete',
+					url: '/api/posts',
+					data: jsonPost,
+					success: function(jsonResponse) {
+						$(event.target).parents('li:eq(0)').fadeOut();
+					},
+					error: function(jsonResponse) {
+						console.log(jsonResponse);
+					}
+				});
+			});
+
+			posts.on('propertychange, input', 'pre', function(e) {
+				$(this).attr('data-changed', true);
+			});
+
+			posts.on('blur', 'pre', function() {
+				var $this = $(this);
+				if($this.data('changed') == true) {
+					var formContainer = $this.parents('li:eq(0)');
+					var form = formContainer.find('form:eq(0)');
+					var jsonPost = JSON.stringify({ 
+						'content' : $(this).text().linkify(),
+						'id' : formContainer.data('id')
+					});
+					
+					$.ajax({
+						contentType: 'application/json;charset=UTF-8',
+						type: form.attr('method'),
+						url: form.attr('action'),
+						data: jsonPost,
+						success: function(jsonResponse) {
+							$('#flashSaved').fadeIn().delay(500).fadeOut();
+							$this.attr('data-changed', false);
+						},
+						error: function(jsonResponse) {
+							console.log(jsonResponse);
+						}
+					});
+				}
+			});
+
 			initSortPosts();
 		}
 	}
