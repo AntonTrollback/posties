@@ -66,3 +66,8 @@ if(!String.linkify) {
         .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
   };
 }
+
+var swapItems = function(arr, a, b){
+    arr[a] = arr.splice(b, 1, arr[a])[0];
+    return arr;
+}

@@ -1,21 +1,10 @@
-<textarea id="postTextValueHolder" class="hidden">Hello,
-I'm a text that you can edit.
-
-Add images and text until you're happy with the results.
-Then click publish and your new website is done!</textarea>
-<script id="tmpPostText" type="x-tmpl-mustache">
-	<li class="post text hidden" data-id="[[post.id]]" data-rank="[[post.sortrank]]">
-		<a href="#" class="delete"></a>
-		<div class="sorter">
-			<a href="#" class="up">&#x25B2;</a>
-			<a href="#" class="down">&#x25BC;</a>
-		</div>
-		<form class="form createPostText" method="put" action="/api/postText">
-			<pre class="postText" contenteditable="true">Hello,
-I'm a text that you can edit.
-
-Add images and text until you're happy with the results.
-Then click publish and your new website is done!</pre>
-		</form>
-	</li>
+<script type="text/ng-template" id="postText.html">
+	<a href="#" class="delete"></a>
+	<div class="sorter">
+		<a class="up" ng-click="movePost($event)">&#x25B2;</a>
+		<a class="down" ng-click="movePost($event)">&#x25BC;</a>
+	</div>
+	<form class="form createPostText" method="put" action="/api/postText">
+		<pre class="postText" contenteditable="true">[[post.content]]</pre>
+	</form>
 </script>

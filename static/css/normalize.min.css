@@ -49,3 +49,4 @@ button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
 textarea{overflow:auto;vertical-align:top}
 table{border-collapse:collapse;border-spacing:0}
 th{text-align: left;}
+[ng\:cloak], [ng-cloak], .ng-cloak {display: none !important;}

@@ -1,12 +1,16 @@
-<button id="addPost">Add something</button>
-<ul id="postTypes">
+<button id="addPost" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes">Add something</button>
+<ul id="postTypes" ng-show="showPostTypes" ng-cloak>
 	<li>
-		<button class="addPostText">Text</button>
+		<button class="addPostText" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="Hello,
+I'm a text that you can edit.
+
+Add images and text until you're happy with the results.
+Then click publish and your new website is done!">Text</button>
 	</li>
 	<li>
-		<button class="addPostHeadline">Headline</button>
+		<button class="addPostHeadline" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="This is your headline...">Headline</button>
 	</li>
 	<li>
-		<button class="addPostImage">Image</button>
+		<button class="addPostImage" ng-click="addPost($event)" data-type="2">Image</button>
 	</li>
 </ul>

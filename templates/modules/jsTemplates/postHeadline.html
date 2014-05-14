@@ -1,13 +1,10 @@
-<input type="text" id="postHeadlineValueHolder" value="This is your headline..." class="hidden" />
-<script id="tmpPostHeadline" type="x-tmpl-mustache">
-	<li class="post headline hidden" data-id="[[post.id]]" data-rank="[[post.sortrank]]">
-		<a href="#" class="delete"></a>
-		<div class="sorter">
-			<a href="#" class="up">&#x25B2;</a>
-			<a href="#" class="down">&#x25BC;</a>
-		</div>
-		<form class="form createPostHeadline" method="put" action="/api/postHeadline">
-			<pre class="postHeadline" contenteditable="true">This is your headline...</pre>
-		</form>
-	</li>
-</script>
+<script type="text/ng-template" id="postHeadline.html">
+	<a href="#" class="delete"></a>
+	<div class="sorter">
+		<a class="up" ng-click="movePost($event)">&#x25B2;</a>
+		<a class="down" ng-click="movePost($event)">&#x25BC;</a>
+	</div>
+	<form class="form createPostHeadline" method="put" action="/api/postHeadline">
+		<pre class="postHeadline" contenteditable="true">[[post.content]]</pre>
+	</form>
+ </script>

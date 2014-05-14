@@ -215,7 +215,7 @@ def api_post_image():
 		'key' : generated_filename, 
 		'username' : current_user.username,
 		'sortrank' : sort_rank,
-		'type' : 1,
+		'type' : 2,
 		'created' : r.now()}).run(conn)
 	
 	return redirect(url_for('get_posts_by_username', username = current_user.username))
@@ -259,7 +259,7 @@ def api_post_headline():
 			'content' : content, 
 			'username' : current_user.username,
 			'sortrank' : sort_rank,
-			'type' : 2,
+			'type' : 1,
 			'created' : r.now()}, return_vals = True).run(conn)
 	elif request.method == 'PUT':
 		result = r.table(TABLE_POSTS).get(jsonData['id']).update({

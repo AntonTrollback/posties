@@ -172,7 +172,6 @@ label + select {
 	color: #8a8a8a;
 	margin: 0;
 	text-align: center;
-	display: none;
 }
 #postTypes li {
 	display: inline-block;

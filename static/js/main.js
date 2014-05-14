@@ -331,6 +331,7 @@ $(document).ready(function() {
 
 	function initPageIndex() {
 		if(posties.util.isPage('index')) {
+			/*
 			$('.addPostText').click(function() {
 				createPostText();
 			});
@@ -338,6 +339,7 @@ $(document).ready(function() {
 			$('.addPostHeadline').click(function() {
 				createPostHeadline();
 			});
+			*/
 
 			posts.on('propertychange, input', 'pre', function(e) {
 				$(this).attr('data-changed', true);
@@ -345,20 +347,20 @@ $(document).ready(function() {
 
 			posts.on('blur', 'pre', function() {
 				var $this = $(this);
-				console.log($this)
 				if($this.data('changed')) {
 					$('#flashSaved').fadeIn().delay(500).fadeOut();
 					$this.attr('data-changed', false);
 				}
 			});
 
-			initSortPosts();
+			//initSortPosts();
 			initModuleCreateUser();
 		}
 	}
 
 	function initPagePostsByUser() {
 		if(posties.util.isPage('postsByUser')) {
+			/*
 			$('.addPostText').click(function() {
 				createPostText();
 			});
@@ -366,6 +368,7 @@ $(document).ready(function() {
 			$('.addPostHeadline').click(function() {
 				createPostHeadline();
 			});
+			*/
 
 			if(posties.util.getQueryParamByName('intro')) {
 				$('#flashIntro').fadeIn();
@@ -422,7 +425,7 @@ $(document).ready(function() {
 				}
 			});
 
-			initSortPosts();
+			//initSortPosts();
 		}
 	}
 
@@ -433,7 +436,7 @@ $(document).ready(function() {
 	}
 
 	/* GLOBAL MODULES */
-	initAddPostButton();
+	//initAddPostButton();
 	initFlash();
 	initTogglers();
 	initColorPickers();
