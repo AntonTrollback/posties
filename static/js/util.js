@@ -11,7 +11,7 @@ posties.util = (function() {
     };
 
     var isUserLoggedIn = function() {
-        return $('body:eq(0)').hasClass('authenticated');
+        return $('head:eq(0)').hasClass('authenticated');
     }
 
     var getQueryParamByName = function(parameterName) {

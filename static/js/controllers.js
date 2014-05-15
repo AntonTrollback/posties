@@ -1,24 +1,7 @@
-var postiesApp = angular.module('posties', [], function($interpolateProvider) {
-	$interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-});
-
-postiesApp.filter('getById', function() {
-  return function(input, id) {
-    var i=0, len=input.length;
-    for (; i<len; i++) {
-      if (+input[i].id == +id) {
-      	var item = input[i];
-      	item['iteration'] = i;
-        return item;
-      }
-    }
-    return null;
-  }
-});
-
 postiesApp.controller('PageIndexCtrl', function($scope, $filter) {
+
 	$scope.posts = [];
+	$scope.isUserAuthenticated = angular.element('head').hasClass('authenticated');
 
 	$scope.addPost = function($event) {
 
@@ -47,5 +30,19 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter) {
 		}
 
 		swapItems($scope.posts, post['iteration'], index);
+	}
+
+	$scope.publish = function() {
+		if(!$scope.isUserAuthenticated) {
+			angular.element('.modal.createUser').toggle();
+		}
+	}
+
+	$scope.submitCreateUser = function() {
+		if($scope.formCreateUser.$valid) {
+			console.log("form is valid");
+		} else {
+			console.log("form is invalid");
+		}
 	}
 });

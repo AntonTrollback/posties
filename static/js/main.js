@@ -2,8 +2,6 @@ $(document).ready(function() {
 
 	var posts = $('#posts');
 
-	function initPublishing() {}
-
 	function initAddPostButton() {
 		var btnAddPost = $('#addPost');
 		var postTypes = $('#postTypes');
@@ -354,7 +352,7 @@ $(document).ready(function() {
 			});
 
 			//initSortPosts();
-			initModuleCreateUser();
+			//initModuleCreateUser();
 		}
 	}
 

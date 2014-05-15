@@ -26,6 +26,7 @@ h3 {
 a, a:visited {
 	text-decoration: none;
 	color: #888;
+	cursor: pointer;
 }
 p {
 	margin: 0;
@@ -91,10 +92,12 @@ button {
 	color: #8a8a8a;
 	box-shadow: 1px 2px 3px rgba(128, 128, 128, 0.5);
 }
-fieldset {
+fieldset,
+.formGroup {
 	margin-bottom: 1rem;
 }
-fieldset:last-child {
+fieldset:last-child,
+.formGroup:last-child {
 	margin-top: 3rem;
 }
 label + select {
@@ -135,6 +138,11 @@ label + select {
 	padding: 10px;
 	background: url('../img/iconDeletePost.png') no-repeat 0 0;
 }
+#btnPublishContainer {
+	display: block;
+	text-align: center;
+	margin-top: 2rem;
+}
 .postText {
 	border: 0;
 	padding: 2rem 2rem 8rem 2rem;
@@ -162,7 +170,8 @@ label + select {
 	font-style: normal;
 	background: #fff;
 }
-#addPost {
+#addPost,
+#btnPublishContainer button {
 	display: block;
 	margin: 0 auto;
 	width: 80%;
@@ -196,13 +205,11 @@ header div.menu {
 	position: absolute;
 	right: 0;
 	top: 4rem;
-	display: none;
 }
 header div.menu li {
 	margin-bottom: .8rem;
 }
 .modal {
-	display: none;
 	position: absolute;
 	background: #fff;
 	border: 1px solid #ddd;
@@ -287,6 +294,7 @@ header div.menu li {
 .post .sorter a {
 	position: absolute;
 	color: #a9a9a9;
+	cursor: pointer;
 }
 .post:first-child .sorter a:first-child,
 .post.firstChild .sorter a:first-child,
