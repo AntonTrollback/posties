@@ -40,29 +40,23 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter) {
 
 	$scope.submitCreateUser = function() {
 		if($scope.userForm.$valid) {
-			console.log("form is valid");
-
 			var formCreateUser = $('#createUser');
 
-			var postTexts = [];
-			var postHeadlines = [];
+			var posts = [];
+			
+			var numberOfPosts = $('#posts > li').length;
+			$('.postText, .postHeadline').each(function(index) { 
+				var content = $(this).text().linkify();
+				var type = $(this).hasClass('postText') ? 0 : 1;
 
-			$('.postText').each(function() { 
-				var postText = $(this).text().linkify();
-				postTexts.push(postText);
-			});
-
-			$('.postHeadline').each(function() { 
-				var postHeadline = $(this).text().linkify();
-				postHeadlines.push(postHeadline);
+				posts.push({ 'content' : content, 'sortrank' : numberOfPosts - index, 'type' : type });
 			});
 
 			var jsonPost = JSON.stringify({ 
 				'email' : formCreateUser.find('.email:eq(0)').val(),
 				'username' : formCreateUser.find('.username:eq(0)').val(),
 				'password' : formCreateUser.find('.password:eq(0)').val(),
-				'postTexts' : postTexts,
-				'postHeadlines' : postHeadlines
+				'posts' : posts
 			});
 
 			$.ajax({
