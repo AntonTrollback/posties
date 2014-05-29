@@ -44,19 +44,31 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter) {
 
 			var formCreateUser = $('#createUser');
 
+			var postTexts = [];
+			var postHeadlines = [];
+
+			$('.postText').each(function() { 
+				var postText = $(this).text().linkify();
+				postTexts.push(postText);
+			});
+
+			$('.postHeadline').each(function() { 
+				var postHeadline = $(this).text().linkify();
+				postHeadlines.push(postHeadline);
+			});
+
 			var jsonPost = JSON.stringify({ 
 				'email' : formCreateUser.find('.email:eq(0)').val(),
 				'username' : formCreateUser.find('.username:eq(0)').val(),
 				'password' : formCreateUser.find('.password:eq(0)').val(),
-				'postText' : $('#postText').val().linkify()
+				'postTexts' : postTexts,
+				'postHeadlines' : postHeadlines
 			});
 
-			console.log(jsonPost);
-			/*
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
 				type: formCreateUser.attr('method'),
-				url: formCreateUser.attr('action'),
+				url: '/api/users',
 				data: jsonPost,
 				success: function(jsonResponse) {
 					window.location = "/by/" + jsonResponse.username + "?intro=true";
@@ -64,7 +76,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter) {
 				error: function(jsonResponse) {
 					console.log(jsonResponse);
 				}
-			});*/
+			});
 		} else {
 			console.log("form is invalid");
 		}

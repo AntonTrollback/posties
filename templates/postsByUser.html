@@ -45,17 +45,6 @@
 							{% endif %}
 						</li>
 					{% elif post.type == 1 %}
-						<li class="post image" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
-							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete"></a>
-								<div class="sorter">
-									<a href="#" class="up">&#x25B2;</a>
-									<a href="#" class="down">&#x25BC;</a>
-								</div>
-							{% endif %}
-							<img src="https://s3-eu-west-1.amazonaws.com/posties/{{post.key}}" alt="image" />
-						</li>
-					{% elif post.type == 2 %}
 						<li class="post headline" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
 							{% if current_user and current_user.is_authenticated() and user_owns_page %}
 								<a href="#" class="delete"></a>
@@ -69,7 +58,18 @@
 							{% else %}
 								<h5>{{post.content|safe}}</h5>
 							{% endif %}
-						</li>	
+						</li>
+					{% elif post.type == 2 %}
+						<li class="post image" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
+							{% if current_user and current_user.is_authenticated() and user_owns_page %}
+								<a href="#" class="delete"></a>
+								<div class="sorter">
+									<a href="#" class="up">&#x25B2;</a>
+									<a href="#" class="down">&#x25BC;</a>
+								</div>
+							{% endif %}
+							<img src="https://s3-eu-west-1.amazonaws.com/posties/{{post.key}}" alt="image" />
+						</li>
 					{% endif %}
 				{% endfor %}
 			{% endif %}

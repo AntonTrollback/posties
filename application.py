@@ -17,15 +17,15 @@ TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
 
-#conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
-#	port=28015,
-#	auth_key='SteveJobs007Amazon',
-#	db='posties')
-
-conn = r.connect(host='localhost',
+conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 	port=28015,
-	auth_key='',
+	auth_key='SteveJobs007Amazon',
 	db='posties')
+
+#conn = r.connect(host='localhost',
+#	port=28015,
+#	auth_key='',
+#	db='posties')
 
 login_manager = login.LoginManager()
 login_manager.init_app(application)
@@ -107,7 +107,10 @@ def api_create_user():
 	email = jsonData['email'].lower()
 	username = jsonData['username'].lower()
 	password = jsonData['password']
-	postText = jsonData['postText']
+	post_texts = jsonData['postTexts']
+	post_headlines = jsonData['postHeadlines']
+
+	print jsonData
 
 	result = r.table(TABLE_USERS).insert({ 
 		'email' : email,
@@ -124,12 +127,23 @@ def api_create_user():
 		user = User(user['id'], user['email'], user['username'])
 		login_user(user)
 
-		result = r.table(TABLE_POSTS).insert({ 
-			'content' : postText, 
-			'username' : username,
-			'sortrank' : 1,
-			'type' : 0,
-			'created' : r.now()}).run(conn)
+		#create all post texts
+		for index, post_text in enumerate(post_texts):
+			result = r.table(TABLE_POSTS).insert({ 
+				'content' : post_text, 
+				'username' : username,
+				'sortrank' : index,
+				'type' : 0,
+				'created' : r.now()}).run(conn)
+
+		#create all post headlines
+		for index, post_headline in enumerate(post_headlines):
+			result = r.table(TABLE_POSTS).insert({ 
+				'content' : post_headline, 
+				'username' : username,
+				'sortrank' : index,
+				'type' : 1,
+				'created' : r.now()}).run(conn)	
 
 		result = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
@@ -348,4 +362,4 @@ def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 if __name__ == '__main__':
-    application.run(host = '0.0.0.0', debug = True)
+    application.run(host = '0.0.0.0', debug = False)
