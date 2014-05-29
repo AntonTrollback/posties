@@ -340,14 +340,14 @@ $(document).ready(function() {
 			*/
 
 			posts.on('propertychange, input', 'pre', function(e) {
-				$(this).attr('data-changed', true);
+				$(this).data('changed', true);
 			});
 
 			posts.on('blur', 'pre', function() {
 				var $this = $(this);
 				if($this.data('changed')) {
 					$('#flashSaved').fadeIn().delay(500).fadeOut();
-					$this.attr('data-changed', false);
+					$this.data('changed', false);
 				}
 			});
 

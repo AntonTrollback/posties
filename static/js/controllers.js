@@ -39,10 +39,36 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter) {
 	}
 
 	$scope.submitCreateUser = function() {
-		if($scope.formCreateUser.$valid) {
+		if($scope.userForm.$valid) {
 			console.log("form is valid");
+
+			var formCreateUser = $('#createUser');
+
+			var jsonPost = JSON.stringify({ 
+				'email' : formCreateUser.find('.email:eq(0)').val(),
+				'username' : formCreateUser.find('.username:eq(0)').val(),
+				'password' : formCreateUser.find('.password:eq(0)').val(),
+				'postText' : $('#postText').val().linkify()
+			});
+
+			console.log(jsonPost);
+			/*
+			$.ajax({
+				contentType: 'application/json;charset=UTF-8',
+				type: formCreateUser.attr('method'),
+				url: formCreateUser.attr('action'),
+				data: jsonPost,
+				success: function(jsonResponse) {
+					window.location = "/by/" + jsonResponse.username + "?intro=true";
+				},
+				error: function(jsonResponse) {
+					console.log(jsonResponse);
+				}
+			});*/
 		} else {
 			console.log("form is invalid");
 		}
+
+		console.log($scope.user);
 	}
 });

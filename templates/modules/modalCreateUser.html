@@ -1,19 +1,19 @@
 <div class="modal createUser hidden">
 	<p class="close"><a>X</a></p>
 	<h3>To publish, you'll need an account</h3>
-	<form name="formCreateUser" class="form" method="post" ng-submit="submitCreateUser()" novalidate>
-        <fieldset ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+	<form id="createUser" name="userForm" class="form" ng-submit="submitCreateUser()" method="post" novalidate>
+        <fieldset>
             <input type="email" name="email" class="email" ng-model="user.email" placeholder="Email" />
-            <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid email.</p>
+            <p ng-show="userForm.email.$invalid && !userForm.email.$pristine">Enter a valid email</p>
         </fieldset>
-		<fieldset ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
-		    <input type="text" name="username" class="username" ng-model="user.username" ng-minlength="3" ng-maxlength="8" placeholder="Username">
-		    <p ng-show="userForm.username.$error.minlength" class="help-block">Username is too short.</p>
-		    <p ng-show="userForm.username.$error.maxlength" class="help-block">Username is too long.</p>
+		<fieldset>
+		    <input type="text" name="username" class="username" ng-model="user.username" ng-minlength="3" ng-maxlength="12" placeholder="Username" required>
+		    <p ng-show="userForm.username.$error.minlength">Username needs to be at least 3 characters</p>
+		    <p ng-show="userForm.username.$error.maxlength">Username can't exceed 12 characters</p>
 		</fieldset>
-        <fieldset ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
-            <input type="text" name="password" class="password" ng-model="user.password" placeholder="Password" required>
-            <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Your password is required.</p>
+        <fieldset>
+            <input type="text" name="password" class="password" ng-minlength="5" ng-model="user.password" placeholder="Password" required>
+            <p ng-show="userForm.password.$error.minlength">Your password needs to be at least 5 characters</p>
         </fieldset>
         <fieldset>
         	<button type="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">Submit</button>
