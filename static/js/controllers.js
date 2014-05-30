@@ -1,4 +1,4 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $filter) {
+postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 
 	$scope.posts = [];
 	$scope.isUserAuthenticated = angular.element('head').hasClass('authenticated');
@@ -59,22 +59,22 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter) {
 				'posts' : posts
 			});
 
-			$.ajax({
-				contentType: 'application/json;charset=UTF-8',
-				type: formCreateUser.attr('method'),
+			$http({
 				url: '/api/users',
+				method: 'post',
 				data: jsonPost,
-				success: function(jsonResponse) {
-					window.location = "/by/" + jsonResponse.username + "?intro=true";
-				},
-				error: function(jsonResponse) {
-					console.log(jsonResponse);
+				headers: {
+					'Content-Type': 'application/json;charset=UTF-8'
 				}
+			}).then(function(response) {
+				console.log(response);
+				window.location = "/by/" + response.data.username + "?intro=true";
+			}, function(response) {
+				console.log(response);
 			});
+
 		} else {
 			console.log("form is invalid");
 		}
-
-		console.log($scope.user);
 	}
 });
