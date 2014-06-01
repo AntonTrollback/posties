@@ -184,6 +184,7 @@ label + select {
 	max-width: 660px;
 }
 #btnPublishContainer button {
+	height: 87px;
 	
 }
 #postTypes {
