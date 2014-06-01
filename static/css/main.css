@@ -11,7 +11,7 @@ body {
 	color: #999998;
 	padding-bottom: 4rem;
 	max-width: 700px;
-	letter-spacing: -1px;
+	letter-spacing: 0px;
 }
 h1, h2, h3 {
 	color: #555;
@@ -197,18 +197,37 @@ label + select {
 }
 #postTypes button {
 	width: 110px;
-	padding-top: 50px;
-	padding-bottom: 8px;
+	padding-top: 49px;
+	padding-bottom: 10px;
 }
 .addPostText {
-	background: url('../img/iconAddText.png') #faf8c6 no-repeat center 16px;
+	background: url('../img/iconAddText.png') #faf8c6 no-repeat center 19px;
+	font-size: 1.1rem;
+	line-height: 1.7rem;
+	margin-right: -14px;
 }
 .addPostHeadline {
-	background: url('../img/iconAddHeadline.png') #faf8c6 no-repeat center 16px;
+	background: url('../img/iconAddHeadline.png') #faf8c6 no-repeat center 17px;
+	font-size: 1.1rem;
+	line-height: 1.7rem;
+	margin-right: -14px;
 }
 .addPostImage {
-	background: url('../img/iconAddImage.png') #faf8c6 no-repeat center 12px;
+	background: url('../img/iconAddImage.png') #faf8c6 no-repeat center 14px;
+	font-size: 1.1rem;
+	line-height: 1.7rem;
+	margin-right: -14px;
 }
+
+#publishNow {
+	width: 80%;
+	max-width: 660px;
+	padding-bottom: 10px;
+	margin-right: auto;
+	margin-left: auto;
+
+}
+
 /*** GLOBAL CLASSES ***/
 header div.menu {
 	position: absolute;
