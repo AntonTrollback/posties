@@ -303,8 +303,7 @@ $(document).ready(function() {
 			$('.addPostHeadline').click(function() {
 				createPostHeadline();
 			});
-			*/
-
+			
 			posts.on('propertychange, input', 'pre', function(e) {
 				$(this).data('changed', true);
 			});
@@ -315,7 +314,7 @@ $(document).ready(function() {
 					$('#flashSaved').fadeIn().delay(500).fadeOut();
 					$this.data('changed', false);
 				}
-			});
+			});*/
 
 			//initSortPosts();
 		}
@@ -358,6 +357,7 @@ $(document).ready(function() {
 				});
 			});
 
+			/*
 			posts.on('propertychange, input', 'pre', function(e) {
 				$(this).attr('data-changed', true);
 			});
@@ -386,7 +386,7 @@ $(document).ready(function() {
 						}
 					});
 				}
-			});
+			}); */
 
 			//initSortPosts();
 		}

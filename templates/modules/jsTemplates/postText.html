@@ -1,10 +1,10 @@
 <script type="text/ng-template" id="postText.html">
-	<a href="#" class="delete"></a>
+	<a href="#" ng-show="user.isAuthenticated" class="delete"></a>
 	<div class="sorter">
 		<a class="up" ng-click="movePost($event)">&#x25B2;</a>
 		<a class="down" ng-click="movePost($event)">&#x25BC;</a>
 	</div>
 	<form class="form createPostText" method="put" action="/api/postText">
-		<pre class="postText" contenteditable="true">[[post.content]]</pre>
+		<pre ng-blur="savePost($event)" class="postText" contenteditable="true">[[post.content]]</pre>
 	</form>
 </script>

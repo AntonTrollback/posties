@@ -109,4 +109,31 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $filter, $http) {
 	}, function(response) {
 		console.log(response);
 	});
+
+	$scope.addPost = function($event) {
+		$http({
+			url: '/api/postText',
+			method: 'post',
+			data: { 'content' : '' },
+			headers: {
+				'Content-Type': 'application/json;charset=UTF-8'
+			}
+		}).then(function(response) {
+			$scope.posts.push(response);
+		}, function(response) {
+			console.log(response);
+		});
+
+		$scope.showPostTypes = false;
+	};
+
+	$scope.savePost = function($scope, $event) {
+		console.log($scope);
+		console.log($event);
+	};
+
+	$scope.changePost = function($scope, $event) {
+
+		console.log($event);
+	}
 });
