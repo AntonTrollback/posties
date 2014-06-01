@@ -198,17 +198,20 @@ label + select {
 }
 #postTypes button {
 	width: 110px;
-	padding-top: 50px;
+	padding-top: 49px;
 	padding-bottom: 8px;
 }
 .addPostText {
 	background: url('../img/iconAddText.png') #faf8c6 no-repeat center 16px;
+	font-size: 1.3rem;
 }
 .addPostHeadline {
 	background: url('../img/iconAddHeadline.png') #faf8c6 no-repeat center 16px;
+	font-size: 1.3rem;
 }
 .addPostImage {
 	background: url('../img/iconAddImage.png') #faf8c6 no-repeat center 12px;
+	font-size: 1.3rem;
 }
 /*** GLOBAL CLASSES ***/
 header div.menu {
