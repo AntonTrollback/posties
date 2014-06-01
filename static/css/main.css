@@ -11,7 +11,7 @@ body {
 	color: #999998;
 	padding-bottom: 4rem;
 	max-width: 700px;
-	letter-spacing: -1px;
+	letter-spacing: 0px;
 }
 h1, h2, h3 {
 	color: #555;
@@ -219,6 +219,16 @@ label + select {
 	line-height: 1.7rem;
 	margin-right: -14px;
 }
+
+#publishNow {
+	width: 80%;
+	max-width: 660px;
+	padding-bottom: 10px;
+	margin-right: auto;
+	margin-left: auto;
+
+}
+
 /*** GLOBAL CLASSES ***/
 header div.menu {
 	position: absolute;
