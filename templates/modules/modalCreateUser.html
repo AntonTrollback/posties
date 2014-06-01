@@ -1,7 +1,7 @@
 <div class="modal createUser hidden">
 	<p class="close"><a>X</a></p>
 	<h3>To publish, you'll need an account</h3>
-	<form id="createUser" name="userForm" class="form" ng-submit="submitCreateUser()" method="post" novalidate>
+	<form id="formCreateUser" name="userForm" class="form" ng-submit="submitCreateUser()" method="post" novalidate>
         <fieldset>
             <input type="email" name="email" class="email" ng-model="user.email" placeholder="Email" />
             <p ng-show="userForm.email.$invalid && !userForm.email.$pristine">Enter a valid email</p>

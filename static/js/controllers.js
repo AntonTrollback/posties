@@ -40,7 +40,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 
 	$scope.submitCreateUser = function() {
 		if($scope.userForm.$valid) {
-			var formCreateUser = $('#createUser');
+			var formCreateUser = $('#formCreateUser');
 
 			var posts = [];
 			
@@ -77,4 +77,36 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 			console.log("form is invalid");
 		}
 	}
+});
+
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $filter, $http) {
+	$scope.posts = [];
+
+	$http({
+		url: '/api/users',
+		method: 'get',
+		params: { 'username' : 'nima' },
+		headers: {
+			'Content-Type': 'application/json;charset=UTF-8'
+		}
+	}).then(function(response) {
+		$scope.userSettings = response.data.settings;
+		$scope.user = { 'username' : response.data.username, 'isAuthenticated' : response.data.is_authenticated };
+
+		for(i = 0; i < response.data.posts.length; i++) {
+			var post = response.data.posts[i];
+
+			if(post.type == 0) {
+				post['template'] = 'postText.html';
+			} else if(post.type == 1) {
+				post['template'] = 'postHeadline.html';
+			} else if(post.type == 2) {
+				post['template'] = 'postImage.html';
+			}
+
+			$scope.posts.push(post);
+		}
+	}, function(response) {
+		console.log(response);
+	});
 });

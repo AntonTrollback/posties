@@ -153,40 +153,6 @@ $(document).ready(function() {
 		}
 	}
 
-	function initModuleCreateUser() {
-		var formCreateUser = $('#createUser');
-		var inputUsername = formCreateUser.find('.username:eq(0)'); 
-
-		inputUsername.keyup(function() {
-			formCreateUser.find('.url span').text($(this).val());
-		});
-
-		formCreateUser.submit(function(event) {
-			event.preventDefault();
-			var jsonPost = JSON.stringify({ 
-				'email' : $('#createUser .email:eq(0)').val(),
-				'username' : $('#createUser .username:eq(0)').val(),
-				'password' : $('#createUser .password:eq(0)').val(),
-				'postText' : $('#postText').val().linkify()
-			});
-			
-			$.ajax({
-				contentType: 'application/json;charset=UTF-8',
-				type: formCreateUser.attr('method'),
-				url: formCreateUser.attr('action'),
-				data: jsonPost,
-				success: function(jsonResponse) {
-					window.location = "/by/" + jsonResponse.username + "?intro=true";
-				},
-				error: function(jsonResponse) {
-					console.log(jsonResponse);
-				}
-			});
-
-			$('.modal').fadeOut();
-		});
-	}
-
 	function initModuleUpdateSettings() {
 		var formUpdateSettings = $('#updateSettings');
 
@@ -352,7 +318,6 @@ $(document).ready(function() {
 			});
 
 			//initSortPosts();
-			//initModuleCreateUser();
 		}
 	}
 

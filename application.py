@@ -56,25 +56,12 @@ def get_posts_by_username(username = None):
 	if not user:
 		abort(404)
 
-	posts = list(
-		r.table(TABLE_POSTS).filter(
-		(r.row['username'] == username))
-		.order_by(r.desc('sortrank'))
-		.run(conn))
-
-	settings = list(
-		r.table(TABLE_USERS_SETTINGS).filter(
-		(r.row['username'] == username))
-		.run(conn))
-
-	user['settings'] = settings[0]
-
 	if current_user.is_authenticated():
 		user_owns_page = username == current_user.username
 	else:
 		user_owns_page = False
 
-	return render_template('postsByUser.html', posts = posts, user_owns_page = user_owns_page, user = user)
+	return render_template('postsByUser.html', user_owns_page = user_owns_page)
 
 @application.route('/logout', methods=['GET'])
 def logout():
@@ -307,11 +294,39 @@ def api_get_settings():
 		(r.row['username'] == current_user.username))
 		.run(conn))
 
-	return jsonify(settings[0])	
+	return jsonify(settings[0])
+
+@application.route('/api/users', methods=['GET'])
+def api_get_user_with_posts():
+	username = request.args.get('username')
+	users = list(r.table(TABLE_USERS).filter(
+		(r.row['username'] == username)).run(conn))
+
+	if not len(users):
+		abort(404)
+
+	user = { 'username' : username }
+	user['is_authenticated'] = current_user.is_authenticated()
+
+	posts = list(
+		r.table(TABLE_POSTS).filter(
+		(r.row['username'] == username))
+		.order_by(r.desc('sortrank'))
+		.run(conn))
+
+	settings = list(
+		r.table(TABLE_USERS_SETTINGS).filter(
+		(r.row['username'] == username))
+		.run(conn))
+
+	user['settings'] = settings[0]
+	user['posts'] = posts
+
+	return jsonify(user)
 
 @application.route('/api/posts', methods=['DELETE'])
 @login_required
-def api_delete():
+def api_delete_post():
 	jsonData = request.json
 	id = jsonData['id']
 

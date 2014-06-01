@@ -1,78 +1,15 @@
 {% include 'modules/head.html' %}
-<body class="postsByUser">
+<body class="postsByUser" ng-app="posties">
 {% include 'modules/header.html' %}
-	<style>
-		body {
-			background-color: {{user.settings.pagebackgroundcolor}};
-		}
-        .post {
-        	color: {{user.settings.posttextcolor}};
-        	background-color: {{user.settings.postbackgroundcolor}};
-        }
-        .post.text p,
-        .createPostText pre {
-        	font-family: {{user.settings.typefaceparagraph}};
-        	background-color: {{user.settings.postbackgroundcolor}};
-        }
-        .post.headline h5,
-        .createPostHeadline pre {
-        	font-family: {{user.settings.typefaceheadline}};
-        	background-color: {{user.settings.postbackgroundcolor}};
-        }
-	</style>
-	<div id="body" class="page">
+	<!-- CSS Styles -->
+	<div id="body" class="page" ng-controller="PagePostsByUserCtrl">
 		{% if current_user and current_user.is_authenticated() and user_owns_page %}
 			{% include 'modules/postTypes.html' %}
 		{% endif %}
 		<ul id="posts">
-			{% if not posts %}
-				<li>No posts found</li>
-			{% else %}
-				{% for post in posts %}
-					{% if post.type == 0 %}
-						<li class="post text" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
-							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete"></a>
-								<div class="sorter">
-									<a href="#" class="up">&#x25B2;</a>
-									<a href="#" class="down">&#x25BC;</a>
-								</div>
-								<form class="form createPostText" method="put" action="/api/postText">
-									<pre class="postText" contenteditable="true">{{post.content|safe}}</pre>
-								</form>
-							{% else %}
-								<p>{{post.content|safe}}</p>
-							{% endif %}
-						</li>
-					{% elif post.type == 1 %}
-						<li class="post headline" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
-							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete"></a>
-								<div class="sorter">
-									<a href="#" class="up">&#x25B2;</a>
-									<a href="#" class="down">&#x25BC;</a>
-								</div>
-								<form class="form createPostHeadline" method="put" action="/api/postHeadline">
-									<pre class="postHeadline" contenteditable="true">{{post.content|safe}}</pre>
-								</form>
-							{% else %}
-								<h5>{{post.content|safe}}</h5>
-							{% endif %}
-						</li>
-					{% elif post.type == 2 %}
-						<li class="post image" data-id="{{post.id}}" data-rank="{{post.sortrank}}">
-							{% if current_user and current_user.is_authenticated() and user_owns_page %}
-								<a href="#" class="delete"></a>
-								<div class="sorter">
-									<a href="#" class="up">&#x25B2;</a>
-									<a href="#" class="down">&#x25BC;</a>
-								</div>
-							{% endif %}
-							<img src="https://s3-eu-west-1.amazonaws.com/posties/{{post.key}}" alt="image" />
-						</li>
-					{% endif %}
-				{% endfor %}
-			{% endif %}
+			<li ng-repeat="post in posts" data-id="[[post.id]]" data-rank="[[post.sortrank]]" class="post">
+				<ng-include src="post.template"></ng-include>
+			</li>
 		</ul>
 	</div>
 	{% include 'modules/jsTemplates/postText.html' %}
