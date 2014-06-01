@@ -183,6 +183,9 @@ label + select {
 	width: 80%;
 	max-width: 660px;
 }
+#btnPublishContainer button {
+	
+}
 #postTypes {
 	color: #8a8a8a;
 	margin: 0;
