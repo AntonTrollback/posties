@@ -199,19 +199,25 @@ label + select {
 #postTypes button {
 	width: 110px;
 	padding-top: 49px;
-	padding-bottom: 8px;
+	padding-bottom: 10px;
 }
 .addPostText {
-	background: url('../img/iconAddText.png') #faf8c6 no-repeat center 16px;
-	font-size: 1.3rem;
+	background: url('../img/iconAddText.png') #faf8c6 no-repeat center 19px;
+	font-size: 1.1rem;
+	line-height: 1.7rem;
+	margin-right: -14px;
 }
 .addPostHeadline {
-	background: url('../img/iconAddHeadline.png') #faf8c6 no-repeat center 16px;
-	font-size: 1.3rem;
+	background: url('../img/iconAddHeadline.png') #faf8c6 no-repeat center 17px;
+	font-size: 1.1rem;
+	line-height: 1.7rem;
+	margin-right: -14px;
 }
 .addPostImage {
-	background: url('../img/iconAddImage.png') #faf8c6 no-repeat center 12px;
-	font-size: 1.3rem;
+	background: url('../img/iconAddImage.png') #faf8c6 no-repeat center 14px;
+	font-size: 1.1rem;
+	line-height: 1.7rem;
+	margin-right: -14px;
 }
 /*** GLOBAL CLASSES ***/
 header div.menu {
