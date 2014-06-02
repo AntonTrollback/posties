@@ -79,13 +79,16 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 	}
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $filter, $http) {
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 	$scope.posts = [];
+
+	var urlPathName = location.pathname;
+	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
 
 	$http({
 		url: '/api/users',
 		method: 'get',
-		params: { 'username' : 'nima' },
+		params: { 'username' : username },
 		headers: {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
