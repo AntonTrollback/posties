@@ -5,6 +5,6 @@
 		<a class="down" ng-click="movePost($event)">&#x25BC;</a>
 	</div>
 	<form class="form createPostText" method="put" action="/api/postText">
-		<pre ng-blur="savePost($event, post)" class="postText" contenteditable="true">[[post.content]]</pre>
+		<pre ng-blur="savePost($event, post)" class="postText" ng-model="post.content" contenteditable>[[post.content]]</pre>
 	</form>
 </script>

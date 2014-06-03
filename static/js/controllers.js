@@ -131,15 +131,30 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 	};
 
 	$scope.savePost = function($event, post) {
-		if($event.target.getAttribute('data-changed')) {
-			$('#flashSaved').fadeIn().delay(500).fadeOut();
-			$event.target.setAttribute('data-changed', false);
+		if($($event.target).data('changed')) {
+			var jsonPost = JSON.stringify({ 
+				'content' : post.content.linkify(),
+				'id' : post.id
+			});
+
+			$http({
+				url: '/api/postText',
+				method: 'put',
+				data: jsonPost,
+				headers: {
+					'Content-Type': 'application/json;charset=UTF-8'
+				}
+			}).then(function(response) {
+				$('#flashSaved').fadeIn().delay(500).fadeOut();
+				$($event.target).data('changed', false);
+			}, function(response) {
+				console.log(response);
+			});
 		}
 	};
 
 	//Angular doesn't do ng-change on contenteditable, using jQuery
 	$('#posts').on('propertychange, input', 'pre', function(el) {
-		//console.log($(this).setAttribute('data-changed', true));
-		$(this).attr('data-changed', true);
+		$(this).data('changed', true);
 	});
 });
