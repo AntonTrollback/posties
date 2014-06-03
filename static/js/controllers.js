@@ -153,6 +153,23 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 		}
 	};
 
+	$scope.deletePost = function($event, post) {
+		var jsonPost = JSON.stringify({ 'id' : post.id });
+
+		$http({
+			url: '/api/posts',
+			method: 'delete',
+			data: jsonPost,
+			headers: {
+				'Content-Type': 'application/json;charset=UTF-8'
+			}
+		}).then(function(response) {
+			$($event.target).parents('li:eq(0)').fadeOut();
+		}, function(response) {
+			console.log(response);
+		});
+	}
+
 	//Angular doesn't do ng-change on contenteditable, using jQuery
 	$('#posts').on('propertychange, input', 'pre', function(el) {
 		$(this).data('changed', true);

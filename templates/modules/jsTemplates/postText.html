@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="postText.html">
-	<a href="#" ng-show="user.isAuthenticated" class="delete"></a>
+	<a href="#" ng-show="user.isAuthenticated" ng-click="deletePost($event, post)" class="delete"></a>
 	<div class="sorter">
 		<a class="up" ng-click="movePost($event)">&#x25B2;</a>
 		<a class="down" ng-click="movePost($event)">&#x25BC;</a>

@@ -336,27 +336,6 @@ $(document).ready(function() {
 				$('#flashIntro').fadeIn();
 			}
 
-			posts.on('click', '.delete', function(event) {
-				event.preventDefault();
-
-				var thisPost = $(this).parents('li:eq(0)');
-
-				var jsonPost = JSON.stringify({ 'id' : thisPost.data('id') });
-
-				$.ajax({
-					contentType: 'application/json;charset=UTF-8',
-					type: 'delete',
-					url: '/api/posts',
-					data: jsonPost,
-					success: function(jsonResponse) {
-						$(event.target).parents('li:eq(0)').fadeOut();
-					},
-					error: function(jsonResponse) {
-						console.log(jsonResponse);
-					}
-				});
-			});
-
 			/*
 			posts.on('propertychange, input', 'pre', function(e) {
 				$(this).attr('data-changed', true);
