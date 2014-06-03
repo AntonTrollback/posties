@@ -130,13 +130,16 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 		$scope.showPostTypes = false;
 	};
 
-	$scope.savePost = function($scope, $event) {
-		console.log($scope);
-		console.log($event);
+	$scope.savePost = function($event, post) {
+		if($event.target.getAttribute('data-changed')) {
+			$('#flashSaved').fadeIn().delay(500).fadeOut();
+			$event.target.setAttribute('data-changed', false);
+		}
 	};
 
-	$scope.changePost = function($scope, $event) {
-
-		console.log($event);
-	}
+	//Angular doesn't do ng-change on contenteditable, using jQuery
+	$('#posts').on('propertychange, input', 'pre', function(el) {
+		//console.log($(this).setAttribute('data-changed', true));
+		$(this).attr('data-changed', true);
+	});
 });
