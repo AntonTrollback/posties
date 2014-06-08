@@ -2,8 +2,8 @@
 	<li class="post image hidden">
 		<a href="#" class="delete"></a>
 		<div class="sorter">
-			<a href="#" class="up">&#x25B2;</a>
-			<a href="#" class="down">&#x25BC;</a>
+			<a class="up" ng-click="movePost($index, $index - 1)">&#x25B2;</a>
+			<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
 		</div>
 		<form class="form createPostImage hidden" method="post" action="/api/postImage" enctype="multipart/form-data">
 			<input type="file" name="postImage" accept="image/*" capture="camera" class="postImage" />

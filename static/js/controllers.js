@@ -143,7 +143,29 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
-		swapItems($scope.posts, currentIndex, newIndex);
+		var isUpRanked = currentIndex > newIndex;
+		var movedPost = $scope.posts[currentIndex];
+		var affectedSiblingPost = isUpRanked ? $scope.posts[currentIndex - 1] : $scope.posts[currentIndex + 1];
+
+		jsonPost = JSON.stringify({
+			'movedPostID' : movedPost.id,
+			'movedPostRank' : isUpRanked ? movedPost.sortrank + 1 : movedPost.sortrank - 1,
+			'affectedSiblingPostID' : affectedSiblingPost.id,
+			'affectedSiblingPostRank' : isUpRanked ? affectedSiblingPost.sortrank - 1 : affectedSiblingPost.sortrank + 1,
+		});
+
+		$http({
+			url: '/api/postrank',
+			method: 'post',
+			data: jsonPost,
+			headers: {
+				'Content-Type': 'application/json;charset=UTF-8'
+			}
+		}).then(function(response) {
+			swapItems($scope.posts, currentIndex, newIndex);
+		}, function(response) {
+			console.log(response);
+		});
 	}
 
 	$scope.deletePost = function($event, post) {
