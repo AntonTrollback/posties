@@ -1,8 +1,8 @@
 <script type="text/ng-template" id="postHeadline.html">
 	<a href="#" ng-show="user.isAuthenticated" ng-click="deletePost($event, post)" class="delete"></a>
 	<div class="sorter">
-		<a class="up" ng-click="movePost($event)">&#x25B2;</a>
-		<a class="down" ng-click="movePost($event)">&#x25BC;</a>
+		<a class="up" ng-click="movePost($index, $event)">&#x25B2;</a>
+		<a class="down" ng-click="movePost($index, $event)">&#x25BC;</a>
 	</div>
 	<form class="form createPostHeadline" method="put" action="/api/postHeadline">
 		<pre ng-blur="savePost($event, post)" class="postHeadline" ng-model="post.content" contenteditable>[[post.content]]</pre>
