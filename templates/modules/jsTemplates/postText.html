@@ -1,8 +1,8 @@
 <script type="text/ng-template" id="postText.html">
 	<a href="#" ng-show="user.isAuthenticated" ng-click="deletePost($event, post)" class="delete"></a>
 	<div class="sorter">
-		<a class="up" ng-click="movePost($index, $event)">&#x25B2;</a>
-		<a class="down" ng-click="movePost($index, $event)">&#x25BC;</a>
+		<a class="up" ng-click="movePost($index, $index - 1)">&#x25B2;</a>
+		<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
 	</div>
 	<form class="form createPostText" method="put" action="/api/postText">
 		<pre ng-blur="savePost($event, post)" class="postText" ng-model="post.content" contenteditable>[[post.content]]</pre>

@@ -17,15 +17,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 		$scope.showPostTypes = false;
 	};
 
-	$scope.movePost = function($index, $event) {
-		var index = 0;
-		if($event.target.className === 'up') {
-			index = $index - 1;
-		} else if($event.target.className === 'down') {
-			index = $index + 1;
-		}
-
-		swapItems($scope.posts, $index, index);
+	$scope.movePost = function(currentIndex, newIndex) {
+		swapItems($scope.posts, currentIndex, newIndex);
 	}
 
 	$scope.publish = function() {
@@ -149,15 +142,8 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 		}
 	};
 
-	$scope.movePost = function($index, $event) {
-		var index = 0;
-		if($event.target.className === 'up') {
-			index = $index - 1;
-		} else if($event.target.className === 'down') {
-			index = $index + 1;
-		}
-
-		swapItems($scope.posts, $index, index);
+	$scope.movePost = function(currentIndex, newIndex) {
+		swapItems($scope.posts, currentIndex, newIndex);
 	}
 
 	$scope.deletePost = function($event, post) {
