@@ -2,6 +2,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 
 	$scope.posts = [];
 	$scope.isUserAuthenticated = angular.element('head').hasClass('authenticated');
+	$scope.isStartPage = true;
 
 	$scope.addPost = function($event) {
 
@@ -13,12 +14,23 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 			'template' : $event.target.getAttribute('data-template')
 		}
 
-		$scope.posts.push(post);
+		$scope.posts.unshift(post);
 		$scope.showPostTypes = false;
+	};
+
+	$scope.savePost = function($event, post) {
+		if($($event.target).data('changed')) {
+			$('#flashSaved').fadeIn().delay(500).fadeOut();
+			$($event.target).data('changed', false);
+		}
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
 		swapItems($scope.posts, currentIndex, newIndex);
+	}
+
+	$scope.deletePost = function(currentIndex, post) {
+		$scope.posts.splice(currentIndex, 1);
 	}
 
 	$scope.publish = function() {
@@ -66,6 +78,11 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 			console.log("form is invalid");
 		}
 	}
+
+	//Angular doesn't do ng-change on contenteditable, using jQuery
+	$('#posts').on('propertychange, input', 'pre', function(el) {
+		$(this).data('changed', true);
+	});
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
@@ -103,15 +120,27 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 	});
 
 	$scope.addPost = function($event) {
+		var postType = $event.target.getAttribute('data-type');
+
 		$http({
 			url: '/api/postText',
 			method: 'post',
-			data: { 'content' : '' },
+			data: { 'content' : '', 'type' : postType },
 			headers: {
 				'Content-Type': 'application/json;charset=UTF-8'
 			}
 		}).then(function(response) {
-			$scope.posts.push(response);
+			var post = response.data;
+			
+			if(post.type == 0) {
+				post['template'] = 'postText.html';
+			} else if(post.type == 1) {
+				post['template'] = 'postHeadline.html';
+			} else if(post.type == 2) {
+				post['template'] = 'postImage.html';
+			}
+
+			$scope.posts.unshift(post);
 		}, function(response) {
 			console.log(response);
 		});
@@ -168,7 +197,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 		});
 	}
 
-	$scope.deletePost = function($event, post) {
+	$scope.deletePost = function(currentIndex, post) {
 		var jsonPost = JSON.stringify({ 'id' : post.id });
 
 		$http({
@@ -179,7 +208,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 				'Content-Type': 'application/json;charset=UTF-8'
 			}
 		}).then(function(response) {
-			$($event.target).parents('li:eq(0)').fadeOut();
+			$scope.posts.splice(currentIndex, 1);
 		}, function(response) {
 			console.log(response);
 		});

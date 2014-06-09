@@ -1,10 +1,10 @@
 <button id="addPost" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes">Add content</button>
 <ul id="postTypes" ng-show="showPostTypes" ng-cloak>
 	<li>
-		<button class="addPostText" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="">Body text</button>
+		<button class="addPostText" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="This is your paragraph. You can add whatever text you'd like and also include links by typing in www addresses!">Body text</button>
 	</li>
 	<li>
-		<button class="addPostHeadline" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="">Headline</button>
+		<button class="addPostHeadline" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="This is your headline">Headline</button>
 	</li>
 	<li>
 		<button class="addPostImage" ng-click="addPost($event)" data-type="2">Image</button>

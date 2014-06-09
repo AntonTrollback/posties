@@ -156,7 +156,7 @@ def api_post_text():
 			'content' : content, 
 			'username' : current_user.username,
 			'sortrank' : sort_rank,
-			'type' : 0,
+			'type' : jsonData['type'],
 			'created' : r.now()}, return_vals = True).run(conn)
 	elif request.method == 'PUT':
 		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
