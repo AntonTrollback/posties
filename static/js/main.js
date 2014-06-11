@@ -25,30 +25,6 @@ $(document).ready(function() {
 		});
 	}
 
-	function initTogglers() {
-		$('body').on('click', '.toggler', function(event) {
-			event.preventDefault();
-
-			if($(this).attr('href')) {
-				$($(this).attr('href')).fadeToggle();
-			} else {
-				var target = $($(this).data('target'));
-
-				target.fadeToggle();
-			}
-		});
-
-		$(document).keydown(function(e) {
-			if (e.keyCode == 27) { 
-				$('.modal').fadeOut();
-			}
-		});
-
-		$('body').on('click', '.close', function(event) {
-			$(event.target).closest('.modal').fadeOut();
-		});
-	}
-
 	function initColorPickers() {
 		$('.colorpicker').colpick({ 
 			layout : 'hex', 
@@ -380,7 +356,6 @@ $(document).ready(function() {
 	/* GLOBAL MODULES */
 	//initAddPostButton();
 	initFlash();
-	initTogglers();
 	initColorPickers();
 	initModuleCreatePostImage();
 	initModuleUpdateSettings();

@@ -1,5 +1,5 @@
 <div id="modalLogin" class="modal login" ng-show="showModalLogin" ng-cloak>
-	<p class="close"><a>X</a></p>
+	<p class="close" ng-click="showModalLogin = !showModalLogin"><a>X</a></p>
 	<h3>Login</h3>
 	<form id="formLogin" class="form" method="post" action="/api/login">
 		<fieldset>

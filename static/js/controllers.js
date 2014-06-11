@@ -148,10 +148,15 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 		$scope.showPostTypes = false;
 	};
 
-	$scope.savePost = function($event, post) {
-		if($($event.target).data('changed')) {
+	$scope.savePost = function($event, $index, post) {
+		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
+		postTextContent = angular.element($event)[0].currentTarget.innerHTML;
+
+		if(postTextContent.length && $($event.target).data('changed')) {
+			postTextContent = postTextContent.linkify();
+
 			var jsonPost = JSON.stringify({ 
-				'content' : post.content.linkify(),
+				'content' : postTextContent,
 				'id' : post.id
 			});
 
@@ -165,6 +170,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 			}).then(function(response) {
 				$('#flashSaved').fadeIn().delay(500).fadeOut();
 				$($event.target).data('changed', false);
+				post.content = postTextContent;
 			}, function(response) {
 				console.log(response);
 			});
