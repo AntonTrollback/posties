@@ -5,6 +5,6 @@
 		<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
 	</div>
 	<form class="form createPostHeadline" method="put" action="/api/postHeadline">
-		<pre ng-blur="savePost($event, $index, post)" class="postHeadline" contenteditable="true">[[post.content]]</pre>
+		<pre ng-blur="savePost($event, $index, post)" class="postHeadline" contenteditable>[[post.content]]</pre>
 	</form>
  </script>
