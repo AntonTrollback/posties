@@ -47,7 +47,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 			
 			var numberOfPosts = $('#posts > li').length;
 			$('.postText, .postHeadline').each(function(index) { 
-				var content = $(this).text().linkify();
+				var content = $(this).text();
 				var type = $(this).hasClass('postText') ? 0 : 1;
 
 				posts.push({ 'content' : content, 'sortrank' : numberOfPosts - index, 'type' : type });
@@ -153,8 +153,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 		postTextContent = angular.element($event)[0].currentTarget.innerHTML;
 
 		if(postTextContent.length && $($event.target).data('changed')) {
-			postTextContent = postTextContent.linkify();
-
 			var jsonPost = JSON.stringify({ 
 				'content' : postTextContent,
 				'id' : post.id
@@ -170,7 +168,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 			}).then(function(response) {
 				$('#flashSaved').fadeIn().delay(500).fadeOut();
 				$($event.target).data('changed', false);
-				post.content = postTextContent;
 			}, function(response) {
 				console.log(response);
 			});

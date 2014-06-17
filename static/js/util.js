@@ -42,31 +42,6 @@ posties.util = (function() {
     };
 }());
 
-if(!String.linkify) {
-  String.prototype.linkify = function() {
-
-    var htmlTagsPattern = /(<([^>]+)>)/ig;
-
-    // http://, https://, ftp://
-    var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
-
-    // www. sans http:// or https://
-    var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-
-    // Email addresses
-    var emailAddressPattern = /\w+@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6})+/gim;
-
-    var newlinePattern = /<br\s*[\/]?>/gi;
-
-    return this
-        .replace(newlinePattern, "\n")
-        .replace(htmlTagsPattern, "")
-        .replace(urlPattern, '<a href="$&">$&</a>')
-        .replace(pseudoUrlPattern, '$1<a href="http://$2">$2</a>')
-        .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
-  };
-}
-
 var swapItems = function(arr, a, b){
     arr[a] = arr.splice(b, 1, arr[a])[0];
     return arr;

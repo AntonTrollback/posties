@@ -313,8 +313,8 @@ header div.menu li {
 	margin-bottom: 1.1rem;
 	box-sizing: border-box;
 }
-.post pre {
-	
+.post pre a {
+	text-decoration: underline;
 }
 .post .sorter {
 	position: absolute;
