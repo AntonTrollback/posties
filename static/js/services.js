@@ -9,26 +9,25 @@ postiesApp.constant('config', {
 
 postiesApp.service('SettingsService', function($http, config) {
 
-	var isOpen = false;
-	var settings = false;
+	this.isOpen = false;
+
+	this.getSettings = function() {
+    	var promise = $http({
+			url: '/api/settings',
+			method: 'get',
+			headers: config.headerJSON
+		}).then(function(response) {
+			return response.data;
+		}, function(response) {
+			console.log(response);
+		});
+
+		return promise;
+    }
 
 	this.open = function() {
-		if(!settings) {
-			$http({
-				url: '/api/settings',
-				method: 'get',
-				headers: config.headerJSON
-			}).then(function(response) {
-				settings = response.data;
-			}, function(response) {
-				console.log(response);
-			});
-		} else {
-			console.log(settings);
-		}
-
-		this.isOpen = !this.isOpen;
+    	this.isOpen = !this.isOpen;
 		return this.isOpen;
-	}
-
+    }
 });
+

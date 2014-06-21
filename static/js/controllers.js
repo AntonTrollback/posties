@@ -85,7 +85,12 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http, config) 
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsService, config) {
 	
-	$scope.settings = SettingsService;
+	$scope.settingsService = SettingsService;
+	$scope.settings;
+
+	$scope.settingsService.getSettings().then(function(d) {
+	    $scope.settings = d;
+	});
 
 	$scope.posts = [];
 

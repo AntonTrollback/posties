@@ -1,9 +1,9 @@
-<div id="modalUpdateSettings" class="modal updateSettings" ng-show="settings.isOpen" ng-cloak>
+<div id="modalUpdateSettings" class="modal updateSettings" ng-show="settingsService.isOpen" ng-cloak>
 	<p class="close"><a>X</a></p>
 	<form id="updateSettings" method="put" action="/api/settings">
 		<fieldset>
 			<label for="postTextColor">Text color</label>
-			<input id="postTextColor" type="text" value="" name="postTextColor" class="colorpicker" data-target="#colorPickerPostTextColor" />
+			<input id="postTextColor" type="text" value="[[settings.posttextcolor]]" name="postTextColor" class="colorpicker" />
 		</fieldset>
 		<fieldset>
 			<label for="postBackgroundColor">Post color</label>
