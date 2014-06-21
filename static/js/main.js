@@ -133,7 +133,7 @@ $(document).ready(function() {
 		var formUpdateSettings = $('#updateSettings');
 
 		//GET user settings
-		$('#menu').on('click', '.toggler.settings', function() {
+		/*$('#menu').on('click', '.toggler.settings', function() {
 			$.ajax({
 				contentType: 'application/json;charset=UTF-8',
 				type: 'get',
@@ -176,7 +176,7 @@ $(document).ready(function() {
 					console.log(jsonResponse);
 				}
 			});
-		});
+		});*/
 
 		//PUT user settings
 		formUpdateSettings.submit(function(event) {

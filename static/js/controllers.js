@@ -1,4 +1,4 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
+postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http, config) {
 
 	$scope.posts = [];
 	$scope.isUserAuthenticated = angular.element('head').hasClass('authenticated');
@@ -64,9 +64,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 				url: '/api/users',
 				method: 'post',
 				data: jsonPost,
-				headers: {
-					'Content-Type': 'application/json;charset=UTF-8'
-				}
+				headers: config.headerJSON
 			}).then(function(response) {
 				console.log(response);
 				window.location = "/by/" + response.data.username + "?intro=true";
@@ -85,7 +83,10 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http) {
 	});
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsService, config) {
+	
+	$scope.settings = SettingsService;
+
 	$scope.posts = [];
 
 	var urlPathName = location.pathname;
@@ -95,9 +96,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 		url: '/api/users',
 		method: 'get',
 		params: { 'username' : username },
-		headers: {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
+		headers: config.headerJSON
 	}).then(function(response) {
 		$scope.userSettings = response.data.settings;
 		$scope.user = { 'username' : response.data.username, 'isAuthenticated' : response.data.is_authenticated };
@@ -126,9 +125,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 			url: '/api/postText',
 			method: 'post',
 			data: { 'content' : '', 'type' : postType },
-			headers: {
-				'Content-Type': 'application/json;charset=UTF-8'
-			}
+			headers: config.headerJSON
 		}).then(function(response) {
 			var post = response.data;
 			
@@ -162,9 +159,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 				url: '/api/postText',
 				method: 'put',
 				data: jsonPost,
-				headers: {
-					'Content-Type': 'application/json;charset=UTF-8'
-				}
+				headers: config.headerJSON
 			}).then(function(response) {
 				$('#flashSaved').fadeIn().delay(500).fadeOut();
 				$($event.target).data('changed', false);
@@ -190,9 +185,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 			url: '/api/postrank',
 			method: 'post',
 			data: jsonPost,
-			headers: {
-				'Content-Type': 'application/json;charset=UTF-8'
-			}
+			headers: config.headerJSON
 		}).then(function(response) {
 			swapItems($scope.posts, currentIndex, newIndex);
 		}, function(response) {
@@ -207,9 +200,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http) {
 			url: '/api/posts',
 			method: 'delete',
 			data: jsonPost,
-			headers: {
-				'Content-Type': 'application/json;charset=UTF-8'
-			}
+			headers: config.headerJSON
 		}).then(function(response) {
 			$scope.posts.splice(currentIndex, 1);
 		}, function(response) {

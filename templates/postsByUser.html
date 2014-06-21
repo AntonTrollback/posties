@@ -1,8 +1,8 @@
 {% include 'modules/head.html' %}
-<body class="postsByUser" ng-app="posties">
+<body class="postsByUser" ng-app="posties" ng-controller="PagePostsByUserCtrl">
 {% include 'modules/header.html' %}
 	<!-- CSS Styles -->
-	<div id="body" class="page" ng-controller="PagePostsByUserCtrl">
+	<div id="body" class="page">
 		{% if current_user and current_user.is_authenticated() and user_owns_page %}
 			{% include 'modules/postTypes.html' %}
 		{% endif %}

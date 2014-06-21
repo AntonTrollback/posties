@@ -1,7 +1,7 @@
 {% include 'modules/head.html' %}
-<body class="index" ng-app="posties">
+<body class="index" ng-app="posties" ng-controller="PageIndexCtrl">
 {% include 'modules/header.html' %}
-	<div id="body" class="page" ng-controller="PageIndexCtrl">
+	<div id="body" class="page">
 		{% include 'modules/postTypes.html' %}
 		<div id="btnPublishContainer">
 			<button ng-click="publish()">Publish this page</button>

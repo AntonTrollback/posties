@@ -16,7 +16,7 @@
 		<a href="/by/{{current_user.username}}">{{current_user.username}}</a>
 		<div class="menu" ng-show="showMenuTop" ng-cloak>
 			<ul>
-				<li><a href="#modalUpdateSettings" class="toggler settings">Customize</a></li>
+				<li><a ng-click="settings.open()">Customize</a></li>
 				<li><a href="/logout">Sign out</a></li>
 				<li><a href="http://getposties.tumblr.com/what-is-posties">About Posti.es</a></li>
 			</ul>
