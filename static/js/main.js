@@ -25,19 +25,6 @@ $(document).ready(function() {
 		});
 	}
 
-	function initColorPickers() {
-		$('.colorpicker').colpick({ 
-			layout : 'hex', 
-			onSubmit: function(hsb, hex, rgb, el) {
-				$(el).parents('fieldset:eq(0)').find('input:eq(0)')
-				.attr('data-color', '#' + hex)
-				.css('background', '#' + hex);
-
-				$(el).colpickHide();
-			}
-		});
-	}
-
 	function createPostText() {
 		if(posties.util.isUserLoggedIn()) {
 			var jsonPost = JSON.stringify({ 'content' : $('#postTextValueHolder').val().linkify() });
@@ -356,7 +343,6 @@ $(document).ready(function() {
 	/* GLOBAL MODULES */
 	//initAddPostButton();
 	initFlash();
-	initColorPickers();
 	initModuleCreatePostImage();
 	initModuleUpdateSettings();
 

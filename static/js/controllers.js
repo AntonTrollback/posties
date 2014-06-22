@@ -12,7 +12,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 	});
 
 	$scope.addPost = function($event) {
-
 		var post = {
 			'id' : Math.round(Math.random() * 1000),
 			'sortrank' : $scope.posts.length + 1,
@@ -106,6 +105,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsSer
 	var urlPathName = location.pathname;
 	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
 
+	//Fetch user posts
 	$http({
 		url: '/api/users',
 		method: 'get',
