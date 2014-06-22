@@ -344,7 +344,7 @@ $(document).ready(function() {
 	//initAddPostButton();
 	initFlash();
 	initModuleCreatePostImage();
-	initModuleUpdateSettings();
+	//initModuleUpdateSettings();
 
 	/* PAGES */
 	initPageIndex();

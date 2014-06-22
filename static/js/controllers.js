@@ -92,15 +92,16 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsService, config) {
 
 	$scope.posts = [];
-	$scope.isUserAuthenticated = angular.element('head').hasClass('authenticated');
-	$scope.isStartPage = false;
 	
 	$scope.settingsService = SettingsService;
-	$scope.settings;
+	
+	/*$scope.settingsService.getSettings().then(function(data) {
+		$scope.settings = data;
+	});*/
 
-	$scope.settingsService.getSettings().then(function(d) {
-		$scope.settings = d;
-	});
+	$scope.submitUpdateSettings = function() {
+		console.log($scope);
+	}
 
 	var urlPathName = location.pathname;
 	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);

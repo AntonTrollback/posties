@@ -1,40 +1,40 @@
 <div id="modalUpdateSettings" class="modal updateSettings" ng-show="settingsService.isOpen" ng-cloak>
 	<p class="close"><a>X</a></p>
-	<form id="updateSettings" method="put" action="/api/settings">
+	<form id="updateSettings" method="put" name="formSettings" ng-submit="submitUpdateSettings()" novalidate>
 		<fieldset>
 			<label for="postTextColor">Text color</label>
-			<input id="postTextColor" type="text" value="[[settings.posttextcolor]]" name="postTextColor" class="colorpicker" />
+			<input id="postTextColor" type="text" ng-model="userSettings.posttextcolor" class="colorpicker" />
 		</fieldset>
 		<fieldset>
 			<label for="postBackgroundColor">Post color</label>
-			<input id="postBackgroundColor" type="text" value="[[settings.postbackgroundcolor]]" name="postBackgroundColor" class="colorpicker" data-target="#colorPickerPostBackgroundColor" />
+			<input id="postBackgroundColor" type="text" ng-model="userSettings.postbackgroundcolor" class="colorpicker" data-target="#colorPickerPostBackgroundColor" />
 		</fieldset>
 		<fieldset>
 			<label for="pageBackgroundColor">Page color</label>
-			<input id="pageBackgroundColor" type="text" value="[[settings.pagebackgroundcolor]]" name="pageBackgroundColor" class="colorpicker" data-target="#colorPickerPageBackgroundColor" />
+			<input id="pageBackgroundColor" type="text" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" data-target="#colorPickerPageBackgroundColor" />
 		</fieldset>
 		<fieldset>
 			<label for="typefaceParagraph">Text font</label>
-			<select id="typefaceParagraph">
-				<option value="sans-serif" ng-selected="settings.typefaceparagraph == 'sans-serif'">sans-serif</option>
-				<option value="NothingYouCouldDo" ng-selected="settings.typefaceparagraph == 'NothingYouCouldDo'">Nothing you could do</option>
-				<option value="CutiveMono" ng-selected="settings.typefaceparagraph == 'CutiveMono'">Cutive Mono</option>
-				<option value="KiteOne" ng-selected="settings.typefaceparagraph == 'KiteOne'">Kite One</option>
-				<option value="JosefinSans" ng-selected="settings.typefaceparagraph == 'JosefinSans'">Josefin Sans</option>
-				<option value="FanwoodText" ng-selected="settings.typefaceparagraph == 'FanwoodText'">Fanwood Text</option>
-				<option value="Delius" ng-selected="settings.typefaceparagraph == 'Delius'">Delius</option>
+			<select id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
+				<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">sans-serif</option>
+				<option value="NothingYouCouldDo" ng-selected="userSettings.typefaceparagraph == 'NothingYouCouldDo'">Nothing you could do</option>
+				<option value="CutiveMono" ng-selected="userSettings.typefaceparagraph == 'CutiveMono'">Cutive Mono</option>
+				<option value="KiteOne" ng-selected="userSettings.typefaceparagraph == 'KiteOne'">Kite One</option>
+				<option value="JosefinSans" ng-selected="userSettings.typefaceparagraph == 'JosefinSans'">Josefin Sans</option>
+				<option value="FanwoodText" ng-selected="userSettings.typefaceparagraph == 'FanwoodText'">Fanwood Text</option>
+				<option value="Delius" ng-selected="userSettings.typefaceparagraph == 'Delius'">Delius</option>
 			</select>
 		</fieldset>
 		<fieldset>
 			<label for="typefaceHeadline">Headline font</label>
-			<select id="typefaceHeadline">
-				<option value="sans-serif" ng-selected="settings.typefaceheadline == 'sans-serif'">sans-serif</option>
-				<option value="NothingYouCouldDo" ng-selected="settings.typefaceheadline == 'NothingYouCouldDo'">Nothing you could do</option>
-				<option value="CutiveMono" ng-selected="settings.typefaceheadline == 'CutiveMono'">Cutive Mono</option>
-				<option value="KiteOne" ng-selected="settings.typefaceheadline == 'KiteOne'">Kite One</option>
-				<option value="JosefinSans" ng-selected="settings.typefaceheadline == 'JosefinSans'">Josefin Sans</option>
-				<option value="FanwoodText" ng-selected="settings.typefaceheadline == 'FanwoodText'">Fanwood Text</option>
-				<option value="Delius" ng-selected="settings.typefaceheadline == 'Delius'">Delius</option>
+			<select id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
+				<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">sans-serif</option>
+				<option value="NothingYouCouldDo" ng-selected="userSettings.typefaceheadline == 'NothingYouCouldDo'">Nothing you could do</option>
+				<option value="CutiveMono" ng-selected="userSettings.typefaceheadline == 'CutiveMono'">Cutive Mono</option>
+				<option value="KiteOne" ng-selected="userSettings.typefaceheadline == 'KiteOne'">Kite One</option>
+				<option value="JosefinSans" ng-selected="userSettings.typefaceheadline == 'JosefinSans'">Josefin Sans</option>
+				<option value="FanwoodText" ng-selected="userSettings.typefaceheadline == 'FanwoodText'">Fanwood Text</option>
+				<option value="Delius" ng-selected="userSettings.typefaceheadline == 'Delius'">Delius</option>
 			</select>
 		</fieldset>
 		<fieldset class="buttonContainer">
