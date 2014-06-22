@@ -3,15 +3,15 @@
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="submitUpdateSettings()" novalidate>
 		<fieldset>
 			<label for="postTextColor">Text color</label>
-			<input id="postTextColor" type="text" ng-model="userSettings.posttextcolor" class="colorpicker" />
+			<input id="postTextColor" type="text" ng-model="userSettings.posttextcolor" class="colorpicker" style="background-color: [[userSettings.posttextcolor]]" />
 		</fieldset>
 		<fieldset>
 			<label for="postBackgroundColor">Post color</label>
-			<input id="postBackgroundColor" type="text" ng-model="userSettings.postbackgroundcolor" class="colorpicker" data-target="#colorPickerPostBackgroundColor" />
+			<input id="postBackgroundColor" type="text" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background-color: [[userSettings.postbackgroundcolor]]" />
 		</fieldset>
 		<fieldset>
 			<label for="pageBackgroundColor">Page color</label>
-			<input id="pageBackgroundColor" type="text" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" data-target="#colorPickerPageBackgroundColor" />
+			<input id="pageBackgroundColor" type="text" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background-color: [[userSettings.pagebackgroundcolor]]" />
 		</fieldset>
 		<fieldset>
 			<label for="typefaceParagraph">Text font</label>

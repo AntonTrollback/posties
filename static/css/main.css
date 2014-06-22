@@ -373,6 +373,9 @@ header div.menu li {
 	max-width: 100%;
 	width: 100%;
 }
+.colorpicker {
+	text-indent: -99999px;
+}
 #postForms {
 	display: none;
 }
