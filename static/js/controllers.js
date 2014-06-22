@@ -1,8 +1,15 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http, config) {
+postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, config) {
 
 	$scope.posts = [];
 	$scope.isUserAuthenticated = angular.element('head').hasClass('authenticated');
 	$scope.isStartPage = true;
+
+	$scope.settingsService = SettingsService;
+	$scope.settings;
+
+	$scope.settingsService.getSettings().then(function(d) {
+		$scope.settings = d;
+	});
 
 	$scope.addPost = function($event) {
 
@@ -84,15 +91,17 @@ postiesApp.controller('PageIndexCtrl', function($scope, $filter, $http, config) 
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsService, config) {
+
+	$scope.posts = [];
+	$scope.isUserAuthenticated = angular.element('head').hasClass('authenticated');
+	$scope.isStartPage = false;
 	
 	$scope.settingsService = SettingsService;
 	$scope.settings;
 
 	$scope.settingsService.getSettings().then(function(d) {
-	    $scope.settings = d;
+		$scope.settings = d;
 	});
-
-	$scope.posts = [];
 
 	var urlPathName = location.pathname;
 	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
