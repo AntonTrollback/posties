@@ -1,4 +1,4 @@
-var postiesApp = angular.module('posties', ['ngSanitize'], function ($interpolateProvider) {
+var postiesApp = angular.module('posties', ['ngSanitize', 'colorpicker.module'], function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
