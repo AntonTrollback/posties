@@ -30,15 +30,5 @@ postiesApp.service('SettingsService', function($http, config) {
 		return this.isOpen = !this.isOpen;
     }
 
-    $('.colorpicker').colpick({ 
-		layout : 'hex', 
-		onSubmit: function(hsb, hex, rgb, el) {
-			$(el).parents('fieldset:eq(0)').find('input:eq(0)')
-			.css('background', '#' + hex)
-			.val('#' + hex);
-
-			$(el).colpickHide();
-		}
-	});
 });
 

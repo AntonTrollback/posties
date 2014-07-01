@@ -100,7 +100,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsSer
 	});*/
 
 	$scope.submitUpdateSettings = function() {
-		console.log($scope);
+		console.log($scope.userSettings);
 	}
 
 	var urlPathName = location.pathname;
