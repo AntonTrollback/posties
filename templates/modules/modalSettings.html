@@ -1,8 +1,8 @@
 <div id="modalUpdateSettings" class="modal updateSettings" ng-show="settingsService.isOpen" ng-cloak>
 	<p class="close"><a>X</a></p>
-	<form id="updateSettings" method="put" name="formSettings" ng-submit="submitUpdateSettings()" novalidate>
+	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
 		<fieldset>
-			<label for="postTextColor">Text color: [[userSettings.posttextcolor]]</label>
+			<label for="postTextColor">Text color:</label>
 			<input id="postTextColor" type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
 		</fieldset>
 		<fieldset>

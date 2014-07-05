@@ -261,11 +261,11 @@ def api_post_headline():
 @login_required
 def api_update_settings():
 	jsonData = request.json
-	post_text_color = jsonData['postTextColor']
-	post_background_color = jsonData['postBackgroundColor']
-	page_background_color = jsonData['pageBackgroundColor']
-	typeface_paragraph = jsonData['typefaceParagraph']
-	typeface_headline = jsonData['typefaceHeadline']
+	post_text_color = jsonData['posttextcolor']
+	post_background_color = jsonData['postbackgroundcolor']
+	page_background_color = jsonData['pagebackgroundcolor']
+	typeface_paragraph = jsonData['typefaceparagraph']
+	typeface_headline = jsonData['typefaceheadline']
 
 	if (len(post_text_color) is 7
 	and len(post_background_color) is 7 

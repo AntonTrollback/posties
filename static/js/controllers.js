@@ -99,10 +99,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsSer
 		$scope.settings = data;
 	});*/
 
-	$scope.submitUpdateSettings = function() {
-		console.log($scope.userSettings);
-	}
-
 	var urlPathName = location.pathname;
 	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
 

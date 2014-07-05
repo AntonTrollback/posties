@@ -12,7 +12,7 @@ postiesApp.service('SettingsService', function($http, config) {
 	this.isOpen = false;
 	
 	this.getSettings = function() {
-    	var promise = $http({
+		var promise = $http({
 			url: '/api/settings',
 			method: 'get',
 			headers: config.headerJSON
@@ -24,11 +24,33 @@ postiesApp.service('SettingsService', function($http, config) {
 		});
 
 		return promise;
-    }
+	}
 
 	this.open = function() {
 		return this.isOpen = !this.isOpen;
     }
+
+    this.submitUpdateSettings = function(userSettings) {
+    	var promise = $http({
+			url: '/api/settings',
+			method: 'put',
+			data: userSettings,
+			headers: config.headerJSON
+		}).then(function(response) {
+			this.data = response.data;
+			return response.data;
+		}, function(response) {
+			console.log(response);
+		});
+
+		this.close();
+
+		return promise;
+    }
+
+	this.close = function() {
+		this.isOpen = false;
+	}
 
 });
 
