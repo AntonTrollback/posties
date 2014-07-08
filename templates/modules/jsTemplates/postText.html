@@ -5,6 +5,6 @@
 		<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
 	</div>
 	<form class="form createPostText" method="put" action="/api/postText">
-		<pre ng-blur="savePost($event, $index, post)" class="postText" data-changed="false" contenteditable ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.postbackgroundcolor, 'box-shadow': '1px 2px 4px' + userSettings.postbackgroundcolor, 'font-family': userSettings.typefaceparagraph }"></pre>
+		<pre ng-blur="savePost($event, $index, post)" class="postText" data-changed="false" contenteditable ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.postbackgroundcolor, 'box-shadow': '1px 2px 4px' + userSettings.postbackgroundcolor, 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
 	</form>
 </script>

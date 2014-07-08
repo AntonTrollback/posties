@@ -5,11 +5,17 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 	$scope.isStartPage = true;
 
 	$scope.settingsService = SettingsService;
-	$scope.settings;
-
-	$scope.settingsService.getSettings().then(function(d) {
-		$scope.settings = d;
-	});
+	$scope.userSettings = {
+		created:  new Date(),
+		id:  "123",
+		pagebackgroundcolor:  "#f5f5f5" ,
+		pagehaspostshadows: true ,
+		postbackgroundcolor:  "#ffffff" ,
+		posttextcolor:  "#141414" ,
+		typefaceheadline:  "sans-serif" ,
+		typefaceparagraph:  "sans-serif" ,
+		username:  false
+	};
 
 	$scope.addPost = function($event) {
 		var post = {
