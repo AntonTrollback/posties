@@ -69,7 +69,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 				'email' : formCreateUser.find('.email:eq(0)').val(),
 				'username' : formCreateUser.find('.username:eq(0)').val(),
 				'password' : formCreateUser.find('.password:eq(0)').val(),
-				'posts' : posts
+				'posts' : posts,
+				'settings' : $scope.userSettings
 			});
 
 			$http({

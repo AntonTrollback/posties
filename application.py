@@ -91,10 +91,12 @@ def api_login():
 @application.route('/api/users', methods=['POST'])
 def api_create_user():
 	jsonData = request.json
+	print jsonData
 	email = jsonData['email'].lower()
 	username = jsonData['username'].lower()
 	password = jsonData['password']
 	posts = jsonData['posts']
+	settings = jsonData['settings']
 
 	result = r.table(TABLE_USERS).insert({ 
 		'email' : email,
@@ -122,11 +124,11 @@ def api_create_user():
 
 		result = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
-			'typefaceparagraph' : 'sans-serif',
-			'typefaceheadline' : 'sans-serif',
-			'posttextcolor' : '#141414',
-			'postbackgroundcolor' : '#ffffff',
-			'pagebackgroundcolor' : '#f5f5f5', 
+			'typefaceparagraph' : settings['typefaceparagraph'],
+			'typefaceheadline' : settings['typefaceheadline'],
+			'posttextcolor' : settings['posttextcolor'],
+			'postbackgroundcolor' : settings['postbackgroundcolor'],
+			'pagebackgroundcolor' : settings['pagebackgroundcolor'], 
 			'pagehaspostshadows' : True,
 			'created' : r.now()}).run(conn)
 

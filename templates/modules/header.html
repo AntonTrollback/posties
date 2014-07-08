@@ -25,10 +25,12 @@
 	{% else %}
 		<div class="menu" ng-show="showMenuTop" ng-cloak>
 			<ul>
+				<li><a ng-click="settingsService.open()">Customize</a></li>
 				<li><a ng-click="showModalLogin = !showModalLogin">Login</a></li>
 				<li><a href="http://getposties.tumblr.com/what-is-posties">About Posti.es</a></li>
 			</ul>
 		</div>
+		{% include 'modules/modalSettings.html' %}
 		{% include 'modules/modalLogin.html' %}
 	{% endif %}
 </header>
