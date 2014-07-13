@@ -64,23 +64,18 @@ def login():
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
-	users_result = r.table(TABLE_USERS).filter(
+	users = r.table(TABLE_USERS).filter(
 		(r.row['username'] == username)).run(conn)
 
-	user = None
-
-	for user_obj in users_result:
-		user = user_obj
-
-	if not user:
-		abort(404)
+	user_owns_page = False
 
 	if current_user.is_authenticated():
 		user_owns_page = username == current_user.username
-	else:
-		user_owns_page = False
 
-	return render_template('postsByUser.html', user_owns_page = user_owns_page)
+	for user in users:
+		return render_template('postsByUser.html', user_owns_page = user_owns_page)
+	
+	abort(404)
 
 @application.route('/logout', methods=['GET'])
 def logout():

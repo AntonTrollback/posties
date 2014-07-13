@@ -1,10 +1,16 @@
-<script type="text/ng-template" id="postText.html">
-	<a href="#" ng-click="deletePost($index, post)" class="delete"></a>
-	<div class="sorter">
-		<a class="up" ng-click="movePost($index, $index - 1)">&#x25B2;</a>
-		<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
-	</div>
-	<form class="form createPostText" method="put" action="/api/postText">
-		<pre ng-blur="savePost($event, $index, post)" class="postText" data-changed="false" contenteditable ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.postbackgroundcolor, 'box-shadow': '1px 2px 4px' + userSettings.postbackgroundcolor, 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
-	</form>
-</script>
+{% if current_user and current_user.is_authenticated() and user_owns_page %}
+	<script type="text/ng-template" id="postText.html">
+		<a href="#" ng-click="deletePost($index, post)" class="delete"></a>
+		<div class="sorter">
+			<a class="up" ng-click="movePost($index, $index - 1)">&#x25B2;</a>
+			<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
+		</div>
+		<form class="form createPostText" method="put" action="/api/postText">
+			<pre ng-blur="savePost($event, $index, post)" class="postText" data-changed="false" contenteditable ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.postbackgroundcolor, 'box-shadow': '1px 1px 1px' + userSettings.postbackgroundcolor, 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
+		</form>
+	</script>
+{% else %}
+	<script type="text/ng-template" id="postText.html">
+		<pre class="postText" ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.postbackgroundcolor, 'box-shadow': '1px 1px 1px' + userSettings.postbackgroundcolor, 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
+	</script>
+{% endif %}

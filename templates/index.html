@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="posties" ng-controller="PageIndexCtrl">
 {% include 'modules/head.html' %}
-<body ng-style="{ 'background': userSettings.pagebackgroundcolor }" {% if current_user and current_user.is_authenticated() %} class="authenticated" {% endif %}>
+<body ng-style="{ 'background': userSettings.pagebackgroundcolor }" {% if current_user and current_user.is_authenticated() %} class="authenticated userOwnsPage" {% endif %}>
 {% include 'modules/header.html' %}
 	<div id="body">
 		{% include 'modules/postTypes.html' %}

@@ -5,7 +5,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
-	
+
 	$scope.addPost = function($event) {
 		var post = {
 			'id' : Math.round(Math.random() * 1000),
@@ -108,7 +108,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsService, config) {
 
 	$scope.posts = [];
-	
+	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 	$scope.settingsService = SettingsService;
 	
 	/*$scope.settingsService.getSettings().then(function(data) {
