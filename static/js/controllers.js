@@ -4,18 +4,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 	$scope.isStartPage = true;
 
 	$scope.settingsService = SettingsService;
-	$scope.userSettings = {
-		created:  new Date(),
-		id:  "123",
-		pagebackgroundcolor:  "#f5f5f5" ,
-		pagehaspostshadows: true ,
-		postbackgroundcolor:  "#ffffff" ,
-		posttextcolor:  "#141414" ,
-		typefaceheadline:  "sans-serif" ,
-		typefaceparagraph:  "sans-serif" ,
-		username:  false
-	};
-
+	$scope.userSettings = $scope.settingsService.getSettings();
+	
 	$scope.addPost = function($event) {
 		var post = {
 			'id' : Math.round(Math.random() * 1000),
@@ -96,7 +86,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, config) {
 
 	$scope.submitLogin = function() {
-		console.log($scope);
 		var jsonPost = JSON.stringify({ 
 			'email' : $scope.user.email,
 			'password' : $scope.user.password

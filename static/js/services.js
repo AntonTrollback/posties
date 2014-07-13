@@ -5,8 +5,7 @@ var postiesApp = angular.module('posties', ['ngSanitize', 'colorpicker.module'],
 
 postiesApp.constant('config', {
     headerJSON: { 'Content-Type': 'application/json;charset=UTF-8' },
-    localStorageKey: 'postiesLocalStorageKey',
-    isUserAuthenticated: false
+    keySettings: 'postiesKeySettings'
 });
 
 postiesApp.service('SettingsService', function($http, config) {
@@ -14,26 +13,40 @@ postiesApp.service('SettingsService', function($http, config) {
 	this.isOpen = false;
 	
 	this.getSettings = function() {
-		var promise = $http({
-			url: '/api/settings',
-			method: 'get',
-			headers: config.headerJSON
-		}).then(function(response) {
-			this.data = response.data;
-			return response.data;
-		}, function(response) {
-			console.log(response);
-		});
+		if($('body').hasClass('authenticated')) {
+			var promise = $http({
+				url: '/api/settings',
+				method: 'get',
+				headers: config.headerJSON
+			}).then(function(response) {
+				this.data = response.data;
+				return response.data;
+			}, function(response) {
+				console.log(response);
+			});
 
-		return promise;
+			return promise;
+		} else {
+			var userSettings = localStorage.getItem(config.keySettings);
+			if(userSettings)
+				return JSON.parse(userSettings);
+			else
+				return {
+					created:  new Date(),
+					id:  "123",
+					pagebackgroundcolor:  "#f5f5f5" ,
+					pagehaspostshadows: true ,
+					postbackgroundcolor:  "#ffffff" ,
+					posttextcolor:  "#141414" ,
+					typefaceheadline:  "sans-serif" ,
+					typefaceparagraph:  "sans-serif" ,
+					username:  false
+				};
+		}
 	}
 
-	this.open = function() {
-		return this.isOpen = !this.isOpen;
-    }
-
     this.submitUpdateSettings = function(userSettings) {
-    	if($('head').hasClass('authenticated')) {
+    	if($('body').hasClass('authenticated')) {
     		var promise = $http({
 				url: '/api/settings',
 				method: 'put',
@@ -46,16 +59,21 @@ postiesApp.service('SettingsService', function($http, config) {
 				console.log(response);
 			});
 
+			this.close();
+
 			return promise;
     	} else {
-    		localStorage.setItem(config.localStorageKey, JSON.stringify(userSettings));
+    		localStorage.setItem(config.keySettings, JSON.stringify(userSettings));
+    		this.close();
     	}
-
-		this.close();
     }
 
-	this.close = function() {
-		this.isOpen = false;
+    this.open = function() {
+		return this.isOpen = !this.isOpen;
+    }
+
+    this.close = function() {
+		return this.isOpen = false;
 	}
 
 });

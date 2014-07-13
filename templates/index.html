@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html ng-app="posties" ng-controller="PageIndexCtrl">
 {% include 'modules/head.html' %}
-<body class="index" ng-style="{ 'background': userSettings.pagebackgroundcolor }">
+<body ng-style="{ 'background': userSettings.pagebackgroundcolor }" {% if current_user and current_user.is_authenticated() %} class="authenticated" {% endif %}>
 {% include 'modules/header.html' %}
-	<div id="body" class="page">
+	<div id="body">
 		{% include 'modules/postTypes.html' %}
 		<div id="btnPublishContainer">
 			<button ng-click="publish()">Publish this page</button>
