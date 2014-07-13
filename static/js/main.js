@@ -343,11 +343,11 @@ $(document).ready(function() {
 	/* GLOBAL MODULES */
 	//initAddPostButton();
 	initFlash();
-	initModuleCreatePostImage();
+	//initModuleCreatePostImage();
 	//initModuleUpdateSettings();
 
 	/* PAGES */
-	initPageIndex();
-	initPagePostsByUser();
-	initPageErrorUserNotFound();
+	//initPageIndex();
+	//initPagePostsByUser();
+	//initPageErrorUserNotFound();
 });

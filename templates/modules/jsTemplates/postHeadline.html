@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="postHeadline.html">
-	<a href="#" ng-show="user.isAuthenticated || isStartPage" ng-click="deletePost($index, post)" class="delete"></a>
+	<a href="#" ng-click="deletePost($index, post)" class="delete"></a>
 	<div class="sorter">
 		<a class="up" ng-click="movePost($index, $index - 1)">&#x25B2;</a>
 		<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>

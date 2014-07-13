@@ -4,7 +4,9 @@ var postiesApp = angular.module('posties', ['ngSanitize', 'colorpicker.module'],
 });
 
 postiesApp.constant('config', {
-    headerJSON: { 'Content-Type': 'application/json;charset=UTF-8' }
+    headerJSON: { 'Content-Type': 'application/json;charset=UTF-8' },
+    localStorageKey: 'postiesLocalStorageKey',
+    isUserAuthenticated: false
 });
 
 postiesApp.service('SettingsService', function($http, config) {
@@ -31,21 +33,25 @@ postiesApp.service('SettingsService', function($http, config) {
     }
 
     this.submitUpdateSettings = function(userSettings) {
-    	var promise = $http({
-			url: '/api/settings',
-			method: 'put',
-			data: userSettings,
-			headers: config.headerJSON
-		}).then(function(response) {
-			this.data = response.data;
-			return response.data;
-		}, function(response) {
-			console.log(response);
-		});
+    	if($('head').hasClass('authenticated')) {
+    		var promise = $http({
+				url: '/api/settings',
+				method: 'put',
+				data: userSettings,
+				headers: config.headerJSON
+			}).then(function(response) {
+				this.data = response.data;
+				return response.data;
+			}, function(response) {
+				console.log(response);
+			});
+
+			return promise;
+    	} else {
+    		localStorage.setItem(config.localStorageKey, JSON.stringify(userSettings));
+    	}
 
 		this.close();
-
-		return promise;
     }
 
 	this.close = function() {

@@ -1,7 +1,6 @@
 postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, config) {
 
 	$scope.posts = [];
-	$scope.isUserAuthenticated = angular.element('head').hasClass('authenticated');
 	$scope.isStartPage = true;
 
 	$scope.settingsService = SettingsService;
@@ -46,9 +45,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 	}
 
 	$scope.publish = function() {
-		if(!$scope.isUserAuthenticated) {
-			angular.element('.modal.createUser').toggle();
-		}
+		$('.modal.createUser').toggle();
 	}
 
 	$scope.submitCreateUser = function() {
@@ -94,6 +91,29 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 	$('#posts').on('propertychange, input', 'pre', function(el) {
 		$(this).data('changed', true);
 	});
+});
+
+postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, config) {
+
+	$scope.submitLogin = function() {
+		console.log($scope);
+		var jsonPost = JSON.stringify({ 
+			'email' : $scope.user.email,
+			'password' : $scope.user.password
+		});
+		
+		$http({
+			url: '/login',
+			method: 'post',
+			data: jsonPost,
+			headers: config.headerJSON
+		}).then(function(response) {
+			window.location = "/by/" + response.data.username;
+		}, function(response) {
+			$scope.formLogin.error = 'User could not be found';
+		});
+	}
+
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsService, config) {

@@ -54,10 +54,6 @@ header p {
 	margin: 2rem 1rem 0 0;
 	float: right;
 }
-.authenticated header p,
-.postsByUser header p {
-	display: none;
-}
 h1 a {
 	font-size: 2.8rem;
 }

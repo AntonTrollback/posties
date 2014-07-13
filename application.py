@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from flask import render_template, session, abort, redirect, request, url_for, jsonify
+from flask import render_template, session, abort, redirect, request, url_for, jsonify, make_response
 from flask.ext import login
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
@@ -43,6 +43,25 @@ def load_user(id):
 def index():
 	return render_template('index.html')
 
+@application.route('/login', methods=['GET', 'POST'])
+def login():
+	if request.method == 'GET':
+		return render_template('login.html')
+	elif request.method == 'POST':
+		jsonData = request.json
+		email = jsonData['email'].lower()
+		password = jsonData['password'].lower()
+
+		users = r.table(TABLE_USERS).filter(
+			(r.row['email'] == email) &
+			(r.row['password'] == password)).run(conn)
+
+		for user in users:
+			login_user(User(user['id'], user['email'], user['username']))
+			return jsonify(user)
+
+		return make_response(jsonify( { 'error': 'user not found' } ), 403)
+
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
 	users_result = r.table(TABLE_USERS).filter(
@@ -71,27 +90,9 @@ def logout():
 ###############
 #  API CALLS  #
 ###############
-@application.route('/api/login', methods=['POST'])
-def api_login():
-	email = request.form['email']
-	password = request.form['password']
-
-	user = list(r.table(TABLE_USERS).filter(
-		(r.row['email'] == email) &
-		(r.row['password'] == password)).run(conn))
-
-	if not user:
-		return render_template('errorInvalidLogin.html')
-
-	user = User(user[0]['id'], user[0]['email'], user[0]['username'])
-	login_user(user)
-
-	return redirect(url_for('get_posts_by_username', username = user.username))
-
 @application.route('/api/users', methods=['POST'])
 def api_create_user():
 	jsonData = request.json
-	print jsonData
 	email = jsonData['email'].lower()
 	username = jsonData['username'].lower()
 	password = jsonData['password']
@@ -347,15 +348,11 @@ def error_user_not_found():
 
 @application.route('/errorInvalidLogin', methods=['GET'])
 def error_invalid_login():
-	return render_template('errorInvalidLogin.html')	
+	return render_template('errorInvalidLogin.html')
 
 @application.errorhandler(404)
 def not_found(error):
 	return redirect(url_for('error_user_not_found'))
-
-@application.errorhandler(403)
-def not_found(error):
-	return redirect(url_for('error_invalid_login'))
 
 @application.errorhandler(401)
 def unauthorized(error):
