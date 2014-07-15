@@ -83,23 +83,20 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 	});
 });
 
-postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, config) {
+postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, AuthService, config) {
 
 	$scope.submitLogin = function() {
 		var jsonPost = JSON.stringify({ 
 			'email' : $scope.user.email,
 			'password' : $scope.user.password
 		});
-		
-		$http({
-			url: '/login',
-			method: 'post',
-			data: jsonPost,
-			headers: config.headerJSON
-		}).then(function(response) {
-			window.location = "/by/" + response.data.username;
-		}, function(response) {
-			$scope.formLogin.error = 'User could not be found';
+
+		AuthService.login(jsonPost).then(function(response) {
+			if(response.data.status == 401) {
+				window.location = "/by/" + response.data.username;
+			} else {
+				$scope.formLogin.error = response.data.error;
+			}
 		});
 	}
 

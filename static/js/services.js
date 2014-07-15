@@ -78,3 +78,32 @@ postiesApp.service('SettingsService', function($http, config) {
 
 });
 
+postiesApp.service('AuthService', function($http, config) {
+
+	this.user = false;
+
+	this.login = function(jsonPost) {
+		return $http({
+			url: '/login',
+			method: 'post',
+			data: jsonPost,
+			headers: config.headerJSON
+		}).then(function(response) {
+			return response;
+		}, function(error) {
+			return error;
+		});
+	}
+
+	this.logout = function() {
+
+	}
+
+	this.isLoggedIn = function() {
+
+	}
+
+	this.currentUserInSession = function() {
+
+	}
+});

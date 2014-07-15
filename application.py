@@ -60,7 +60,7 @@ def login():
 			login_user(User(user['id'], user['email'], user['username']))
 			return jsonify(user)
 
-		return make_response(jsonify( { 'error': 'user not found' } ), 403)
+		return make_response(jsonify( { 'error': 'user not found' } ), 401)
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
