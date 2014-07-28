@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="posties" ng-controller="PagePostsByUserCtrl">
+<html ng-app="posties" ng-controller="PagePostsByUserCtrl" class="pagePostsByUser">
 {% include 'modules/head.html' %}
 <body ng-style="{ 'background': userSettings.pagebackgroundcolor }" {% if current_user and current_user.is_authenticated() %} class="authenticated {% if user_owns_page %}userOwnsPage{% endif %}" {% endif %}>
 {% include 'modules/header.html' %}
@@ -13,8 +13,13 @@
 			</li>
 		</ul>
 	</div>
-	{% include 'modules/jsTemplates/postText.html' %}
-	{% include 'modules/jsTemplates/postHeadline.html' %}
+	{% if current_user and current_user.is_authenticated() and user_owns_page %}
+		{% include 'modules/jsTemplates/postTextAuthenticated.html' %}
+		{% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
+	{% else %}
+		{% include 'modules/jsTemplates/postText.html' %}
+		{% include 'modules/jsTemplates/postHeadline.html' %}
+	{% endif %}
 	{% include 'modules/jsTemplates/postImage.html' %}
 	{% include 'modules/jsTemplates/flashUserCreated.html' %}
 </body>

@@ -13,7 +13,7 @@ postiesApp.service('SettingsService', function($http, config) {
 	this.isOpen = false;
 	
 	this.getSettings = function() {
-		if($('body').hasClass('authenticated')) {
+		if($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
 			var promise = $http({
 				url: '/api/settings',
 				method: 'get',
@@ -46,7 +46,7 @@ postiesApp.service('SettingsService', function($http, config) {
 	}
 
     this.submitUpdateSettings = function(userSettings) {
-    	if($('body').hasClass('authenticated')) {
+    	if($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
     		var promise = $http({
 				url: '/api/settings',
 				method: 'put',
@@ -100,7 +100,7 @@ postiesApp.service('AuthService', function($http, config) {
 	}
 
 	this.isLoggedIn = function() {
-
+		return this.user != false;
 	}
 
 	this.currentUserInSession = function() {

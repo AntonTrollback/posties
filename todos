@@ -1,24 +1,6 @@
-- documentary stuff
-- project docs place (Posti.es?)
-- billing
-	- 200SEK
-
 - next steps
-	- enter key should be disabled, form is submitted on blur
-	- forms aren't hidden when not logged in, Jacob reproduced
-	- remove small white strip in bottom of image posts
+	- authentication when moving posts up and down
+	- authentication when saving settings via DB
+	- username check when creating account
+	- ability to move posts on start page (need page check)	
 	- google analytics
-	- start page
-- marketing lingo
-	- a snappy elevator pitch
-		- "Posti.es - be online"
-		- "Posti.es - the worlds simplest website builder"
-	- microsite builder
-
-- 0.1
-	- drop down substitute with real fonts?
-	- analytics
-	- save post regularly
-
-- 0.2
-	- youtube/soundcloud integration

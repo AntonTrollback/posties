@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="posties" ng-controller="PageIndexCtrl">
+<html ng-app="posties" ng-controller="PageIndexCtrl" class="pageIndex">
 {% include 'modules/head.html' %}
 <body ng-style="{ 'background': userSettings.pagebackgroundcolor }" {% if current_user and current_user.is_authenticated() %} class="authenticated userOwnsPage" {% endif %}>
 {% include 'modules/header.html' %}
@@ -13,8 +13,8 @@
 				<ng-include src="post.template"></ng-include>
 			</li>
 		</ul>
-		{% include 'modules/jsTemplates/postText.html' %}
-		{% include 'modules/jsTemplates/postHeadline.html' %}
+		{% include 'modules/jsTemplates/postTextAuthenticated.html' %}
+		{% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
 		{% include 'modules/jsTemplates/postImage.html' %}
 		{% include 'modules/modalCreateUser.html' %}
 	</div>

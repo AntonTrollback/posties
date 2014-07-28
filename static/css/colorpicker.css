@@ -178,9 +178,10 @@ colorpicker-preview {
 	font-size: 16px;
 	padding: 4px;
 	font-family: sans-serif;
-	background: transparent;
-	color: #777;
+	background: #555;
+	color: #fff;
+  width: 100%;
 	box-shadow: none;
 	display: block;
-	margin: 0 auto;
+  font-weight: lighter;
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="posties" ng-controller="PageLoginCtrl">
+<html ng-app="posties" ng-controller="PageLoginCtrl" class="pageLogin">
 {% include 'modules/head.html' %}
 <body {% if current_user and current_user.is_authenticated() %} class="authenticated" {% endif %}>
 {% include 'modules/header.html' %}
@@ -8,7 +8,7 @@
 		<form name="formLogin" class="form" method="post" ng-submit="submitLogin(userSettings)">
 			<fieldset>
 				<input type="text" class="email" name="email" ng-model="user.email" placeholder="email" required pattern=".{5,}" />
-				<input type="text" class="password" name="password" ng-model="user.password" placeholder="password" required pattern=".{4,}" />
+				<input type="password" class="password" name="password" ng-model="user.password" placeholder="password" required pattern=".{4,}" />
 			</fieldset>
 			<p>[[formLogin.error]]</p>
 			<fieldset class="buttonContainer">

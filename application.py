@@ -211,18 +211,11 @@ def api_post_image():
 @login_required
 def api_post_rank():
 	jsonData = request.json
-	moved_post_id = jsonData['movedPostID']
-	moved_post_rank = jsonData['movedPostRank']
-	affected_sibling_post_id = jsonData['affectedSiblingPostID']
-	affected_sibling_post_rank = jsonData['affectedSiblingPostRank']
- 
-	r.table(TABLE_POSTS).get(moved_post_id).update({
-		'sortrank' : moved_post_rank
-	}).run(conn);
 
-	r.table(TABLE_POSTS).get(affected_sibling_post_id).update({
-		'sortrank' : affected_sibling_post_rank
-	}).run(conn);
+	for post in jsonData:
+		r.table(TABLE_POSTS).get(post['id']).update({
+			'sortrank' : post['sortrank']
+		}).run(conn);
 
 	return jsonify("")
 

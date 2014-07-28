@@ -1,4 +1,4 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, config) {
+postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, SettingsService, config) {
 
 	$scope.posts = [];
 	$scope.isStartPage = true;
@@ -17,6 +17,9 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, SettingsService, 
 
 		$scope.posts.unshift(post);
 		$scope.showPostTypes = false;
+		$timeout(function() {
+			$('#posts li:first-child pre:eq(0)').focus();
+		}, 100);
 	};
 
 	$scope.savePost = function($event, post) {
@@ -92,7 +95,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 		});
 
 		AuthService.login(jsonPost).then(function(response) {
-			if(response.data.status == 401) {
+			if(response.status == 200) {
 				window.location = "/by/" + response.data.username;
 			} else {
 				$scope.formLogin.error = response.data.error;
@@ -102,7 +105,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsService, config) {
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, SettingsService, config) {
 
 	$scope.posts = [];
 	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
@@ -122,10 +125,11 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsSer
 		params: { 'username' : username },
 		headers: config.headerJSON
 	}).then(function(response) {
+		console.log(response.data);
 		$scope.userSettings = response.data.settings;
 		$scope.user = { 'username' : response.data.username, 'isAuthenticated' : response.data.is_authenticated };
 
-		for(i = 0; i < response.data.posts.length; i++) {
+		for(i = response.data.posts.length - 1; i >= 0; i--) {
 			var post = response.data.posts[i];
 
 			if(post.type == 0) {
@@ -162,6 +166,9 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsSer
 			}
 
 			$scope.posts.unshift(post);
+			$timeout(function() {
+				$('#posts li:first-child pre:eq(0)').focus();
+			}, 100);
 		}, function(response) {
 			console.log(response);
 		});
@@ -194,6 +201,26 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsSer
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
+		swapItems($scope.posts, currentIndex, newIndex);
+		
+		var jsonPost = [];
+		for(i = $scope.posts.length - 1; i >= 0; i--) {
+			var post = $scope.posts[i];
+			jsonPost.push({ id : post.id, sortrank : i });
+		}
+
+		$http({
+			url: '/api/postrank',
+			method: 'post',
+			data: jsonPost,
+			headers: config.headerJSON
+		}).then(function(response) {
+			console.log(response);
+		}, function(response) {
+			console.log(response);
+		});
+
+		/*
 		var isUpRanked = currentIndex > newIndex;
 		var movedPost = $scope.posts[currentIndex];
 		var affectedSiblingPost = isUpRanked ? $scope.posts[currentIndex - 1] : $scope.posts[currentIndex + 1];
@@ -214,8 +241,8 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsSer
 			swapItems($scope.posts, currentIndex, newIndex);
 		}, function(response) {
 			console.log(response);
-		});
-	}
+		});*/
+	};
 
 	$scope.deletePost = function(currentIndex, post) {
 		var jsonPost = JSON.stringify({ 'id' : post.id });
@@ -230,7 +257,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, SettingsSer
 		}, function(response) {
 			console.log(response);
 		});
-	}
+	};
 
 	//Angular doesn't do ng-change on contenteditable, using jQuery
 	$('#posts').on('propertychange, input', 'pre', function(el) {
