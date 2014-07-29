@@ -129,7 +129,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 		$scope.userSettings = response.data.settings;
 		$scope.user = { 'username' : response.data.username, 'isAuthenticated' : response.data.is_authenticated };
 
-		for(i = response.data.posts.length - 1; i >= 0; i--) {
+		for(i = 0; i < response.data.posts.length; i++) {
 			var post = response.data.posts[i];
 
 			if(post.type == 0) {
@@ -147,12 +147,16 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 	});
 
 	$scope.addPost = function($event) {
-		var postType = $event.target.getAttribute('data-type');
+		var jsonPost = {
+			type : $event.target.getAttribute('data-type'),
+			content : '',
+			sortRank : $scope.posts.length
+		};
 
 		$http({
 			url: '/api/postText',
 			method: 'post',
-			data: { 'content' : '', 'type' : postType },
+			data: jsonPost,
 			headers: config.headerJSON
 		}).then(function(response) {
 			var post = response.data;
@@ -181,11 +185,11 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 		postTextContent = angular.element($event)[0].currentTarget.innerHTML;
 
 		if(postTextContent.length && $($event.target).data('changed')) {
-			var jsonPost = JSON.stringify({ 
-				'content' : postTextContent,
-				'id' : post.id
-			});
-
+			var jsonPost = {
+				content: postTextContent,
+				id: post.id
+			};
+			
 			$http({
 				url: '/api/postText',
 				method: 'put',
@@ -202,11 +206,11 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 
 	$scope.movePost = function(currentIndex, newIndex) {
 		swapItems($scope.posts, currentIndex, newIndex);
-		
+
 		var jsonPost = [];
-		for(i = $scope.posts.length - 1; i >= 0; i--) {
+		for(i = 0; i < $scope.posts.length; i++) {
 			var post = $scope.posts[i];
-			jsonPost.push({ id : post.id, sortrank : i });
+			jsonPost.push({ id : post.id, sortrank : $scope.posts.length - i });
 		}
 
 		$http({

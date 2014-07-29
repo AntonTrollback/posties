@@ -138,22 +138,12 @@ def api_create_user():
 def api_post_text():
 	jsonData = request.json
 	content = jsonData['content']
-
+	
 	if request.method == 'POST':
-		jsonData['username'] = current_user.username
-
-		sort_rank = r.table(TABLE_POSTS).filter(
-			(r.row['username'] == current_user.username)).count().run(conn)
-
-		if not sort_rank:
-			sort_rank = 1
-		else:
-			sort_rank = sort_rank + 1
-
 		result = r.table(TABLE_POSTS).insert({ 
 			'content' : content, 
 			'username' : current_user.username,
-			'sortrank' : sort_rank,
+			'sortrank' : jsonData['sortRank'],
 			'type' : jsonData['type'],
 			'created' : r.now()}, return_vals = True).run(conn)
 	elif request.method == 'PUT':
@@ -194,7 +184,7 @@ def api_post_image():
 		(r.row['username'] == current_user.username)).count().run(conn)
 
 	if not sort_rank:
-		sort_rank = 1
+		sort_rank = 0
 	else:
 		sort_rank = sort_rank + 1
 
