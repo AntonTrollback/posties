@@ -7,7 +7,7 @@
 		<button class="addPostHeadline" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="This is your headline">Headline</button>
 	</li>
 	<li>
-		<button class="addPostImage" ng-click="togglePostImageUploadForm($event)">Image</button>
+		<label class="addPostImage"><input class="hidden" type="file" accept="image/*" capture="camera" name="image" ng-file-select="savePostImage($files)" />Image</label>
 	</li>
 </ul>
-<input type="file" accept="image/*" capture="camera" name="image" ng-show="showPostImageUploadForm" ng-file-select="savePostImage($files)" />
+	

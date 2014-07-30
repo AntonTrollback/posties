@@ -85,7 +85,8 @@ fieldset input[type="password"] {
 	font-style: italic;
 	font-weight: lighter;
 }
-button {
+button, 
+.addPostImage {
 	font-size: 2.4rem;
 	border: 0;
 	padding: 1rem;
@@ -93,6 +94,7 @@ button {
 	background: #faf8c6;
 	color: #8a8a8a;
 	box-shadow: 1px 2px 3px rgba(128, 128, 128, 0.5);
+	cursor: pointer;
 }
 fieldset,
 .formGroup {
@@ -170,9 +172,6 @@ label + select {
 	font-style: normal;
 	background: #fff;
 }
-.createPostImage {
-	text-align: center;
-}
 #addPost,
 #btnPublishContainer button {
 	display: block;
@@ -192,28 +191,24 @@ label + select {
 	display: inline-block;
 	margin-right: 2rem;
 }
-#postTypes button {
+#postTypes button,
+.addPostImage {
 	width: 110px;
 	padding-top: 49px;
 	padding-bottom: 10px;
+	display: inline-block;
+	font-size: 1.1rem;
+	line-height: 1.7rem;
+	margin-right: -14px;
 }
 .addPostText {
 	background: url('../img/iconAddText.png') #faf8c6 no-repeat center 19px;
-	font-size: 1.1rem;
-	line-height: 1.7rem;
-	margin-right: -14px;
 }
 .addPostHeadline {
 	background: url('../img/iconAddHeadline.png') #faf8c6 no-repeat center 17px;
-	font-size: 1.1rem;
-	line-height: 1.7rem;
-	margin-right: -14px;
 }
 .addPostImage {
 	background: url('../img/iconAddImage.png') #faf8c6 no-repeat center 14px;
-	font-size: 1.1rem;
-	line-height: 1.7rem;
-	margin-right: -14px;
 }
 
 #publishNow {
