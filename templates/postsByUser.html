@@ -8,7 +8,7 @@
 			{% include 'modules/postTypes.html' %}
 		{% endif %}
 		<ul id="posts" ng-style="{ 'color': userSettings.posttextcolor }">
-			<li ng-repeat="post in posts" data-id="[[post.id]]" class="post">
+			<li ng-repeat="post in posts" class="post">
 				<ng-include src="post.template"></ng-include>
 			</li>
 		</ul>
@@ -16,11 +16,12 @@
 	{% if current_user and current_user.is_authenticated() and user_owns_page %}
 		{% include 'modules/jsTemplates/postTextAuthenticated.html' %}
 		{% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
+		{% include 'modules/jsTemplates/postImageAuthenticated.html' %}
 	{% else %}
 		{% include 'modules/jsTemplates/postText.html' %}
 		{% include 'modules/jsTemplates/postHeadline.html' %}
+		{% include 'modules/jsTemplates/postImage.html' %}
 	{% endif %}
-	{% include 'modules/jsTemplates/postImage.html' %}
 	{% include 'modules/jsTemplates/flashUserCreated.html' %}
 </body>
 {% include 'modules/footer.html' %}

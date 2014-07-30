@@ -156,7 +156,9 @@ def api_post_text():
 @application.route('/api/postImage', methods=['POST'])
 @login_required
 def api_post_image():
-	file = request.files['postImage']
+	jsonData = request.values
+
+	file = request.files['file']
 	filename = secure_filename(file.filename)
 	filenameWithPath = os.path.join("/tmp", filename)
 	file.save(filenameWithPath)
@@ -172,7 +174,7 @@ def api_post_image():
 	k = Key(s3_conn.get_bucket('posties'))
 	generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 	k.key = generated_filename
-	k.set_contents_from_file(request.files['postImage'], rewind=True)
+	k.set_contents_from_file(request.files['file'], rewind=True)
 	k.set_acl("public-read")
 
 	if os.path.isfile(filenameWithPath):
@@ -180,22 +182,14 @@ def api_post_image():
 	else:
 		abort(401)
 
-	sort_rank = r.table(TABLE_POSTS).filter(
-		(r.row['username'] == current_user.username)).count().run(conn)
-
-	if not sort_rank:
-		sort_rank = 0
-	else:
-		sort_rank = sort_rank + 1
-
 	result = r.table(TABLE_POSTS).insert({ 
 		'key' : generated_filename, 
 		'username' : current_user.username,
-		'sortrank' : sort_rank,
+		'sortrank' : int(jsonData['sortRank']),
 		'type' : 2,
-		'created' : r.now()}).run(conn)
-	
-	return redirect(url_for('get_posts_by_username', username = current_user.username))
+		'created' : r.now()}, return_vals = True).run(conn)
+
+	return jsonify(result['new_val'])
 
 @application.route('/api/postrank', methods=['POST'])
 @login_required

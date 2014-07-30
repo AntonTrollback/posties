@@ -105,7 +105,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, SettingsService, config) {
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, SettingsService, config, $upload) {
 
 	$scope.posts = [];
 	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
@@ -125,7 +125,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 		params: { 'username' : username },
 		headers: config.headerJSON
 	}).then(function(response) {
-		console.log(response.data);
 		$scope.userSettings = response.data.settings;
 		$scope.user = { 'username' : response.data.username, 'isAuthenticated' : response.data.is_authenticated };
 
@@ -133,11 +132,11 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 			var post = response.data.posts[i];
 
 			if(post.type == 0) {
-				post['template'] = 'postText.html';
+				post.template = 'postText.html';
 			} else if(post.type == 1) {
-				post['template'] = 'postHeadline.html';
+				post.template = 'postHeadline.html';
 			} else if(post.type == 2) {
-				post['template'] = 'postImage.html';
+				post.template = 'postImage.html';
 			}
 
 			$scope.posts.push(post);
@@ -162,11 +161,11 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 			var post = response.data;
 			
 			if(post.type == 0) {
-				post['template'] = 'postText.html';
+				post.template = 'postText.html';
 			} else if(post.type == 1) {
-				post['template'] = 'postHeadline.html';
+				post.template = 'postHeadline.html';
 			} else if(post.type == 2) {
-				post['template'] = 'postImage.html';
+				post.template = 'postImage.html';
 			}
 
 			$scope.posts.unshift(post);
@@ -178,6 +177,37 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 		});
 
 		$scope.showPostTypes = false;
+	};
+
+	$scope.togglePostImageUploadForm = function($event) {
+		$scope.showPostImageUploadForm = true;
+		$scope.showPostTypes = false;
+	};
+
+	$scope.savePostImage = function($files) {
+		var jsonPost = {
+			type : 2,
+			sortRank : $scope.posts.length
+		};
+
+		for (var i = 0; i < $files.length; i++) {
+			var file = $files[i];
+			$scope.upload = $upload.upload({
+				url: '/api/postImage',
+				method: 'post',
+				//withCredentials: true,
+				data: jsonPost,
+				file: file,
+			}).progress(function(evt) {
+				console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+			}).success(function(data, status, headers, config) {
+				data.template = 'postImage.html';
+				$scope.posts.unshift(data);
+				$scope.showPostImageUploadForm = false;
+			}).error(function(response) {
+				console.log(response);
+			});
+	    }
 	};
 
 	$scope.savePost = function($event, $index, post) {
@@ -223,38 +253,13 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 		}, function(response) {
 			console.log(response);
 		});
-
-		/*
-		var isUpRanked = currentIndex > newIndex;
-		var movedPost = $scope.posts[currentIndex];
-		var affectedSiblingPost = isUpRanked ? $scope.posts[currentIndex - 1] : $scope.posts[currentIndex + 1];
-
-		jsonPost = JSON.stringify({
-			'movedPostID' : movedPost.id,
-			'movedPostRank' : isUpRanked ? movedPost.sortrank + 1 : movedPost.sortrank - 1,
-			'affectedSiblingPostID' : affectedSiblingPost.id,
-			'affectedSiblingPostRank' : isUpRanked ? affectedSiblingPost.sortrank - 1 : affectedSiblingPost.sortrank + 1,
-		});
-
-		$http({
-			url: '/api/postrank',
-			method: 'post',
-			data: jsonPost,
-			headers: config.headerJSON
-		}).then(function(response) {
-			swapItems($scope.posts, currentIndex, newIndex);
-		}, function(response) {
-			console.log(response);
-		});*/
 	};
 
 	$scope.deletePost = function(currentIndex, post) {
-		var jsonPost = JSON.stringify({ 'id' : post.id });
-
 		$http({
 			url: '/api/posts',
 			method: 'delete',
-			data: jsonPost,
+			data: post,
 			headers: config.headerJSON
 		}).then(function(response) {
 			$scope.posts.splice(currentIndex, 1);

@@ -1,5 +1,3 @@
 <script type="text/ng-template" id="postHeadline.html">
-	<form class="form createPostHeadline" method="put" action="/api/postHeadline">
-		<pre class="postHeadline" ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.postbackgroundcolor, 'box-shadow': '1px 1px 1px' + userSettings.postbackgroundcolor, 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }"></pre>
-	</form>
+	<p class="postHeadline" ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.postbackgroundcolor, 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }"></p>
 </script>

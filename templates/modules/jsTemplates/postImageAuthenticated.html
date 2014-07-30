@@ -1,0 +1,8 @@
+<script type="text/ng-template" id="postImage.html">
+	<a href="#" ng-click="deletePost($index, post)" class="delete"></a>
+	<div class="sorter">
+		<a class="up" ng-click="movePost($index, $index - 1)">&#x25B2;</a>
+		<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
+	</div>
+	<img src="https://s3-eu-west-1.amazonaws.com/posties/[[post.key]]" />
+</script>
