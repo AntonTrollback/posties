@@ -85,6 +85,22 @@ def logout():
 ###############
 #  API CALLS  #
 ###############
+@application.route('/api/users', methods=['GET'])
+def api_get_user_by_username():
+	username = request.args.get('username')
+	users = list(r.table(TABLE_USERS).filter(
+		(r.row['username'] == username)).run(conn))
+
+	return jsonify({ 'user' : users[0] }) if len(users) else jsonify("")
+
+@application.route('/api/users/email', methods=['GET'])
+def api_get_user_by_email():
+	email = request.args.get('email')
+	users = list(r.table(TABLE_USERS).filter(
+		(r.row['email'] == email)).run(conn))
+
+	return jsonify({ 'user' : users[0] }) if len(users) else jsonify("")	
+	
 @application.route('/api/users', methods=['POST'])
 def api_create_user():
 	jsonData = request.json
@@ -271,7 +287,7 @@ def api_get_settings():
 
 	return jsonify(settings[0])
 
-@application.route('/api/users', methods=['GET'])
+@application.route('/api/user', methods=['GET'])
 def api_get_user_with_posts():
 	username = request.args.get('username')
 	users = list(r.table(TABLE_USERS).filter(

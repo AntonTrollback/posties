@@ -2,17 +2,18 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 
 	$scope.posts = [];
 	$scope.isStartPage = true;
+	$scope.user = {};
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
 
 	$scope.addPost = function($event) {
 		var post = {
-			'id' : Math.round(Math.random() * 1000),
-			'sortrank' : $scope.posts.length + 1,
-			'content' : $event.target.getAttribute('data-content'),
-			'type' : $event.target.getAttribute('data-type'),
-			'template' : $event.target.getAttribute('data-template')
+			id : Math.round(Math.random() * 1000),
+			sortrank : $scope.posts.length + 1,
+			content : $event.target.getAttribute('data-content'),
+			type : $event.target.getAttribute('data-type'),
+			template : $event.target.getAttribute('data-template')
 		}
 
 		$scope.posts.unshift(post);
@@ -31,37 +32,78 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 
 	$scope.movePost = function(currentIndex, newIndex) {
 		swapItems($scope.posts, currentIndex, newIndex);
+
+		for(i = 0; i < $scope.posts.length; i++) {
+			$scope.posts[i].sortrank = $scope.posts.length - i;
+		}
 	}
 
 	$scope.deletePost = function(currentIndex, post) {
 		$scope.posts.splice(currentIndex, 1);
 	}
 
-	$scope.publish = function() {
-		$('.modal.createUser').toggle();
-	}
+	$scope.validateUserEmail = function($event) {
+		if($scope.formCreateUser.email.$invalid) {
+			$scope.formCreateUser.email.error = 'Email needs to be between 5 and 20 characters';
+
+			return;
+		}
+		$http({
+			url: '/api/users/email',
+			method: 'get',
+			params: { email : $scope.user.email }
+		}).then(function(response) {
+			if(response.data.user) {
+				console.log("user email exists");
+			} else {
+				console.log("user email doesn't exist");
+			}
+		}, function(response) {
+			console.log(response);
+		});
+	};
+
+	$scope.validateUserUsername = function($event) {
+		if($scope.formCreateUser.username.$invalid) {
+			$scope.formCreateUser.username.error = 'Username needs to be between 5 and 20 characters';
+
+			return;
+		}
+		$http({
+			url: '/api/users',
+			method: 'get',
+			params: { username : $scope.user.username }
+		}).then(function(response) {
+			if(response.data.user) {
+				console.log("user username exists");
+			} else {
+				console.log("user username doesn't exist");
+			}
+		}, function(response) {
+			console.log(response);
+		});
+	};
 
 	$scope.submitCreateUser = function() {
-		if($scope.userForm.$valid) {
-			var formCreateUser = $('#formCreateUser');
-
+		if($scope.formCreateUser.$valid) {
 			var posts = [];
+
+			for(i = 0; i < $scope.posts.length; i++) {
+				var post = $scope.posts[i];
+
+				//Exclude images from initial posts
+				if(post.type != 2) {
+					posts.push(post);
+				}
+			}
 			
-			var numberOfPosts = $('#posts > li').length;
-			$('.postText, .postHeadline').each(function(index) { 
-				var content = $(this).text();
-				var type = $(this).hasClass('postText') ? 0 : 1;
-
-				posts.push({ 'content' : content, 'sortrank' : numberOfPosts - index, 'type' : type });
-			});
-
-			var jsonPost = JSON.stringify({ 
-				'email' : formCreateUser.find('.email:eq(0)').val(),
-				'username' : formCreateUser.find('.username:eq(0)').val(),
-				'password' : formCreateUser.find('.password:eq(0)').val(),
-				'posts' : posts,
-				'settings' : $scope.userSettings
-			});
+			var jsonPost = { 
+				email : $scope.user.email,
+				username : $scope.user.username,
+				password : $scope.user.password,
+				posts : posts,
+				settings : $scope.userSettings
+			};
 
 			$http({
 				url: '/api/users',
@@ -120,7 +162,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 
 	//Fetch user posts
 	$http({
-		url: '/api/users',
+		url: '/api/user',
 		method: 'get',
 		params: { 'username' : username },
 		headers: config.headerJSON
@@ -179,11 +221,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 		$scope.showPostTypes = false;
 	};
 
-	$scope.togglePostImageUploadForm = function($event) {
-		$scope.showPostImageUploadForm = true;
-		$scope.showPostTypes = false;
-	};
-
 	$scope.savePostImage = function($files) {
 		var jsonPost = {
 			type : 2,
@@ -203,7 +240,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 			}).success(function(data, status, headers, config) {
 				data.template = 'postImage.html';
 				$scope.posts.unshift(data);
-				$scope.showPostImageUploadForm = false;
 			}).error(function(response) {
 				console.log(response);
 			});
