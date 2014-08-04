@@ -4,7 +4,7 @@
 		<a class="up" ng-click="movePost($index, $index - 1)">&#x25B2;</a>
 		<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
 	</div>
-	<form class="form createPostText" method="put" action="/api/postText">
-		<pre ng-blur="savePost($event, $index, post)" class="postText" data-changed="false" contenteditable ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.postbackgroundcolor, 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
+	<form class="form createPostText">
+		<pre ng-blur="savePost($event, post)" class="postText" data-changed="false" contenteditable ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.postbackgroundcolor, 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
 	</form>
 </script>

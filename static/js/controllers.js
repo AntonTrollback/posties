@@ -27,6 +27,9 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 		if($($event.target).data('changed')) {
 			$('#flashSaved').fadeIn().delay(500).fadeOut();
 			$($event.target).data('changed', false);
+
+			//TODO: Two way binding doesn't work with contenteditable, even though it should.
+			post.content = $event.target.innerHTML; 
 		}
 	};
 
@@ -36,27 +39,32 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 		for(i = 0; i < $scope.posts.length; i++) {
 			$scope.posts[i].sortrank = $scope.posts.length - i;
 		}
-	}
+	};
 
 	$scope.deletePost = function(currentIndex, post) {
 		$scope.posts.splice(currentIndex, 1);
-	}
+	};
 
 	$scope.validateUserEmail = function($event) {
-		if($scope.formCreateUser.email.$invalid) {
-			$scope.formCreateUser.email.error = 'Email needs to be between 5 and 20 characters';
+		if($scope.formCreateUser.email.$viewValue && $scope.formCreateUser.email.$invalid) {
+			$scope.formCreateUser.email.error = 'Your email needs to be between 5 and 40 characters';
 
 			return;
+		} else {
+			delete $scope.formCreateUser.email.error;
 		}
+
 		$http({
 			url: '/api/users/email',
 			method: 'get',
 			params: { email : $scope.user.email }
 		}).then(function(response) {
 			if(response.data.user) {
-				console.log("user email exists");
+				$scope.formCreateUser.email.$invalid = true;
+				$scope.formCreateUser.email.error = 'The email address is already taken!';
 			} else {
-				console.log("user email doesn't exist");
+				$scope.formCreateUser.email.$invalid = false;
+				delete $scope.formCreateUser.email.error;
 			}
 		}, function(response) {
 			console.log(response);
@@ -64,44 +72,48 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 	};
 
 	$scope.validateUserUsername = function($event) {
-		if($scope.formCreateUser.username.$invalid) {
-			$scope.formCreateUser.username.error = 'Username needs to be between 5 and 20 characters';
+		if($scope.formCreateUser.username.$viewValue && $scope.formCreateUser.username.$invalid) {
+			$scope.formCreateUser.username.error = 'The username needs to be between 3 and 20 characters';
 
 			return;
+		} else {
+			delete $scope.formCreateUser.username.error;
 		}
+
 		$http({
 			url: '/api/users',
 			method: 'get',
 			params: { username : $scope.user.username }
 		}).then(function(response) {
 			if(response.data.user) {
-				console.log("user username exists");
+				$scope.formCreateUser.username.$invalid = true;
+				$scope.formCreateUser.username.error = 'The username is already taken!';
 			} else {
-				console.log("user username doesn't exist");
+				$scope.formCreateUser.username.$invalid = false;
+				delete $scope.formCreateUser.username.error;
 			}
 		}, function(response) {
 			console.log(response);
 		});
 	};
 
+	$scope.validateUserPassword = function($event) {
+		if($scope.formCreateUser.password.$viewValue && $scope.formCreateUser.password.$invalid) {
+			$scope.formCreateUser.password.error = 'Your password needs to be between 5 and 20 characters long';
+
+			return;
+		} else {
+			delete $scope.formCreateUser.password.error;
+		}
+	};
+
 	$scope.submitCreateUser = function() {
 		if($scope.formCreateUser.$valid) {
-			var posts = [];
-
-			for(i = 0; i < $scope.posts.length; i++) {
-				var post = $scope.posts[i];
-
-				//Exclude images from initial posts
-				if(post.type != 2) {
-					posts.push(post);
-				}
-			}
-			
 			var jsonPost = { 
 				email : $scope.user.email,
 				username : $scope.user.username,
 				password : $scope.user.password,
-				posts : posts,
+				posts : $scope.posts,
 				settings : $scope.userSettings
 			};
 
@@ -143,7 +155,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 				$scope.formLogin.error = response.data.error;
 			}
 		});
-	}
+	};
 
 });
 

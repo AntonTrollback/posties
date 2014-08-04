@@ -4,15 +4,15 @@
 	<form id="formCreateUser" name="formCreateUser" class="form" ng-submit="submitCreateUser()" method="post" novalidate>
         <fieldset>
             <input type="email" name="email" class="email" ng-model="user.email" placeholder="Email" ng-blur="validateUserEmail()" />
-            <p ng-show="formCreateUser.email.isBlurred">[[formCreateUser.email.error]]</p>
+            <p ng-show="formCreateUser.email.$touched && formCreateUser.email.$invalid">[[formCreateUser.email.error]]</p>
         </fieldset>
 		<fieldset>
-		    <input type="text" name="username" class="username" ng-model="user.username" ng-minlength="3" ng-maxlength="15" ng-blur="validateUserUsername()" placeholder="Username (this becomes your URL)" required>
-		    <p ng-show="formCreateUser.username.isBlurred">[[formCreateUser.username.error]]</p>
+		    <input type="text" name="username" class="username" ng-model="user.username" ng-minlength="3" ng-maxlength="20" ng-blur="validateUserUsername()" placeholder="Username (this becomes your URL)" required>
+		    <p ng-show="formCreateUser.username.$touched && formCreateUser.username.$invalid">[[formCreateUser.username.error]]</p>
 		</fieldset>
         <fieldset>
-            <input type="text" name="password" class="password" ng-minlength="5" ng-maxlength="20" ng-blur="formCreateUser.password.isBlurred = true"  ng-model="user.password" placeholder="Password" required>
-            <p ng-show="formCreateUser.password.isBlurred && !formCreateUser.password.$valid">Your password needs to be between 5 to 20 characters long</p>
+            <input type="text" name="password" class="password" ng-minlength="5" ng-maxlength="20" ng-blur="validateUserPassword()" ng-model="user.password" placeholder="Password" required>
+            <p ng-show="formCreateUser.password.$touched && formCreateUser.password.$invalid">[[formCreateUser.password.error]]</p>
         </fieldset>
         <fieldset><center>
         	<button type="submit" id="publishNow" class="btn btn-primary" ng-disabled="formCreateUser.$invalid">Publish now!</button>
