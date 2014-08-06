@@ -140,8 +140,7 @@ def api_create_user():
 			'typefaceheadline' : settings['typefaceheadline'],
 			'posttextcolor' : settings['posttextcolor'],
 			'postbackgroundcolor' : settings['postbackgroundcolor'],
-			'pagebackgroundcolor' : settings['pagebackgroundcolor'], 
-			'pagehaspostshadows' : True,
+			'pagebackgroundcolor' : settings['pagebackgroundcolor'],
 			'created' : r.now()}).run(conn)
 
 		jsonData['id'] = generated_id

@@ -16,14 +16,15 @@ posties.util = (function() {
         })(window.location.search.substr(1).split('&'));
 
         return qs[parameterName];
-    }
+    };
+
+    var swapItems = function(arr, a, b) {
+        arr[a] = arr.splice(b, 1, arr[a])[0];
+        return arr;
+    };
 
     return {
-        getQueryParamByName : getQueryParamByName
+        getQueryParamByName : getQueryParamByName,
+        swapItems : swapItems
     };
 }());
-
-var swapItems = function(arr, a, b){
-    arr[a] = arr.splice(b, 1, arr[a])[0];
-    return arr;
-}

@@ -35,7 +35,6 @@ postiesApp.service('SettingsService', function($http, config) {
 					created:  new Date(),
 					id:  "123",
 					pagebackgroundcolor:  "#f5f5f5" ,
-					pagehaspostshadows: true ,
 					postbackgroundcolor:  "#ffffff" ,
 					posttextcolor:  "#141414" ,
 					typefaceheadline:  "sans-serif" ,
@@ -106,4 +105,29 @@ postiesApp.service('AuthService', function($http, config) {
 	this.currentUserInSession = function() {
 
 	}
+});
+
+postiesApp.service('LoaderService', function() {
+
+	var loader = {
+		isShown : false,
+		message : 'loading'
+	};
+
+	loader.show = function() {
+		loader.isShown = true;
+	};
+
+	loader.hide = function() {
+		loader.isShown = false;
+	};
+
+	loader.setMessage = function(message) {
+		loader.message = message;
+	};
+
+	this.getLoader = function() {
+		return loader;
+	}
+
 });

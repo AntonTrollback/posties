@@ -34,7 +34,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
-		swapItems($scope.posts, currentIndex, newIndex);
+		posties.util.swapItems($scope.posts, currentIndex, newIndex);
 
 		for(i = 0; i < $scope.posts.length; i++) {
 			$scope.posts[i].sortrank = $scope.posts.length - i;
@@ -159,12 +159,13 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, SettingsService, config, $upload) {
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, SettingsService, LoaderService, config, $upload) {
 
 	$scope.posts = [];
 	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 	$scope.settingsService = SettingsService;
-	
+	$scope.loader = LoaderService.getLoader();
+
 	/*$scope.settingsService.getSettings().then(function(data) {
 		$scope.settings = data;
 	});*/
@@ -240,6 +241,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 		};
 
 		for (var i = 0; i < $files.length; i++) {
+			$scope.loader.show();
 			var file = $files[i];
 			$scope.upload = $upload.upload({
 				url: '/api/postImage',
@@ -248,17 +250,18 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 				data: jsonPost,
 				file: file,
 			}).progress(function(evt) {
-				console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+				$scope.loader.setMessage('uploaded ' + parseInt(100.0 * evt.loaded / evt.total) + "%");
 			}).success(function(data, status, headers, config) {
 				data.template = 'postImage.html';
 				$scope.posts.unshift(data);
+				$scope.loader.hide();
 			}).error(function(response) {
 				console.log(response);
 			});
 	    }
 	};
 
-	$scope.savePost = function($event, $index, post) {
+	$scope.savePost = function($event, post) {
 		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
 		postTextContent = angular.element($event)[0].currentTarget.innerHTML;
 
@@ -283,7 +286,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
-		swapItems($scope.posts, currentIndex, newIndex);
+		posties.util.swapItems($scope.posts, currentIndex, newIndex);
 
 		var jsonPost = [];
 		for(i = 0; i < $scope.posts.length; i++) {
@@ -322,6 +325,4 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 	});
 });
 
-postiesApp.controller('PageErrorCtrl', function() {
-
-});
+postiesApp.controller('PageErrorCtrl', function() {});
