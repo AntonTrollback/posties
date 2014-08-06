@@ -236,7 +236,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 	$scope.savePostImage = function($files) {
 		var jsonPost = {
 			type : 2,
-			sortRank : $scope.posts.length
+			sortRank : $scope.posts.length + 1
 		};
 
 		for (var i = 0; i < $files.length; i++) {
@@ -320,4 +320,8 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 	$('#posts').on('propertychange, input', 'pre', function(el) {
 		$(this).data('changed', true);
 	});
+});
+
+postiesApp.controller('PageErrorCtrl', function() {
+
 });

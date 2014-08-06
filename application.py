@@ -186,8 +186,8 @@ def api_post_image():
 	except Error:
 		fileExtension = ''
 
-	s3_conn = S3Connection('AKIAJB3M66B6RPZ5UWGQ', 'EYhaGnC/gZjdqn5SyrLlRiZ49czj5B/G4D/Bh091')
-	k = Key(s3_conn.get_bucket('posties'))
+	s3_conn = S3Connection('AKIAJIXSWNUHPXJK625A', 'wwbFhAXCyyXLdyxRURfIDyO15LHTdIAUXeVOdBhO')
+	k = Key(s3_conn.get_bucket('postiesimages'))
 	generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 	k.key = generated_filename
 	k.set_contents_from_file(request.files['file'], rewind=True)
@@ -224,6 +224,7 @@ def api_post_rank():
 def api_post_headline():
 	jsonData = request.json
 	content = jsonData['content']
+	
 	if request.method == 'POST':
 		jsonData['username'] = current_user.username
 
@@ -330,17 +331,9 @@ def api_delete_post():
 		abort(401)
 
 #STATUS CODE HANDLERS AND ERROR PAGES
-@application.route('/userNotFound', methods=['GET'])
-def error_user_not_found():
-	return render_template('errorUserNotFound.html')
-
-@application.route('/errorInvalidLogin', methods=['GET'])
-def error_invalid_login():
-	return render_template('errorInvalidLogin.html')
-
 @application.errorhandler(404)
 def not_found(error):
-	return redirect(url_for('error_user_not_found'))
+	return render_template('errorPageNotFound.html')
 
 @application.errorhandler(401)
 def unauthorized(error):

@@ -1,6 +1,4 @@
 - next steps
 	- authentication when moving posts up and down
-	- authentication when saving settings via DB
-	- username check when creating account
-	- ability to move posts on start page (need page check)	
 	- google analytics
+	- add images as anonymous user
