@@ -1,5 +1,5 @@
-<button id="addPost" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes">Add content</button>
-<ul id="postTypes" ng-show="showPostTypes" ng-cloak>
+<button class="addPost" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes">Add content</button>
+<ul class="postTypes" ng-show="showPostTypes" ng-cloak>
 	<li>
 		<button class="addPostText" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="This is your paragraph. You can add whatever text you'd like and also include links by typing in www addresses!">Body text</button>
 	</li>

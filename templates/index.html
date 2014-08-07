@@ -5,8 +5,8 @@
 {% include 'modules/header.html' %}
 	<div id="body">
 		{% include 'modules/postTypes.html' %}
-		<div id="btnPublishContainer">
-			<button ng-click="publish()">Publish this page</button>
+		<div class="btnPublishContainer">
+			<button ng-click="showModalCreateUser = !showModalCreateUser">Publish this page</button>
 		</div>
 		<ul id="posts">
 			<li ng-repeat="post in posts" data-id="[[post.id]]" data-rank="[[post.sortrank]]" class="post">

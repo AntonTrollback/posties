@@ -2,18 +2,6 @@ var posties = {};
 
 posties.util = (function() {
     
-    var trimText = function(str) {
-        return str.trim()
-                   .replace(/<br(\s*)\/*>/ig, '\n') // replace single line-breaks
-                   .replace(/<[p|div]\s/ig, '\n$0') // add a line break before all div and p tags
-                   .replace(/\t/g, '') // remove tabs
-                   .replace(/(<([^>]+)>)/ig, "") //remove remaining HTML tags;
-    };
-
-    var isUserLoggedIn = function() {
-        return $('head:eq(0)').hasClass('authenticated');
-    }
-
     var getQueryParamByName = function(parameterName) {
         var qs = (function(a) {
             if (a == "") return {};
@@ -28,21 +16,15 @@ posties.util = (function() {
         })(window.location.search.substr(1).split('&'));
 
         return qs[parameterName];
-    }
+    };
 
-    var isPage = function(pageClass) {
-      return $('body.' + pageClass).length;
-    }
+    var swapItems = function(arr, a, b) {
+        arr[a] = arr.splice(b, 1, arr[a])[0];
+        return arr;
+    };
 
     return {
-        trimText : trimText,
-        isUserLoggedIn : isUserLoggedIn,
-        getQueryParamByName : getQueryParamByName, 
-        isPage : isPage
+        getQueryParamByName : getQueryParamByName,
+        swapItems : swapItems
     };
 }());
-
-var swapItems = function(arr, a, b){
-    arr[a] = arr.splice(b, 1, arr[a])[0];
-    return arr;
-}

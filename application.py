@@ -85,6 +85,22 @@ def logout():
 ###############
 #  API CALLS  #
 ###############
+@application.route('/api/users', methods=['GET'])
+def api_get_user_by_username():
+	username = request.args.get('username')
+	users = list(r.table(TABLE_USERS).filter(
+		(r.row['username'] == username)).run(conn))
+
+	return jsonify({ 'user' : users[0] }) if len(users) else jsonify("")
+
+@application.route('/api/users/email', methods=['GET'])
+def api_get_user_by_email():
+	email = request.args.get('email')
+	users = list(r.table(TABLE_USERS).filter(
+		(r.row['email'] == email)).run(conn))
+
+	return jsonify({ 'user' : users[0] }) if len(users) else jsonify("")	
+	
 @application.route('/api/users', methods=['POST'])
 def api_create_user():
 	jsonData = request.json
@@ -124,8 +140,7 @@ def api_create_user():
 			'typefaceheadline' : settings['typefaceheadline'],
 			'posttextcolor' : settings['posttextcolor'],
 			'postbackgroundcolor' : settings['postbackgroundcolor'],
-			'pagebackgroundcolor' : settings['pagebackgroundcolor'], 
-			'pagehaspostshadows' : True,
+			'pagebackgroundcolor' : settings['pagebackgroundcolor'],
 			'created' : r.now()}).run(conn)
 
 		jsonData['id'] = generated_id
@@ -170,8 +185,8 @@ def api_post_image():
 	except Error:
 		fileExtension = ''
 
-	s3_conn = S3Connection('AKIAJB3M66B6RPZ5UWGQ', 'EYhaGnC/gZjdqn5SyrLlRiZ49czj5B/G4D/Bh091')
-	k = Key(s3_conn.get_bucket('posties'))
+	s3_conn = S3Connection('AKIAJIXSWNUHPXJK625A', 'wwbFhAXCyyXLdyxRURfIDyO15LHTdIAUXeVOdBhO')
+	k = Key(s3_conn.get_bucket('postiesimages'))
 	generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 	k.key = generated_filename
 	k.set_contents_from_file(request.files['file'], rewind=True)
@@ -208,6 +223,7 @@ def api_post_rank():
 def api_post_headline():
 	jsonData = request.json
 	content = jsonData['content']
+	
 	if request.method == 'POST':
 		jsonData['username'] = current_user.username
 
@@ -271,7 +287,7 @@ def api_get_settings():
 
 	return jsonify(settings[0])
 
-@application.route('/api/users', methods=['GET'])
+@application.route('/api/user', methods=['GET'])
 def api_get_user_with_posts():
 	username = request.args.get('username')
 	users = list(r.table(TABLE_USERS).filter(
@@ -314,17 +330,9 @@ def api_delete_post():
 		abort(401)
 
 #STATUS CODE HANDLERS AND ERROR PAGES
-@application.route('/userNotFound', methods=['GET'])
-def error_user_not_found():
-	return render_template('errorUserNotFound.html')
-
-@application.route('/errorInvalidLogin', methods=['GET'])
-def error_invalid_login():
-	return render_template('errorInvalidLogin.html')
-
 @application.errorhandler(404)
 def not_found(error):
-	return redirect(url_for('error_user_not_found'))
+	return render_template('errorPageNotFound.html')
 
 @application.errorhandler(401)
 def unauthorized(error):

@@ -1,14 +1,16 @@
+<div class="loader" ng-show="loader.isShown" ng-cloak>
+	<div class="spinner"></div>
+	<p>[[loader.message]]</p>
+</div>
 <script src="{{ url_for('static', filename='js/jquery-2.0.3.js') }}"></script>
 <script src="{{ url_for('static', filename='js/angular-file-upload-html5-shim.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/angular.min.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
 <script src="{{ url_for('static', filename='js/angular-sanitize.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/angular-colorpicker.js') }}"></script>
 <script src="{{ url_for('static', filename='js/angular-file-upload.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/mustache.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/util.js') }}"></script>
 <script src="{{ url_for('static', filename='js/services.js') }}"></script>
 <script src="{{ url_for('static', filename='js/filters.js') }}"></script>
 <script src="{{ url_for('static', filename='js/directives.js') }}"></script>
 <script src="{{ url_for('static', filename='js/controllers.js') }}"></script>
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </html>

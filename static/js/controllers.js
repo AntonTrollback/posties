@@ -2,17 +2,18 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 
 	$scope.posts = [];
 	$scope.isStartPage = true;
+	$scope.user = {};
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
 
 	$scope.addPost = function($event) {
 		var post = {
-			'id' : Math.round(Math.random() * 1000),
-			'sortrank' : $scope.posts.length + 1,
-			'content' : $event.target.getAttribute('data-content'),
-			'type' : $event.target.getAttribute('data-type'),
-			'template' : $event.target.getAttribute('data-template')
+			id : Math.round(Math.random() * 1000),
+			sortrank : $scope.posts.length + 1,
+			content : $event.target.getAttribute('data-content'),
+			type : $event.target.getAttribute('data-type'),
+			template : $event.target.getAttribute('data-template')
 		}
 
 		$scope.posts.unshift(post);
@@ -26,42 +27,95 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 		if($($event.target).data('changed')) {
 			$('#flashSaved').fadeIn().delay(500).fadeOut();
 			$($event.target).data('changed', false);
+
+			//TODO: Two way binding doesn't work with contenteditable, even though it should.
+			post.content = $event.target.innerHTML; 
 		}
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
-		swapItems($scope.posts, currentIndex, newIndex);
-	}
+		posties.util.swapItems($scope.posts, currentIndex, newIndex);
+
+		for(i = 0; i < $scope.posts.length; i++) {
+			$scope.posts[i].sortrank = $scope.posts.length - i;
+		}
+	};
 
 	$scope.deletePost = function(currentIndex, post) {
 		$scope.posts.splice(currentIndex, 1);
-	}
+	};
 
-	$scope.publish = function() {
-		$('.modal.createUser').toggle();
-	}
+	$scope.validateUserEmail = function($event) {
+		if($scope.formCreateUser.email.$viewValue && $scope.formCreateUser.email.$invalid) {
+			$scope.formCreateUser.email.error = 'Your email needs to be between 5 and 40 characters';
+
+			return;
+		} else {
+			delete $scope.formCreateUser.email.error;
+		}
+
+		$http({
+			url: '/api/users/email',
+			method: 'get',
+			params: { email : $scope.user.email }
+		}).then(function(response) {
+			if(response.data.user) {
+				$scope.formCreateUser.email.$invalid = true;
+				$scope.formCreateUser.email.error = 'The email address is already taken!';
+			} else {
+				$scope.formCreateUser.email.$invalid = false;
+				delete $scope.formCreateUser.email.error;
+			}
+		}, function(response) {
+			console.log(response);
+		});
+	};
+
+	$scope.validateUserUsername = function($event) {
+		if($scope.formCreateUser.username.$viewValue && $scope.formCreateUser.username.$invalid) {
+			$scope.formCreateUser.username.error = 'The username needs to be between 3 and 20 characters';
+
+			return;
+		} else {
+			delete $scope.formCreateUser.username.error;
+		}
+
+		$http({
+			url: '/api/users',
+			method: 'get',
+			params: { username : $scope.user.username }
+		}).then(function(response) {
+			if(response.data.user) {
+				$scope.formCreateUser.username.$invalid = true;
+				$scope.formCreateUser.username.error = 'The username is already taken!';
+			} else {
+				$scope.formCreateUser.username.$invalid = false;
+				delete $scope.formCreateUser.username.error;
+			}
+		}, function(response) {
+			console.log(response);
+		});
+	};
+
+	$scope.validateUserPassword = function($event) {
+		if($scope.formCreateUser.password.$viewValue && $scope.formCreateUser.password.$invalid) {
+			$scope.formCreateUser.password.error = 'Your password needs to be between 5 and 20 characters long';
+
+			return;
+		} else {
+			delete $scope.formCreateUser.password.error;
+		}
+	};
 
 	$scope.submitCreateUser = function() {
-		if($scope.userForm.$valid) {
-			var formCreateUser = $('#formCreateUser');
-
-			var posts = [];
-			
-			var numberOfPosts = $('#posts > li').length;
-			$('.postText, .postHeadline').each(function(index) { 
-				var content = $(this).text();
-				var type = $(this).hasClass('postText') ? 0 : 1;
-
-				posts.push({ 'content' : content, 'sortrank' : numberOfPosts - index, 'type' : type });
-			});
-
-			var jsonPost = JSON.stringify({ 
-				'email' : formCreateUser.find('.email:eq(0)').val(),
-				'username' : formCreateUser.find('.username:eq(0)').val(),
-				'password' : formCreateUser.find('.password:eq(0)').val(),
-				'posts' : posts,
-				'settings' : $scope.userSettings
-			});
+		if($scope.formCreateUser.$valid) {
+			var jsonPost = { 
+				email : $scope.user.email,
+				username : $scope.user.username,
+				password : $scope.user.password,
+				posts : $scope.posts,
+				settings : $scope.userSettings
+			};
 
 			$http({
 				url: '/api/users',
@@ -101,16 +155,17 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 				$scope.formLogin.error = response.data.error;
 			}
 		});
-	}
+	};
 
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, SettingsService, config, $upload) {
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, SettingsService, LoaderService, config, $upload) {
 
 	$scope.posts = [];
 	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 	$scope.settingsService = SettingsService;
-	
+	$scope.loader = LoaderService.getLoader();
+
 	/*$scope.settingsService.getSettings().then(function(data) {
 		$scope.settings = data;
 	});*/
@@ -120,7 +175,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 
 	//Fetch user posts
 	$http({
-		url: '/api/users',
+		url: '/api/user',
 		method: 'get',
 		params: { 'username' : username },
 		headers: config.headerJSON
@@ -179,18 +234,14 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 		$scope.showPostTypes = false;
 	};
 
-	$scope.togglePostImageUploadForm = function($event) {
-		$scope.showPostImageUploadForm = true;
-		$scope.showPostTypes = false;
-	};
-
 	$scope.savePostImage = function($files) {
 		var jsonPost = {
 			type : 2,
-			sortRank : $scope.posts.length
+			sortRank : $scope.posts.length + 1
 		};
 
 		for (var i = 0; i < $files.length; i++) {
+			$scope.loader.show();
 			var file = $files[i];
 			$scope.upload = $upload.upload({
 				url: '/api/postImage',
@@ -199,18 +250,18 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 				data: jsonPost,
 				file: file,
 			}).progress(function(evt) {
-				console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+				$scope.loader.setMessage('uploaded ' + parseInt(100.0 * evt.loaded / evt.total) + "%");
 			}).success(function(data, status, headers, config) {
 				data.template = 'postImage.html';
 				$scope.posts.unshift(data);
-				$scope.showPostImageUploadForm = false;
+				$scope.loader.hide();
 			}).error(function(response) {
 				console.log(response);
 			});
 	    }
 	};
 
-	$scope.savePost = function($event, $index, post) {
+	$scope.savePost = function($event, post) {
 		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
 		postTextContent = angular.element($event)[0].currentTarget.innerHTML;
 
@@ -235,7 +286,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
-		swapItems($scope.posts, currentIndex, newIndex);
+		posties.util.swapItems($scope.posts, currentIndex, newIndex);
 
 		var jsonPost = [];
 		for(i = 0; i < $scope.posts.length; i++) {
@@ -273,3 +324,5 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 		$(this).data('changed', true);
 	});
 });
+
+postiesApp.controller('PageErrorCtrl', function() {});
