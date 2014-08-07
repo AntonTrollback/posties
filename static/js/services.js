@@ -28,19 +28,25 @@ postiesApp.service('SettingsService', function($http, config) {
 			return promise;
 		} else {
 			var userSettings = localStorage.getItem(config.keySettings);
-			if(userSettings)
+			if(userSettings != null) {
 				return JSON.parse(userSettings);
-			else
-				return {
+			} else {
+				var userSettings = {
 					created:  new Date(),
 					id:  "123",
 					pagebackgroundcolor:  "#f5f5f5" ,
 					postbackgroundcolor:  "#ffffff" ,
 					posttextcolor:  "#141414" ,
+					showboxes : true,
 					typefaceheadline:  "sans-serif" ,
 					typefaceparagraph:  "sans-serif" ,
 					username:  false
 				};
+
+				localStorage.setItem(config.keySettings, JSON.stringify(userSettings));
+
+				return userSettings;
+			}
 		}
 	}
 

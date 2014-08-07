@@ -139,6 +139,7 @@ def api_create_user():
 			'typefaceparagraph' : settings['typefaceparagraph'],
 			'typefaceheadline' : settings['typefaceheadline'],
 			'posttextcolor' : settings['posttextcolor'],
+			'showboxes' : settings['showboxes'],
 			'postbackgroundcolor' : settings['postbackgroundcolor'],
 			'pagebackgroundcolor' : settings['pagebackgroundcolor'],
 			'created' : r.now()}).run(conn)
@@ -253,6 +254,7 @@ def api_post_headline():
 def api_update_settings():
 	jsonData = request.json
 	post_text_color = jsonData['posttextcolor']
+	show_boxes = jsonData['showboxes']
 	post_background_color = jsonData['postbackgroundcolor']
 	page_background_color = jsonData['pagebackgroundcolor']
 	typeface_paragraph = jsonData['typefaceparagraph']
@@ -269,6 +271,7 @@ def api_update_settings():
 				'typefaceparagraph' : typeface_paragraph,
 				'typefaceheadline' : typeface_headline,
 				'posttextcolor' : post_text_color,
+				'showboxes' : show_boxes,
 				'postbackgroundcolor' : post_background_color,
 				'pagebackgroundcolor' : page_background_color,
 				'created' : r.now()}).run(conn)

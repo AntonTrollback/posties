@@ -73,13 +73,20 @@ h1 a {
 fieldset select,
 fieldset input[type="text"],
 fieldset input[type="email"],
-fieldset input[type="password"] {
+fieldset input[type="password"],
+.formGroup select,
+.formGroup input[type="text"],
+.formGroup input[type="email"],
+.formGroup input[type="password"] {
 	font-size: 2rem;
 	padding: 8px;
 }
 fieldset input[type="text"],
 fieldset input[type="email"],
-fieldset input[type="password"] {
+fieldset input[type="password"],
+.formGroup input[type="text"],
+.formGroup input[type="email"],
+.formGroup input[type="password"] {
 	border: none;
 	border-bottom: 1px solid #ddd;
 	font-style: italic;
@@ -118,6 +125,18 @@ label + select {
     -moz-appearance:none;
     appearance:none;
 }
+input[type="checkbox"] + span {
+	height: 20px;
+	border: 1px solid #ddd;
+	background: #fff;
+	width: 24px;
+	display: block;
+	padding: 10px;
+	margin-top: .8rem;
+}
+input[type="checkbox"]:checked + span {
+	background-color: #7FFF8E;
+}
 
 /*** UNIQUES ***/
 #flash {
@@ -147,26 +166,26 @@ label + select {
 	text-align: center;
 	margin-top: 2rem;
 }
+pre:focus {
+	outline: 0;
+}
 .postText {
 	border: 0;
-	padding: 4rem 2rem 8rem 2rem;
 	line-height: 1.3;
 	display: inline-block;
 	width: 100%;
 	font-size: 2.3rem;
-	min-height: 170px;
 	box-sizing: border-box;
 	font-weight: lighter;
 	background: #fff;
+	white-space: pre-line;
 }
 .postHeadline {
 	border: 0;
-	padding: 2rem;
 	line-height: 1.3;
 	white-space: pre-line;
 	width: 100%;
 	font-size: 4rem;
-	min-height: 100px;
 	box-sizing: border-box;
 	font-weight: lighter;
 	font-style: normal;
@@ -178,6 +197,7 @@ label + select {
 	margin: 0 auto;
 	width: 80%;
 	max-width: 660px;
+	margin-bottom: 4rem;
 }
 .btnPublishContainer button {
 	height: 87px;	
@@ -314,12 +334,14 @@ header div.menu li {
 	font-size: 2rem;
 	text-decoration: none;
 }
-
-.modal.updateSettings fieldset {
+.modal.updateSettings .formGroup {
 	width: 46%;
-	display: inline-block;
+	float: left;
 	margin-bottom: 2rem;
 	position: relative;
+}
+.modal.updateSettings .formGroup:nth-child(odd) {
+	clear: both;
 }
 .modal.updateSettings label {
 	margin-bottom: .8rem;
@@ -350,7 +372,7 @@ header div.menu li {
 }
 .post .sorter {
 	position: absolute;
-	top: 2px;
+	top: 0;
 	right: 60px;
 	font-size: 22px;
 }
@@ -375,7 +397,7 @@ header div.menu li {
 }
 .post .delete {
 	position: absolute;
-	top: 8px;
+	top: 5px;
 	right: 8px;
 	background: url('../img/iconDeletePost.png') no-repeat 0 0;
 	padding: 10px;
