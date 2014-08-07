@@ -1,4 +1,5 @@
 <div id="modalUpdateSettings" class="modal updateSettings" ng-show="settingsService.isOpen" ng-cloak>
+	<p class="close" ng-click="settingsService.close()"><a>X</a></p>
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
 		<div class="formGroup">
 			<label for="postTextColor">Text color:</label>

@@ -360,11 +360,11 @@ header div.menu li {
 }
 .post {
 	position: relative;
-	margin-bottom: 1.1rem;
 	box-sizing: border-box;
 }
 .post img {
 	width: 100%;
+	margin-top: 1rem;
 }
 .post pre a {
 	text-decoration: underline;
@@ -380,6 +380,12 @@ header div.menu li {
 	position: absolute;
 	color: #a9a9a9;
 	cursor: pointer;
+}
+.post .image .sorter {
+	top: 14px;
+}
+.post .image .delete {
+	top: 20px;
 }
 .post:first-child .sorter a:first-child,
 .post.firstChild .sorter a:first-child,
