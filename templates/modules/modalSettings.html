@@ -1,18 +1,25 @@
 <div id="modalUpdateSettings" class="modal updateSettings" ng-show="settingsService.isOpen" ng-cloak>
+	<p class="close" ng-click="settingsService.close()"><a>X</a></p>
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
-		<fieldset>
+		<div class="formGroup">
 			<label for="postTextColor">Text color:</label>
 			<input id="postTextColor" type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
-		</fieldset>
-		<fieldset>
+		</div>
+		<div class="formGroup">
 			<label for="postBackgroundColor">Post color</label>
 			<input id="postBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
-		</fieldset>
-		<fieldset>
+		</div>
+		<div class="formGroup">
 			<label for="pageBackgroundColor">Page color</label>
 			<input id="pageBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" />
-		</fieldset>
-		<fieldset>
+		</div>
+		<div class="formGroup">
+			<label for="showBoxes">Show boxes?
+			<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" class="hidden" />
+				<span></span>
+			</label>
+		</div>
+		<div class="formGroup">
 			<label for="typefaceParagraph">Text font</label>
 			<select id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
 				<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">sans-serif</option>
@@ -23,8 +30,8 @@
 				<option value="FanwoodText" ng-selected="userSettings.typefaceparagraph == 'FanwoodText'">Fanwood Text</option>
 				<option value="Delius" ng-selected="userSettings.typefaceparagraph == 'Delius'">Delius</option>
 			</select>
-		</fieldset>
-		<fieldset>
+		</div>
+		<div class="formGroup">
 			<label for="typefaceHeadline">Headline font</label>
 			<select id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
 				<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">sans-serif</option>
@@ -35,10 +42,10 @@
 				<option value="FanwoodText" ng-selected="userSettings.typefaceheadline == 'FanwoodText'">Fanwood Text</option>
 				<option value="Delius" ng-selected="userSettings.typefaceheadline == 'Delius'">Delius</option>
 			</select>
-		</fieldset>
-		<fieldset class="buttonContainer">
+		</div>
+		<div class="formGroup buttonContainer">
 			<button>Save</button>
 			<button ng-click="settingsService.close()">Cancel</button>
-		</fieldset>
+		</div>
 	</form>
 </div>

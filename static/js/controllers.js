@@ -14,7 +14,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 			content : $event.target.getAttribute('data-content'),
 			type : $event.target.getAttribute('data-type'),
 			template : $event.target.getAttribute('data-template')
-		}
+		};
 
 		$scope.posts.unshift(post);
 		$scope.showPostTypes = false;
@@ -263,7 +263,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 
 	$scope.savePost = function($event, post) {
 		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
-		postTextContent = angular.element($event)[0].currentTarget.innerHTML;
+		var postTextContent = $event.target.innerHTML;
 
 		if(postTextContent.length && $($event.target).data('changed')) {
 			var jsonPost = {
