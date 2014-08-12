@@ -4,3 +4,5 @@
 	- add images as anonymous user
 	- close buttons for overlays
 	- what to do with settings when on another users page? we empower them to style other peoples pages for their own viewing - but what for? 
+	- Amazon S3 Policies
+	- Defect when logged in and watching another Posties pages

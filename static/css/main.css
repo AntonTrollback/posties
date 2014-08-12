@@ -294,7 +294,7 @@ header div.menu li {
 }
 .modal {
 	position: absolute;
-	background: rgba(255, 255, 255, 0.9);
+	background: rgba(255, 255, 255, 1);
 	box-shadow: 0px 2px 1px #888;
 	border: 1px solid #ddd;
 	width: 60%;

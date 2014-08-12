@@ -5,6 +5,6 @@
 		<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
 	</div>
 	<form class="form createPostHeadline">
-		<pre ng-blur="savePost($event, post)" class="postHeadline" data-changed="false" contenteditable ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor, 'padding' : userSettings.showboxes ? '2rem' : '0', 'margin-bottom' : userSettings.showboxes ? '1.1rem' : '0' }"></pre>
+		<pre ng-blur="savePost($event, post)" class="postHeadline" data-changed="false" contenteditable ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor, 'padding' : userSettings.showboxes ? '2rem' : '0', 'margin-bottom' : userSettings.showboxes ? '0.2rem' : '0' }"></pre>
 	</form>
 </script>

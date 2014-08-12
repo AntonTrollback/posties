@@ -186,12 +186,12 @@ def api_post_image():
 	except Error:
 		fileExtension = ''
 
-	s3_conn = S3Connection('AKIAJIXSWNUHPXJK625A', 'wwbFhAXCyyXLdyxRURfIDyO15LHTdIAUXeVOdBhO')
+	s3_conn = S3Connection('AKIAICE5GS7MTMVD5U4Q', '8i7+mEe8t6u/8dtdgYxjuJ7i+AVJn+0kJGdibApF')
 	k = Key(s3_conn.get_bucket('postiesimages'))
 	generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 	k.key = generated_filename
 	k.set_contents_from_file(request.files['file'], rewind=True)
-	k.set_acl("public-read")
+	#k.set_acl("public-read")
 
 	if os.path.isfile(filenameWithPath):
 		os.remove(filenameWithPath)
