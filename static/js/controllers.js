@@ -1,4 +1,5 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, SettingsService, config) {
+postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, 
+	config, SettingsService, FlashService) {
 
 	$scope.posts = [];
 	$scope.isStartPage = true;
@@ -6,6 +7,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
+	$scope.flash = FlashService.getFlash();
 
 	$scope.addPost = function($event) {
 		var post = {
@@ -25,8 +27,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 
 	$scope.savePost = function($event, post) {
 		if($($event.target).data('changed')) {
-			$('#flashSaved').fadeIn().delay(500).fadeOut();
 			$($event.target).data('changed', false);
+			$scope.flash.showMessage('saved...');
 
 			//TODO: Two way binding doesn't work with contenteditable, even though it should.
 			post.content = $event.target.innerHTML; 
@@ -132,7 +134,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 		} else {
 			console.log("form is invalid");
 		}
-	}
+	};
 
 	//Angular doesn't do ng-change on contenteditable, using jQuery
 	$('#posts').on('propertychange, input', 'pre', function(el) {
@@ -159,12 +161,19 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, SettingsService, LoaderService, config, $upload) {
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, 
+	config, SettingsService, 
+	LoaderService, FlashService) {
 
 	$scope.posts = [];
 	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 	$scope.settingsService = SettingsService;
 	$scope.loader = LoaderService.getLoader();
+	$scope.flash = FlashService.getFlash();
+
+	if(posties.util.getQueryParamByName('intro')) {
+		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
+	}
 
 	/*$scope.settingsService.getSettings().then(function(data) {
 		$scope.settings = data;
@@ -277,8 +286,8 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 				data: jsonPost,
 				headers: config.headerJSON
 			}).then(function(response) {
-				$('#flashSaved').fadeIn().delay(500).fadeOut();
 				$($event.target).data('changed', false);
+				$scope.flash.showMessage('saved...');
 			}, function(response) {
 				console.log(response);
 			});

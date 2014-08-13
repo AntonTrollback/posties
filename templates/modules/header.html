@@ -1,13 +1,6 @@
 <div id="flash">
-	<div id="flashIntro">
-		<p class="close"><a></a></p>
-		<h5>Congratulations!</h5>
-		<p>Your site is now live!</p>
-	</div>
-	<div id="flashSaved">
-		<p class="close"><a></a></p>
-		<p>Saved...</p>
-	</div>
+	<a class="close" ng-click="flash.hide()"></a>
+	<pre>[[flash.message]]</pre>
 </div>
 <header>
 	<a id="logo">&nbsp;</a>

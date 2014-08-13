@@ -137,3 +137,32 @@ postiesApp.service('LoaderService', function() {
 	}
 
 });
+
+postiesApp.service('FlashService', function($timeout) {
+
+	var flash = {
+		message : undefined,
+		element : $('#flash')
+	};
+
+	flash.showMessage = function(message) {
+		flash.message = message;
+		flash.element.fadeIn(function() {
+			$(this).delay(500).fadeOut();
+		});
+	};
+
+	flash.showPermanentMessage = function(message) {
+		flash.message = message;
+		flash.element.fadeIn();
+	};
+
+	flash.hide = function() {
+		flash.element.fadeOut();
+	};
+
+	this.getFlash = function() {
+		return flash;
+	}
+
+});
