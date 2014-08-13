@@ -142,7 +142,9 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout,
 	});
 });
 
-postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, AuthService, config) {
+postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashService) {
+
+	$scope.flash = FlashService.getFlash();
 
 	$scope.submitLogin = function() {
 		var jsonPost = JSON.stringify({ 
@@ -154,7 +156,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 			if(response.status == 200) {
 				window.location = "/by/" + response.data.username;
 			} else {
-				$scope.formLogin.error = response.data.error;
+				$scope.flash.showPermanentMessage(response.data.error);
 			}
 		});
 	};

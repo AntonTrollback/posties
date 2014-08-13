@@ -5,7 +5,7 @@ body {
 	width: 80%;
 	margin: 0 auto;
 	font-size: 1.4rem;
-	font-family: 'Akkurat';
+	font-family: 'Helvetica', arial, sans-serif;
 	min-width: 300px;
 	background: #f5f5f5;
 	color: #888;
@@ -18,6 +18,7 @@ body {
 /* Basic typography */
 h1, h2, h3 {
 	color: #666;
+	font-weight: normal;
 }
 h2 {
 	font-size: 2.3rem;
@@ -56,7 +57,7 @@ header > a {
 	float: right;
 	margin-top: 1.5rem;
 	font-size: 2rem;
-	color: #c6c6c5;
+	color: #555;
 }
 header > a:visited {
 	color: #555;
@@ -74,14 +75,38 @@ pre:focus {
 #logo {
 	float: right;
 	background: url('../img/logo.png') no-repeat 0 0;
-	padding: 3px 15px;
+	width: 12px;
+	height: 10px;
+	padding: 10px;
 	margin-left: 1rem;
 }
 #openTopMenu {
 	float: right;
-	background: url('../img/iconMenu.png') no-repeat 0 0;
-	padding: 4px 17px;
-	margin-left: 1rem;	
+	position: relative;
+	background: #faf8c6;
+	/*background: url('../img/iconMenu.png') no-repeat 0 0;*/
+	width: 12px;
+	height: 10px;
+	padding: 10px;
+	margin-left: 1rem;
+}
+#openTopMenu span {
+	position: absolute;
+	width: 16px;
+	height: 3px;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	background: #8a8a8a;
+}
+#openTopMenu span:first-child {
+	top: 9px;
+}
+#openTopMenu span:nth-child(2) {
+	top: 14px;
+}
+#openTopMenu span:nth-child(3) {
+	top: 19px;
 }
 /*** GLOBAL FORMS ***/
 fieldset select,
@@ -106,12 +131,16 @@ fieldset input[type="password"],
 	font-style: italic;
 	font-weight: lighter;
 }
+.editorial fieldset input[type="text"],
+.editorial fieldset input[type="email"],
+.editorial fieldset input[type="password"] {
+	display: block;
+}
 button, 
 .addPostImage {
 	font-size: 2.4rem;
 	border: 0;
 	padding: 1rem;
-	font-family: 'Akkurat';
 	background: #faf8c6;
 	color: #8a8a8a;
 	box-shadow: 1px 2px 3px rgba(128, 128, 128, 0.5);
@@ -165,43 +194,18 @@ input[type="checkbox"]:checked + span {
 	background-color: rgba(0, 0, 0, 0.8);
 }
 #flash .close {
-	top: 8px;
-	right: 8px;
-	padding: 10px;
-	background: url('../img/iconDeletePost.png') no-repeat 0 0;
+	top: 0;
+	right: 6px;
 	position: absolute;
 }
 #flash pre {
 	color: #fff;
 	font-size: 1.4rem;
-	font-family: 'Akkurat';
+	font-family: 'Helvetica', arial, sans-serif;
 }
 .btnPublishContainer {
 	display: block;
 	text-align: center;
-	margin-top: 2rem;
-}
-.postText {
-	border: 0;
-	line-height: 1.3;
-	display: inline-block;
-	width: 100%;
-	font-size: 2.3rem;
-	box-sizing: border-box;
-	font-weight: lighter;
-	background: #fff;
-	white-space: pre-line;
-}
-.postHeadline {
-	border: 0;
-	line-height: 1.3;
-	white-space: pre-line;
-	width: 100%;
-	font-size: 4rem;
-	box-sizing: border-box;
-	font-weight: lighter;
-	font-style: normal;
-	background: #fff;
 }
 .addPost,
 .btnPublishContainer button {
@@ -209,7 +213,7 @@ input[type="checkbox"]:checked + span {
 	margin: 0 auto;
 	width: 80%;
 	max-width: 660px;
-	margin-bottom: 4rem;
+	margin-bottom: 2rem;
 }
 .btnPublishContainer button {
 	height: 87px;	
@@ -330,21 +334,6 @@ header div.menu li {
 	clear: both;
 	width: 100%;
 }
-.modal .close {
-	position: relative;
-	margin: 0;
-}
-.modal .close a {
-	cursor: pointer;
-	float: right;
-	position: absolute;
-	top: -20px;
-	right: -30px;
-	padding: 4px 8px;
-	font-weight: bold;
-	font-size: 2rem;
-	text-decoration: none;
-}
 .modal.updateSettings .formGroup {
 	width: 46%;
 	float: left;
@@ -375,77 +364,56 @@ header div.menu li {
 }
 .post img {
 	width: 100%;
-	margin-top: 1rem;
+	margin-bottom: .5rem;
 }
 .post pre a {
 	text-decoration: underline;
 	color: inherit;
 }
-.post .sorter {
+.post .options {
 	position: absolute;
-	top: 0;
-	right: 60px;
+	top: -4px;
+	right: 8px;
 	font-size: 22px;
 }
-.post .sorter a {
-	position: absolute;
-	color: #a9a9a9;
+.post .image .options {
+	top: 4px;
+}
+.post .options a {
 	cursor: pointer;
+	color: #a9a9a9;
 }
-.post .image .sorter {
-	top: 14px;
-}
-.post .image .delete {
-	top: 20px;
-}
-.post:first-child .sorter a:first-child,
-.post.firstChild .sorter a:first-child,
-.post:last-child .sorter a:last-child,
-.post.lastChild .sorter a:last-child {
-	color: #e3e3e3;
-	pointer-events: none;
-}
-.post .sorter .up {
-	top: 0;
-}
-.post .sorter .down {
-	top: 3px;
-	left: -28px;
+.post:first-child .options a:first-child,
+.post.firstChild .options a:first-child,
+.post:last-child .options a:nth-child(2),
+.post.lastChild .options a:nth-child(2) {
+	display: none;
 }
 .post .delete {
-	position: absolute;
-	top: 5px;
-	right: 8px;
-	background: url('../img/iconDeletePost.png') no-repeat 0 0;
-	padding: 10px;
+	font-size: 3rem;
 }
 .userOwnsPage .post .delete {
-	display: block;
+	display: inline-block;
 }
-.post.headline h5 {
-	border: 0;
-	font-size: 4rem;
-	padding: 2rem;
-	margin: 0 0 4rem 0;
-	line-height: 1.2;
-	box-sizing: border-box;
-	white-space: pre-line;
-	width: 100%;
-}
-.post.text p {
-	border: 0;
+.postText {
+	display: inline-block;
 	font-size: 2.3rem;
-	padding: 2rem;
-	margin: 0 0 4rem 0;
-	line-height: 1.2;
-	box-sizing: border-box;
 	white-space: pre-line;
-	width: 100%;
 }
-.post.image img {
-	max-height: 100%;
-	max-width: 100%;
+.postHeadline {
+	white-space: pre-line;
+	font-size: 4rem;
+	font-style: normal;
+}
+.postText,
+.postHeadline {
+	background: #fff;
 	width: 100%;
+	border: 0;
+	line-height: 1;
+	font-weight: lighter;
+	box-sizing: border-box;
+	margin: 0 0 .5rem 0;
 }
 .colorpicker {
 	text-indent: -99999px;
@@ -456,4 +424,27 @@ header div.menu li {
 /*** CSS UTIL ***/
 .hidden {
 	display: none;
+}
+/*** ICONS ***/
+p.close {
+	position: relative;
+	margin: 0;
+}
+p.close a {
+	cursor: pointer;
+	float: right;
+	position: absolute;
+	top: -26px;
+	right: -30px;
+	padding: 4px 8px;
+	font-weight: bold;
+	text-decoration: none;
+}
+.close,
+p.close a {
+	font-size: 3rem;
+}
+/*** HACKS ***/
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
 }

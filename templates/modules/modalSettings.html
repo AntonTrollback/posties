@@ -1,12 +1,12 @@
 <div id="modalUpdateSettings" class="modal updateSettings" ng-show="settingsService.isOpen" ng-cloak>
-	<p class="close" ng-click="settingsService.close()"><a>X</a></p>
+	<p class="close" ng-click="settingsService.close()"><a>×</a></p>
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
 		<div class="formGroup">
 			<label for="postTextColor">Text color:</label>
 			<input id="postTextColor" type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
 		</div>
 		<div class="formGroup">
-			<label for="postBackgroundColor">Post color</label>
+			<label for="postBackgroundColor">Post box color</label>
 			<input id="postBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
 		</div>
 		<div class="formGroup">
