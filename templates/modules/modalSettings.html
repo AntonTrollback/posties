@@ -45,7 +45,7 @@
 		</div>
 		<div class="formGroup buttonContainer">
 			<button>Save</button>
-			<button ng-click="settingsService.close()">Cancel</button>
+			<a class="button" ng-click="userSettings = settingsService.getDefaultSettings()">Reset</a>
 		</div>
 	</form>
 </div>

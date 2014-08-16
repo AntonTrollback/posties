@@ -1,5 +1,5 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, 
-	config, SettingsService, FlashService) {
+postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload,  
+	config, SettingsService, LoaderService, FlashService) {
 
 	$scope.posts = [];
 	$scope.isStartPage = true;
@@ -7,6 +7,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout,
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
+	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
 
 	$scope.addPost = function($event) {
@@ -33,6 +34,35 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout,
 			//TODO: Two way binding doesn't work with contenteditable, even though it should.
 			post.content = $event.target.innerHTML; 
 		}
+	};
+
+	$scope.savePostImage = function($files) {
+		var imageType = /image.*/;
+		
+		for (var i = 0; i < $files.length; i++) {
+			var file = $files[i];
+
+			if(file.type.match(imageType)) {
+				$scope.loader.show();
+
+				var reader = new FileReader();
+				
+				reader.onload = function(e) {
+					$scope.$apply(function() {
+						var imagePost = {
+							type : 2,
+							sortRank : $scope.posts.length + 1,
+							template : 'postImage.html',
+							key : reader.result
+						};
+						$scope.posts.unshift(imagePost);
+						$scope.loader.hide();
+					});
+				}
+
+				reader.readAsDataURL(file);
+			}
+	    }
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
@@ -119,6 +149,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout,
 				settings : $scope.userSettings
 			};
 
+			jsonPost.settings['username'] = $scope.user.username;
+
 			$http({
 				url: '/api/users',
 				method: 'post',
@@ -203,6 +235,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				post.template = 'postHeadline.html';
 			} else if(post.type == 2) {
 				post.template = 'postImage.html';
+				post.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + post.key;
 			}
 
 			$scope.posts.push(post);
@@ -264,12 +297,13 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				$scope.loader.setMessage('uploaded ' + parseInt(100.0 * evt.loaded / evt.total) + "%");
 			}).success(function(data, status, headers, config) {
 				data.template = 'postImage.html';
+				data.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + data.key;
 				$scope.posts.unshift(data);
 				$scope.loader.hide();
 			}).error(function(response) {
 				console.log(response);
 			});
-	    }
+		}
 	};
 
 	$scope.savePost = function($event, post) {

@@ -11,7 +11,7 @@ postiesApp.constant('config', {
 postiesApp.service('SettingsService', function($http, config) {
 
 	this.isOpen = false;
-	
+
 	this.getSettings = function() {
 		if($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
 			var promise = $http({
@@ -31,24 +31,13 @@ postiesApp.service('SettingsService', function($http, config) {
 			if(userSettings != null) {
 				return JSON.parse(userSettings);
 			} else {
-				var userSettings = {
-					created:  new Date(),
-					id:  "123",
-					pagebackgroundcolor:  "#f5f5f5" ,
-					postbackgroundcolor:  "#ffffff" ,
-					posttextcolor:  "#141414" ,
-					showboxes : true,
-					typefaceheadline:  "sans-serif" ,
-					typefaceparagraph:  "sans-serif" ,
-					username:  false
-				};
+				var defaultSettings = this.getDefaultSettings();
+				localStorage.setItem(config.keySettings, JSON.stringify(defaultSettings));
 
-				localStorage.setItem(config.keySettings, JSON.stringify(userSettings));
-
-				return userSettings;
+				return defaultSettings;
 			}
 		}
-	}
+	};
 
     this.submitUpdateSettings = function(userSettings) {
     	if($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
@@ -71,15 +60,28 @@ postiesApp.service('SettingsService', function($http, config) {
     		localStorage.setItem(config.keySettings, JSON.stringify(userSettings));
     		this.close();
     	}
-    }
+    };
 
     this.open = function() {
 		return this.isOpen = !this.isOpen;
-    }
+    };
 
     this.close = function() {
 		return this.isOpen = false;
-	}
+	};
+
+	this.getDefaultSettings = function() {
+		return {
+			created:  new Date(),
+			id:  "123",
+			pagebackgroundcolor:  "#f5f5f5",
+			postbackgroundcolor:  "#ffffff",
+			posttextcolor:  "#141414",
+			showboxes : true,
+			typefaceheadline:  "sans-serif",
+			typefaceparagraph:  "sans-serif"
+		}
+	};
 
 });
 
@@ -100,17 +102,11 @@ postiesApp.service('AuthService', function($http, config) {
 		});
 	}
 
-	this.logout = function() {
-
-	}
-
 	this.isLoggedIn = function() {
 		return this.user != false;
 	}
 
-	this.currentUserInSession = function() {
-
-	}
+	this.currentUserInSession = function() {}
 });
 
 postiesApp.service('LoaderService', function() {
