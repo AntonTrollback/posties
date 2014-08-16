@@ -6,41 +6,41 @@
 			<input id="postTextColor" type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
 		</div>
 		<div class="formGroup">
-			<label for="postBackgroundColor">Post box color</label>
-			<input id="postBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
-		</div>
-		<div class="formGroup">
 			<label for="pageBackgroundColor">Page color</label>
 			<input id="pageBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" />
 		</div>
 		<div class="formGroup">
-			<label for="showBoxes">Show boxes around posts?
+			<label for="showBoxes">Show post boxes?
 			<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" class="hidden" />
-				<span></span>
+				<span>✔</span>
 			</label>
+		</div>
+		<div class="formGroup">
+			<label for="postBackgroundColor">Post box color</label>
+			<input id="postBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
 		</div>
 		<div class="formGroup">
 			<label for="typefaceParagraph">Text font</label>
 			<select id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
-				<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">sans-serif</option>
-				<option value="NothingYouCouldDo" ng-selected="userSettings.typefaceparagraph == 'NothingYouCouldDo'">Nothing you could do</option>
-				<option value="CutiveMono" ng-selected="userSettings.typefaceparagraph == 'CutiveMono'">Cutive Mono</option>
-				<option value="KiteOne" ng-selected="userSettings.typefaceparagraph == 'KiteOne'">Kite One</option>
+				<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">Sans serif</option>
+				<option value="SourceSansPro" ng-selected="userSettings.typefaceparagraph == 'SourceSansPro'">Source Sans Pro</option>
+				<option value="ReenieBeanie" ng-selected="userSettings.typefaceparagraph == 'ReenieBeanie'">Reenie Beanie</option>
+				<option value="Raleway" ng-selected="userSettings.typefaceparagraph == 'Raleway'">Raleway</option>
 				<option value="JosefinSans" ng-selected="userSettings.typefaceparagraph == 'JosefinSans'">Josefin Sans</option>
-				<option value="FanwoodText" ng-selected="userSettings.typefaceparagraph == 'FanwoodText'">Fanwood Text</option>
-				<option value="Delius" ng-selected="userSettings.typefaceparagraph == 'Delius'">Delius</option>
+				<option value="OpenSans" ng-selected="userSettings.typefaceparagraph == 'OpenSans'">Open Sans</option>
+				<option value="Rokkitt" ng-selected="userSettings.typefaceparagraph == 'Rokkitt'">Rokkitt</option>
 			</select>
 		</div>
 		<div class="formGroup">
 			<label for="typefaceHeadline">Headline font</label>
 			<select id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
-				<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">sans-serif</option>
-				<option value="NothingYouCouldDo" ng-selected="userSettings.typefaceheadline == 'NothingYouCouldDo'">Nothing you could do</option>
-				<option value="CutiveMono" ng-selected="userSettings.typefaceheadline == 'CutiveMono'">Cutive Mono</option>
-				<option value="KiteOne" ng-selected="userSettings.typefaceheadline == 'KiteOne'">Kite One</option>
+				<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">Sans serif</option>
+				<option value="SourceSansPro" ng-selected="userSettings.typefaceheadline == 'SourceSansPro'">Source Sans Pro</option>
+				<option value="ReenieBeanie" ng-selected="userSettings.typefaceheadline == 'ReenieBeanie'">Reenie Beanie</option>
+				<option value="Raleway" ng-selected="userSettings.typefaceheadline == 'Raleway'">Raleway</option>
 				<option value="JosefinSans" ng-selected="userSettings.typefaceheadline == 'JosefinSans'">Josefin Sans</option>
-				<option value="FanwoodText" ng-selected="userSettings.typefaceheadline == 'FanwoodText'">Fanwood Text</option>
-				<option value="Delius" ng-selected="userSettings.typefaceheadline == 'Delius'">Delius</option>
+				<option value="OpenSans" ng-selected="userSettings.typefaceheadline == 'OpenSans'">Open Sans</option>
+				<option value="Rokkitt" ng-selected="userSettings.typefaceheadline == 'Rokkitt'">Rokkitt</option>
 			</select>
 		</div>
 		<div class="formGroup buttonContainer">

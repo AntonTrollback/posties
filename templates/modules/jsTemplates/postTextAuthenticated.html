@@ -1,8 +1,8 @@
 <script type="text/ng-template" id="postText.html">
 	<div class="options">
-		<a class="up" ng-click="movePost($index, $index - 1)">&#x25B2;</a>
-		<a class="down" ng-click="movePost($index, $index + 1)">&#x25BC;</a>
-		<a href="#" ng-click="deletePost($index, post)" class="delete">×</a>
+		<a class="up" ng-click="movePost($index, $index - 1)" title="move up">&#x25B2;</a>
+		<a class="down" ng-click="movePost($index, $index + 1)" title="move down">&#x25BC;</a>
+		<a href="#" ng-click="deletePost($index, post)" class="delete" title="delete">×</a>
 	</div>
 	<form class="form createPostText">
 		<pre ng-blur="savePost($event, post)" class="postText" data-changed="false" contenteditable ng-bind-html="post.content | linky" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor, 'padding' : userSettings.showboxes ? '2rem' : '0' }"></pre>

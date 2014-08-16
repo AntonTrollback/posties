@@ -176,9 +176,12 @@ input[type="checkbox"] + span {
 	display: block;
 	padding: 10px;
 	margin-top: .8rem;
+	font-size: 2rem;
+	text-align: center;
+	text-indent: -99999px;
 }
 input[type="checkbox"]:checked + span {
-	background-color: #7FFF8E;
+	text-indent: 0;
 }
 
 #flash {
