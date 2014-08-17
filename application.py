@@ -15,7 +15,7 @@ application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
-WHITELIST_TYPEFACES = ['sans-serif', 'NothingYouCouldDo', 'CutiveMono', 'KiteOne', 'JosefinSans', 'FanwoodText', 'Delius']
+WHITELIST_TYPEFACES = ['sans-serif', 'SourceSansPro', 'ReenieBeanie', 'Raleway', 'JosefinSans', 'OpenSans', 'Rokkitt']
 
 #conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
@@ -60,7 +60,7 @@ def login():
 			login_user(User(user['id'], user['email'], user['username']))
 			return jsonify(user)
 
-		return make_response(jsonify( { 'error': 'user not found' } ), 401)
+		return make_response(jsonify( { 'error': 'The e-mail address doesn\'t exist' } ), 401)
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
@@ -186,12 +186,12 @@ def api_post_image():
 	except Error:
 		fileExtension = ''
 
-	s3_conn = S3Connection('AKIAJIXSWNUHPXJK625A', 'wwbFhAXCyyXLdyxRURfIDyO15LHTdIAUXeVOdBhO')
+	s3_conn = S3Connection('AKIAICE5GS7MTMVD5U4Q', '8i7+mEe8t6u/8dtdgYxjuJ7i+AVJn+0kJGdibApF')
 	k = Key(s3_conn.get_bucket('postiesimages'))
 	generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 	k.key = generated_filename
 	k.set_contents_from_file(request.files['file'], rewind=True)
-	k.set_acl("public-read")
+	#k.set_acl("public-read")
 
 	if os.path.isfile(filenameWithPath):
 		os.remove(filenameWithPath)

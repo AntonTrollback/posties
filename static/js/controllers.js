@@ -1,4 +1,5 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, SettingsService, config) {
+postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload,  
+	config, SettingsService, LoaderService, FlashService) {
 
 	$scope.posts = [];
 	$scope.isStartPage = true;
@@ -6,6 +7,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
+	$scope.loader = LoaderService.getLoader();
+	$scope.flash = FlashService.getFlash();
 
 	$scope.addPost = function($event) {
 		var post = {
@@ -25,12 +28,41 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 
 	$scope.savePost = function($event, post) {
 		if($($event.target).data('changed')) {
-			$('#flashSaved').fadeIn().delay(500).fadeOut();
 			$($event.target).data('changed', false);
+			$scope.flash.showMessage('saved...');
 
 			//TODO: Two way binding doesn't work with contenteditable, even though it should.
 			post.content = $event.target.innerHTML; 
 		}
+	};
+
+	$scope.savePostImage = function($files) {
+		var imageType = /image.*/;
+		
+		for (var i = 0; i < $files.length; i++) {
+			var file = $files[i];
+
+			if(file.type.match(imageType)) {
+				$scope.loader.show();
+
+				var reader = new FileReader();
+				
+				reader.onload = function(e) {
+					$scope.$apply(function() {
+						var imagePost = {
+							type : 2,
+							sortRank : $scope.posts.length + 1,
+							template : 'postImage.html',
+							key : reader.result
+						};
+						$scope.posts.unshift(imagePost);
+						$scope.loader.hide();
+					});
+				}
+
+				reader.readAsDataURL(file);
+			}
+	    }
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
@@ -117,6 +149,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 				settings : $scope.userSettings
 			};
 
+			jsonPost.settings['username'] = $scope.user.username;
+
 			$http({
 				url: '/api/users',
 				method: 'post',
@@ -132,7 +166,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 		} else {
 			console.log("form is invalid");
 		}
-	}
+	};
 
 	//Angular doesn't do ng-change on contenteditable, using jQuery
 	$('#posts').on('propertychange, input', 'pre', function(el) {
@@ -140,7 +174,9 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, Setting
 	});
 });
 
-postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, AuthService, config) {
+postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashService) {
+
+	$scope.flash = FlashService.getFlash();
 
 	$scope.submitLogin = function() {
 		var jsonPost = JSON.stringify({ 
@@ -152,19 +188,26 @@ postiesApp.controller('PageLoginCtrl', function($scope, $http, SettingsService, 
 			if(response.status == 200) {
 				window.location = "/by/" + response.data.username;
 			} else {
-				$scope.formLogin.error = response.data.error;
+				$scope.flash.showPermanentMessage(response.data.error);
 			}
 		});
 	};
 
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, SettingsService, LoaderService, config, $upload) {
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, 
+	config, SettingsService, 
+	LoaderService, FlashService) {
 
 	$scope.posts = [];
 	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 	$scope.settingsService = SettingsService;
 	$scope.loader = LoaderService.getLoader();
+	$scope.flash = FlashService.getFlash();
+
+	if(posties.util.getQueryParamByName('intro')) {
+		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
+	}
 
 	/*$scope.settingsService.getSettings().then(function(data) {
 		$scope.settings = data;
@@ -192,6 +235,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 				post.template = 'postHeadline.html';
 			} else if(post.type == 2) {
 				post.template = 'postImage.html';
+				post.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + post.key;
 			}
 
 			$scope.posts.push(post);
@@ -253,12 +297,13 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 				$scope.loader.setMessage('uploaded ' + parseInt(100.0 * evt.loaded / evt.total) + "%");
 			}).success(function(data, status, headers, config) {
 				data.template = 'postImage.html';
+				data.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + data.key;
 				$scope.posts.unshift(data);
 				$scope.loader.hide();
 			}).error(function(response) {
 				console.log(response);
 			});
-	    }
+		}
 	};
 
 	$scope.savePost = function($event, post) {
@@ -277,8 +322,8 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, S
 				data: jsonPost,
 				headers: config.headerJSON
 			}).then(function(response) {
-				$('#flashSaved').fadeIn().delay(500).fadeOut();
 				$($event.target).data('changed', false);
+				$scope.flash.showMessage('saved...');
 			}, function(response) {
 				console.log(response);
 			});

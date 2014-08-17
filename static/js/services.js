@@ -11,7 +11,7 @@ postiesApp.constant('config', {
 postiesApp.service('SettingsService', function($http, config) {
 
 	this.isOpen = false;
-	
+
 	this.getSettings = function() {
 		if($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
 			var promise = $http({
@@ -31,24 +31,13 @@ postiesApp.service('SettingsService', function($http, config) {
 			if(userSettings != null) {
 				return JSON.parse(userSettings);
 			} else {
-				var userSettings = {
-					created:  new Date(),
-					id:  "123",
-					pagebackgroundcolor:  "#f5f5f5" ,
-					postbackgroundcolor:  "#ffffff" ,
-					posttextcolor:  "#141414" ,
-					showboxes : true,
-					typefaceheadline:  "sans-serif" ,
-					typefaceparagraph:  "sans-serif" ,
-					username:  false
-				};
+				var defaultSettings = this.getDefaultSettings();
+				localStorage.setItem(config.keySettings, JSON.stringify(defaultSettings));
 
-				localStorage.setItem(config.keySettings, JSON.stringify(userSettings));
-
-				return userSettings;
+				return defaultSettings;
 			}
 		}
-	}
+	};
 
     this.submitUpdateSettings = function(userSettings) {
     	if($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
@@ -71,15 +60,28 @@ postiesApp.service('SettingsService', function($http, config) {
     		localStorage.setItem(config.keySettings, JSON.stringify(userSettings));
     		this.close();
     	}
-    }
+    };
 
     this.open = function() {
 		return this.isOpen = !this.isOpen;
-    }
+    };
 
     this.close = function() {
 		return this.isOpen = false;
-	}
+	};
+
+	this.getDefaultSettings = function() {
+		return {
+			created:  new Date(),
+			id:  "123",
+			pagebackgroundcolor:  "#f5f5f5",
+			postbackgroundcolor:  "#ffffff",
+			posttextcolor:  "#141414",
+			showboxes : true,
+			typefaceheadline:  "sans-serif",
+			typefaceparagraph:  "sans-serif"
+		}
+	};
 
 });
 
@@ -100,17 +102,11 @@ postiesApp.service('AuthService', function($http, config) {
 		});
 	}
 
-	this.logout = function() {
-
-	}
-
 	this.isLoggedIn = function() {
 		return this.user != false;
 	}
 
-	this.currentUserInSession = function() {
-
-	}
+	this.currentUserInSession = function() {}
 });
 
 postiesApp.service('LoaderService', function() {
@@ -134,6 +130,35 @@ postiesApp.service('LoaderService', function() {
 
 	this.getLoader = function() {
 		return loader;
+	}
+
+});
+
+postiesApp.service('FlashService', function($timeout) {
+
+	var flash = {
+		message : undefined,
+		element : $('#flash')
+	};
+
+	flash.showMessage = function(message) {
+		flash.message = message;
+		flash.element.fadeIn(function() {
+			$(this).delay(500).fadeOut();
+		});
+	};
+
+	flash.showPermanentMessage = function(message) {
+		flash.message = message;
+		flash.element.fadeIn();
+	};
+
+	flash.hide = function() {
+		flash.element.fadeOut();
+	};
+
+	this.getFlash = function() {
+		return flash;
 	}
 
 });

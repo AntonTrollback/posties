@@ -1,17 +1,10 @@
 <div id="flash">
-	<div id="flashIntro">
-		<p class="close"><a></a></p>
-		<h5>Congratulations!</h5>
-		<p>Your site is now live!</p>
-	</div>
-	<div id="flashSaved">
-		<p class="close"><a></a></p>
-		<p>Saved...</p>
-	</div>
+	<a class="close" ng-click="flash.hide()">×</a>
+	<pre>[[flash.message]]</pre>
 </div>
 <header>
 	<a id="logo">&nbsp;</a>
-	<a id="openTopMenu" ng-click="showMenuTop = !showMenuTop">&nbsp;</a>
+	<a id="openTopMenu" ng-click="showMenuTop = !showMenuTop"><span></span><span></span><span></span></a>
 	{% if current_user and current_user.is_authenticated() %}
 		<a href="/by/{{current_user.username}}">{{current_user.username}}</a>
 		<div class="menu" ng-show="showMenuTop" ng-cloak>
@@ -23,6 +16,7 @@
 		</div>
 		{% include 'modules/modalSettings.html' %}
 	{% else %}
+		<a href="#">You're anonymous</a>
 		<div class="menu" ng-show="showMenuTop" ng-cloak>
 			<ul>
 				<li><a ng-click="settingsService.open()">Customize</a></li>
@@ -31,6 +25,5 @@
 			</ul>
 		</div>
 		{% include 'modules/modalSettings.html' %}
-		{% include 'modules/modalLogin.html' %}
 	{% endif %}
 </header>

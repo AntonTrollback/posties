@@ -1,29 +1,23 @@
 @font-face {
-  font-family: 'Akkurat';
-  src: url('../font/Akkurat.eot?') format('eot'), 
-       url('../font/Akkurat.woff') format('woff'), 
-       url('../font/Akkurat.ttf')  format('truetype'),
-       url('../font/Akkurat.svg#Akkurat') format('svg');
-}
-@font-face {
-  font-family: 'NothingYouCouldDo';
+  font-family: 'SourceSansPro';
   font-style: normal;
   font-weight: 400;
-  src: local('Nothing You Could Do'), local('NothingYouCouldDo'), url(http://themes.googleusercontent.com/static/fonts/nothingyoucoulddo/v4/jpk1K3jbJoyoK0XKaSyQAXEXHkG8fPQqt_tcmM6oBg_3rGVtsTkPsbDajuO5ueQw.woff) format('woff');
+  src: local('Source Sans Pro'), local('SourceSansPro-Regular'), url(http://fonts.gstatic.com/s/sourcesanspro/v8/ODelI1aHBYDBqgeIAH2zlJbPFduIYtoLzwST68uhz_Y.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v8/ODelI1aHBYDBqgeIAH2zlNHq-FFgoDNV3GTKpHwuvtI.woff) format('woff');
 }
 
 @font-face {
-  font-family: 'CutiveMono';
+  font-family: 'ReenieBeanie';
   font-style: normal;
   font-weight: 400;
-  src: local('Cutive Mono'), local('CutiveMono-Regular'), url(http://themes.googleusercontent.com/static/fonts/cutivemono/v2/N5odNRruTwjvCM8y77PhQbrIa-7acMAeDBVuclsi6Gc.woff) format('woff');
+  src: local('Reenie Beanie'), local('ReenieBeanie'), url(http://fonts.gstatic.com/s/reeniebeanie/v5/ljpKc6CdXusL1cnGUSamXwYWpCd0FFfjqwFBDnEN0bM.woff2) format('woff2'), url(http://fonts.gstatic.com/s/reeniebeanie/v5/ljpKc6CdXusL1cnGUSamX4kaQb-UsZVONjobs91YQtw.woff) format('woff');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
 @font-face {
-  font-family: 'KiteOne';
+  font-family: 'Raleway';
   font-style: normal;
   font-weight: 400;
-  src: local('Kite One'), local('KiteOne-Regular'), url(http://themes.googleusercontent.com/static/fonts/kiteone/v2/VNHoD96LpZ9rGZTwjozAOnYhjbSpvc47ee6xR_80Hnw.woff) format('woff');
+  src: local('Raleway'), url(http://fonts.gstatic.com/s/raleway/v8/QAUlVt1jXOgQavlW5wEfxQLUuEpTyoUstqEm5AMlJo4.woff2) format('woff2'), url(http://fonts.gstatic.com/s/raleway/v8/cIFypx4yrWPDz3zOxk7hIQLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
 }
 
 @font-face {
@@ -34,15 +28,15 @@
 }
 
 @font-face {
-  font-family: 'FanwoodText';
+  font-family: 'OpenSans';
   font-style: normal;
   font-weight: 400;
-  src: local('Fanwood Text'), local('FanwoodText-Regular'), url(http://themes.googleusercontent.com/static/fonts/fanwoodtext/v4/hDNDHUlsSb8bgnEmDp4T_qRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
+  src: local('Open Sans'), local('OpenSans'), url(http://fonts.gstatic.com/s/opensans/v9/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2) format('woff2'), url(http://fonts.gstatic.com/s/opensans/v9/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
 }
 
 @font-face {
-  font-family: 'Delius';
+  font-family: 'Rokkitt';
   font-style: normal;
   font-weight: 400;
-  src: local('Delius-Regular'), url(http://themes.googleusercontent.com/static/fonts/delius/v4/brLBPBAUw-PpA7n74Uo__uvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+  src: local('Rokkitt'), url(http://fonts.gstatic.com/s/rokkitt/v7/o9LMKUV9IIiOIghfS6ZGbALUuEpTyoUstqEm5AMlJo4.woff2) format('woff2'), url(http://fonts.gstatic.com/s/rokkitt/v7/RcB7dRNAX_8JE8zinU47YALUuEpTyoUstqEm5AMlJo4.woff) format('woff');
 }
