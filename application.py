@@ -125,14 +125,17 @@ def api_create_user():
 		user = User(user['id'], user['email'], user['username'])
 		login_user(user)
 
-		#create all posts that aren't images
+		#create all posts
 		for post in posts:
-			result = r.table(TABLE_POSTS).insert({ 
-				'content' : post['content'], 
-				'username' : username,
-				'sortrank' : post['sortrank'],
-				'type' : post['type'],
-				'created' : r.now()}).run(conn)
+			if post['type'] != 2: #Create all posts that aren't images
+				result = r.table(TABLE_POSTS).insert({ 
+					'content' : post['content'], 
+					'username' : username,
+					'sortrank' : post['sortrank'],
+					'type' : post['type'],
+					'created' : r.now()}).run(conn)
+			#else:
+				#api_post_image(post)	
 
 		result = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
@@ -171,11 +174,15 @@ def api_post_text():
 
 @application.route('/api/postImage', methods=['POST'])
 @login_required
-def api_post_image():
-	jsonData = request.values
+def api_post_image(image = None):
+	if(image == None):
+		jsonData = request.values
+		file = request.files['file']
+		filename = secure_filename(file.filename)
+	else:
+		file = image['file']
+		filename = secure_filename(file['name'])
 
-	file = request.files['file']
-	filename = secure_filename(file.filename)
 	filenameWithPath = os.path.join("/tmp", filename)
 	file.save(filenameWithPath)
 

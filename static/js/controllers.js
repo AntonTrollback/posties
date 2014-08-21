@@ -53,8 +53,10 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 							type : 2,
 							sortRank : $scope.posts.length + 1,
 							template : 'postImage.html',
-							key : reader.result
+							key : reader.result,
+							file : file
 						};
+						
 						$scope.posts.unshift(imagePost);
 						$scope.loader.hide();
 					});

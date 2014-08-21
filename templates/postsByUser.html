@@ -4,14 +4,14 @@
 <body ng-style="{ 'background': userSettings.pagebackgroundcolor }" {% if current_user and current_user.is_authenticated() %} class="authenticated {% if user_owns_page %}userOwnsPage{% endif %}" {% endif %}>
 {% include 'modules/header.html' %}
 	<div id="body">
-		{% if current_user and current_user.is_authenticated() and user_owns_page %}
-			{% include 'modules/postTypes.html' %}
-		{% endif %}
 		<ul id="posts" ng-style="{ 'color': userSettings.posttextcolor }">
 			<li ng-repeat="post in posts" class="post">
 				<ng-include src="post.template"></ng-include>
 			</li>
 		</ul>
+		{% if current_user and current_user.is_authenticated() and user_owns_page %}
+			{% include 'modules/postTypes.html' %}
+		{% endif %}
 	</div>
 	{% if current_user and current_user.is_authenticated() and user_owns_page %}
 		{% include 'modules/jsTemplates/postTextAuthenticated.html' %}

@@ -4,19 +4,21 @@
 <body ng-style="{ 'background': userSettings.pagebackgroundcolor }" {% if current_user and current_user.is_authenticated() %} class="authenticated userOwnsPage" {% endif %}>
 {% include 'modules/header.html' %}
 	<div id="body">
-		{% include 'modules/postTypes.html' %}
-		<div class="btnPublishContainer">
-			<button ng-click="showModalCreateUser = !showModalCreateUser">Publish this page</button>
-		</div>
-		<ul id="posts">
-			<li ng-repeat="post in posts" data-id="[[post.id]]" data-rank="[[post.sortrank]]" class="post">
-				<ng-include src="post.template"></ng-include>
-			</li>
-		</ul>
-		{% include 'modules/jsTemplates/postTextAuthenticated.html' %}
-		{% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
-		{% include 'modules/jsTemplates/postImageAuthenticated.html' %}
-		{% include 'modules/modalCreateUser.html' %}
+		{% if not current_user.is_authenticated() %}
+			<ul id="posts">
+				<li ng-repeat="post in posts" data-id="[[post.id]]" data-rank="[[post.sortrank]]" class="post">
+					<ng-include src="post.template"></ng-include>
+				</li>
+			</ul>
+			{% include 'modules/postTypes.html' %}
+			<div class="btnPublishContainer">
+				<button ng-click="showModalCreateUser = !showModalCreateUser">Publish this page</button>
+			</div>
+			{% include 'modules/jsTemplates/postTextAuthenticated.html' %}
+			{% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
+			{% include 'modules/jsTemplates/postImageAuthenticated.html' %}
+			{% include 'modules/modalCreateUser.html' %}
+		{% endif %}
 	</div>
 </body>
 {% include 'modules/footer.html' %}
