@@ -2,13 +2,24 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	config, SettingsService, LoaderService, FlashService) {
 
 	$scope.posts = [];
-	$scope.isStartPage = true;
 	$scope.user = {};
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
 	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
+
+	(function() {
+	   var post = {
+			id : 0,
+			sortrank : 0,
+			content : "Hello \n I'm a text that you can edit \n\n Add images and texts until you're happy. \n Then publish your new website!",
+			type : 0,
+			template : 'postText.html'
+		};
+
+		$scope.posts.push(post);
+	})();
 
 	$scope.addPost = function($event) {
 		var post = {
@@ -19,11 +30,12 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			template : $event.target.getAttribute('data-template')
 		};
 
-		$scope.posts.unshift(post);
-		$scope.showPostTypes = false;
+		$scope.posts.push(post);
 		$timeout(function() {
-			$('#posts li:first-child pre:eq(0)').focus();
+				$('#posts li:last-child pre:eq(0)').focus();
 		}, 100);
+
+		$scope.showPostTypes = false;
 	};
 
 	$scope.savePost = function($event, post) {
@@ -53,9 +65,11 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 							type : 2,
 							sortRank : $scope.posts.length + 1,
 							template : 'postImage.html',
-							key : reader.result
+							key : reader.result,
+							file : file
 						};
-						$scope.posts.unshift(imagePost);
+						
+						$scope.posts.push(imagePost);
 						$scope.loader.hide();
 					});
 				}
@@ -267,15 +281,39 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				post.template = 'postImage.html';
 			}
 
-			$scope.posts.unshift(post);
+			$scope.posts.push(post);
 			$timeout(function() {
-				$('#posts li:first-child pre:eq(0)').focus();
+				$('#posts li:last-child pre:eq(0)').focus();
 			}, 100);
 		}, function(response) {
 			console.log(response);
 		});
 
 		$scope.showPostTypes = false;
+	};
+
+	$scope.savePost = function($event, post) {
+		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
+		var postTextContent = $event.target.innerHTML;
+
+		if(postTextContent.length && $($event.target).data('changed')) {
+			var jsonPost = {
+				content: postTextContent,
+				id: post.id
+			};
+			
+			$http({
+				url: '/api/postText',
+				method: 'put',
+				data: jsonPost,
+				headers: config.headerJSON
+			}).then(function(response) {
+				$($event.target).data('changed', false);
+				$scope.flash.showMessage('saved...');
+			}, function(response) {
+				console.log(response);
+			});
+		}
 	};
 
 	$scope.savePostImage = function($files) {
@@ -298,33 +336,9 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			}).success(function(data, status, headers, config) {
 				data.template = 'postImage.html';
 				data.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + data.key;
-				$scope.posts.unshift(data);
+				$scope.posts.push(data);
 				$scope.loader.hide();
 			}).error(function(response) {
-				console.log(response);
-			});
-		}
-	};
-
-	$scope.savePost = function($event, post) {
-		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
-		var postTextContent = $event.target.innerHTML;
-
-		if(postTextContent.length && $($event.target).data('changed')) {
-			var jsonPost = {
-				content: postTextContent,
-				id: post.id
-			};
-			
-			$http({
-				url: '/api/postText',
-				method: 'put',
-				data: jsonPost,
-				headers: config.headerJSON
-			}).then(function(response) {
-				$($event.target).data('changed', false);
-				$scope.flash.showMessage('saved...');
-			}, function(response) {
 				console.log(response);
 			});
 		}

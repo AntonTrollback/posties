@@ -14,7 +14,6 @@ body {
 	letter-spacing: 0px;
 }
 
-
 /* Basic typography */
 h1, h2, h3 {
 	color: #666;
@@ -51,12 +50,14 @@ h1 a {
 }
 header {
 	height: 60px;
-	position: relative;
+	position: absolute;
+	right: 1%;
+	top: -1%;
 }
 header > a {
 	float: right;
 	margin-top: 1.5rem;
-	font-size: 2rem;
+	font-size: 1.4rem;
 	color: #555;
 }
 header > a:visited {
@@ -72,6 +73,9 @@ header p {
 pre:focus {
 	outline: 0;
 }
+#body {
+	padding-top: 40px;	
+}
 #logo {
 	float: right;
 	background: url('../img/logo.png') no-repeat 0 0;
@@ -79,6 +83,9 @@ pre:focus {
 	height: 10px;
 	padding: 10px;
 	margin-left: 1rem;
+}
+.username {
+	padding-top: 6px;
 }
 #openTopMenu {
 	float: right;
@@ -211,6 +218,7 @@ input[type="checkbox"]:checked + span {
 	display: block;
 	text-align: center;
 	margin-top: 2rem;
+	position: relative;
 }
 .addPost,
 .btnPublishContainer button {
@@ -220,8 +228,16 @@ input[type="checkbox"]:checked + span {
 	max-width: 660px;
 	margin-bottom: 2rem;
 }
+.addPost span {
+	font-weight: bold;
+	font-size: 3rem;
+}
 .btnPublishContainer button {
-	height: 87px;	
+	height: 88px;
+}
+.btnPublishContainer button span {
+	background: url('../img/iconPublish.png') no-repeat 0 50% #faf8c6;
+	padding: 0 16px;
 }
 .postTypes {
 	color: #8a8a8a;
@@ -318,9 +334,9 @@ header div.menu li {
 	background: rgba(255, 255, 255, 1);
 	box-shadow: 0px 2px 1px #888;
 	border: 1px solid #ddd;
-	width: 60%;
-	left: 0;
+	width: 55%;
 	right: 0;
+	left: 0;
 	margin: 0 auto;
 	top: 5%;
 	padding: 2rem 3rem;
@@ -335,15 +351,24 @@ header div.menu li {
 .modal input[type="password"] {
 	width: 90%;
 }
-.modal .buttonContainer {
+.modal .formGroup.buttonContainer {
 	clear: both;
 	width: 100%;
 }
-.modal.updateSettings .formGroup {
+.modal .formGroup {
 	width: 46%;
 	float: left;
 	margin-bottom: 2rem;
 	position: relative;
+}
+.modal.createUser {
+	width: 90%;
+	top: 0;
+}
+.modal.updateSettings {
+	width: 250px;
+	left: auto;
+	margin: 0 auto;
 }
 .modal.updateSettings .formGroup:nth-child(odd) {
 	clear: both;

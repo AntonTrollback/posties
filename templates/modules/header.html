@@ -6,7 +6,7 @@
 	<a id="logo">&nbsp;</a>
 	<a id="openTopMenu" ng-click="showMenuTop = !showMenuTop"><span></span><span></span><span></span></a>
 	{% if current_user and current_user.is_authenticated() %}
-		<a href="/by/{{current_user.username}}">{{current_user.username}}</a>
+		<a class="username" href="/by/{{current_user.username}}">{{current_user.username}}</a>
 		<div class="menu" ng-show="showMenuTop" ng-cloak>
 			<ul>
 				<li><a ng-click="settingsService.open(); showMenuTop = false">Customize</a></li>
@@ -14,9 +14,8 @@
 				<li><a href="http://getposties.tumblr.com/what-is-posties" target="blank">About Posti.es</a></li>
 			</ul>
 		</div>
-		{% include 'modules/modalSettings.html' %}
 	{% else %}
-		<a href="#">You're anonymous</a>
+		<a class="username" href="#">You're anonymous</a>
 		<div class="menu" ng-show="showMenuTop" ng-cloak>
 			<ul>
 				<li><a ng-click="settingsService.open()">Customize</a></li>
@@ -24,6 +23,5 @@
 				<li><a href="http://getposties.tumblr.com/what-is-posties" target="blank">About Posti.es</a></li>
 			</ul>
 		</div>
-		{% include 'modules/modalSettings.html' %}
 	{% endif %}
 </header>

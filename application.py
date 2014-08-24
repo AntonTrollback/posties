@@ -15,7 +15,7 @@ application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
-WHITELIST_TYPEFACES = ['sans-serif', 'SourceSansPro', 'ReenieBeanie', 'Raleway', 'JosefinSans', 'OpenSans', 'Rokkitt']
+WHITELIST_TYPEFACES = ['sans-serif', 'SourceSansPro', 'ReenieBeanie', 'Raleway', 'JosefinSans', 'OpenSans', 'Rokkitt', 'FredokaOne', 'LibreBaskerville', 'EBGaramond', 'Geo', 'VT323', 'TextMeOne', 'NovaCut', 'CherrySwash', 'Italiana', 'Inconsolata', 'AbrilFatface', 'Chivo']
 
 #conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
@@ -41,7 +41,10 @@ def load_user(id):
 ###############
 @application.route('/', methods=['GET'])
 def index():
-	return render_template('index.html')
+	if current_user.is_authenticated():
+		return redirect("/by/" + current_user.username, code=302)
+	else:
+		return render_template('index.html')
 
 @application.route('/login', methods=['GET', 'POST'])
 def login():
@@ -125,14 +128,17 @@ def api_create_user():
 		user = User(user['id'], user['email'], user['username'])
 		login_user(user)
 
-		#create all posts that aren't images
+		#create all posts
 		for post in posts:
-			result = r.table(TABLE_POSTS).insert({ 
-				'content' : post['content'], 
-				'username' : username,
-				'sortrank' : post['sortrank'],
-				'type' : post['type'],
-				'created' : r.now()}).run(conn)
+			if post['type'] != 2: #Create all posts that aren't images
+				result = r.table(TABLE_POSTS).insert({ 
+					'content' : post['content'], 
+					'username' : username,
+					'sortrank' : post['sortrank'],
+					'type' : post['type'],
+					'created' : r.now()}).run(conn)
+			#else:
+				#api_post_image(post)	
 
 		result = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
@@ -171,11 +177,15 @@ def api_post_text():
 
 @application.route('/api/postImage', methods=['POST'])
 @login_required
-def api_post_image():
-	jsonData = request.values
+def api_post_image(image = None):
+	if(image == None):
+		jsonData = request.values
+		file = request.files['file']
+		filename = secure_filename(file.filename)
+	else:
+		file = image['file']
+		filename = secure_filename(file['name'])
 
-	file = request.files['file']
-	filename = secure_filename(file.filename)
 	filenameWithPath = os.path.join("/tmp", filename)
 	file.save(filenameWithPath)
 
