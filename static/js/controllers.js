@@ -1,4 +1,4 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload,  
+postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize,
 	config, SettingsService, LoaderService, FlashService) {
 
 	$scope.posts = [];
@@ -44,7 +44,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			$scope.flash.showMessage('saved...');
 
 			//TODO: Two way binding doesn't work with contenteditable, even though it should.
-			post.content = $event.target.innerHTML; 
+			post.content = $sanitize($event.target.innerHTML);
 		}
 	};
 
