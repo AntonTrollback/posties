@@ -295,7 +295,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	$scope.savePost = function($event, post) {
 		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
 		var postTextContent = $sanitize($event.target.innerHTML);
-		console.log("foo")
+		
 		postTextContent = Autolinker.link(postTextContent);
 
 		if(postTextContent.length && $($event.target).data('changed')) {

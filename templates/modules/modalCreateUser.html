@@ -3,15 +3,15 @@
 	<h3>Just one more step...</h3>
 	<form id="formCreateUser" name="formCreateUser" class="form" ng-submit="submitCreateUser()" method="post" novalidate>
         <fieldset>
-            <input type="email" name="email" class="email" ng-model="user.email" placeholder="Email" ng-blur="validateUserEmail()" />
+            <input type="email" name="email" class="email" ng-model="user.email" placeholder="Email" ng-blur="validateUserEmail()" autocapitalize="off" autocorrect="off" />
             <p ng-show="formCreateUser.email.$touched && formCreateUser.email.$invalid">[[formCreateUser.email.error]]</p>
         </fieldset>
 		<fieldset>
-		    <input type="text" name="username" class="username" ng-model="user.username" ng-minlength="3" ng-maxlength="20" ng-blur="validateUserUsername()" placeholder="Username (this becomes your URL)" required>
+		    <input type="text" name="username" class="username" ng-model="user.username" ng-minlength="3" ng-maxlength="20" ng-blur="validateUserUsername()" placeholder="Username (this becomes your URL)" autocapitalize="off" autocorrect="off" required>
 		    <p ng-show="formCreateUser.username.$touched && formCreateUser.username.$invalid">[[formCreateUser.username.error]]</p>
 		</fieldset>
         <fieldset>
-            <input type="text" name="password" class="password" ng-minlength="5" ng-maxlength="20" ng-blur="validateUserPassword()" ng-model="user.password" placeholder="Password" required>
+            <input type="text" name="password" class="password" ng-minlength="5" ng-maxlength="20" ng-blur="validateUserPassword()" ng-model="user.password" placeholder="Password" autocapitalize="off" autocorrect="off" required>
             <p ng-show="formCreateUser.password.$touched && formCreateUser.password.$invalid">[[formCreateUser.password.error]]</p>
         </fieldset>
         <fieldset><center>

@@ -51,8 +51,8 @@ h1 a {
 header {
 	height: 60px;
 	position: absolute;
-	right: 1%;
-	top: -1%;
+	right: 15px;
+	top: -1px;
 }
 header > a {
 	float: right;
@@ -74,46 +74,23 @@ pre:focus {
 	outline: 0;
 }
 #body {
-	padding-top: 40px;	
+	padding-top: 50px;
 }
 #logo {
-	float: right;
 	background: url('../img/logo.png') no-repeat 0 0;
-	width: 12px;
-	height: 10px;
-	padding: 10px;
+	width: 33px;
+	height: 35px;
 	margin-left: 1rem;
 }
 .username {
 	padding-top: 6px;
 }
-#openTopMenu {
+#customize {
 	float: right;
-	position: relative;
-	background: #faf8c6;
-	/*background: url('../img/iconMenu.png') no-repeat 0 0;*/
-	width: 12px;
-	height: 10px;
-	padding: 10px;
+	background: url('../img/iconCustomize.png') no-repeat 0 0;
+	width: 35px;
+	height: 35px;
 	margin-left: 1rem;
-}
-#openTopMenu span {
-	position: absolute;
-	width: 16px;
-	height: 3px;
-	left: 0;
-	right: 0;
-	margin: 0 auto;
-	background: #8a8a8a;
-}
-#openTopMenu span:first-child {
-	top: 9px;
-}
-#openTopMenu span:nth-child(2) {
-	top: 14px;
-}
-#openTopMenu span:nth-child(3) {
-	top: 19px;
 }
 /*** GLOBAL FORMS ***/
 fieldset select,
@@ -153,6 +130,7 @@ button,
 	color: #8a8a8a;
 	box-shadow: 1px 2px 3px rgba(128, 128, 128, 0.5);
 	cursor: pointer;
+	line-height: 1.5;
 }
 fieldset,
 .formGroup {
@@ -229,15 +207,19 @@ input[type="checkbox"]:checked + span {
 	margin-bottom: 2rem;
 }
 .addPost span {
-	font-weight: bold;
-	font-size: 3rem;
+	background: url('../img/iconAdd.png') no-repeat 0 0;
+	height: 19px;
+	width: 19px;
+	display: inline-block;
 }
 .btnPublishContainer button {
 	height: 88px;
 }
 .btnPublishContainer button span {
 	background: url('../img/iconPublish.png') no-repeat 0 50% #faf8c6;
-	padding: 0 16px;
+	width: 24px;
+	height: 16px;
+	display:  inline-block;
 }
 .postTypes {
 	color: #8a8a8a;
@@ -250,7 +232,8 @@ input[type="checkbox"]:checked + span {
 }
 .postTypes button,
 .addPostImage {
-	width: 110px;
+	padding: 0;
+	width: 90px;
 	padding-top: 49px;
 	padding-bottom: 10px;
 	display: inline-block;
