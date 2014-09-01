@@ -1,24 +1,5 @@
 <div id="modalUpdateSettings" class="modal updateSettings" ng-show="settingsService.isOpen" ng-cloak>
-	<p class="close" ng-click="settingsService.close()"><a>×</a></p>
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
-		<div class="formGroup">
-			<label for="postTextColor">Text color:</label>
-			<input id="postTextColor" type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
-		</div>
-		<div class="formGroup">
-			<label for="pageBackgroundColor">Page color</label>
-			<input id="pageBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" />
-		</div>
-		<div class="formGroup">
-			<label for="showBoxes">Show post boxes?
-			<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" class="hidden" />
-				<span>✔</span>
-			</label>
-		</div>
-		<div class="formGroup">
-			<label for="postBackgroundColor">Post box color</label>
-			<input id="postBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
-		</div>
 		<div class="formGroup">
 			<label for="typefaceParagraph">Text font</label>
 			<select id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
@@ -68,6 +49,24 @@
 				<option value="AbrilFatface" ng-selected="userSettings.typefaceheadline == 'AbrilFatface'">Abril Fat face</option>
 				<option value="Chivo" ng-selected="userSettings.typefaceheadline == 'Chivo'">Chivo</option>
 			</select>
+		</div>
+		<div class="formGroup">
+			<label for="showBoxes">Show boxes?
+			<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" class="hidden" />
+				<span>✔</span>
+			</label>
+		</div>
+		<div class="formGroup">
+			<label for="postBackgroundColor">Post box color</label>
+			<input id="postBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
+		</div>
+		<div class="formGroup">
+			<label for="postTextColor">Text color:</label>
+			<input id="postTextColor" type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
+		</div>
+		<div class="formGroup">
+			<label for="pageBackgroundColor">Page color</label>
+			<input id="pageBackgroundColor" type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" />
 		</div>
 		<div class="formGroup buttonContainer">
 			<button>Save</button>

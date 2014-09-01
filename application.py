@@ -1,4 +1,5 @@
 import os
+import base64
 from flask import Flask
 from flask import render_template, session, abort, redirect, request, url_for, jsonify, make_response
 from flask.ext import login
@@ -130,15 +131,15 @@ def api_create_user():
 
 		#create all posts
 		for post in posts:
-			if post['type'] != 2: #Create all posts that aren't images
+			#create all posts that aren't images
+			#che rest are called directly via JS to api_post_image
+			if post['type'] != 2:
 				result = r.table(TABLE_POSTS).insert({ 
 					'content' : post['content'], 
 					'username' : username,
 					'sortrank' : post['sortrank'],
 					'type' : post['type'],
 					'created' : r.now()}).run(conn)
-			#else:
-				#api_post_image(post)	
 
 		result = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
@@ -166,7 +167,7 @@ def api_post_text():
 			'content' : content, 
 			'username' : current_user.username,
 			'sortrank' : jsonData['sortRank'],
-			'type' : jsonData['type'],
+			'type' : int(jsonData['type']),
 			'created' : r.now()}, return_vals = True).run(conn)
 	elif request.method == 'PUT':
 		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
@@ -183,8 +184,7 @@ def api_post_image(image = None):
 		file = request.files['file']
 		filename = secure_filename(file.filename)
 	else:
-		file = image['file']
-		filename = secure_filename(file['name'])
+		file = image.file
 
 	filenameWithPath = os.path.join("/tmp", filename)
 	file.save(filenameWithPath)
@@ -228,36 +228,6 @@ def api_post_rank():
 		}).run(conn);
 
 	return jsonify("")
-
-@application.route('/api/postHeadline', methods=['POST', 'PUT'])
-@login_required
-def api_post_headline():
-	jsonData = request.json
-	content = jsonData['content']
-	
-	if request.method == 'POST':
-		jsonData['username'] = current_user.username
-
-		sort_rank = r.table(TABLE_POSTS).filter(
-			(r.row['username'] == current_user.username)).count().run(conn)
-
-		if not sort_rank:
-			sort_rank = 1
-		else:
-			sort_rank = sort_rank + 1
-
-		result = r.table(TABLE_POSTS).insert({ 
-			'content' : content, 
-			'username' : current_user.username,
-			'sortrank' : sort_rank,
-			'type' : 1,
-			'created' : r.now()}, return_vals = True).run(conn)
-	elif request.method == 'PUT':
-		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
-			'content' : content
-			}, return_vals = True).run(conn);	
-
-	return jsonify(result['new_val'])
 
 @application.route('/api/settings', methods=['PUT'])
 @login_required

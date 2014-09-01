@@ -92,6 +92,9 @@ pre:focus {
 	height: 35px;
 	margin-left: 1rem;
 }
+#customize.active {
+	background: url('../img/iconCustomizeActive.png') no-repeat 0 0;
+}
 /*** GLOBAL FORMS ***/
 fieldset select,
 fieldset input[type="text"],
@@ -101,7 +104,7 @@ fieldset input[type="password"],
 .formGroup input[type="text"],
 .formGroup input[type="email"],
 .formGroup input[type="password"] {
-	font-size: 2rem;
+	font-size: 1.5rem;
 	padding: 8px;
 }
 fieldset input[type="text"],
@@ -130,7 +133,6 @@ button,
 	color: #8a8a8a;
 	box-shadow: 1px 2px 3px rgba(128, 128, 128, 0.5);
 	cursor: pointer;
-	line-height: 1.5;
 }
 fieldset,
 .formGroup {
@@ -315,7 +317,7 @@ header div.menu li {
 .modal {
 	position: absolute;
 	background: rgba(255, 255, 255, 1);
-	box-shadow: 0px 2px 1px #888;
+	box-shadow: 0px 1px 16px #888;
 	border: 1px solid #ddd;
 	width: 55%;
 	right: 0;
@@ -339,8 +341,8 @@ header div.menu li {
 	width: 100%;
 }
 .modal .formGroup {
-	width: 46%;
-	float: left;
+	width: 49%;
+	display: inline-block;
 	margin-bottom: 2rem;
 	position: relative;
 }
@@ -349,9 +351,22 @@ header div.menu li {
 	top: 0;
 }
 .modal.updateSettings {
-	width: 250px;
+	width: 200px;
 	left: auto;
 	margin: 0 auto;
+	top: 63px;
+	right: 15px;
+}
+.modal.updateSettings:before {
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 20px 20px 20px;
+	border-color: transparent transparent #fff transparent;
+	content: '';
+	top: -18px;
+	position: absolute;
+	right: 38px;
 }
 .modal.updateSettings .formGroup:nth-child(odd) {
 	clear: both;

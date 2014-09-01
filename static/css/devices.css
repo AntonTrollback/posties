@@ -10,8 +10,12 @@ and (max-device-width : 480px) {
 		top: -10px;
 		right: -11px;
 	}
-	button {
+	button,
+	.button {
 		font-size: 1.6rem;
+	}
+	.modal.updateSettings {
+		padding: 1rem;
 	}
 }
 
@@ -41,6 +45,10 @@ only screen and (min-device-pixel-ratio : 1.5) {
 		background: url('../img/iconCustomize@2x.png') no-repeat 0 0;
 		background-size: 100% 100%;
 	}
+	#customize.active {
+		background: url('../img/iconCustomizeActive@2x.png') no-repeat 0 0;
+		background-size: 100% 100%;
+	}
 	#logo {
 		background: url('../img/logo@2x.png') no-repeat 0 0;
 		background-size: 100% 100%;
@@ -54,5 +62,5 @@ only screen and (min-device-pixel-ratio : 1.5) {
 		background: url('../img/iconPublish@2x.png') no-repeat 0 1px;
 		background-size: 90% 90%;
 	}
-
+	
 }

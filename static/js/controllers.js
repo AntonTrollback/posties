@@ -9,18 +9,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
 
-	(function() {
-	   var post = {
-			id : 0,
-			sortrank : 0,
-			content : "Hello \n I'm a text that you can edit \n\n Add images and texts until you're happy. \n Then publish your new website!",
-			type : 0,
-			template : 'postText.html'
-		};
-
-		$scope.posts.push(post);
-	})();
-
 	$scope.addPost = function($event) {
 		var post = {
 			id : Math.round(Math.random() * 1000),
@@ -32,7 +20,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 		$scope.posts.push(post);
 		$timeout(function() {
-				$('#posts li:last-child pre:eq(0)').focus();
+			$('#posts li:last-child pre:eq(0)').focus();
 		}, 100);
 
 		$scope.showPostTypes = false;
@@ -43,7 +31,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			$($event.target).data('changed', false);
 			$scope.flash.showMessage('saved...');
 
-			//TODO: Two way binding doesn't work with contenteditable, even though it should.
 			post.content = $sanitize($event.target.innerHTML);
 		}
 	};
@@ -172,7 +159,22 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				headers: config.headerJSON
 			}).then(function(response) {
 				console.log(response);
-				window.location = "/by/" + response.data.username + "?intro=true";
+
+				for(i = 0; i < $scope.posts.length; i++) {
+					var jsonPost = $scope.posts[i];
+					if(jsonPost.type == 2) {
+						$scope.upload = $upload.upload({
+							url: '/api/postImage',
+							method: 'post',
+							data: jsonPost,
+							file: jsonPost.file,
+						}).success(function(data, status, headers, config) {
+							window.location = "/by/" + $scope.user.username + "?intro=true";
+						}).error(function(response) {
+							console.log(response);
+						});	
+					}
+				}
 			}, function(response) {
 				console.log(response);
 			});
@@ -186,6 +188,24 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	$('#posts').on('propertychange, input', 'pre', function(el) {
 		$(this).data('changed', true);
 	});
+
+	(function() {
+	   var post = {
+			id : 0,
+			sortrank : 0,
+			content : "Hello \nI'm a text that you can edit \n\n Add images and texts until you're happy. \n Then publish your new website! \n\n Customize your design by hitting the sliders in the top right corner.",
+			type : 0,
+			template : 'postText.html'
+		};
+
+		$scope.posts.push(post);
+
+		$timeout(function() {
+			$('#posts li:last-child pre:eq(0)').focus();
+		}, 100);
+
+	})();
+
 });
 
 postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashService) {
@@ -324,13 +344,12 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			sortRank : $scope.posts.length + 1
 		};
 
-		for (var i = 0; i < $files.length; i++) {
+		for(var i = 0; i < $files.length; i++) {
 			$scope.loader.show();
 			var file = $files[i];
 			$scope.upload = $upload.upload({
 				url: '/api/postImage',
 				method: 'post',
-				//withCredentials: true,
 				data: jsonPost,
 				file: file,
 			}).progress(function(evt) {
