@@ -72,8 +72,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           flatten: true,
-          src: ['static/img/*',
-          'static/font/*'],
+          src: ['static/img/*', 'static/font/*'],
           dest: 'static/build/'
         }]
       }
@@ -92,6 +91,13 @@ module.exports = function(grunt) {
       js: {
         files: ['static/js/**/*'],
         tasks: ['concat'],
+        options: {
+          spawn: false
+        }
+      },
+      assets: {
+        files: ['static/img/**/*', 'static/font/**/*'],
+        tasks: ['copy'],
         options: {
           spawn: false
         }
