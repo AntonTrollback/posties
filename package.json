@@ -4,6 +4,11 @@
   "description": "Posti.es",
   "author": "Posti.es",
   "homepage": "http://post.es",
+  "repository": "https://github.com/sunmer/posties",
+  "scripts": {
+    "build": "grunt build",
+    "watch": "grunt watch"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-banner": "^0.2.3",
