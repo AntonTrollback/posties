@@ -13,7 +13,6 @@ body {
 	max-width: 700px;
 	letter-spacing: 0px;
 }
-
 /* Basic typography */
 h1, h2, h3 {
 	color: #666;
@@ -69,6 +68,9 @@ header a.menu {
 header p {
 	margin: 2rem 1rem 0 0;
 	float: right;
+}
+pre {
+	text-rendering: optimizeLegibility
 }
 pre:focus {
 	outline: 0;
@@ -349,6 +351,22 @@ header div.menu li {
 .modal.createUser {
 	width: 90%;
 	top: 0;
+}
+.modal.createUser fieldset {
+	position: relative;
+}
+.modal.createUser .togglePasswordMask {
+	width: 26px;
+	height: 24px;
+	background: url('../img/iconShowPassword.png') no-repeat 100% 0px;
+	position: absolute;
+	right: 30px;
+	top: 6px;
+}
+.modal.createUser .togglePasswordMask.visible {
+	width: 26px;
+	height: 24px;
+	background: url('../img/iconHidePassword.png') no-repeat 100% 6px;
 }
 .modal.updateSettings {
 	width: 200px;

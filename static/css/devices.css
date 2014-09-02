@@ -62,5 +62,17 @@ only screen and (min-device-pixel-ratio : 1.5) {
 		background: url('../img/iconPublish@2x.png') no-repeat 0 1px;
 		background-size: 90% 90%;
 	}
+	.modal.createUser .togglePasswordMask {
+		width: 52px;
+		height: 30px;
+		background: url('../img/iconShowPassword@2x.png') no-repeat 100% 0px;
+		background-size: 50% 50%;
+	}
+	.modal.createUser .togglePasswordMask.visible {
+		width: 52px;
+		height: 20px;
+		background: url('../img/iconHidePassword@2x.png') no-repeat 100% 6px;
+		background-size: 50% 50%;
+	}
 	
 }

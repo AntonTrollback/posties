@@ -11,11 +11,13 @@
 		    <p ng-show="formCreateUser.username.$touched && formCreateUser.username.$invalid">[[formCreateUser.username.error]]</p>
 		</fieldset>
         <fieldset>
-            <input type="text" name="password" class="password" ng-minlength="5" ng-maxlength="20" ng-blur="validateUserPassword()" ng-model="user.password" placeholder="Password" autocapitalize="off" autocorrect="off" required>
+            <input type="text" name="password" class="password" ng-minlength="5" ng-maxlength="20" ng-blur="validateUserPassword()" ng-model="user.password" placeholder="Password" autocapitalize="off" autocorrect="off" ng-show="formCreateUser.showPassword">
+            <input type="password" name="password" class="password" ng-minlength="5" ng-maxlength="20" ng-blur="validateUserPassword()" ng-model="user.password" placeholder="Password" autocapitalize="off" autocorrect="off" ng-hide="formCreateUser.showPassword">
+            <a ng-click="formCreateUser.showPassword = !formCreateUser.showPassword" class="togglePasswordMask" ng-class="formCreateUser.showPassword ? 'visible' : ''"></a>
             <p ng-show="formCreateUser.password.$touched && formCreateUser.password.$invalid">[[formCreateUser.password.error]]</p>
         </fieldset>
-        <fieldset><center>
+        <fieldset>
         	<button type="submit" id="publishNow" class="btn btn-primary" ng-disabled="formCreateUser.$invalid">Publish now!</button>
-        </fieldset></center>
+        </fieldset>
     </form>
 </div>
