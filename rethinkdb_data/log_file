@@ -1,138 +1,15 @@
-2014-05-27T20:01:52.493777000 0.239531s info: Creating directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-05-27T20:01:52.496908000 0.242662s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/nima/Desktop/projects/posties/rethinkdb_data' did not already exist.)
-2014-05-27T20:01:52.497015000 0.242769s info: Running rethinkdb 1.12.1 (CLANG 4.2 (clang-425.0.28))...
-2014-05-27T20:01:52.581630000 0.327384s info: Running on Darwin 12.5.0 x86_64
-2014-05-27T20:01:52.584227000 0.329981s info: Using cache size of 100 MB
-2014-05-27T20:01:52.584359000 0.330113s warn: Cache size does not leave much memory for server and query overhead (available memory: 155 MB).
-2014-05-27T20:01:52.584404000 0.330158s warn: Cache size is very low and may impact performance.
-2014-05-27T20:01:52.584442000 0.330195s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-05-27T20:01:52.853979000 0.599732s info: Listening for intracluster connections on port 29015
-2014-05-27T20:01:52.858608000 0.604361s info: Listening for client driver connections on port 28015
-2014-05-27T20:01:52.858816000 0.604570s info: Listening for administrative HTTP connections on port 8080
-2014-05-27T20:01:52.858886000 0.604639s info: Listening on addresses: 127.0.0.1, ::1
-2014-05-27T20:01:52.858912000 0.604665s info: To fully expose RethinkDB on the network, bind to all addresses
-2014-05-27T20:01:52.858937000 0.604691s info: by running rethinkdb with the `--bind all` command line option.
-2014-05-27T20:01:52.858962000 0.604715s info: Server ready
-2014-05-29T21:34:44.914618000 0.225056s info: Running rethinkdb 1.12.1 (CLANG 4.2 (clang-425.0.28))...
-2014-05-29T21:34:44.954981000 0.265420s info: Running on Darwin 12.5.0 x86_64
-2014-05-29T21:34:44.955061000 0.265499s info: Using cache size of 100 MB
-2014-05-29T21:34:44.955120000 0.265558s warn: Cache size does not leave much memory for server and query overhead (available memory: 192 MB).
-2014-05-29T21:34:44.955211000 0.265649s warn: Cache size is very low and may impact performance.
-2014-05-29T21:34:44.955259000 0.265697s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-05-29T21:34:45.004570000 0.315008s info: Listening for intracluster connections on port 29015
-2014-05-29T21:34:45.009490000 0.319928s info: Listening for client driver connections on port 28015
-2014-05-29T21:34:45.009691000 0.320129s info: Listening for administrative HTTP connections on port 8080
-2014-05-29T21:34:45.009695000 0.320133s info: Listening on addresses: 127.0.0.1, ::1
-2014-05-29T21:34:45.009763000 0.320201s info: To fully expose RethinkDB on the network, bind to all addresses
-2014-05-29T21:34:45.009793000 0.320231s info: by running rethinkdb with the `--bind all` command line option.
-2014-05-29T21:34:45.009855000 0.320293s info: Server ready
-2014-05-29T21:51:49.637231000 1024.975755s info: Applying data {"databases":{"new":{"name":"posties"}}}
-2014-05-29T21:52:11.497341000 1046.836468s info: Applying data {"rdb_namespaces":{"new":{"name":"posts","primary_uuid":"00000000-0000-0000-0000-000000000000","database":"b33391a9-0a8f-4f70-9f83-851e90547578","ack_expectations":{"00000000-0000-0000-0000-000000000000":{"expectation":1,"hard_durability":true}}}}}
-2014-05-29T21:52:26.888032000 1062.227598s info: Applying data {"rdb_namespaces":{"new":{"name":"users","primary_uuid":"00000000-0000-0000-0000-000000000000","database":"b33391a9-0a8f-4f70-9f83-851e90547578","ack_expectations":{"00000000-0000-0000-0000-000000000000":{"expectation":1,"hard_durability":true}}}}}
-2014-05-29T22:18:49.353879000 2644.736835s info: Applying data {"rdb_namespaces":{"new":{"name":"users_settings","primary_uuid":"00000000-0000-0000-0000-000000000000","database":"b33391a9-0a8f-4f70-9f83-851e90547578","ack_expectations":{"00000000-0000-0000-0000-000000000000":{"expectation":1,"hard_durability":true}}}}}
-2014-07-03T21:43:49.378349000 0.009784s info: Running rethinkdb 1.12.1 (CLANG 4.2 (clang-425.0.28))...
-2014-07-03T21:43:49.389014000 0.020450s info: Running on Darwin 12.5.0 x86_64
-2014-07-03T21:43:49.390179000 0.021614s info: Using cache size of 100 MB
-2014-07-03T21:43:49.390253000 0.021688s warn: Cache size does not leave much memory for server and query overhead (available memory: 472 MB).
-2014-07-03T21:43:49.390296000 0.021731s warn: Cache size is very low and may impact performance.
-2014-07-03T21:43:49.390333000 0.021768s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-07-03T21:43:49.418277000 0.049712s info: Listening for intracluster connections on port 29015
-2014-07-03T21:43:49.422762000 0.054196s info: Listening for client driver connections on port 28015
-2014-07-03T21:43:49.422987000 0.054422s info: Listening for administrative HTTP connections on port 8080
-2014-07-03T21:43:49.422992000 0.054426s info: Listening on addresses: 127.0.0.1, ::1
-2014-07-03T21:43:49.423021000 0.054456s info: To fully expose RethinkDB on the network, bind to all addresses
-2014-07-03T21:43:49.423023000 0.054458s info: by running rethinkdb with the `--bind all` command line option.
-2014-07-03T21:43:49.423049000 0.054483s info: Server ready
-2014-07-03T21:44:19.688991000 30.321290s info: Server got SIGINT from pid 1051, uid 501; shutting down...
-2014-07-03T21:44:19.689638000 30.321937s info: Shutting down client connections...
-2014-07-03T21:44:19.691063000 30.323362s info: All client connections closed.
-2014-07-03T21:44:19.691080000 30.323379s info: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
-2014-07-03T21:44:19.720199000 30.352498s info: Storage engine shut down.
-2014-07-03T21:44:20.541366000 0.006634s info: Running rethinkdb 1.12.1 (CLANG 4.2 (clang-425.0.28))...
-2014-07-03T21:44:20.551471000 0.016740s info: Running on Darwin 12.5.0 x86_64
-2014-07-03T21:44:20.551552000 0.016820s info: Using cache size of 100 MB
-2014-07-03T21:44:20.551612000 0.016880s warn: Cache size does not leave much memory for server and query overhead (available memory: 388 MB).
-2014-07-03T21:44:20.551662000 0.016930s warn: Cache size is very low and may impact performance.
-2014-07-03T21:44:20.551699000 0.016967s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-07-03T21:44:20.571236000 0.036504s info: Listening for intracluster connections on port 29015
-2014-07-03T21:44:20.576889000 0.042157s info: Listening for client driver connections on port 28015
-2014-07-03T21:44:20.577119000 0.042387s info: Listening for administrative HTTP connections on port 8080
-2014-07-03T21:44:20.577152000 0.042420s info: Listening on addresses: 127.0.0.1, ::1
-2014-07-03T21:44:20.577178000 0.042447s info: To fully expose RethinkDB on the network, bind to all addresses
-2014-07-03T21:44:20.577205000 0.042473s info: by running rethinkdb with the `--bind all` command line option.
-2014-07-03T21:44:20.577231000 0.042499s info: Server ready
-2014-07-03T21:45:13.875805000 53.342551s info: Server got SIGINT from pid 1051, uid 501; shutting down...
-2014-07-03T21:45:13.876213000 53.342959s info: Shutting down client connections...
-2014-07-03T21:45:13.876803000 53.343549s info: All client connections closed.
-2014-07-03T21:45:13.876814000 53.343560s info: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
-2014-07-03T21:45:13.904814000 53.371560s info: Storage engine shut down.
-2014-07-03T21:45:16.036311000 0.008416s info: Running rethinkdb 1.12.1 (CLANG 4.2 (clang-425.0.28))...
-2014-07-03T21:45:16.050805000 0.022911s info: Running on Darwin 12.5.0 x86_64
-2014-07-03T21:45:16.051009000 0.023114s info: Using cache size of 100 MB
-2014-07-03T21:45:16.051108000 0.023213s warn: Cache size does not leave much memory for server and query overhead (available memory: 322 MB).
-2014-07-03T21:45:16.051239000 0.023344s warn: Cache size is very low and may impact performance.
-2014-07-03T21:45:16.051504000 0.023609s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-07-03T21:45:16.079964000 0.052069s info: Listening for intracluster connections on port 29015
-2014-07-03T21:45:16.082915000 0.055020s info: Listening for client driver connections on port 28015
-2014-07-03T21:45:16.083121000 0.055226s info: Listening for administrative HTTP connections on port 8080
-2014-07-03T21:45:16.083195000 0.055300s info: Listening on addresses: 127.0.0.1, ::1
-2014-07-03T21:45:16.083223000 0.055328s info: To fully expose RethinkDB on the network, bind to all addresses
-2014-07-03T21:45:16.083289000 0.055394s info: by running rethinkdb with the `--bind all` command line option.
-2014-07-03T21:45:16.083315000 0.055420s info: Server ready
-2014-07-31T22:12:45.808950000 0.216196s info: Running rethinkdb 1.12.1 (CLANG 4.2 (clang-425.0.28))...
-2014-07-31T22:12:45.865129000 0.272376s info: Running on Darwin 12.5.0 x86_64
-2014-07-31T22:12:45.865216000 0.272462s info: Using cache size of 100 MB
-2014-07-31T22:12:45.865275000 0.272521s warn: Cache size does not leave much memory for server and query overhead (available memory: 636 MB).
-2014-07-31T22:12:45.865317000 0.272563s warn: Cache size is very low and may impact performance.
-2014-07-31T22:12:45.865354000 0.272600s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-07-31T22:12:45.894184000 0.301430s info: Listening for intracluster connections on port 29015
-2014-07-31T22:12:45.900839000 0.308085s info: Listening for client driver connections on port 28015
-2014-07-31T22:12:45.901198000 0.308444s info: Listening for administrative HTTP connections on port 8080
-2014-07-31T22:12:45.901212000 0.308458s info: Listening on addresses: 127.0.0.1, ::1
-2014-07-31T22:12:45.901258000 0.308503s info: To fully expose RethinkDB on the network, bind to all addresses
-2014-07-31T22:12:45.901284000 0.308529s info: by running rethinkdb with the `--bind all` command line option.
-2014-07-31T22:12:45.901310000 0.308555s info: Server ready
-2014-08-13T19:53:01.714531000 0.055159s info: Running rethinkdb 1.12.1 (CLANG 4.2 (clang-425.0.28))...
-2014-08-13T19:53:01.764094000 0.104723s info: Running on Darwin 13.3.0 x86_64
-2014-08-13T19:53:01.764176000 0.104804s info: Using cache size of 100 MB
-2014-08-13T19:53:01.764238000 0.104866s warn: Cache size does not leave much memory for server and query overhead (available memory: 359 MB).
-2014-08-13T19:53:01.764280000 0.104908s warn: Cache size is very low and may impact performance.
-2014-08-13T19:53:01.764317000 0.104945s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-08-13T19:53:01.793558000 0.134186s info: Listening for intracluster connections on port 29015
-2014-08-13T19:53:01.798671000 0.139299s info: Listening for client driver connections on port 28015
-2014-08-13T19:53:01.798887000 0.139515s info: Listening for administrative HTTP connections on port 8080
-2014-08-13T19:53:01.798975000 0.139603s info: Listening on addresses: 127.0.0.1, ::1
-2014-08-13T19:53:01.798978000 0.139606s info: To fully expose RethinkDB on the network, bind to all addresses
-2014-08-13T19:53:01.799009000 0.139637s info: by running rethinkdb with the `--bind all` command line option.
-2014-08-13T19:53:01.799076000 0.139704s info: Server ready
-2014-08-16T15:40:40.779235000 0.053937s info: Running rethinkdb 1.12.1 (CLANG 4.2 (clang-425.0.28))...
-2014-08-16T15:40:40.789982000 0.064686s info: Running on Darwin 13.3.0 x86_64
-2014-08-16T15:40:40.790252000 0.064954s info: Using cache size of 100 MB
-2014-08-16T15:40:40.790403000 0.065106s warn: Cache size does not leave much memory for server and query overhead (available memory: 798 MB).
-2014-08-16T15:40:40.790547000 0.065250s warn: Cache size is very low and may impact performance.
-2014-08-16T15:40:40.790672000 0.065375s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-08-16T15:40:40.826778000 0.101481s info: Listening for intracluster connections on port 29015
-2014-08-16T15:40:40.837368000 0.112071s info: Listening for client driver connections on port 28015
-2014-08-16T15:40:40.837753000 0.112456s info: Listening for administrative HTTP connections on port 8080
-2014-08-16T15:40:40.837757000 0.112460s info: Listening on addresses: 127.0.0.1, ::1
-2014-08-16T15:40:40.837785000 0.112487s info: To fully expose RethinkDB on the network, bind to all addresses
-2014-08-16T15:40:40.837787000 0.112489s info: by running rethinkdb with the `--bind all` command line option.
-2014-08-16T15:40:40.837813000 0.112516s info: Server ready
-2014-08-21T18:59:14.173179000 182426.286803s info: Server got SIGINT from pid 162, uid 501; shutting down...
-2014-08-21T18:59:14.177689000 182426.291313s info: Shutting down client connections...
-2014-08-21T18:59:14.220896000 182426.334520s info: All client connections closed.
-2014-08-21T18:59:14.220900000 182426.334523s info: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
-2014-08-21T18:59:14.858148000 182426.971772s info: Storage engine shut down.
-2014-08-21T18:59:17.127168000 0.401032s info: Running rethinkdb 1.12.1 (CLANG 4.2 (clang-425.0.28))...
-2014-08-21T18:59:17.191963000 0.465828s info: Running on Darwin 13.3.0 x86_64
-2014-08-21T18:59:17.192057000 0.465921s info: Using cache size of 100 MB
-2014-08-21T18:59:17.192111000 0.465975s warn: Requested cache size is larger than available memory.
-2014-08-21T18:59:17.192151000 0.466015s warn: Cache size is very low and may impact performance.
-2014-08-21T18:59:17.192188000 0.466052s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
-2014-08-21T18:59:17.217653000 0.491517s info: Listening for intracluster connections on port 29015
-2014-08-21T18:59:17.222126000 0.495990s info: Listening for client driver connections on port 28015
-2014-08-21T18:59:17.222558000 0.496421s info: Listening for administrative HTTP connections on port 8080
-2014-08-21T18:59:17.222562000 0.496426s info: Listening on addresses: 127.0.0.1, ::1
-2014-08-21T18:59:17.222649000 0.496513s info: To fully expose RethinkDB on the network, bind to all addresses
-2014-08-21T18:59:17.222652000 0.496516s info: by running rethinkdb with the `--bind all` command line option.
-2014-08-21T18:59:17.222680000 0.496544s info: Server ready
+2014-09-02T14:08:02.632708000 0.428732s info: Initializing directory /Users/nima/Desktop/projects/posties/rethinkdb_data
+2014-09-02T14:08:02.635713000 0.431738s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/nima/Desktop/projects/posties/rethinkdb_data' did not already exist or is empty.)
+2014-09-02T14:08:02.635948000 0.431972s info: Running rethinkdb 1.14.0 (CLANG 4.2 (clang-425.0.28))...
+2014-09-02T14:08:02.728314000 0.524339s info: Running on Darwin 13.3.0 x86_64
+2014-09-02T14:08:02.728414000 0.524438s info: Using cache size of 100 MB
+2014-09-02T14:08:02.728470000 0.524494s warn: Requested cache size is larger than available memory.
+2014-09-02T14:08:02.728510000 0.524534s warn: Cache size is very low and may impact performance.
+2014-09-02T14:08:02.728549000 0.524573s info: Loading data from directory /Users/nima/Desktop/projects/posties/rethinkdb_data
+2014-09-02T14:08:03.472676000 1.268726s info: Listening for intracluster connections on port 29015
+2014-09-02T14:08:03.475476000 1.271526s info: Listening for client driver connections on port 28015
+2014-09-02T14:08:03.475678000 1.271728s info: Listening for administrative HTTP connections on port 8080
+2014-09-02T14:08:03.475709000 1.271759s info: Listening on addresses: 127.0.0.1, ::1
+2014-09-02T14:08:03.475738000 1.271788s info: To fully expose RethinkDB on the network, bind to all addresses
+2014-09-02T14:08:03.475766000 1.271815s info: by running rethinkdb with the `--bind all` command line option.
+2014-09-02T14:08:03.475793000 1.271843s info: Server ready

@@ -3,6 +3,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 	$scope.posts = [];
 	$scope.user = {};
+	$scope.userHasUploadedImage = false;
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
@@ -12,7 +13,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	$scope.addPost = function($event) {
 		var post = {
 			id : Math.round(Math.random() * 1000),
-			sortrank : $scope.posts.length + 1,
+			sortrank : $scope.posts.length,
 			content : $event.target.getAttribute('data-content'),
 			type : $event.target.getAttribute('data-type'),
 			template : $event.target.getAttribute('data-template')
@@ -50,7 +51,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 					$scope.$apply(function() {
 						var imagePost = {
 							type : 2,
-							sortRank : $scope.posts.length + 1,
+							sortRank : $scope.posts.length,
 							template : 'postImage.html',
 							key : reader.result,
 							file : file
@@ -58,6 +59,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 						
 						$scope.posts.push(imagePost);
 						$scope.loader.hide();
+						$scope.userHasUploadedImage = true;
 					});
 				}
 
@@ -70,7 +72,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		posties.util.swapItems($scope.posts, currentIndex, newIndex);
 
 		for(i = 0; i < $scope.posts.length; i++) {
-			$scope.posts[i].sortrank = $scope.posts.length - i;
+			$scope.posts[i].sortrank = i;
 		}
 	};
 
@@ -160,24 +162,38 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			}).then(function(response) {
 				console.log(response);
 
-				for(i = 0; i < $scope.posts.length; i++) {
-					var jsonPost = $scope.posts[i];
-					if(jsonPost.type == 2) {
-						$scope.upload = $upload.upload({
-							url: '/api/postImage',
-							method: 'post',
-							data: jsonPost,
-							file: jsonPost.file,
-						}).success(function(data, status, headers, config) {
-							window.location = "/by/" + $scope.user.username + "?intro=true";
-						}).error(function(response) {
-							console.log(response);
-						});	
+				if($scope.userHasUploadedImage) {
+					$scope.loader.show();
+
+					for(i = 0; i < $scope.posts.length; i++) {
+						var jsonPost = $scope.posts[i];
+						if(jsonPost.type == 2) {
+							$scope.upload = $upload.upload({
+								url: '/api/postImage',
+								method: 'post',
+								data: jsonPost,
+								file: jsonPost.file,
+							}).success(function(data, status, headers, config) {
+								if(i == $scope.posts.length) {
+									forwardToUserPage();	
+								}
+							}).error(function(response) {
+								console.log(response);
+							});	
+						}
 					}
+				} else {
+					forwardToUserPage();
 				}
+				
 			}, function(response) {
 				console.log(response);
 			});
+
+			function forwardToUserPage() {
+				$scope.loader.hide();
+				window.location = "/by/" + $scope.user.username + "?intro=true";
+			}
 
 		} else {
 			console.log("form is invalid");
@@ -341,7 +357,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	$scope.savePostImage = function($files) {
 		var jsonPost = {
 			type : 2,
-			sortRank : $scope.posts.length + 1
+			sortRank : $scope.posts.length
 		};
 
 		for(var i = 0; i < $files.length; i++) {
@@ -371,7 +387,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		var jsonPost = [];
 		for(i = 0; i < $scope.posts.length; i++) {
 			var post = $scope.posts[i];
-			jsonPost.push({ id : post.id, sortrank : $scope.posts.length - i });
+			jsonPost.push({ id : post.id, sortrank : i });
 		}
 
 		$http({

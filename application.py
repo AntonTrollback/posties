@@ -138,7 +138,7 @@ def api_create_user():
 					'content' : post['content'], 
 					'username' : username,
 					'sortrank' : post['sortrank'],
-					'type' : post['type'],
+					'type' : int(post['type']),
 					'created' : r.now()}).run(conn)
 
 		result = r.table(TABLE_USERS_SETTINGS).insert({
@@ -285,7 +285,7 @@ def api_get_user_with_posts():
 	posts = list(
 		r.table(TABLE_POSTS).filter(
 		(r.row['username'] == username))
-		.order_by(r.desc('sortrank'))
+		.order_by(r.asc('sortrank'))
 		.run(conn))
 
 	settings = list(

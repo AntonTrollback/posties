@@ -1,3 +1,4 @@
 *.pyc
 .elasticbeanstalk/
 tmp/*
+rethinkdb_data
