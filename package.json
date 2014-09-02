@@ -1,0 +1,23 @@
+{
+  "name": "posties",
+  "version": "0.0.1",
+  "description": "Posti.es",
+  "author": "Posti.es",
+  "homepage": "http://post.es",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-banner": "^0.2.3",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-uglify": "^0.5.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-notify": "^0.3.1",
+    "grunt-suitcss": "^0.4.0",
+    "load-grunt-tasks": "^0.6.0",
+    "suitcss-preprocessor": "^0.3.0"
+  },
+  "dependencies": {
+
+  }
+}

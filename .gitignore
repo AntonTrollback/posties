@@ -1,4 +1,6 @@
 *.pyc
 .elasticbeanstalk/
-tmp/*
+tmp
 rethinkdb_data
+node_modules
+static/build
