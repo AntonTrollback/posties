@@ -418,12 +418,12 @@ header div.menu li {
 }
 .post .options {
 	position: absolute;
-	top: -4px;
+	top: -12px;
 	right: 8px;
 	font-size: 22px;
 }
 .post .image .options {
-	top: 4px;
+	top: -5px;
 }
 .post .options a {
 	cursor: pointer;

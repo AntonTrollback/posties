@@ -16,7 +16,7 @@ application.config['SECRET_KEY'] = 'secretmonkey123'
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
-WHITELIST_TYPEFACES = ['sans-serif', 'SourceSansPro', 'ReenieBeanie', 'Raleway', 'JosefinSans', 'OpenSans', 'Rokkitt', 'FredokaOne', 'LibreBaskerville', 'EBGaramond', 'Geo', 'VT323', 'TextMeOne', 'NovaCut', 'CherrySwash', 'Italiana', 'Inconsolata', 'AbrilFatface', 'Chivo']
+WHITELIST_TYPEFACES = ['sans-serif', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
 
 #conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
 #	port=28015,
