@@ -15,7 +15,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			id : Math.round(Math.random() * 1000),
 			sortrank : $scope.posts.length,
 			content : $event.target.getAttribute('data-content'),
-			type : $event.target.getAttribute('data-type'),
+			type : parseInt($event.target.getAttribute('data-type')),
 			template : $event.target.getAttribute('data-template')
 		};
 
@@ -51,7 +51,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 					$scope.$apply(function() {
 						var imagePost = {
 							type : 2,
-							sortRank : $scope.posts.length,
+							sortrank : $scope.posts.length,
 							template : 'postImage.html',
 							key : reader.result,
 							file : file
@@ -285,7 +285,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		var jsonPost = {
 			type : $event.target.getAttribute('data-type'),
 			content : '',
-			sortRank : $scope.posts.length
+			sortrank : $scope.posts.length
 		};
 
 		$http({
@@ -344,7 +344,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	$scope.savePostImage = function($files) {
 		var jsonPost = {
 			type : 2,
-			sortRank : $scope.posts.length
+			sortrank : $scope.posts.length
 		};
 
 		for(var i = 0; i < $files.length; i++) {

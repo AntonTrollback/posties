@@ -166,7 +166,7 @@ def api_post_text():
 		result = r.table(TABLE_POSTS).insert({ 
 			'content' : content, 
 			'username' : current_user.username,
-			'sortrank' : jsonData['sortRank'],
+			'sortrank' : jsonData['sortrank'],
 			'type' : int(jsonData['type']),
 			'created' : r.now()}).run(conn, return_changes = True)
 	elif request.method == 'PUT':
@@ -211,7 +211,7 @@ def api_post_image(image = None):
 	result = r.table(TABLE_POSTS).insert({ 
 		'key' : generated_filename, 
 		'username' : current_user.username,
-		'sortrank' : int(jsonData['sortRank']),
+		'sortrank' : int(jsonData['sortrank']),
 		'type' : 2,
 		'created' : r.now()}).run(conn, return_changes = True)
 

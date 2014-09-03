@@ -6,3 +6,15 @@ curl -X POST -H "Content-Type: application/json" -d '{ "contentText" : "hello" }
 
 == Ajax get user ==
 curl -X GET -H "Content-Type: application/json" -d '{ "username" : "nima" }' http://localhost:5000/api/users
+
+== Rethink Database Setup ==
+r.dbCreate('posties');
+r.db('posties').tableCreate('users');
+r.db('posties').tableCreate('posts');
+r.db('posties').tableCreate('users_settings');
+r.db('posties').table('posts').indexCreate('sortrank');
+
+== Rethink Database Clean == 
+r.db('posties').table('users').delete();
+r.db('posties').table('posts').delete();
+r.db('posties').table('users_settings').delete();
