@@ -160,8 +160,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				data: jsonPost,
 				headers: config.headerJSON
 			}).then(function(response) {
-				console.log(response);
-
 				if($scope.userHasUploadedImage) {
 					$scope.loader.show();
 
@@ -246,7 +244,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize,
-	config, SettingsService, 
+	config, UserService, SettingsService, 
 	LoaderService, FlashService) {
 
 	$scope.posts = [];
@@ -259,25 +257,16 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
 	}
 
-	/*$scope.settingsService.getSettings().then(function(data) {
-		$scope.settings = data;
-	});*/
-
 	var urlPathName = location.pathname;
 	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
 
 	//Fetch user posts
-	$http({
-		url: '/api/user',
-		method: 'get',
-		params: { 'username' : username },
-		headers: config.headerJSON
-	}).then(function(response) {
-		$scope.userSettings = response.data.settings;
-		$scope.user = { 'username' : response.data.username, 'isAuthenticated' : response.data.is_authenticated };
+	UserService.getUserWithPosts(username).then(function(data) {
+		$scope.userSettings = data.settings;
+		$scope.user = { 'username' : data.username, 'isAuthenticated' : data.is_authenticated };
 
-		for(i = 0; i < response.data.posts.length; i++) {
-			var post = response.data.posts[i];
+		for(i = 0; i < data.posts.length; i++) {
+			var post = data.posts[i];
 
 			if(post.type == 0) {
 				post.template = 'postText.html';
@@ -290,8 +279,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 
 			$scope.posts.push(post);
 		}
-	}, function(response) {
-		console.log(response);
 	});
 
 	$scope.addPost = function($event) {

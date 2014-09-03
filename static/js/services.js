@@ -72,27 +72,27 @@ postiesApp.service('SettingsService', function($http, config) {
 
 	this.getRandomSettings = function() {
 		return {
-			created:  new Date(),
-			id:  123,
-			pagebackgroundcolor:  getRandomHex(),
-			postbackgroundcolor:  getRandomHex(),
-			posttextcolor:  getRandomHex(),
+			created: new Date(),
+			id: 0,
+			pagebackgroundcolor: getRandomHex(),
+			postbackgroundcolor: getRandomHex(),
+			posttextcolor: getRandomHex(),
 			showboxes : Math.random() < .5,
-			typefaceheadline:  setRandomTypefaceParagraph(),
-			typefaceparagraph:  setRandomTypefaceHeadline()
+			typefaceheadline: setRandomTypefaceParagraph(),
+			typefaceparagraph: setRandomTypefaceHeadline()
 		}
 	};
 
 	this.getDefaultSettings = function() {
 		return {
-			created:  new Date(),
-			id:  123,
-			pagebackgroundcolor:  "#f5f5f5",
-			postbackgroundcolor:  "#ffffff",
-			posttextcolor:  "#141414",
-			showboxes : true,
-			typefaceheadline:  "sans-serif",
-			typefaceparagraph:  "sans-serif"
+			created: new Date(),
+			id: 0,
+			pagebackgroundcolor: "#f5f5f5",
+			postbackgroundcolor: "#ffffff",
+			posttextcolor: "#141414",
+			showboxes: true,
+			typefaceheadline: "sans-serif",
+			typefaceparagraph: "sans-serif"
 		}
 	};
 
@@ -114,6 +114,26 @@ postiesApp.service('SettingsService', function($http, config) {
 		return $options.eq(random).val();
 	}
 
+});
+
+postiesApp.service('UserService', function($http, config) {
+
+	this.getUserWithPosts = function(username) {
+		var promise = $http({
+			url: '/api/user',
+			method: 'get',
+			params: { 'username' : username },
+			headers: config.headerJSON
+		}).then(function(response) {
+			this.data = response.data;
+			return response.data;
+		}, function(response) {
+			console.log(response);
+		});
+
+		return promise;
+	};
+	
 });
 
 postiesApp.service('AuthService', function($http, config) {
