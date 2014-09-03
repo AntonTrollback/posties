@@ -168,13 +168,13 @@ def api_post_text():
 			'username' : current_user.username,
 			'sortrank' : jsonData['sortRank'],
 			'type' : int(jsonData['type']),
-			'created' : r.now()}, return_changes = True).run(conn)
+			'created' : r.now()}).run(conn, return_changes = True)
 	elif request.method == 'PUT':
 		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
 			'content' : content
-			}, return_changes = True).run(conn);
+			}).run(conn, return_changes = True);
 
-	return jsonify(result['new_val'])
+	return jsonify(result['changes'][0]['new_val'])
 
 @application.route('/api/postImage', methods=['POST'])
 @login_required
@@ -213,9 +213,9 @@ def api_post_image(image = None):
 		'username' : current_user.username,
 		'sortrank' : int(jsonData['sortRank']),
 		'type' : 2,
-		'created' : r.now()}, return_changes = True).run(conn)
+		'created' : r.now()}).run(conn, return_changes = True)
 
-	return jsonify(result['new_val'])
+	return jsonify(result['changes'][0]['new_val'])
 
 @application.route('/api/postrank', methods=['POST'])
 @login_required
