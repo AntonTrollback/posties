@@ -1,15 +1,16 @@
 import os
 import base64
 from flask import Flask
-from flask import render_template, session, abort, redirect, request, url_for, jsonify, make_response
+from flask import Response, render_template, session, abort, redirect, request, url_for, jsonify, make_response
 from flask.ext import login
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from user import User
-import json, string, random, os
+import time, json, string, random, os, base64, hmac, urllib
 import rethinkdb as r
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+from hashlib import sha1
 
 application = Flask(__name__, static_folder='static')
 application.config['SECRET_KEY'] = 'secretmonkey123'
@@ -140,6 +141,13 @@ def api_create_user():
 					'sortrank' : post['sortrank'],
 					'type' : int(post['type']),
 					'created' : r.now()}).run(conn)
+			else:
+				result = r.table(TABLE_POSTS).insert({
+					'username' : username,
+					'sortrank' : post['sortrank'],
+					'type' : int(post['type']),
+					'key' : post['file']['name'],
+					'created' : r.now()}).run(conn)
 
 		result = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
@@ -175,6 +183,41 @@ def api_post_text():
 			}).run(conn, return_changes = True);
 
 	return jsonify(result['changes'][0]['new_val'])
+
+
+@application.route('/api/sign_upload_url', methods=['GET'])
+def sign_s3():
+	# Load necessary information into the application:
+	AWS_ACCESS_KEY = 'AKIAICE5GS7MTMVD5U4Q'
+	AWS_SECRET_KEY = '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'
+	S3_BUCKET = 'postiesimages'
+
+	# Collect information on the file from the GET parameters of the request:
+	object_name = urllib.quote_plus(request.args.get('s3_object_name'))
+	mime_type = request.args.get('s3_object_type')
+
+	# Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
+	expires = int(time.time()+10)
+	amz_headers = "x-amz-acl:public-read"
+ 
+	# Generate the PUT request that JavaScript will use:
+	put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
+     
+	# Generate the signature with which the request can be signed:
+	signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
+	# Remove surrounding whitespace and quote special characters:
+	signature = urllib.quote_plus(signature.strip())
+
+	# Build the URL of the file in anticipation of its imminent upload:
+	url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
+
+	content = json.dumps({
+		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
+		'url': url
+	})
+    
+	# Return the signed request and the anticipated URL back to the browser in JSON format:
+	return Response(content, mimetype='text/plain; charset=x-user-defined')
 
 @application.route('/api/postImage', methods=['POST'])
 @login_required

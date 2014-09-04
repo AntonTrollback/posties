@@ -165,19 +165,14 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 					for(i = 0; i < $scope.posts.length; i++) {
 						var jsonPost = $scope.posts[i];
+
 						if(jsonPost.type == 2) {
-							$scope.upload = $upload.upload({
-								url: '/api/postImage',
-								method: 'post',
-								data: jsonPost,
-								file: jsonPost.file,
-							}).success(function(data, status, headers, config) {
-								if(i == $scope.posts.length) {
-									forwardToUserPage();	
-								}
-							}).error(function(response) {
-								console.log(response);
-							});	
+							var jsonPost = $scope.posts[i];
+							var s3Upload = uploadToS3(jsonPost);
+						}
+						
+						if(i == $scope.posts.length) {
+							forwardToUserPage();
 						}
 					}
 				} else {
@@ -193,6 +188,21 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				window.location = "/by/" + $scope.user.username + "?intro=true";
 			}
 
+			function uploadToS3(jsonPost) {
+				var s3upload = new S3Upload({
+					s3_object_name: jsonPost.file.name,
+					s3_file: jsonPost.file,
+			        onProgress: function(percent, message) {
+						console.log('Upload progress: ' + percent + '% ' + message);
+					},
+					onFinishS3Put: function(url) {
+						console.log('Upload completed. Uploaded to: ' + url);
+					},
+					onError: function(status) {
+						console.log('Upload error: ' + status);
+					}
+			    });
+			}
 		} else {
 			console.log("form is invalid");
 		}

@@ -10,4 +10,25 @@
 		<label class="addPostImage"><input class="hidden" type="file" accept="image/*" capture="camera" name="image" ng-file-select="savePostImage($files)" />Image</label>
 	</li>
 </ul>
-	
+<!--	
+<script type="text/javascript">
+function s3_upload() {
+    var s3upload = new S3Upload({
+        onProgress: function(percent, message) {
+        	console.log('Upload progress: ' + percent + '% ' + message);
+        },
+        onFinishS3Put: function(url) {
+            console.log('Upload completed. Uploaded to: ' + url);
+        },
+        onError: function(status) {
+        	console.log('Upload error: ' + status);
+        }
+    });
+}
+
+(function() {
+    var input_element = document.getElementById("file");
+    input_element.onchange = s3_upload;
+})();
+</script>
+-->
