@@ -143,6 +143,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	};
 
 	$scope.submitCreateUser = function() {
+		var redirectUser = false;
+
 		if($scope.formCreateUser.$valid) {
 			var jsonPost = { 
 				email : $scope.user.email,
@@ -163,16 +165,16 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				if($scope.userHasUploadedImage) {
 					$scope.loader.show();
 
-					for(i = 0; i < $scope.posts.length; i++) {
-						var jsonPost = $scope.posts[i];
+					for(i = 0; i < response.data.posts.length; i++) {
+						var jsonPost = response.data.posts[i];
+
+						if(i + 1 == response.data.posts.length) {
+							redirectUser = true;
+						}
 
 						if(jsonPost.type == 2) {
-							var jsonPost = $scope.posts[i];
+							jsonPost['file'] = $scope.posts[i].file;
 							var s3Upload = uploadToS3(jsonPost);
-						}
-						
-						if(i == $scope.posts.length) {
-							forwardToUserPage();
 						}
 					}
 				} else {
@@ -190,18 +192,21 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 			function uploadToS3(jsonPost) {
 				var s3upload = new S3Upload({
-					s3_object_name: jsonPost.file.name,
+					s3_object_name: jsonPost.key,
 					s3_file: jsonPost.file,
-			        onProgress: function(percent, message) {
+					onProgress: function(percent, message) {
 						console.log('Upload progress: ' + percent + '% ' + message);
 					},
 					onFinishS3Put: function(url) {
 						console.log('Upload completed. Uploaded to: ' + url);
+						if(redirectUser) {
+							forwardToUserPage();	
+						}
 					},
 					onError: function(status) {
 						console.log('Upload error: ' + status);
 					}
-			    });
+				});
 			}
 		} else {
 			console.log("form is invalid");

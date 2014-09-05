@@ -130,26 +130,46 @@ def api_create_user():
 		user = User(user['id'], user['email'], user['username'])
 		login_user(user)
 
-		#create all posts
+		# we store the returned data for assurance, and for using the generated filenames
+		result = {}
+		result['posts'] = []
+		result['settings'] = {}
+		
+		# create all posts
 		for post in posts:
 			#create all posts that aren't images
-			#che rest are called directly via JS to api_post_image
+			#the rest are called directly via JS to api_post_image
 			if post['type'] != 2:
-				result = r.table(TABLE_POSTS).insert({ 
+				post = r.table(TABLE_POSTS).insert({ 
 					'content' : post['content'], 
 					'username' : username,
 					'sortrank' : post['sortrank'],
 					'type' : int(post['type']),
-					'created' : r.now()}).run(conn)
+					'created' : r.now()}).run(conn, return_changes = True)
+
+				result['posts'].append(post['changes'][0]['new_val'])
 			else:
-				result = r.table(TABLE_POSTS).insert({
+				fileExtension = '.'
+				try:
+					fileExtension = fileExtension + os.path.splitext(post['file']['name'])[1][1:].strip() 
+				except Error:
+					fileExtension = ''
+
+				filename = secure_filename(post['file']['name'])
+
+				# Assumes that the user has been created and is in session
+				generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
+
+				post = r.table(TABLE_POSTS).insert({
 					'username' : username,
 					'sortrank' : post['sortrank'],
 					'type' : int(post['type']),
-					'key' : post['file']['name'],
-					'created' : r.now()}).run(conn)
+					'key' : generated_filename,
+					'created' : r.now()}).run(conn, return_changes = True)
 
-		result = r.table(TABLE_USERS_SETTINGS).insert({
+				result['posts'].append(post['changes'][0]['new_val'])
+
+		settings = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
 			'typefaceparagraph' : settings['typefaceparagraph'],
 			'typefaceheadline' : settings['typefaceheadline'],
@@ -157,10 +177,11 @@ def api_create_user():
 			'showboxes' : settings['showboxes'],
 			'postbackgroundcolor' : settings['postbackgroundcolor'],
 			'pagebackgroundcolor' : settings['pagebackgroundcolor'],
-			'created' : r.now()}).run(conn)
+			'created' : r.now()}).run(conn, return_changes = True)
 
-		jsonData['id'] = generated_id
-		return jsonify(jsonData)
+		result['settings'] = settings['changes'][0]['new_val']
+
+		return jsonify(result)
 	else:
 		abort(401)
 
@@ -184,7 +205,6 @@ def api_post_text():
 
 	return jsonify(result['changes'][0]['new_val'])
 
-
 @application.route('/api/sign_upload_url', methods=['GET'])
 def sign_s3():
 	# Load necessary information into the application:
@@ -197,7 +217,7 @@ def sign_s3():
 	mime_type = request.args.get('s3_object_type')
 
 	# Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
-	expires = int(time.time()+10)
+	expires = int(time.time() + 10)
 	amz_headers = "x-amz-acl:public-read"
  
 	# Generate the PUT request that JavaScript will use:
@@ -235,7 +255,7 @@ def api_post_image(image = None):
 	fileExtension = ''
 
 	try:
-	    fileExtension = os.path.splitext(filenameWithPath)[1]
+		fileExtension = os.path.splitext(filenameWithPath)[1]
 	except Error:
 		fileExtension = ''
 
