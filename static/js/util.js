@@ -41,9 +41,29 @@ posties.util = (function() {
         return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     };
 
+    var uploadToS3 = function(jsonPost) {
+        var s3upload = new S3Upload({
+            s3_object_name: jsonPost.key,
+            s3_file: jsonPost.file,
+            onProgress: function(percent, message) {
+                console.log('Upload progress: ' + percent + '% ' + message);
+            },
+            onFinishS3Put: function(url) {
+                console.log('Upload completed. Uploaded to: ' + url);
+                if(redirectUser) {
+                    forwardToUserPage();    
+                }
+            },
+            onError: function(status) {
+                console.log('Upload error: ' + status);
+            }
+        });
+    };
+
     return {
         getQueryParamByName : getQueryParamByName,
         swapItems : swapItems,
-        getBase64Image : getBase64Image
+        getBase64Image : getBase64Image,
+        uploadToS3 : uploadToS3
     };
 }());

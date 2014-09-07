@@ -174,7 +174,22 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 						if(jsonPost.type == 2) {
 							jsonPost['file'] = $scope.posts[i].file;
-							var s3Upload = uploadToS3(jsonPost);
+							var s3upload = new S3Upload({
+								s3_object_name: jsonPost.key,
+								s3_file: jsonPost.file,
+								onProgress: function(percent, message) {
+									console.log('Upload progress: ' + percent + '% ' + message);
+								},
+								onFinishS3Put: function(url) {
+									console.log('Upload completed. Uploaded to: ' + url);
+									if(redirectUser) {
+										forwardToUserPage();	
+									}
+								},
+								onError: function(status) {
+									console.log('Upload error: ' + status);
+								}
+							});
 						}
 					}
 				} else {
@@ -188,25 +203,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			function forwardToUserPage() {
 				$scope.loader.hide();
 				window.location = "/by/" + $scope.user.username + "?intro=true";
-			}
-
-			function uploadToS3(jsonPost) {
-				var s3upload = new S3Upload({
-					s3_object_name: jsonPost.key,
-					s3_file: jsonPost.file,
-					onProgress: function(percent, message) {
-						console.log('Upload progress: ' + percent + '% ' + message);
-					},
-					onFinishS3Put: function(url) {
-						console.log('Upload completed. Uploaded to: ' + url);
-						if(redirectUser) {
-							forwardToUserPage();	
-						}
-					},
-					onError: function(status) {
-						console.log('Upload error: ' + status);
-					}
-				});
 			}
 		} else {
 			console.log("form is invalid");
@@ -357,27 +353,49 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	};
 
 	$scope.savePostImage = function($files) {
-		var jsonPost = {
-			type : 2,
-			sortrank : $scope.posts.length
-		};
-
 		for(var i = 0; i < $files.length; i++) {
 			$scope.loader.show();
 			var file = $files[i];
-			$scope.upload = $upload.upload({
+
+			var jsonPost = {
+				type : 2,
+				sortrank : $scope.posts.length,
+				file : file
+			};
+
+			$http({
 				url: '/api/postImage',
 				method: 'post',
 				data: jsonPost,
-				file: file,
-			}).progress(function(evt) {
-				$scope.loader.setMessage('uploaded ' + parseInt(100.0 * evt.loaded / evt.total) + "%");
-			}).success(function(data, status, headers, config) {
-				data.template = 'postImage.html';
-				data.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + data.key;
-				$scope.posts.push(data);
-				$scope.loader.hide();
-			}).error(function(response) {
+				headers: config.headerJSON
+			}).then(function(response) {
+				$scope.loader.show();
+
+				var jsonPost = response.data;
+				jsonPost['file'] = file;
+				
+				var s3upload = new S3Upload({
+					s3_object_name: jsonPost.key,
+					s3_file: jsonPost.file,
+					onProgress: function(percent, message) {
+		                console.log('Upload progress: ' + percent + '% ' + message);
+		            },
+		            onFinishS3Put: function(url) {
+		            	console.log('Upload completed. Uploaded to: ' + url);
+
+		            	jsonPost.template = 'postImage.html';
+						jsonPost.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + jsonPost.key;
+
+		            	$scope.$apply(function() {
+							$scope.posts.push(jsonPost);
+							$scope.loader.hide();
+						});
+		            },
+		            onError: function(status) {
+		                console.log('Upload error: ' + status);
+		            }
+		        });
+			}, function(response) {
 				console.log(response);
 			});
 		}

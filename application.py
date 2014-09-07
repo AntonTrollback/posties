@@ -36,14 +36,17 @@ login_manager.init_app(application)
 @login_manager.user_loader
 def load_user(id):
 	user = r.table(TABLE_USERS).get(id).run(conn)
-	return User(user['id'], user['email'], user['username'])
+	if user:
+		return User(user['id'], user['email'], user['username'])
+	else:
+		logout_user()
 
 ###############
 #  WEB VIEWS  #
 ###############
 @application.route('/', methods=['GET'])
 def index():
-	if current_user.is_authenticated():
+	if current_user and current_user.is_authenticated():
 		return redirect("/by/" + current_user.username, code=302)
 	else:
 		return render_template('index.html')
@@ -74,7 +77,7 @@ def get_posts_by_username(username = None):
 
 	user_owns_page = False
 
-	if current_user.is_authenticated():
+	if current_user and current_user.is_authenticated():
 		user_owns_page = username == current_user.username
 
 	for user in users:
@@ -241,44 +244,28 @@ def sign_s3():
 
 @application.route('/api/postImage', methods=['POST'])
 @login_required
-def api_post_image(image = None):
-	if(image == None):
-		jsonData = request.values
-		file = request.files['file']
-		filename = secure_filename(file.filename)
-	else:
-		file = image.file
+def api_post_image():
+	jsonData = request.json
 
-	filenameWithPath = os.path.join("/tmp", filename)
-	file.save(filenameWithPath)
-
-	fileExtension = ''
-
+	fileExtension = '.'
 	try:
-		fileExtension = os.path.splitext(filenameWithPath)[1]
+		fileExtension = fileExtension + os.path.splitext(jsonData['file']['name'])[1][1:].strip() 
 	except Error:
 		fileExtension = ''
 
-	s3_conn = S3Connection('AKIAICE5GS7MTMVD5U4Q', '8i7+mEe8t6u/8dtdgYxjuJ7i+AVJn+0kJGdibApF')
-	k = Key(s3_conn.get_bucket('postiesimages'))
+	filename = secure_filename(jsonData['file']['name'])
+
+	# Assumes that the user has been created and is in session
 	generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
-	k.key = generated_filename
-	k.set_contents_from_file(request.files['file'], rewind=True)
-	#k.set_acl("public-read")
 
-	if os.path.isfile(filenameWithPath):
-		os.remove(filenameWithPath)
-	else:
-		abort(401)
-
-	result = r.table(TABLE_POSTS).insert({ 
-		'key' : generated_filename, 
+	post = r.table(TABLE_POSTS).insert({
 		'username' : current_user.username,
-		'sortrank' : int(jsonData['sortrank']),
-		'type' : 2,
+		'sortrank' : jsonData['sortrank'],
+		'type' : int(jsonData['type']),
+		'key' : generated_filename,
 		'created' : r.now()}).run(conn, return_changes = True)
 
-	return jsonify(result['changes'][0]['new_val'])
+	return jsonify(post['changes'][0]['new_val'])
 
 @application.route('/api/postrank', methods=['POST'])
 @login_required
