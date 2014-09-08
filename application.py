@@ -21,8 +21,8 @@ WHITELIST_TYPEFACES = ['sans-serif', 'Source Sans Pro', 'Reenie Beanie', 'Ralewa
 
 conn = r.connect(host='ec2-54-77-148-4.eu-west-1.compute.amazonaws.com', 
 	port=28015,
-	auth_key='rethinkdb',
-	db='c0penhagenrethink')
+	auth_key='c0penhagenrethink',
+	db='posties')
 
 #conn = r.connect(host='localhost',
 #	port=28015,
