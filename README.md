@@ -21,3 +21,37 @@ r.db('posties').table('posts').indexCreate('sortrank');
 r.db('posties').table('users').delete();
 r.db('posties').table('posts').delete();
 r.db('posties').table('users_settings').delete();
+
+== S3 Policy ==
+{
+	"Version": "2012-10-17",
+	"Id": "S3-Account-Permissions",
+	"Statement": [
+		{
+			"Sid": "1",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+					"arn:aws:iam::134930756575:user/posties"
+				]
+			},
+			"Action": "s3:*",
+			"Resource": [
+				"arn:aws:s3:::posties-images",
+				"arn:aws:s3:::posties-images/*"
+			]
+		}
+	]
+}
+
+== CORS Configuration ==
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <CORSRule>
+        <AllowedOrigin>*</AllowedOrigin>
+        <AllowedMethod>GET</AllowedMethod>
+        <AllowedMethod>POST</AllowedMethod>
+        <AllowedMethod>PUT</AllowedMethod>
+        <AllowedHeader>*</AllowedHeader>
+    </CORSRule>
+</CORSConfiguration>

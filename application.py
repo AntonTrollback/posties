@@ -19,15 +19,15 @@ TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['sans-serif', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
 
-#conn = r.connect(host='ec2-54-194-20-136.eu-west-1.compute.amazonaws.com', 
-#	port=28015,
-#	auth_key='SteveJobs007Amazon',
-#	db='posties')
-
-conn = r.connect(host='localhost',
+conn = r.connect(host='ec2-54-77-148-4.eu-west-1.compute.amazonaws.com', 
 	port=28015,
-	auth_key='',
-	db='posties')
+	auth_key='rethinkdb',
+	db='c0penhagenrethink')
+
+#conn = r.connect(host='localhost',
+#	port=28015,
+#	auth_key='',
+#	db='posties')
 
 login_manager = login.LoginManager()
 login_manager.init_app(application)
@@ -68,7 +68,7 @@ def login():
 			login_user(User(user['id'], user['email'], user['username']))
 			return jsonify(user)
 
-		return make_response(jsonify( { 'error': 'The e-mail address doesn\'t exist' } ), 401)
+		return make_response(jsonify( { 'error': 'The e-mail address doesn\'t exist' } ), 400)
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
@@ -152,22 +152,11 @@ def api_create_user():
 
 				result['posts'].append(post['changes'][0]['new_val'])
 			else:
-				fileExtension = '.'
-				try:
-					fileExtension = fileExtension + os.path.splitext(post['file']['name'])[1][1:].strip() 
-				except Error:
-					fileExtension = ''
-
-				filename = secure_filename(post['file']['name'])
-
-				# Assumes that the user has been created and is in session
-				generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
-
 				post = r.table(TABLE_POSTS).insert({
 					'username' : username,
 					'sortrank' : post['sortrank'],
 					'type' : int(post['type']),
-					'key' : generated_filename,
+					'key' : generate_safe_filename(username, post['file']['name']),
 					'created' : r.now()}).run(conn, return_changes = True)
 
 				result['posts'].append(post['changes'][0]['new_val'])
@@ -211,9 +200,9 @@ def api_post_text():
 @application.route('/api/sign_upload_url', methods=['GET'])
 def sign_s3():
 	# Load necessary information into the application:
-	AWS_ACCESS_KEY = 'AKIAICE5GS7MTMVD5U4Q'
-	AWS_SECRET_KEY = '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'
-	S3_BUCKET = 'postiesimages'
+	AWS_ACCESS_KEY = 'AKIAJK3UN2XK7GJREFWA'
+	AWS_SECRET_KEY = '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'
+	S3_BUCKET = 'posties-images'
 
 	# Collect information on the file from the GET parameters of the request:
 	object_name = urllib.quote_plus(request.args.get('s3_object_name'))
@@ -247,22 +236,11 @@ def sign_s3():
 def api_post_image():
 	jsonData = request.json
 
-	fileExtension = '.'
-	try:
-		fileExtension = fileExtension + os.path.splitext(jsonData['file']['name'])[1][1:].strip() 
-	except Error:
-		fileExtension = ''
-
-	filename = secure_filename(jsonData['file']['name'])
-
-	# Assumes that the user has been created and is in session
-	generated_filename = current_user.username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
-
 	post = r.table(TABLE_POSTS).insert({
 		'username' : current_user.username,
 		'sortrank' : jsonData['sortrank'],
 		'type' : int(jsonData['type']),
-		'key' : generated_filename,
+		'key' : generate_safe_filename(current_user.username, jsonData['file']['name']),
 		'created' : r.now()}).run(conn, return_changes = True)
 
 	return jsonify(post['changes'][0]['new_val'])
@@ -375,6 +353,17 @@ def unauthorized(error):
 #NON VIEW METHODS
 def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+
+def generate_safe_filename(username, filename):
+	fileExtension = '.'
+	try:
+		fileExtension = fileExtension + os.path.splitext(filename)[1][1:].strip() 
+	except Error:
+		fileExtension = ''
+
+	filename = secure_filename(filename)
+
+	return username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 
 if __name__ == '__main__':
     application.run(host = '0.0.0.0', debug = True)

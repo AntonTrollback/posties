@@ -5,6 +5,7 @@ var postiesApp = angular.module('posties', ['ngSanitize', 'colorpicker.module', 
 
 postiesApp.constant('config', {
     headerJSON: { 'Content-Type': 'application/json;charset=UTF-8' },
+    S3URL : 'https://s3-eu-west-1.amazonaws.com/posties-images/',
     keySettings: 'postiesKeySettings'
 });
 

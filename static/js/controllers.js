@@ -2,7 +2,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	config, SettingsService, LoaderService, FlashService) {
 
 	$scope.posts = [];
-	$scope.user = {};
 	$scope.userHasUploadedImage = false;
 
 	$scope.settingsService = SettingsService;
@@ -285,7 +284,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				post.template = 'postHeadline.html';
 			} else if(post.type == 2) {
 				post.template = 'postImage.html';
-				post.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + post.key;
+				post.key = config.S3URL + post.key;
 			}
 
 			$scope.posts.push(post);
@@ -384,7 +383,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		            	console.log('Upload completed. Uploaded to: ' + url);
 
 		            	jsonPost.template = 'postImage.html';
-						jsonPost.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + jsonPost.key;
+						jsonPost.key = config.S3URL + jsonPost.key;
 
 		            	$scope.$apply(function() {
 							$scope.posts.push(jsonPost);
