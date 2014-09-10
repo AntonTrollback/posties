@@ -22,7 +22,8 @@ r.db('posties').table('users').delete();
 r.db('posties').table('posts').delete();
 r.db('posties').table('users_settings').delete();
 
-== S3 Policy ==
+
+== S3 Policy FOR IAM USER POSTIES ==
 {
 	"Version": "2012-10-17",
 	"Id": "S3-Account-Permissions",

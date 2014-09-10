@@ -59,6 +59,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 						$scope.posts.push(imagePost);
 						$scope.loader.hide();
 						$scope.userHasUploadedImage = true;
+						$scope.showPostTypes = false;
 					});
 				}
 
@@ -388,6 +389,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		            	$scope.$apply(function() {
 							$scope.posts.push(jsonPost);
 							$scope.loader.hide();
+							$scope.showPostTypes = false;
 						});
 		            },
 		            onError: function(status) {
