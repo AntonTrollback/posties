@@ -41,9 +41,18 @@ posties.util = (function() {
         return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     };
 
+    var getArrayIndexBy = function(arr, name, value) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i][name] == value) {
+                return i;
+            }
+        }
+    };
+
     return {
         getQueryParamByName : getQueryParamByName,
         swapItems : swapItems,
-        getBase64Image : getBase64Image
+        getBase64Image : getBase64Image,
+        getArrayIndexBy : getArrayIndexBy
     };
 }());

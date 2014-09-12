@@ -30,7 +30,9 @@
 
     S3Upload.prototype.handleFileSelect = function(file) {
       var _results;
-      this.onProgress(0, 'Upload started.');
+
+      //Commented out since it broke our update status
+      //this.onProgress(0, 'Upload started.');
       _results = [];
       
       _results.push(this.uploadFile(file));

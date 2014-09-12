@@ -425,6 +425,13 @@ header div.menu li {
 .post .image .options {
 	top: -5px;
 }
+.post .image h3 {
+	font-size: 2rem;
+	color: #8a8a8a;
+	padding: 2rem 0;
+	border-top: 1px solid #8a8a8a;
+	border-bottom: 1px solid #8a8a8a;
+}
 .post .options a {
 	cursor: pointer;
 	color: #a9a9a9;

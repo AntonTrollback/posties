@@ -285,6 +285,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				post.template = 'postHeadline.html';
 			} else if(post.type == 2) {
 				post.template = 'postImage.html';
+				post.isUploaded = true;
 				post.key = config.S3URL + post.key;
 			}
 
@@ -354,13 +355,14 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 
 	$scope.savePostImage = function($files) {
 		for(var i = 0; i < $files.length; i++) {
-			$scope.loader.show();
 			var file = $files[i];
 
 			var jsonPost = {
 				type : 2,
 				sortrank : $scope.posts.length,
-				file : file
+				file : file,
+				isUploaded : false,
+				template : 'postImage.html'
 			};
 
 			$http({
@@ -369,29 +371,26 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				data: jsonPost,
 				headers: config.headerJSON
 			}).then(function(response) {
-				$scope.loader.show();
-
 				var jsonPost = response.data;
 				jsonPost['file'] = file;
+				$scope.posts.push(jsonPost);
 				
 				var s3upload = new S3Upload({
 					s3_object_name: jsonPost.key,
 					s3_file: jsonPost.file,
 					onProgress: function(percent, message) {
-		                console.log('Upload progress: ' + percent + '% ' + message);
-		            },
-		            onFinishS3Put: function(url) {
-		            	console.log('Upload completed. Uploaded to: ' + url);
-
-		            	jsonPost.template = 'postImage.html';
-						jsonPost.key = config.S3URL + jsonPost.key;
-
-		            	$scope.$apply(function() {
-							$scope.posts.push(jsonPost);
-							$scope.loader.hide();
-							$scope.showPostTypes = false;
+						$scope.$apply(function() {
+							jsonPost.uploadProgress = percent;
 						});
 		            },
+		            onFinishS3Put: function(url) {
+						jsonPost.key = config.S3URL + jsonPost.key;
+						jsonPost.isUploaded = true;
+
+						$scope.$apply(function() {
+							$scope.showPostTypes = false;
+						});
+					},
 		            onError: function(status) {
 		                console.log('Upload error: ' + status);
 		            }
