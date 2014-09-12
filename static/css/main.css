@@ -431,6 +431,7 @@ header div.menu li {
 	padding: 2rem 0;
 	border-top: 1px solid #8a8a8a;
 	border-bottom: 1px solid #8a8a8a;
+	text-align: center;
 }
 .post .options a {
 	cursor: pointer;
