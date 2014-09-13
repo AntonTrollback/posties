@@ -39,26 +39,29 @@ Enter AWS Access Key, AWS Secret Key, AWS Region, and enter the existing name of
 
 Now you can git add, git commit as usual, and use git aws.push to push to your EB environment
 
+Now get the correct pem files from Nima
+
+Copy the pem files to the folder ~/.ssh/ (create the folder if it doesn't exist)
+
 == S3 Policy FOR IAM USER POSTIES ==
 {
-	"Version": "2012-10-17",
-	"Id": "S3-Account-Permissions",
-	"Statement": [
-		{
-			"Sid": "1",
-			"Effect": "Allow",
-			"Principal": {
-				"AWS": [
-					"arn:aws:iam::134930756575:user/posties"
-				]
-			},
-			"Action": "s3:*",
-			"Resource": [
-				"arn:aws:s3:::posties-images",
-				"arn:aws:s3:::posties-images/*"
-			]
-		}
-	]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": ["arn:aws:s3:::posties-images"]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": ["arn:aws:s3:::posties-images/*"]
+    }
+  ]
 }
 
 == CORS Configuration ==
