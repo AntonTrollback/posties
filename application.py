@@ -50,7 +50,7 @@ def index():
 	if current_user and current_user.is_authenticated():
 		return redirect("/by/" + current_user.username, code=302)
 	else:
-		return render_template('index.html')
+		return render_template('index.html', is_start_page = True)
 
 @application.route('/login', methods=['GET', 'POST'])
 def login():
