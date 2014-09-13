@@ -42,22 +42,28 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			var file = $files[i];
 
 			if(file.type.match(imageType)) {
-				$scope.loader.show();
+				var imagePost = {
+					type : 2,
+					sortrank : $scope.posts.length,
+					template : 'postImage.html',
+					file : file,
+					isUploaded : false,
+					uploadProgress : 0
+				};
+
+				$scope.posts.push(imagePost);
 
 				var reader = new FileReader();
+				reader.onprogress = function(e) {
+					if(e.lengthComputable) {
+						imagePost.uploadProgress = event.total;
+					}
+				};
 				
 				reader.onload = function(e) {
 					$scope.$apply(function() {
-						var imagePost = {
-							type : 2,
-							sortrank : $scope.posts.length,
-							template : 'postImage.html',
-							key : reader.result,
-							file : file
-						};
-						
-						$scope.posts.push(imagePost);
-						$scope.loader.hide();
+						imagePost.isUploaded = true;
+						imagePost.key = reader.result,
 						$scope.userHasUploadedImage = true;
 						$scope.showPostTypes = false;
 					});
