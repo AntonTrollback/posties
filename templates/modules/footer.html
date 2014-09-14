@@ -2,6 +2,7 @@
 	<div class="spinner"></div>
 	<p>[[loader.message]]</p>
 </div>
+<div id="closeOverlays" ng-show="settingsService.isOpen" ng-click="settingsService.close()"></div>
 {% include 'modules/modalSettings.html' %}
 <script src="{{ url_for('static', filename='js/jquery-2.0.3.js') }}"></script>
 <script src="{{ url_for('static', filename='js/angular-file-upload-html5-shim.min.js') }}"></script>

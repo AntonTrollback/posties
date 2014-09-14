@@ -12,27 +12,22 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 from hashlib import sha1
 
-application = Flask(__name__, static_folder='static')
-application.config['SECRET_KEY'] = 'secretmonkey123'
+#The production DB connection will only work from a EC2 server, and not locally
+IS_IN_PRODUCTION_MODE = False
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['sans-serif', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
+application = Flask(__name__, static_folder='static')
+application.config['SECRET_KEY'] = 'secretmonkey123'
 
-#The production DB connection will only work from a EC2 server, and not locally
-conn = r.connect(host='ec2-54-77-148-4.eu-west-1.compute.amazonaws.com', 
-	port=28015,
-	auth_key='c0penhagenrethink',
-	db='posties')
-
-#conn = r.connect(host='localhost',
-#	port=28015,
-#	auth_key='',
-#	db='posties')
+if IS_IN_PRODUCTION_MODE:
+	conn = r.connect(host='ec2-54-77-148-4.eu-west-1.compute.amazonaws.com', port=28015, auth_key='c0penhagenrethink', db='posties')
+else:
+	conn = r.connect(host='localhost', port=28015, auth_key='', db='posties')
 
 login_manager = login.LoginManager()
 login_manager.init_app(application)
-#login_manager.login_view = '/api/login'
 
 @login_manager.user_loader
 def load_user(id):
@@ -370,4 +365,4 @@ def generate_safe_filename(username, filename):
 	return username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 
 if __name__ == '__main__':
-    application.run(host = '0.0.0.0', debug = False)
+    application.run(host = '0.0.0.0', debug = not IS_IN_PRODUCTION_MODE)
