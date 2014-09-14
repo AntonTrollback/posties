@@ -13,7 +13,7 @@ from boto.s3.key import Key
 from hashlib import sha1
 
 #The production DB connection will only work from a EC2 server, and not locally
-IS_IN_PRODUCTION_MODE = False
+IS_IN_PRODUCTION_MODE = True
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
