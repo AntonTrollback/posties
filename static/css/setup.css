@@ -1,4 +1,13 @@
 /**
+ * Variables
+ */
+
+:root {
+  --color-text-light: #888;
+  --color-divider: #e8e9e9;
+}
+
+/**
  * Custom media queries
  */
 
@@ -22,4 +31,5 @@
 @import "./static/css/typography.css";
 @import "./static/css/main.css";
 @import "./static/css/modal.css";
+@import "./static/css/popover.css";
 @import "./static/css/devices.css";
