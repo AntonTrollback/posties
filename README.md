@@ -1,3 +1,12 @@
+**Setup the UI**
+- Install [node.js](http://nodejs.org/)
+- run `sudo npm install` and `bower install` in repo dir
+
+**Develop the UI**
+- Build the `static/build` folder by running: `npm run build`
+- Build when files change: `npm run watch`
+
+**Notes**
 == Ajax create user ==
 curl -X POST -H "Content-Type: application/json" -d '{ "email" : "test@gmail.com", "username" : "johndoe", "password" : "secret" }' http://localhost:5000/api/createUser
 
@@ -17,12 +26,12 @@ r.db('posties').tableCreate('posts');
 r.db('posties').tableCreate('users_settings');
 r.db('posties').table('posts').indexCreate('sortrank');
 
-== Rethink Database Clean == 
+== Rethink Database Clean ==
 r.db('posties').table('users').delete();
 r.db('posties').table('posts').delete();
 r.db('posties').table('users_settings').delete();
 
-== SETTING UP EB / AWS TOOLS ON NEW COMPUTER == 
+== SETTING UP EB / AWS TOOLS ON NEW COMPUTER ==
 Download AWSDevTools from Amazon
 
 CD to your posties repo in the command line

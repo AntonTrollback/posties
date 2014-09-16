@@ -4,17 +4,5 @@
 </div>
 <div id="closeOverlays" ng-show="settingsService.isOpen" ng-click="settingsService.close()"></div>
 {% include 'modules/modalSettings.html' %}
-<script src="{{ url_for('static', filename='js/jquery-2.0.3.js') }}"></script>
-<script src="{{ url_for('static', filename='js/angular-file-upload-html5-shim.min.js') }}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
-<script src="{{ url_for('static', filename='js/angular-sanitize.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/angular-colorpicker.js') }}"></script>
-<script src="{{ url_for('static', filename='js/angular-file-upload.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/s3upload.js') }}"></script>
-<script src="{{ url_for('static', filename='js/autolinker.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/util.js') }}"></script>
-<script src="{{ url_for('static', filename='js/services.js') }}"></script>
-<script src="{{ url_for('static', filename='js/filters.js') }}"></script>
-<script src="{{ url_for('static', filename='js/directives.js') }}"></script>
-<script src="{{ url_for('static', filename='js/controllers.js') }}"></script>
+<script src="{{ url_for('static', filename='build/posties.js') }}"></script>
 </html>
