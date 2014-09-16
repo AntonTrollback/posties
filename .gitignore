@@ -3,4 +3,5 @@
 tmp
 rethinkdb_data
 node_modules
+bower_components
 static/build

@@ -44,17 +44,17 @@ module.exports = function(grunt) {
     concat: {
       options: {
         separator: ';',
-        stripBanners: true,
+        stripBanners: true
       },
       dist: {
         src: [
-          'static/js/jquery-2.0.3.js',
-          'static/js/angular-file-upload-html5-shim.min.js',
-          'static/js/angular.min.js',
-          'static/js/angular-sanitize.min.js',
-          'static/js/angular-colorpicker.js',
-          'static/js/angular-file-upload.min.js',
-          'static/js/autolinker.min.js',
+          'bower_components/jquery/dist/jquery.js',
+          'bower_components/angular/angular.js',
+          'bower_components/angular-sanitize/angular-sanitize.js',
+          'bower_components/angular-route/angular-route.js',
+          'bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
+          'bower_components/ng-file-upload/angular-file-upload.js',
+          'bower_components/Autolinker.js/dist/Autolinker.js',
           'static/js/util.js',
           'static/js/services.js',
           'static/js/filters.js',
@@ -110,7 +110,7 @@ module.exports = function(grunt) {
     'suitcss',
     'cssmin',
     'concat',
-    'uglify',
+    //'uglify',
     'copy'
   ]);
 };
