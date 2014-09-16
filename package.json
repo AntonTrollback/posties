@@ -18,11 +18,10 @@
     "grunt-contrib-uglify": "^0.5.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-notify": "^0.3.1",
+    "grunt-string-replace": "^1.0.0",
     "grunt-suitcss": "^0.4.0",
     "load-grunt-tasks": "^0.6.0",
     "suitcss-preprocessor": "^0.3.0"
   },
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }

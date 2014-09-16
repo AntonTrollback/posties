@@ -9,13 +9,28 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: pkg,
 
-    // CSS
-    // Concat, validate, preprocess and minify
+    /**
+     * CSS related
+     */
 
     suitcss: {
       'build': {
         files: {
           'static/build/posties.css': ['static/css/setup.css']
+        }
+      }
+    },
+
+    'string-replace': {
+      inline: {
+        files: {
+          'static/build/posties.css': ['static/build/posties.css']
+        },
+        options: {
+          replacements: [{
+            pattern: '../img/',
+            replacement: ''
+          }]
         }
       }
     },
@@ -28,8 +43,9 @@ module.exports = function(grunt) {
       }
     },
 
-    // JS
-    // Concat and uglify
+    /**
+     * JS related
+     */
 
     uglify: {
       'build': {
@@ -40,7 +56,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // Project configuration.
     concat: {
       options: {
         separator: ';',
@@ -66,7 +81,9 @@ module.exports = function(grunt) {
       },
     },
 
-    // Copy assets
+    /**
+     * Copy assets
+     */
 
     copy: {
       'to build folder': {
@@ -79,12 +96,14 @@ module.exports = function(grunt) {
       }
     },
 
-    // Watch task
+    /**
+     * Tasks
+     */
 
     watch: {
       css: {
         files: ['static/css/**/*'],
-        tasks: ['suitcss'],
+        tasks: ['suitcss', 'string-replace'],
         options: {
           spawn: false
         }
@@ -109,6 +128,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['build']);
   grunt.registerTask('build', [
     'suitcss',
+    'string-replace',
     'cssmin',
     'concat',
     //'uglify',
