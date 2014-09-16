@@ -5,6 +5,7 @@ var postiesApp = angular.module('posties', ['ngSanitize', 'colorpicker.module', 
 
 postiesApp.constant('config', {
     headerJSON: { 'Content-Type': 'application/json;charset=UTF-8' },
+    S3URL : 'https://s3-eu-west-1.amazonaws.com/posties-images/',
     keySettings: 'postiesKeySettings'
 });
 
@@ -70,19 +71,70 @@ postiesApp.service('SettingsService', function($http, config) {
 		return this.isOpen = false;
 	};
 
-	this.getDefaultSettings = function() {
+	this.getRandomSettings = function() {
 		return {
-			created:  new Date(),
-			id:  "123",
-			pagebackgroundcolor:  "#f5f5f5",
-			postbackgroundcolor:  "#ffffff",
-			posttextcolor:  "#141414",
-			showboxes : true,
-			typefaceheadline:  "sans-serif",
-			typefaceparagraph:  "sans-serif"
+			created: new Date(),
+			id: 0,
+			pagebackgroundcolor: getRandomHex(),
+			postbackgroundcolor: getRandomHex(),
+			posttextcolor: getRandomHex(),
+			showboxes : Math.random() < .5,
+			typefaceheadline: setRandomTypefaceParagraph(),
+			typefaceparagraph: setRandomTypefaceHeadline()
 		}
 	};
 
+	this.getDefaultSettings = function() {
+		return {
+			created: new Date(),
+			id: 0,
+			pagebackgroundcolor: "#f5f5f5",
+			postbackgroundcolor: "#ffffff",
+			posttextcolor: "#141414",
+			showboxes: true,
+			typefaceheadline: "sans-serif",
+			typefaceparagraph: "sans-serif"
+		}
+	};
+
+	function getRandomHex() {
+		return '#'+(function lol(m,s,c){return s[m.floor(m.random() * s.length)] + (c && lol(m,s,c-1));})(Math,'0123456789ABCDEF', 4);
+	}
+
+	function setRandomTypefaceParagraph() {
+		var $options = $('#typefaceParagraph').find('option'); random = ~~(Math.random() * $options.length);
+		$options.eq(random).prop('selected', true);
+
+		return $options.eq(random).val();
+	}
+
+	function setRandomTypefaceHeadline() {
+		var $options = $('#typefaceHeadline').find('option'); random = ~~(Math.random() * $options.length);
+		$options.eq(random).prop('selected', true);
+
+		return $options.eq(random).val();
+	}
+
+});
+
+postiesApp.service('UserService', function($http, config) {
+
+	this.getUserWithPosts = function(username) {
+		var promise = $http({
+			url: '/api/user',
+			method: 'get',
+			params: { 'username' : username },
+			headers: config.headerJSON
+		}).then(function(response) {
+			this.data = response.data;
+			return response.data;
+		}, function(response) {
+			console.log(response);
+		});
+
+		return promise;
+	};
+	
 });
 
 postiesApp.service('AuthService', function($http, config) {

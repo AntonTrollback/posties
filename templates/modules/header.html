@@ -4,7 +4,9 @@
 </div>
 <header>
 	<a id="logo" ng-click="showMenuTop = !showMenuTop">&nbsp;</a>
-	<a id="customize" ng-click="settingsService.open(); showMenuTop = false" ng-class="settingsService.isOpen ? 'active' : ''"></a>
+	{% if is_start_page or (current_user and current_user.is_authenticated()) %}
+		<a id="customize" ng-click="settingsService.open(); showMenuTop = false" ng-class="settingsService.isOpen ? 'active' : ''"></a>
+	{% endif %}
 	{% if current_user and current_user.is_authenticated() %}
 		<a class="username" href="/by/{{current_user.username}}">{{current_user.username}}</a>
 		<div class="menu" ng-show="showMenuTop" ng-cloak>

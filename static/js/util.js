@@ -6,12 +6,12 @@ posties.util = (function() {
         var qs = (function(a) {
             if (a == "") return {};
             var b = {};
-            for (var i = 0; i < a.length; ++i)
-            {
+            for (var i = 0; i < a.length; ++i) {
                 var p=a[i].split('=');
                 if (p.length != 2) continue;
                 b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
             }
+
             return b;
         })(window.location.search.substr(1).split('&'));
 
@@ -41,9 +41,18 @@ posties.util = (function() {
         return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     };
 
+    var getArrayIndexBy = function(arr, name, value) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i][name] == value) {
+                return i;
+            }
+        }
+    };
+
     return {
         getQueryParamByName : getQueryParamByName,
         swapItems : swapItems,
-        getBase64Image : getBase64Image
+        getBase64Image : getBase64Image,
+        getArrayIndexBy : getArrayIndexBy
     };
 }());

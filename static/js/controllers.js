@@ -2,7 +2,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	config, SettingsService, LoaderService, FlashService) {
 
 	$scope.posts = [];
-	$scope.user = {};
 	$scope.userHasUploadedImage = false;
 
 	$scope.settingsService = SettingsService;
@@ -15,7 +14,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			id : Math.round(Math.random() * 1000),
 			sortrank : $scope.posts.length,
 			content : $event.target.getAttribute('data-content'),
-			type : $event.target.getAttribute('data-type'),
+			type : parseInt($event.target.getAttribute('data-type')),
 			template : $event.target.getAttribute('data-template')
 		};
 
@@ -43,23 +42,30 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			var file = $files[i];
 
 			if(file.type.match(imageType)) {
-				$scope.loader.show();
+				var imagePost = {
+					type : 2,
+					sortrank : $scope.posts.length,
+					template : 'postImage.html',
+					file : file,
+					isUploaded : false,
+					uploadProgress : 0
+				};
+
+				$scope.posts.push(imagePost);
 
 				var reader = new FileReader();
+				reader.onprogress = function(e) {
+					if(e.lengthComputable) {
+						imagePost.uploadProgress = event.total;
+					}
+				};
 				
 				reader.onload = function(e) {
 					$scope.$apply(function() {
-						var imagePost = {
-							type : 2,
-							sortRank : $scope.posts.length,
-							template : 'postImage.html',
-							key : reader.result,
-							file : file
-						};
-						
-						$scope.posts.push(imagePost);
-						$scope.loader.hide();
+						imagePost.isUploaded = true;
+						imagePost.key = reader.result,
 						$scope.userHasUploadedImage = true;
+						$scope.showPostTypes = false;
 					});
 				}
 
@@ -143,6 +149,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	};
 
 	$scope.submitCreateUser = function() {
+		var redirectUser = false;
+
 		if($scope.formCreateUser.$valid) {
 			var jsonPost = { 
 				email : $scope.user.email,
@@ -160,26 +168,34 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				data: jsonPost,
 				headers: config.headerJSON
 			}).then(function(response) {
-				console.log(response);
-
 				if($scope.userHasUploadedImage) {
 					$scope.loader.show();
 
-					for(i = 0; i < $scope.posts.length; i++) {
-						var jsonPost = $scope.posts[i];
+					for(i = 0; i < response.data.posts.length; i++) {
+						var jsonPost = response.data.posts[i];
+
+						if(i + 1 == response.data.posts.length) {
+							redirectUser = true;
+						}
+
 						if(jsonPost.type == 2) {
-							$scope.upload = $upload.upload({
-								url: '/api/postImage',
-								method: 'post',
-								data: jsonPost,
-								file: jsonPost.file,
-							}).success(function(data, status, headers, config) {
-								if(i == $scope.posts.length) {
-									forwardToUserPage();	
+							jsonPost['file'] = $scope.posts[i].file;
+							var s3upload = new S3Upload({
+								s3_object_name: jsonPost.key,
+								s3_file: jsonPost.file,
+								onProgress: function(percent, message) {
+									console.log('Upload progress: ' + percent + '% ' + message);
+								},
+								onFinishS3Put: function(url) {
+									console.log('Upload completed. Uploaded to: ' + url);
+									if(redirectUser) {
+										forwardToUserPage();	
+									}
+								},
+								onError: function(status) {
+									console.log('Upload error: ' + status);
 								}
-							}).error(function(response) {
-								console.log(response);
-							});	
+							});
 						}
 					}
 				} else {
@@ -194,7 +210,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				$scope.loader.hide();
 				window.location = "/by/" + $scope.user.username + "?intro=true";
 			}
-
 		} else {
 			console.log("form is invalid");
 		}
@@ -246,7 +261,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize,
-	config, SettingsService, 
+	config, UserService, SettingsService, 
 	LoaderService, FlashService) {
 
 	$scope.posts = [];
@@ -259,25 +274,16 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
 	}
 
-	/*$scope.settingsService.getSettings().then(function(data) {
-		$scope.settings = data;
-	});*/
-
 	var urlPathName = location.pathname;
 	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
 
 	//Fetch user posts
-	$http({
-		url: '/api/user',
-		method: 'get',
-		params: { 'username' : username },
-		headers: config.headerJSON
-	}).then(function(response) {
-		$scope.userSettings = response.data.settings;
-		$scope.user = { 'username' : response.data.username, 'isAuthenticated' : response.data.is_authenticated };
+	UserService.getUserWithPosts(username).then(function(data) {
+		$scope.userSettings = data.settings;
+		$scope.user = { 'username' : data.username, 'isAuthenticated' : data.is_authenticated };
 
-		for(i = 0; i < response.data.posts.length; i++) {
-			var post = response.data.posts[i];
+		for(i = 0; i < data.posts.length; i++) {
+			var post = data.posts[i];
 
 			if(post.type == 0) {
 				post.template = 'postText.html';
@@ -285,20 +291,19 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				post.template = 'postHeadline.html';
 			} else if(post.type == 2) {
 				post.template = 'postImage.html';
-				post.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + post.key;
+				post.isUploaded = true;
+				post.key = config.S3URL + post.key;
 			}
 
 			$scope.posts.push(post);
 		}
-	}, function(response) {
-		console.log(response);
 	});
 
 	$scope.addPost = function($event) {
 		var jsonPost = {
 			type : $event.target.getAttribute('data-type'),
 			content : '',
-			sortRank : $scope.posts.length
+			sortrank : $scope.posts.length
 		};
 
 		$http({
@@ -355,27 +360,48 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	};
 
 	$scope.savePostImage = function($files) {
-		var jsonPost = {
-			type : 2,
-			sortRank : $scope.posts.length
-		};
-
 		for(var i = 0; i < $files.length; i++) {
-			$scope.loader.show();
 			var file = $files[i];
-			$scope.upload = $upload.upload({
+
+			var jsonPost = {
+				type : 2,
+				sortrank : $scope.posts.length,
+				file : file,
+				isUploaded : false,
+				template : 'postImage.html'
+			};
+
+			$http({
 				url: '/api/postImage',
 				method: 'post',
 				data: jsonPost,
-				file: file,
-			}).progress(function(evt) {
-				$scope.loader.setMessage('uploaded ' + parseInt(100.0 * evt.loaded / evt.total) + "%");
-			}).success(function(data, status, headers, config) {
-				data.template = 'postImage.html';
-				data.key = 'https://s3-eu-west-1.amazonaws.com/postiesimages/' + data.key;
-				$scope.posts.push(data);
-				$scope.loader.hide();
-			}).error(function(response) {
+				headers: config.headerJSON
+			}).then(function(response) {
+				var jsonPost = response.data;
+				jsonPost['file'] = file;
+				$scope.posts.push(jsonPost);
+				
+				var s3upload = new S3Upload({
+					s3_object_name: jsonPost.key,
+					s3_file: jsonPost.file,
+					onProgress: function(percent, message) {
+						$scope.$apply(function() {
+							jsonPost.uploadProgress = percent;
+						});
+		            },
+		            onFinishS3Put: function(url) {
+						jsonPost.key = config.S3URL + jsonPost.key;
+						jsonPost.isUploaded = true;
+
+						$scope.$apply(function() {
+							$scope.showPostTypes = false;
+						});
+					},
+		            onError: function(status) {
+		                console.log('Upload error: ' + status);
+		            }
+		        });
+			}, function(response) {
 				console.log(response);
 			});
 		}

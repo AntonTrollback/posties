@@ -13,7 +13,6 @@ body {
 	max-width: 700px;
 	letter-spacing: 0px;
 }
-
 /* Basic typography */
 h1, h2, h3 {
 	color: #666;
@@ -69,6 +68,9 @@ header a.menu {
 header p {
 	margin: 2rem 1rem 0 0;
 	float: right;
+}
+pre {
+	text-rendering: optimizeLegibility
 }
 pre:focus {
 	outline: 0;
@@ -147,7 +149,6 @@ label + select {
 	border: 1px solid #ddd;
 	color: #666;
 	outline: none;
-	width: 85%;
 	font-size: 1.4rem;
 	border-radius: 0;
 	background: #fff;
@@ -163,7 +164,7 @@ input[type="checkbox"] + span {
 	width: 24px;
 	display: block;
 	padding: 10px;
-	margin-top: .8rem;
+	margin-top: .3rem;
 	font-size: 2rem;
 	text-align: center;
 	text-indent: -99999px;
@@ -340,15 +341,36 @@ header div.menu li {
 	clear: both;
 	width: 100%;
 }
+.modal .formGroup.buttonContainer .button {
+	display: block;
+	margin-bottom: 1rem;
+	text-align: center;
+	font-size: 1.6rem;
+	width: 95%;
+	box-sizing: border-box;
+}
 .modal .formGroup {
-	width: 49%;
-	display: inline-block;
-	margin-bottom: 2rem;
 	position: relative;
 }
 .modal.createUser {
 	width: 90%;
 	top: 0;
+}
+.modal.createUser fieldset {
+	position: relative;
+}
+.modal.createUser .togglePasswordMask {
+	width: 26px;
+	height: 24px;
+	background: url('../img/iconShowPassword.png') no-repeat 100% 0px;
+	position: absolute;
+	right: 30px;
+	top: 6px;
+}
+.modal.createUser .togglePasswordMask.visible {
+	width: 26px;
+	height: 24px;
+	background: url('../img/iconHidePassword.png') no-repeat 100% 6px;
 }
 .modal.updateSettings {
 	width: 200px;
@@ -356,6 +378,7 @@ header div.menu li {
 	margin: 0 auto;
 	top: 63px;
 	right: 15px;
+	padding: 1rem;
 }
 .modal.updateSettings:before {
 	width: 0;
@@ -368,19 +391,31 @@ header div.menu li {
 	position: absolute;
 	right: 38px;
 }
-.modal.updateSettings .formGroup:nth-child(odd) {
-	clear: both;
+.modal.updateSettings > form {
+	
+}
+.modal.updateSettings > form::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+.modal.updateSettings > form::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
 .modal.updateSettings label {
-	margin-bottom: .8rem;
+	margin-bottom: .3rem;
 	display: inline-block;
 }
 .modal.updateSettings input[type="text"],
 .modal.updateSettings input[type="email"],
-.modal.updateSettings input[type="password"] {
-	width: 60%;
+.modal.updateSettings input[type="password"],
+.modal.updateSettings select {
+	display: block;
 	border: 1px solid #ddd;
 	display: block;
+	box-sizing: border-box;
+	width: 95%;
 }
 .modal.createUser .url {
 	font-size: 2rem;
@@ -405,7 +440,15 @@ header div.menu li {
 	font-size: 22px;
 }
 .post .image .options {
-	top: 4px;
+	top: -5px;
+}
+.post .image h3 {
+	font-size: 2rem;
+	color: #8a8a8a;
+	padding: 2rem 0;
+	border-top: 1px solid #8a8a8a;
+	border-bottom: 1px solid #8a8a8a;
+	text-align: center;
 }
 .post .options a {
 	cursor: pointer;
@@ -446,8 +489,13 @@ header div.menu li {
 .colorpicker {
 	text-indent: -99999px;
 }
-#postForms {
-	display: none;
+#closeOverlays {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background: rgba(0, 0, 0, 0);
+	top: 0;
+	left: 0;
 }
 /*** CSS UTIL ***/
 .hidden {

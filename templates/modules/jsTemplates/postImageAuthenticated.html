@@ -5,6 +5,7 @@
 			<a class="down" ng-click="movePost($index, $index + 1)" title="move down">&#x25BC;</a>
 			<a href="#" ng-click="deletePost($index, post)" class="delete" title="delete">×</a>
 		</div>
-		<img src="[[post.key]]" />
+		<h3 ng-show="!post.isUploaded">Adding your image: <strong>[[post.uploadProgress]]</strong>%</h3>
+		<img ng-show="post.isUploaded" src="[[post.key]]" />
 	</div>
 </script>
