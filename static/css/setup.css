@@ -1,4 +1,18 @@
 /**
+ * Custom media queries
+ */
+
+@custom-media --xs-viewport (min-width: 320px);
+@custom-media --sm-viewport (min-width: 480px);
+@custom-media --md-viewport (min-width: 568px);
+@custom-media --lg-viewport (min-width: 768px);
+@custom-media --xl-viewport (min-width: 1024px);
+@custom-media --xxl-viewport (min-width: 1237px);
+
+@custom-media --high-resolution print, (-o-min-device-pixel-ratio: 5/4),
+  (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi);
+
+/**
  * Imports
  */
 
