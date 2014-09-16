@@ -1,0 +1,149 @@
+
+
+
+.modal {
+  position: absolute;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 1px 16px #888;
+  border: 1px solid #ddd;
+  width: 55%;
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  top: 5%;
+  padding: 2rem 3rem;
+  z-index: 10;
+}
+.modal h3 {
+  text-align: center;
+  font-size: 2.2rem;
+}
+.modal input[type="text"],
+.modal input[type="email"],
+.modal input[type="password"] {
+  width: 90%;
+}
+.modal .formGroup.buttonContainer {
+  clear: both;
+  width: 100%;
+}
+.modal .formGroup.buttonContainer .button {
+  display: block;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.6rem;
+  width: 95%;
+  box-sizing: border-box;
+}
+.modal .formGroup {
+  position: relative;
+}
+.modal.createUser {
+  width: 90%;
+  top: 0;
+}
+.modal.createUser fieldset {
+  position: relative;
+}
+.modal.createUser .togglePasswordMask {
+  width: 26px;
+  height: 24px;
+  background: url('../img/iconShowPassword.png') no-repeat 100% 0px;
+  position: absolute;
+  right: 30px;
+  top: 6px;
+}
+.modal.createUser .togglePasswordMask.visible {
+  width: 26px;
+  height: 24px;
+  background: url('../img/iconHidePassword.png') no-repeat 100% 6px;
+}
+.modal.updateSettings {
+  width: 200px;
+  left: auto;
+  margin: 0 auto;
+  top: 63px;
+  right: 15px;
+  padding: 1rem;
+}
+.modal.updateSettings:before {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 20px;
+  border-color: transparent transparent #fff transparent;
+  content: '';
+  top: -18px;
+  position: absolute;
+  right: 38px;
+}
+.modal.updateSettings > form {
+
+}
+.modal.updateSettings > form::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+.modal.updateSettings > form::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+.modal.updateSettings label {
+  margin-bottom: .3rem;
+  display: inline-block;
+}
+.modal.updateSettings input[type="text"],
+.modal.updateSettings input[type="email"],
+.modal.updateSettings input[type="password"],
+.modal.updateSettings select {
+  display: block;
+  border: 1px solid #ddd;
+  display: block;
+  box-sizing: border-box;
+  width: 95%;
+}
+.modal.createUser .url {
+  font-size: 2rem;
+  padding: 8px;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+  .modal {
+    width: 90%;
+    padding: 1rem;
+  }
+  .modal p.close a {
+    top: -10px;
+    right: -11px;
+  }
+  button,
+  .button {
+    font-size: 1.6rem;
+  }
+  .modal.updateSettings {
+    padding: 1rem;
+  }
+}
+
+
+
+/* iPhone 4 ----------- */
+@media (--high-resolution) {
+  .modal.createUser .togglePasswordMask {
+    width: 52px;
+    height: 30px;
+    background: url('../img/iconShowPassword@2x.png') no-repeat 100% 0px;
+    background-size: 50% 50%;
+  }
+  .modal.createUser .togglePasswordMask.visible {
+    width: 52px;
+    height: 20px;
+    background: url('../img/iconHidePassword@2x.png') no-repeat 100% 6px;
+    background-size: 50% 50%;
+  }
+
+}
