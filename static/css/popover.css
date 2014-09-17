@@ -59,6 +59,15 @@
   cursor: pointer;
 }
 
+.popover-select {
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
 .popover-color {
   color: transparent;
   user-select: none;
