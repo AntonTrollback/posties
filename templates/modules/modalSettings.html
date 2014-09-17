@@ -87,8 +87,8 @@
 		</label>
 
 		<div class="popover-section">
-			<a ng-click="userSettings = settingsService.getRandomSettings()">Random style</a>
-			<a class="button" ng-click="userSettings = settingsService.getDefaultSettings()">Reset</a>
+			<button class="button" ng-click="userSettings = settingsService.getDefaultSettings()">Reset</button>
+			<span style="margin-left: 0.5em;">or <a role="button" ng-click="userSettings = settingsService.getRandomSettings()">randomize</a>!</span>
 		</div>
 
 	</form>

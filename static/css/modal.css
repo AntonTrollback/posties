@@ -120,10 +120,6 @@ and (max-device-width : 480px) {
     top: -10px;
     right: -11px;
   }
-  button,
-  .button {
-    font-size: 1.6rem;
-  }
   .modal.updateSettings {
     padding: 1rem;
   }
