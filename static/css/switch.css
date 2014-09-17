@@ -39,7 +39,9 @@
   pointer-events: none;
 }
 
-/* Hide native checkbox */
+/**
+ * Hide native checkbox
+ */
 
 .switch input {
   opacity: 0;
@@ -47,19 +49,22 @@
   bottom: 100%;
 }
 
-/* Mouse states */
+/**
+ * Mouse states
+ */
 
 .switch-state:hover,
 .switch-state:active {
   background: var(--color-element-dark);
 }
-/*
-.switch input:focus + .switch-state {
-  background: var(--color-element-dark);
-}
-*/
 
-/* Off state*/
+/* .switch input:focus + .switch-state {
+  background: var(--color-element-dark);
+} */
+
+/**
+ * Off state
+ */
 
 .switch input:checked + .switch-state:before,
 .switch input[checked] + .switch-state:before {

@@ -30,11 +30,22 @@ p {
 h2, p {
 	margin: 1rem 0;
 }
-a, a:visited {
-	text-decoration: none;
-	color: #888;
+a,
+a:hover,
+a:focus,
+a:active {
+	text-decoration: underline;
+	color: inherit;
 	cursor: pointer;
 }
+
+a:hover,
+a:focus,
+a:active {
+	color: var(--color-text-dark);
+}
+
+
 p a {
 	text-decoration: underline;
 }
