@@ -31,10 +31,10 @@
  * Imports
  */
 
+@import "./static/css/font.css";
 @import "normalize.css";
 @import "./static/css/base.css";
 @import "./static/css/colorpicker.css";
-@import "./static/css/typography.css";
 @import "./static/css/main.css";
 @import "./static/css/button.css";
 @import "./static/css/switch.css";
