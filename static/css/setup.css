@@ -4,6 +4,8 @@
 
 :root {
   --color-text-light: #888;
+  --color-element-light: #d1d1d0;
+  --color-element-dark: #b2b2b2;
   --color-divider: #e8e9e9;
 }
 
@@ -30,6 +32,7 @@
 @import "./static/css/colorpicker.css";
 @import "./static/css/typography.css";
 @import "./static/css/main.css";
+@import "./static/css/switch.css";
 @import "./static/css/modal.css";
 @import "./static/css/popover.css";
 @import "./static/css/devices.css";

@@ -4,7 +4,7 @@
 		<div class="popover-row">
 			<label class="popover-label" for="typefaceParagraph">Text font</label>
 			<div class="popover-control">
-				<select id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
+				<select class="popover-select" id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
 					<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">Sans serif</option>
 					<option value="Source Sans Pro" ng-selected="userSettings.typefaceparagraph == 'Source Sans Pro'">Source Sans Pro</option>
 					<option value="Reenie Beanie" ng-selected="userSettings.typefaceparagraph == 'Reenie Beanie'">Reenie Beanie</option>
@@ -31,7 +31,7 @@
 		<div class="popover-row">
 			<label class="popover-label" for="typefaceHeadline">Headline font</label>
 			<div class="popover-control">
-				<select id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
+				<select class="popover-select" id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
 					<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">Sans serif</option>
 					<option value="Source Sans Pro" ng-selected="userSettings.typefaceheadline == 'Source Sans Pro'">Source Sans Pro</option>
 					<option value="Reenie Beanie" ng-selected="userSettings.typefaceheadline == 'Reenie Beanie'">Reenie Beanie</option>
@@ -55,33 +55,36 @@
 			</div>
 		</div>
 
-		<div class="popover-row">
-			<label class="popover-label" for="showBoxes">Use boxes</label>
+		<label class="popover-row" for="showBoxes">
+			<span class="popover-label" >Use boxes</span>
 			<div class="popover-control">
-				<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" />
+				<div class="popover-switch switch">
+					<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" />
+					<div class="switch-state"></div>
+				</div>
 			</div>
-		</div>
+		</label>
 
-		<div class="popover-row">
-			<label class="popover-label" for="postBackgroundColor">Box color</label>
+		<label class="popover-row" for="postBackgroundColor">
+			<span class="popover-label">Box color</span>
 			<div class="popover-control">
-				<input id="postBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
+				<input class="popover-color" id="postBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
 			</div>
-		</div>
+		</label>
 
-		<div class="popover-row">
-			<label class="popover-label" for="postTextColor">Text color</label>
+		<label class="popover-row" for="postTextColor">
+			<span class="popover-label">Text color</span>
 			<div class="popover-control">
-				<input id="postTextColor" readonly type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
+				<input class="popover-color" id="postTextColor" readonly type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
 			</div>
-		</div>
+		</label>
 
-		<div class="popover-row">
-			<label class="popover-label" for="pageBackgroundColor">Background</label>
+		<label class="popover-row" for="pageBackgroundColor">
+			<span class="popover-label">Background</span>
 			<div class="popover-control">
-				<input id="pageBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" />
+				<input class="popover-color" id="pageBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" />
 			</div>
-		</div>
+		</label>
 
 		<div class="popover-section">
 			<a ng-click="userSettings = settingsService.getRandomSettings()">Random style</a>
