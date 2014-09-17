@@ -30,6 +30,12 @@
   cursor: default;
 }
 
+@media (--lg-viewport) {
+  .popover-row {
+    min-height: 3em;
+  }
+}
+
 .popover-row:focus {
   outline: 0;
 }
@@ -40,7 +46,7 @@
 
 .popover-section {
   position: relative;
-  padding: 1.55em 1.3em;
+  padding: 1.55em 1.2em;
   cursor: default;
 }
 
@@ -48,7 +54,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  padding: 0 1.3em;
+  padding: 0 1.2em;
 }
 
 .popover-control {
@@ -77,11 +83,12 @@
 }
 
 .popover-select {
-  font-size: 140%;
+  font-size: 130%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
 }
 
 .popover-color {
@@ -91,4 +98,11 @@
 .popover-switch {
   margin: 0.47em 0.85em;
   float: right;
+}
+
+@media (--lg-viewport) {
+  .popover-switch {
+    margin: 0.53em 0.85em;
+    float: right;
+  }
 }
