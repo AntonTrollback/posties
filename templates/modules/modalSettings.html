@@ -1,10 +1,10 @@
 <div class="popover updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
 
-		<div class="popover-row">
-			<label class="popover-label" for="typefaceParagraph">Text font</label>
+		<label class="popover-row">
+			<span class="popover-label" for="typefaceParagraph">Text font</span>
 			<div class="popover-control">
-				<select class="popover-select" id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
+				<select class="popover-select" id="typefaceParagraph" ng-model="userSettings.typefaceparagraph" tabindex="-1">
 					<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">Sans serif</option>
 					<option value="Source Sans Pro" ng-selected="userSettings.typefaceparagraph == 'Source Sans Pro'">Source Sans Pro</option>
 					<option value="Reenie Beanie" ng-selected="userSettings.typefaceparagraph == 'Reenie Beanie'">Reenie Beanie</option>
@@ -26,12 +26,12 @@
 					<option value="Chivo" ng-selected="userSettings.typefaceparagraph == 'Chivo'">Chivo</option>
 				</select>
 			</div>
-		</div>
+		</label>
 
-		<div class="popover-row">
-			<label class="popover-label" for="typefaceHeadline">Headline font</label>
+		<label class="popover-row">
+			<span class="popover-label" for="typefaceHeadline">Headline font</span>
 			<div class="popover-control">
-				<select class="popover-select" id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
+				<select class="popover-select" id="typefaceHeadline" ng-model="userSettings.typefaceheadline" tabindex="-1">
 					<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">Sans serif</option>
 					<option value="Source Sans Pro" ng-selected="userSettings.typefaceheadline == 'Source Sans Pro'">Source Sans Pro</option>
 					<option value="Reenie Beanie" ng-selected="userSettings.typefaceheadline == 'Reenie Beanie'">Reenie Beanie</option>
@@ -53,13 +53,13 @@
 					<option value="Chivo" ng-selected="userSettings.typefaceheadline == 'Chivo'">Chivo</option>
 				</select>
 			</div>
-		</div>
+		</label>
 
 		<label class="popover-row" for="showBoxes">
 			<span class="popover-label" >Use boxes</span>
 			<div class="popover-control">
 				<div class="popover-switch switch">
-					<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" />
+					<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" tabindex="-1">
 					<div class="switch-state"></div>
 				</div>
 			</div>
@@ -68,21 +68,21 @@
 		<label class="popover-row" for="postBackgroundColor">
 			<span class="popover-label">Box color</span>
 			<div class="popover-control">
-				<input class="popover-color" id="postBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
+				<input class="popover-color" id="postBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" tabindex="-1">
 			</div>
 		</label>
 
 		<label class="popover-row" for="postTextColor">
 			<span class="popover-label">Text color</span>
 			<div class="popover-control">
-				<input class="popover-color" id="postTextColor" readonly type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
+				<input class="popover-color" id="postTextColor" readonly type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" tabindex="-1">
 			</div>
 		</label>
 
 		<label class="popover-row" for="pageBackgroundColor">
 			<span class="popover-label">Background</span>
 			<div class="popover-control">
-				<input class="popover-color" id="pageBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" />
+				<input class="popover-color" id="pageBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" tabindex="-1">
 			</div>
 		</label>
 

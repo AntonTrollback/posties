@@ -22,6 +22,14 @@
   user-select: none;
 }
 
+.popover-row:focus {
+  outline: 0;
+}
+
+.popover-row:focus .popover-label {
+  font-weight: bold;
+}
+
 .popover-section {
   position: relative;
   padding: 20px 17px;
