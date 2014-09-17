@@ -1,7 +1,7 @@
 .switch {
   display: block;
   width: 65px;
-  height: 25px;
+  height: 1.9em;
   cursor: pointer;
   overflow: hidden;
   user-select: none;
@@ -22,7 +22,7 @@
   top: 4px;
   right: 4px;
   width: 20px;
-  height: 17px;
+  height: calc(1.9em - 8px);
   background: white;
   border-radius: 4px;
   pointer-events: none;
