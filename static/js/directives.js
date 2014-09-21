@@ -1,9 +1,8 @@
 $(function() {
-  $panel = $('.panel');
-  $triggers = $panel.find('[data-panel-section]');
-  $sections = $panel.find('.panel-section');
+  $panels = $('.panel');
+  $navigators = $panels.find('[data-go-to-panel]');
 
-  $panel.find('.minicolors').minicolors('create', {
+  $panels.find('.minicolors').minicolors('create', {
     animationSpeed: 50,
     animationEasing: 'swing',
     change: null,
@@ -21,13 +20,13 @@ $(function() {
     theme: 'default'
   });
 
-  $triggers.on('click', function(e) {
+  $navigators.on('click', function(e) {
     e.preventDefault();
-    switchSection($(this).data('panel-section'));
+    switchSection($(this).data('go-to-panel'));
   });
 
   function switchSection(id) {
-    $sections.hide();
+    $panels.hide();
     $('#'+ id).show();
   }
 });
