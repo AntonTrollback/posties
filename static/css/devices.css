@@ -2,20 +2,9 @@
 @media only screen
 and (min-device-width : 320px)
 and (max-device-width : 480px) {
-	.modal {
-		width: 90%;
-		padding: 1rem;
-	}
-	.modal p.close a {
-		top: -10px;
-		right: -11px;
-	}
 	button,
 	.button {
 		font-size: 1.6rem;
-	}
-	.modal.updateSettings {
-		padding: 1rem;
 	}
 }
 
@@ -72,18 +61,6 @@ and (min-width : 1824px) {
 	.btnPublishContainer button span {
 		background: url('../img/iconPublish@2x.png') no-repeat 0 1px;
 		background-size: 90% 90%;
-	}
-	.modal.createUser .togglePasswordMask {
-		width: 52px;
-		height: 30px;
-		background: url('../img/iconShowPassword@2x.png') no-repeat 100% 0px;
-		background-size: 50% 50%;
-	}
-	.modal.createUser .togglePasswordMask.visible {
-		width: 52px;
-		height: 20px;
-		background: url('../img/iconHidePassword@2x.png') no-repeat 100% 6px;
-		background-size: 50% 50%;
 	}
 
 }

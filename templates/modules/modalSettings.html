@@ -1,74 +1,95 @@
-<div id="modalUpdateSettings" class="modal updateSettings" ng-show="settingsService.isOpen" ng-cloak>
+<div class="popover updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
-		<div class="formGroup">
-			<label for="typefaceParagraph">Text font</label>
-			<select id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
-				<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">Sans serif</option>
-				<option value="Source Sans Pro" ng-selected="userSettings.typefaceparagraph == 'Source Sans Pro'">Source Sans Pro</option>
-				<option value="Reenie Beanie" ng-selected="userSettings.typefaceparagraph == 'Reenie Beanie'">Reenie Beanie</option>
-				<option value="Raleway" ng-selected="userSettings.typefaceparagraph == 'Raleway'">Raleway</option>
-				<option value="Josefin Sans" ng-selected="userSettings.typefaceparagraph == 'Josefin Sans'">Josefin Sans</option>
-				<option value="Open Sans" ng-selected="userSettings.typefaceparagraph == 'Open Sans'">Open Sans</option>
-				<option value="Rokkitt" ng-selected="userSettings.typefaceparagraph == 'Rokkitt'">Rokkitt</option>
-				<option value="Fredoka One" ng-selected="userSettings.typefaceparagraph == 'Fredoka One'">Fredoka One</option>
-				<option value="Libre Baskerville" ng-selected="userSettings.typefaceparagraph == 'Libre Baskerville'">Libre Baskerville</option>
-				<option value="EB Garamond" ng-selected="userSettings.typefaceparagraph == 'EB Garamond'">EB Garamond</option>
-				<option value="Geo" ng-selected="userSettings.typefaceparagraph == 'Geo'">Geo</option>
-				<option value="VT323" ng-selected="userSettings.typefaceparagraph == 'VT323'">VT323</option>
-				<option value="Text Me One" ng-selected="userSettings.typefaceparagraph == 'Text Me One'">Text Me One</option>
-				<option value="Nova Cut" ng-selected="userSettings.typefaceparagraph == 'Nova Cut'">Nova Cut</option>
-				<option value="Cherry Swash" ng-selected="userSettings.typefaceparagraph == 'Cherry Swash'">Cherry Swash</option>
-				<option value="Italiana" ng-selected="userSettings.typefaceparagraph == 'Italiana'">Italiana</option>
-				<option value="Inconsolata" ng-selected="userSettings.typefaceparagraph == 'Inconsolata'">Inconsolata</option>
-				<option value="Abril Fatface" ng-selected="userSettings.typefaceparagraph == 'Abril Fatface'">Abril Fatface</option>
-				<option value="Chivo" ng-selected="userSettings.typefaceparagraph == 'Chivo'">Chivo</option>
-			</select>
+
+		<label class="popover-row">
+			<span class="popover-label" for="typefaceParagraph">Text font</span>
+			<div class="popover-control">
+				<select class="popover-select" id="typefaceParagraph" ng-model="userSettings.typefaceparagraph" tabindex="-1">
+					<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">Sans serif</option>
+					<option value="Source Sans Pro" ng-selected="userSettings.typefaceparagraph == 'Source Sans Pro'">Source Sans Pro</option>
+					<option value="Reenie Beanie" ng-selected="userSettings.typefaceparagraph == 'Reenie Beanie'">Reenie Beanie</option>
+					<option value="Raleway" ng-selected="userSettings.typefaceparagraph == 'Raleway'">Raleway</option>
+					<option value="Josefin Sans" ng-selected="userSettings.typefaceparagraph == 'Josefin Sans'">Josefin Sans</option>
+					<option value="Open Sans" ng-selected="userSettings.typefaceparagraph == 'Open Sans'">Open Sans</option>
+					<option value="Rokkitt" ng-selected="userSettings.typefaceparagraph == 'Rokkitt'">Rokkitt</option>
+					<option value="Fredoka One" ng-selected="userSettings.typefaceparagraph == 'Fredoka One'">Fredoka One</option>
+					<option value="Libre Baskerville" ng-selected="userSettings.typefaceparagraph == 'Libre Baskerville'">Libre Baskerville</option>
+					<option value="EB Garamond" ng-selected="userSettings.typefaceparagraph == 'EB Garamond'">EB Garamond</option>
+					<option value="Geo" ng-selected="userSettings.typefaceparagraph == 'Geo'">Geo</option>
+					<option value="VT323" ng-selected="userSettings.typefaceparagraph == 'VT323'">VT323</option>
+					<option value="Text Me One" ng-selected="userSettings.typefaceparagraph == 'Text Me One'">Text Me One</option>
+					<option value="Nova Cut" ng-selected="userSettings.typefaceparagraph == 'Nova Cut'">Nova Cut</option>
+					<option value="Cherry Swash" ng-selected="userSettings.typefaceparagraph == 'Cherry Swash'">Cherry Swash</option>
+					<option value="Italiana" ng-selected="userSettings.typefaceparagraph == 'Italiana'">Italiana</option>
+					<option value="Inconsolata" ng-selected="userSettings.typefaceparagraph == 'Inconsolata'">Inconsolata</option>
+					<option value="Abril Fatface" ng-selected="userSettings.typefaceparagraph == 'Abril Fatface'">Abril Fatface</option>
+					<option value="Chivo" ng-selected="userSettings.typefaceparagraph == 'Chivo'">Chivo</option>
+				</select>
+			</div>
+		</label>
+
+		<label class="popover-row">
+			<span class="popover-label" for="typefaceHeadline">Headline font</span>
+			<div class="popover-control">
+				<select class="popover-select" id="typefaceHeadline" ng-model="userSettings.typefaceheadline" tabindex="-1">
+					<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">Sans serif</option>
+					<option value="Source Sans Pro" ng-selected="userSettings.typefaceheadline == 'Source Sans Pro'">Source Sans Pro</option>
+					<option value="Reenie Beanie" ng-selected="userSettings.typefaceheadline == 'Reenie Beanie'">Reenie Beanie</option>
+					<option value="Raleway" ng-selected="userSettings.typefaceheadline == 'Raleway'">Raleway</option>
+					<option value="Josefin Sans" ng-selected="userSettings.typefaceheadline == 'Josefin Sans'">Josefin Sans</option>
+					<option value="Open Sans" ng-selected="userSettings.typefaceheadline == 'Open Sans'">Open Sans</option>
+					<option value="Rokkitt" ng-selected="userSettings.typefaceheadline == 'Rokkitt'">Rokkitt</option>
+					<option value="Fredoka One" ng-selected="userSettings.typefaceheadline == 'Fredoka One'">Fredoka One</option>
+					<option value="Libre Baskerville" ng-selected="userSettings.typefaceheadline == 'Libre Baskerville'">Libre Baskerville</option>
+					<option value="EB Garamond" ng-selected="userSettings.typefaceheadline == 'EB Garamond'">EB Garamond</option>
+					<option value="Geo" ng-selected="userSettings.typefaceheadline == 'Geo'">Geo</option>
+					<option value="VT323" ng-selected="userSettings.typefaceheadline == 'VT323'">VT323</option>
+					<option value="Text Me One" ng-selected="userSettings.typefaceheadline == 'Text Me One'">Text Me One</option>
+					<option value="Nova Cut" ng-selected="userSettings.typefaceheadline == 'Nova Cut'">Nova Cut</option>
+					<option value="Cherry Swash" ng-selected="userSettings.typefaceheadline == 'Cherry Swash'">Cherry Swash</option>
+					<option value="Italiana" ng-selected="userSettings.typefaceheadline == 'Italiana'">Italiana</option>
+					<option value="Inconsolata" ng-selected="userSettings.typefaceheadline == 'Inconsolata'">Inconsolata</option>
+					<option value="Abril Fatface" ng-selected="userSettings.typefaceheadline == 'Abril Fatface'">Abril Fatface</option>
+					<option value="Chivo" ng-selected="userSettings.typefaceheadline == 'Chivo'">Chivo</option>
+				</select>
+			</div>
+		</label>
+
+		<label class="popover-row" for="showBoxes">
+			<span class="popover-label" >Use boxes</span>
+			<div class="popover-control">
+				<div class="popover-switch switch">
+					<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" tabindex="-1">
+					<div class="switch-state"></div>
+				</div>
+			</div>
+		</label>
+
+		<label class="popover-row" for="postBackgroundColor">
+			<span class="popover-label">Box color</span>
+			<div class="popover-control">
+				<input class="popover-color" id="postBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" tabindex="-1">
+			</div>
+		</label>
+
+		<label class="popover-row" for="postTextColor">
+			<span class="popover-label">Text color</span>
+			<div class="popover-control">
+				<input class="popover-color" id="postTextColor" readonly type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" tabindex="-1">
+			</div>
+		</label>
+
+		<label class="popover-row" for="pageBackgroundColor">
+			<span class="popover-label">Background</span>
+			<div class="popover-control">
+				<input class="popover-color" id="pageBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" tabindex="-1">
+			</div>
+		</label>
+
+		<div class="popover-section">
+			<button class="button" ng-click="userSettings = settingsService.getDefaultSettings()">Reset</button>
+			<span style="margin-left: 0.5em;">or <a role="button" ng-click="userSettings = settingsService.getRandomSettings()">randomize</a>!</span>
 		</div>
-		<div class="formGroup">
-			<label for="typefaceHeadline">Headline font</label>
-			<select id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
-				<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">Sans serif</option>
-				<option value="Source Sans Pro" ng-selected="userSettings.typefaceheadline == 'Source Sans Pro'">Source Sans Pro</option>
-				<option value="Reenie Beanie" ng-selected="userSettings.typefaceheadline == 'Reenie Beanie'">Reenie Beanie</option>
-				<option value="Raleway" ng-selected="userSettings.typefaceheadline == 'Raleway'">Raleway</option>
-				<option value="Josefin Sans" ng-selected="userSettings.typefaceheadline == 'Josefin Sans'">Josefin Sans</option>
-				<option value="Open Sans" ng-selected="userSettings.typefaceheadline == 'Open Sans'">Open Sans</option>
-				<option value="Rokkitt" ng-selected="userSettings.typefaceheadline == 'Rokkitt'">Rokkitt</option>
-				<option value="Fredoka One" ng-selected="userSettings.typefaceheadline == 'Fredoka One'">Fredoka One</option>
-				<option value="Libre Baskerville" ng-selected="userSettings.typefaceheadline == 'Libre Baskerville'">Libre Baskerville</option>
-				<option value="EB Garamond" ng-selected="userSettings.typefaceheadline == 'EB Garamond'">EB Garamond</option>
-				<option value="Geo" ng-selected="userSettings.typefaceheadline == 'Geo'">Geo</option>
-				<option value="VT323" ng-selected="userSettings.typefaceheadline == 'VT323'">VT323</option>
-				<option value="Text Me One" ng-selected="userSettings.typefaceheadline == 'Text Me One'">Text Me One</option>
-				<option value="Nova Cut" ng-selected="userSettings.typefaceheadline == 'Nova Cut'">Nova Cut</option>
-				<option value="Cherry Swash" ng-selected="userSettings.typefaceheadline == 'Cherry Swash'">Cherry Swash</option>
-				<option value="Italiana" ng-selected="userSettings.typefaceheadline == 'Italiana'">Italiana</option>
-				<option value="Inconsolata" ng-selected="userSettings.typefaceheadline == 'Inconsolata'">Inconsolata</option>
-				<option value="Abril Fatface" ng-selected="userSettings.typefaceheadline == 'Abril Fatface'">Abril Fatface</option>
-				<option value="Chivo" ng-selected="userSettings.typefaceheadline == 'Chivo'">Chivo</option>
-			</select>
-		</div>
-		<div class="formGroup">
-			<label for="showBoxes">Show boxes?
-			<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" class="hidden" />
-				<span>✔</span>
-			</label>
-		</div>
-		<div class="formGroup">
-			<label for="postBackgroundColor">Post box color</label>
-			<input id="postBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" />
-		</div>
-		<div class="formGroup">
-			<label for="postTextColor">Text color:</label>
-			<input id="postTextColor" readonly type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" />
-		</div>
-		<div class="formGroup">
-			<label for="pageBackgroundColor">Page color</label>
-			<input id="pageBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" />
-		</div>
-		<div class="formGroup buttonContainer">
-			<a class="button" ng-click="userSettings = settingsService.getRandomSettings()">Random style</a>
-			<a class="button" ng-click="userSettings = settingsService.getDefaultSettings()">Reset</a>
-		</div>
+
 	</form>
 </div>

@@ -1,0 +1,55 @@
+.button {
+  position: relative;
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-block;
+  font: inherit;
+  font-size: 16px;
+  margin: 0;
+  padding: 8px 12px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.12);
+  background: var(--color-postit);
+  transition: background .1s ease-out;
+}
+
+/**
+ * Remove excess padding and border in Firefox 4+
+ */
+
+.button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+/**
+ * UI states
+ */
+
+.button:hover,
+.button:focus,
+.button:active {
+  text-decoration: none;
+  outline: 0;
+  /*background: var(--color-postit-highlight);
+  color: var(--color-text-dark);*/
+}
+
+.button:active {
+  top: 1px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+.button:disabled,
+.button.is-disabled {
+  cursor: default;
+  background: #f9f9f9;
+  color: #bbb;
+  pointer-events: none;
+}

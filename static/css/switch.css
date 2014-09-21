@@ -1,0 +1,80 @@
+.switch {
+  display: block;
+  width: 65px;
+  height: 1.9em;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+}
+
+.switch-state {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--color-element-light);
+  border-radius: 7px;
+  transition: background .1s ease-out;
+}
+
+.switch-state:before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: calc(1.9em - 8px);
+  background: white;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.switch-state:after {
+  content: "ON";
+  color: #fdfdfd;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/**
+ * Hide native checkbox
+ */
+
+.switch input {
+  opacity: 0;
+  position: absolute;
+  bottom: 100%;
+}
+
+/**
+ * Mouse states
+ */
+
+.switch-state:hover,
+.switch-state:active {
+  background: var(--color-element-dark);
+}
+
+/* .switch input:focus + .switch-state {
+  background: var(--color-element-dark);
+} */
+
+/**
+ * Off state
+ */
+
+.switch input:checked + .switch-state:before,
+.switch input[checked] + .switch-state:before {
+  right: auto;
+  left: 4px;
+}
+
+.switch input:checked + .switch-state:after,
+.switch input[checked] + .switch-state:after {
+  content: "OFF";
+  right: 7px;
+  left: auto;
+}

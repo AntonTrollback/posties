@@ -1,3 +1,43 @@
+/**
+ * Posti.es interface font
+ */
+
+@font-face {
+	font-family: 'Akkurat';
+	src: url('lineto-akkurat-regular.woff') format('woff'),
+		   url('lineto-akkurat-regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Akkurat';
+	src: url('lineto-akkurat-bold.woff') format('woff'),
+		   url('lineto-akkurat-bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Akkurat';
+	src: url('lineto-akkurat-italic.woff') format('woff'),
+		   url('lineto-akkurat-italic.ttf') format('truetype');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Akkurat';
+	src: url('lineto-akkurat-bolditalic.woff') format('woff'),
+		   url('lineto-akkurat-bolditalic.ttf') format('truetype');
+	font-weight: bold;
+	font-style: italic;
+}
+
+/**
+ * Custom post fonts
+ */
+
 @font-face {
   font-family: 'CutiveMono';
   font-style: normal;

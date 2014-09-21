@@ -1,4 +1,19 @@
 /**
+ * Variables
+ */
+
+:root {
+  --color-text-light: #888;
+  --color-text: #848483;
+  --color-text-dark: #6a6a6a;
+  --color-element-light: #d1d1d0;
+  --color-element-dark: #b2b2b2;
+  --color-divider: #e8e9e9;
+  --color-postit: #f7f5c7;
+  --color-postit-highlight: #fcf9af;
+}
+
+/**
  * Custom media queries
  */
 
@@ -16,9 +31,13 @@
  * Imports
  */
 
+@import "./static/css/font.css";
 @import "normalize.css";
 @import "./static/css/base.css";
 @import "./static/css/colorpicker.css";
-@import "./static/css/typography.css";
 @import "./static/css/main.css";
+@import "./static/css/button.css";
+@import "./static/css/switch.css";
+@import "./static/css/modal.css";
+@import "./static/css/popover.css";
 @import "./static/css/devices.css";
