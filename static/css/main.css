@@ -94,6 +94,7 @@ pre:focus {
 	width: 33px;
 	height: 35px;
 	margin-left: 1rem;
+	text-decoration: none;
 }
 .username {
 	padding-top: 6px;
@@ -321,6 +322,7 @@ header div.menu {
 }
 header div.menu li {
 	margin-bottom: .8rem;
+	text-decoration: none;
 }
 .post {
 	position: relative;
@@ -354,6 +356,7 @@ header div.menu li {
 .post .options a {
 	cursor: pointer;
 	color: #a9a9a9;
+	text-decoration: none;
 }
 .post:first-child .options a:first-child,
 .post.firstChild .options a:first-child,
