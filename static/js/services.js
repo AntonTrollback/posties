@@ -1,4 +1,4 @@
-var postiesApp = angular.module('posties', ['ngSanitize', 'colorpicker.module', 'angularFileUpload'], function ($interpolateProvider) {
+var postiesApp = angular.module('posties', ['ngSanitize', 'angularFileUpload'], function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
@@ -134,7 +134,7 @@ postiesApp.service('UserService', function($http, config) {
 
 		return promise;
 	};
-	
+
 });
 
 postiesApp.service('AuthService', function($http, config) {

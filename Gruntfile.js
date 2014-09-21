@@ -67,7 +67,7 @@ module.exports = function(grunt) {
           'bower_components/angular/angular.js',
           'bower_components/angular-sanitize/angular-sanitize.js',
           'bower_components/angular-route/angular-route.js',
-          'bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
+          'bower_components/jquery-minicolors/jquery.minicolors.js',
           'bower_components/ng-file-upload/angular-file-upload.js',
           'bower_components/Autolinker.js/dist/Autolinker.js',
           'static/js/s3upload.js',
