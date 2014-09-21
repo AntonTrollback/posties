@@ -5,5 +5,5 @@ rethinkdb_data
 static/build
 node_modules
 bower_components
-
+*.log
 .DS_Store

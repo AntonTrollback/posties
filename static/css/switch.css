@@ -34,7 +34,7 @@
   font-size: 14px;
   position: absolute;
   top: 50%;
-  left: 10px;
+  left: 11px;
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -75,6 +75,6 @@
 .switch input:checked + .switch-state:after,
 .switch input[checked] + .switch-state:after {
   content: "OFF";
-  right: 7px;
+  right: 10px;
   left: auto;
 }
