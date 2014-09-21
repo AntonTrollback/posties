@@ -92,8 +92,8 @@ postiesApp.service('SettingsService', function($http, config) {
 			postbackgroundcolor: "#ffffff",
 			posttextcolor: "#141414",
 			showboxes: true,
-			typefaceheadline: "sans-serif",
-			typefaceparagraph: "sans-serif"
+			typefaceheadline: "Akkurat",
+			typefaceparagraph: "Akkurat"
 		}
 	};
 

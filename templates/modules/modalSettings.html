@@ -5,28 +5,38 @@
 			<div class="panel-section is-active" id="panelPrimary">
 				<a class="panel-trigger" data-panel-section="panelTextFont">
 					<span class="panel-label">Text font</span>
+					<div class="panel-preview">
+						<span class="panel-preview-font" ng-model="userSettings.typefaceparagraph" style="font-family: '[[userSettings.typefaceparagraph]]'">
+							[[userSettings.typefaceparagraph]]
+						</span>
+					</div>
 				</a>
 				<a class="panel-trigger" data-panel-section="panelHeadlineFont">
 					<span class="panel-label">Headline font</span>
+					<div class="panel-preview">
+						<span class="panel-preview-font" ng-model="userSettings.typefaceheadline" style="font-family: '[[userSettings.typefaceheadline]]'">
+							[[userSettings.typefaceheadline]]
+						</span>
+					</div>
 				</a>
-				<label class="panel-trigger" for="showBoxes">
+				<label class="panel-trigger is-static" for="showBoxes">
 					<span class="panel-label">Use boxes</span>
 					<div class="panel-preview">
-						<div class="panel-switch switch">
-							<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" tabindex="-1">
+						<div class="panel-preview-switch switch">
+							<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes">
 							<div class="switch-state"></div>
 						</div>
 					</div>
 				</label>
-				<a class="panel-trigger" data-panel-section="panelBoxColor">
+				<a class="panel-trigger is-adaptive" data-panel-section="panelBoxColor">
 					<span class="panel-label">Box color</span>
 					<span class="panel-preview" style="background-color: [[userSettings.postbackgroundcolor]]"></span>
 				</a>
-				<a class="panel-trigger" data-panel-section="panelTextColor">
+				<a class="panel-trigger is-adaptive" data-panel-section="panelTextColor">
 					<span class="panel-label">Text color</span>
 					<span class="panel-preview" style="background-color: [[userSettings.posttextcolor]]"></span>
 				</a>
-				<a class="panel-trigger" data-panel-section="panelBackground">
+				<a class="panel-trigger is-adaptive" data-panel-section="panelBackground">
 					<span class="panel-label">Background</span>
 					<span class="panel-preview" style="background-color: [[userSettings.pagebackgroundcolor]]"></span>
 				</a>
@@ -41,8 +51,8 @@
 
 			<div class="panel-section" id="panelTextFont">
 				<div class="popover-header"><button class="button" data-panel-section="panelPrimary">Back</button></div>
-				<select class="popover-select" id="typefaceParagraph" ng-model="userSettings.typefaceparagraph" tabindex="-1">
-					<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">Sans serif</option>
+				<select class="popover-select" id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
+					<option value="Akkurat" ng-selected="userSettings.typefaceparagraph == 'Akkurat'">Akkurat</option>
 					<option value="Source Sans Pro" ng-selected="userSettings.typefaceparagraph == 'Source Sans Pro'">Source Sans Pro</option>
 					<option value="Reenie Beanie" ng-selected="userSettings.typefaceparagraph == 'Reenie Beanie'">Reenie Beanie</option>
 					<option value="Raleway" ng-selected="userSettings.typefaceparagraph == 'Raleway'">Raleway</option>
@@ -65,8 +75,8 @@
 			</div>
 			<div class="panel-section" id="panelHeadlineFont">
 				<div class="popover-header"><button class="button" data-panel-section="panelPrimary">Back</button></div>
-				<select class="popover-select" id="typefaceHeadline" ng-model="userSettings.typefaceheadline" tabindex="-1">
-					<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">Sans serif</option>
+				<select class="popover-select" id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
+					<option value="Akkurat" ng-selected="userSettings.typefaceheadline == 'Akkurat'">Akkurat</option>
 					<option value="Source Sans Pro" ng-selected="userSettings.typefaceheadline == 'Source Sans Pro'">Source Sans Pro</option>
 					<option value="Reenie Beanie" ng-selected="userSettings.typefaceheadline == 'Reenie Beanie'">Reenie Beanie</option>
 					<option value="Raleway" ng-selected="userSettings.typefaceheadline == 'Raleway'">Raleway</option>
@@ -94,7 +104,7 @@
 			<div class="panel-section" id="panelBoxColor">
 				<div class="popover-header"><button class="button" data-panel-section="panelPrimary">Back</button></div>
 				<div class="popover-body">
-					<input class="minicolors" maxlemaxlengthtype="text" ng-model="userSettings.postbackgroundcolor">
+					<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.postbackgroundcolor">
 				</div>
 			</div>
 			<div class="panel-section" id="panelTextColor">
@@ -106,7 +116,7 @@
 			<div class="panel-section" id="panelBackground">
 				<div class="popover-header"><button class="button" data-panel-section="panelPrimary">Back</button></div>
 				<div class="popover-body">
-        	<input class="minicolors" maxlemaxlengthtype="text" ng-model="userSettings.pagebackgroundcolor">
+        	<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.pagebackgroundcolor">
 				</div>
 			</div>
 		</div>
@@ -116,8 +126,8 @@
 		<label class="popover-row">
 			<span class="popover-label" for="typefaceParagraph">Text font</span>
 			<div class="popover-control">
-				<select class="popover-select" id="typefaceParagraph" ng-model="userSettings.typefaceparagraph" tabindex="-1">
-					<option value="sans-serif" ng-selected="userSettings.typefaceparagraph == 'sans-serif'">Sans serif</option>
+				<select class="popover-select" id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
+					<option value="Akkurat" ng-selected="userSettings.typefaceparagraph == 'Akkurat'">Akkurat</option>
 					<option value="Source Sans Pro" ng-selected="userSettings.typefaceparagraph == 'Source Sans Pro'">Source Sans Pro</option>
 					<option value="Reenie Beanie" ng-selected="userSettings.typefaceparagraph == 'Reenie Beanie'">Reenie Beanie</option>
 					<option value="Raleway" ng-selected="userSettings.typefaceparagraph == 'Raleway'">Raleway</option>
@@ -143,8 +153,8 @@
 		<label class="popover-row">
 			<span class="popover-label" for="typefaceHeadline">Headline font</span>
 			<div class="popover-control">
-				<select class="popover-select" id="typefaceHeadline" ng-model="userSettings.typefaceheadline" tabindex="-1">
-					<option value="sans-serif" ng-selected="userSettings.typefaceheadline == 'sans-serif'">Sans serif</option>
+				<select class="popover-select" id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
+					<option value="Akkurat" ng-selected="userSettings.typefaceheadline == 'Akkurat'">Akkurat</option>
 					<option value="Source Sans Pro" ng-selected="userSettings.typefaceheadline == 'Source Sans Pro'">Source Sans Pro</option>
 					<option value="Reenie Beanie" ng-selected="userSettings.typefaceheadline == 'Reenie Beanie'">Reenie Beanie</option>
 					<option value="Raleway" ng-selected="userSettings.typefaceheadline == 'Raleway'">Raleway</option>
@@ -171,7 +181,7 @@
 			<span class="popover-label" >Use boxes</span>
 			<div class="popover-control">
 				<div class="popover-switch switch">
-					<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes" tabindex="-1">
+					<input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes">
 					<div class="switch-state"></div>
 				</div>
 			</div>
@@ -180,21 +190,21 @@
 		<label class="popover-row" for="postBackgroundColor">
 			<span class="popover-label">Box color</span>
 			<div class="popover-control">
-				<input class="popover-color" id="postBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]" tabindex="-1">
+				<input class="popover-color" id="postBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.postbackgroundcolor" class="colorpicker" style="background: [[userSettings.postbackgroundcolor]]">
 			</div>
 		</label>
 
 		<label class="popover-row" for="postTextColor">
 			<span class="popover-label">Text color</span>
 			<div class="popover-control">
-				<input class="popover-color" id="postTextColor" readonly type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]" tabindex="-1">
+				<input class="popover-color" id="postTextColor" readonly type="text" colorpicker="hex" ng-model="userSettings.posttextcolor" class="colorpicker" style="background: [[userSettings.posttextcolor]]">
 			</div>
 		</label>
 
 		<label class="popover-row" for="pageBackgroundColor">
 			<span class="popover-label">Background</span>
 			<div class="popover-control">
-				<input class="popover-color" id="pageBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]" tabindex="-1">
+				<input class="popover-color" id="pageBackgroundColor" readonly type="text" colorpicker="hex" ng-model="userSettings.pagebackgroundcolor" class="colorpicker" style="background: [[userSettings.pagebackgroundcolor]]">
 			</div>
 		</label>
 

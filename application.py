@@ -17,7 +17,7 @@ IS_IN_PRODUCTION_MODE = True
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
-WHITELIST_TYPEFACES = ['sans-serif', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
+WHITELIST_TYPEFACES = ['Akkurat', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
 application = Flask(__name__, static_folder='static')
 application.config['SECRET_KEY'] = 'secretmonkey123'
 
@@ -78,7 +78,7 @@ def get_posts_by_username(username = None):
 
 	for user in users:
 		return render_template('postsByUser.html', user_owns_page = user_owns_page)
-	
+
 	abort(404)
 
 @application.route('/logout', methods=['GET'])
@@ -103,8 +103,8 @@ def api_get_user_by_email():
 	users = list(r.table(TABLE_USERS).filter(
 		(r.row['email'] == email)).run(conn))
 
-	return jsonify({ 'user' : users[0] }) if len(users) else jsonify("")	
-	
+	return jsonify({ 'user' : users[0] }) if len(users) else jsonify("")
+
 @application.route('/api/users', methods=['POST'])
 def api_create_user():
 	jsonData = request.json
@@ -114,10 +114,10 @@ def api_create_user():
 	posts = jsonData['posts']
 	settings = jsonData['settings']
 
-	result = r.table(TABLE_USERS).insert({ 
+	result = r.table(TABLE_USERS).insert({
 		'email' : email,
 		'username' : username,
-		'password' : password, 
+		'password' : password,
 		'created' : r.now()}).run(conn)
 
 	#For assertion, lookup user based on generated ID
@@ -133,14 +133,14 @@ def api_create_user():
 		result = {}
 		result['posts'] = []
 		result['settings'] = {}
-		
+
 		# create all posts
 		for post in posts:
 			#create all posts that aren't images
 			#the rest are called directly via JS to api_post_image
 			if post['type'] != 2:
-				post = r.table(TABLE_POSTS).insert({ 
-					'content' : post['content'], 
+				post = r.table(TABLE_POSTS).insert({
+					'content' : post['content'],
 					'username' : username,
 					'sortrank' : post['sortrank'],
 					'type' : int(post['type']),
@@ -178,10 +178,10 @@ def api_create_user():
 def api_post_text():
 	jsonData = request.json
 	content = jsonData['content']
-	
+
 	if request.method == 'POST':
-		result = r.table(TABLE_POSTS).insert({ 
-			'content' : content, 
+		result = r.table(TABLE_POSTS).insert({
+			'content' : content,
 			'username' : current_user.username,
 			'sortrank' : jsonData['sortrank'],
 			'type' : int(jsonData['type']),
@@ -207,10 +207,10 @@ def sign_s3():
 	# Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
 	expires = int(time.time() + 20)
 	amz_headers = "x-amz-acl:public-read"
- 
+
 	# Generate the PUT request that JavaScript will use:
 	put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
-     
+
 	# Generate the signature with which the request can be signed:
 	signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
 	# Remove surrounding whitespace and quote special characters:
@@ -223,7 +223,7 @@ def sign_s3():
 		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
 		'url': url
 	})
-    
+
 	# Return the signed request and the anticipated URL back to the browser in JSON format:
 	return Response(content, mimetype='text/plain; charset=x-user-defined')
 
@@ -268,8 +268,8 @@ def api_update_settings():
 	typeface_headline = jsonData['typefaceheadline']
 
 	if (len(post_text_color) is 7
-	and len(post_background_color) is 7 
-	and len(page_background_color) is 7 
+	and len(post_background_color) is 7
+	and len(page_background_color) is 7
 	and typeface_paragraph in WHITELIST_TYPEFACES
 	and typeface_headline in WHITELIST_TYPEFACES):
 
@@ -356,7 +356,7 @@ def date_handler(obj):
 def generate_safe_filename(username, filename):
 	fileExtension = '.'
 	try:
-		fileExtension = fileExtension + os.path.splitext(filename)[1][1:].strip() 
+		fileExtension = fileExtension + os.path.splitext(filename)[1][1:].strip()
 	except Error:
 		fileExtension = ''
 
