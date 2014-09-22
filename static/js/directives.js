@@ -30,7 +30,7 @@ $(function() {
     $('#'+ id).show();
   }
 
-  $panels.on('click', '.panel-nav-item.is-static.is-narrow', function(e) {
+  $('#panelTextFont .panel-item, #panelHeadlineFont .panel-item').on('click', function(e) {
     $(this).siblings().removeClass('is-active');
     $(this).addClass('is-active');
   });

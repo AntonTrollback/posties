@@ -1,7 +1,7 @@
 :root {
   --popover-height: 355px;
+  --popover-height-lg: 407px;
   --popover-header-height: 55px;
-  --popover-height-lg: 410px;
   --popover-header-height-lg: 58px;
 }
 
@@ -16,20 +16,12 @@
   color: var(--color-text-light);
   font-size: 13px;
   user-select: none;
+  max-height: var(--popover-height);
+  overflow: hidden;
 
   /* Todo */
   top: 64px;
   right: 7px;
-  height: var(--popover-height);
-  overflow: hidden;
-}
-
-@media (--lg-viewport) {
-  .popover {
-    font-size: 15px;
-    max-width: 17em;
-    height: var(--popover-height-lg);
-  }
 }
 
 .popover-body {
@@ -54,6 +46,12 @@
 }
 
 @media (--lg-viewport) {
+  .popover {
+    font-size: 15px;
+    max-width: 17em;
+    max-height: var(--popover-height-lg);
+  }
+
   .popover-header {
     height: var(--popover-header-height-lg);
   }

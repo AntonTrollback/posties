@@ -84,7 +84,9 @@ postiesApp.service('SettingsService', function($http, config) {
 		}
 	};
 
-	this.getDefaultSettings = function() {
+	this.getDefaultSettings = function($event) {
+    $event.preventDefault();
+    
 		return {
 			created: new Date(),
 			id: 0,
