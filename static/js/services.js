@@ -79,14 +79,14 @@ postiesApp.service('SettingsService', function($http, config) {
 			postbackgroundcolor: getRandomHex(),
 			posttextcolor: getRandomHex(),
 			showboxes : Math.random() < .5,
-			typefaceheadline: setRandomTypefaceParagraph(),
-			typefaceparagraph: setRandomTypefaceHeadline()
+			typefaceheadline: setRandomTypeface('#panelHeadlineFont'),
+			typefaceparagraph: setRandomTypeface('#panelTextFont')
 		}
 	};
 
 	this.getDefaultSettings = function($event) {
     $event.preventDefault();
-    
+
 		return {
 			created: new Date(),
 			id: 0,
@@ -103,19 +103,14 @@ postiesApp.service('SettingsService', function($http, config) {
 		return '#'+(function lol(m,s,c){return s[m.floor(m.random() * s.length)] + (c && lol(m,s,c-1));})(Math,'0123456789ABCDEF', 4);
 	}
 
-	function setRandomTypefaceParagraph() {
-		var $options = $('#typefaceParagraph').find('option'); random = ~~(Math.random() * $options.length);
-		$options.eq(random).prop('selected', true);
+  function setRandomTypeface(id) {
+    var $options = $(id).find('[type="radio"]');
+    random = ~~(Math.random() * $options.length);
+    $options.eq(random).prop('checked', true).closest('.panel-item').click();
 
-		return $options.eq(random).val();
-	}
+    return $options.eq(random).val();
+  }
 
-	function setRandomTypefaceHeadline() {
-		var $options = $('#typefaceHeadline').find('option'); random = ~~(Math.random() * $options.length);
-		$options.eq(random).prop('selected', true);
-
-		return $options.eq(random).val();
-	}
 
 });
 
