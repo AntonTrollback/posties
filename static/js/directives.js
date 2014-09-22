@@ -29,4 +29,9 @@ $(function() {
     $panels.hide();
     $('#'+ id).show();
   }
+
+  $panels.on('click', '.panel-nav-item.is-static.is-narrow', function(e) {
+    $(this).siblings().removeClass('is-active');
+    $(this).addClass('is-active');
+  });
 });

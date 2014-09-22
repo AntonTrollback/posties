@@ -18,6 +18,8 @@
   background: var(--color-postit);
   transition: background .1s ease-out;
   letter-spacing: inherit;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 /**

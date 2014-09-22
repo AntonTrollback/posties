@@ -1,11 +1,11 @@
 /**
- * Variables
+ * Global variables
  */
 
 :root {
   --color-text-light: #888;
   --color-text: #848483;
-  --color-text-dark: #6a6a6a;
+  --color-text-dark: #525252;
   --color-element-light: #d1d1d0;
   --color-element-dark: #b2b2b2;
   --color-divider: #e8e9e9;

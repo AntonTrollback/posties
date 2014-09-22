@@ -49,57 +49,204 @@
 
 		<div class="panel" id="panelTextFont">
 			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
-			<select class="popover-select" id="typefaceParagraph" ng-model="userSettings.typefaceparagraph">
-				<option value="Akkurat" ng-selected="userSettings.typefaceparagraph == 'Akkurat'">Akkurat</option>
-				<option value="Source Sans Pro" ng-selected="userSettings.typefaceparagraph == 'Source Sans Pro'">Source Sans Pro</option>
-				<option value="Reenie Beanie" ng-selected="userSettings.typefaceparagraph == 'Reenie Beanie'">Reenie Beanie</option>
-				<option value="Raleway" ng-selected="userSettings.typefaceparagraph == 'Raleway'">Raleway</option>
-				<option value="Josefin Sans" ng-selected="userSettings.typefaceparagraph == 'Josefin Sans'">Josefin Sans</option>
-				<option value="Open Sans" ng-selected="userSettings.typefaceparagraph == 'Open Sans'">Open Sans</option>
-				<option value="Rokkitt" ng-selected="userSettings.typefaceparagraph == 'Rokkitt'">Rokkitt</option>
-				<option value="Fredoka One" ng-selected="userSettings.typefaceparagraph == 'Fredoka One'">Fredoka One</option>
-				<option value="Libre Baskerville" ng-selected="userSettings.typefaceparagraph == 'Libre Baskerville'">Libre Baskerville</option>
-				<option value="EB Garamond" ng-selected="userSettings.typefaceparagraph == 'EB Garamond'">EB Garamond</option>
-				<option value="Geo" ng-selected="userSettings.typefaceparagraph == 'Geo'">Geo</option>
-				<option value="VT323" ng-selected="userSettings.typefaceparagraph == 'VT323'">VT323</option>
-				<option value="Text Me One" ng-selected="userSettings.typefaceparagraph == 'Text Me One'">Text Me One</option>
-				<option value="Nova Cut" ng-selected="userSettings.typefaceparagraph == 'Nova Cut'">Nova Cut</option>
-				<option value="Cherry Swash" ng-selected="userSettings.typefaceparagraph == 'Cherry Swash'">Cherry Swash</option>
-				<option value="Italiana" ng-selected="userSettings.typefaceparagraph == 'Italiana'">Italiana</option>
-				<option value="Inconsolata" ng-selected="userSettings.typefaceparagraph == 'Inconsolata'">Inconsolata</option>
-				<option value="Abril Fatface" ng-selected="userSettings.typefaceparagraph == 'Abril Fatface'">Abril Fatface</option>
-				<option value="Chivo" ng-selected="userSettings.typefaceparagraph == 'Chivo'">Chivo</option>
-			</select>
+			<div class="popover-scroll">
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Akkurat'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Akkurat" ng-model="userSettings.typefaceparagraph">Akkurat</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Source Sans Pro'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Source Sans Pro" ng-model="userSettings.typefaceparagraph">Source Sans Pro</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Reenie Beanie'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Reenie Beanie" ng-model="userSettings.typefaceparagraph">Reenie Beanie</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Raleway'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Raleway" ng-model="userSettings.typefaceparagraph">Raleway</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Josefin Sans'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Josefin Sans" ng-model="userSettings.typefaceparagraph">Josefin Sans</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Open Sans'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Open Sans" ng-model="userSettings.typefaceparagraph">Open Sans</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Rokkitt'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Rokkitt" ng-model="userSettings.typefaceparagraph">Rokkitt</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Fredoka One'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Fredoka One" ng-model="userSettings.typefaceparagraph">Fredoka One</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Libre Baskerville'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Libre Baskerville" ng-model="userSettings.typefaceparagraph">Libre Baskerville</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'EB Garamond'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="EB Garamond" ng-model="userSettings.typefaceparagraph">EB Garamond</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Geo'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Geo" ng-model="userSettings.typefaceparagraph">Geo</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'VT323'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="VT323" ng-model="userSettings.typefaceparagraph">VT323</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Text Me One'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Text Me One" ng-model="userSettings.typefaceparagraph">Text Me One</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Nova Cut'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Nova Cut" ng-model="userSettings.typefaceparagraph">Nova Cut</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Cherry Swash'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Cherry Swash" ng-model="userSettings.typefaceparagraph">Cherry Swash</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Italiana'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Italiana" ng-model="userSettings.typefaceparagraph">Italiana</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Inconsolata'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Inconsolata" ng-model="userSettings.typefaceparagraph">Inconsolata</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Abril Fatface'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Abril Fatface" ng-model="userSettings.typefaceparagraph">Abril Fatface</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Chivo'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Chivo" ng-model="userSettings.typefaceparagraph">Chivo</span>
+					</span>
+				</label>
+			</div>
 		</div>
 
 		<div class="panel" id="panelHeadlineFont">
 			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
-			<select class="popover-select" id="typefaceHeadline" ng-model="userSettings.typefaceheadline">
-				<option value="Akkurat" ng-selected="userSettings.typefaceheadline == 'Akkurat'">Akkurat</option>
-				<option value="Source Sans Pro" ng-selected="userSettings.typefaceheadline == 'Source Sans Pro'">Source Sans Pro</option>
-				<option value="Reenie Beanie" ng-selected="userSettings.typefaceheadline == 'Reenie Beanie'">Reenie Beanie</option>
-				<option value="Raleway" ng-selected="userSettings.typefaceheadline == 'Raleway'">Raleway</option>
-				<option value="Josefin Sans" ng-selected="userSettings.typefaceheadline == 'Josefin Sans'">Josefin Sans</option>
-				<option value="Open Sans" ng-selected="userSettings.typefaceheadline == 'Open Sans'">Open Sans</option>
-				<option value="Rokkitt" ng-selected="userSettings.typefaceheadline == 'Rokkitt'">Rokkitt</option>
-				<option value="Fredoka One" ng-selected="userSettings.typefaceheadline == 'Fredoka One'">Fredoka One</option>
-				<option value="Libre Baskerville" ng-selected="userSettings.typefaceheadline == 'Libre Baskerville'">Libre Baskerville</option>
-				<option value="EB Garamond" ng-selected="userSettings.typefaceheadline == 'EB Garamond'">EB Garamond</option>
-				<option value="Geo" ng-selected="userSettings.typefaceheadline == 'Geo'">Geo</option>
-				<option value="VT323" ng-selected="userSettings.typefaceheadline == 'VT323'">VT323</option>
-				<option value="Text Me One" ng-selected="userSettings.typefaceheadline == 'Text Me One'">Text Me One</option>
-				<option value="Nova Cut" ng-selected="userSettings.typefaceheadline == 'Nova Cut'">Nova Cut</option>
-				<option value="Cherry Swash" ng-selected="userSettings.typefaceheadline == 'Cherry Swash'">Cherry Swash</option>
-				<option value="Italiana" ng-selected="userSettings.typefaceheadline == 'Italiana'">Italiana</option>
-				<option value="Inconsolata" ng-selected="userSettings.typefaceheadline == 'Inconsolata'">Inconsolata</option>
-				<option value="Abril Fatface" ng-selected="userSettings.typefaceheadline == 'Abril Fatface'">Abril Fatface</option>
-				<option value="Chivo" ng-selected="userSettings.typefaceheadline == 'Chivo'">Chivo</option>
-			</select>
-		</div>
-
-		<div class="panel" id="panelUseBoxes">
-			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
-			Use boxes
+			<div class="popover-scroll">
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Akkurat'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Akkurat" ng-model="userSettings.typefaceheadline">Akkurat</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Source Sans Pro'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Source Sans Pro" ng-model="userSettings.typefaceheadline">Source Sans Pro</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Reenie Beanie'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Reenie Beanie" ng-model="userSettings.typefaceheadline">Reenie Beanie</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Raleway'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Raleway" ng-model="userSettings.typefaceheadline">Raleway</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Josefin Sans'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Josefin Sans" ng-model="userSettings.typefaceheadline">Josefin Sans</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Open Sans'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Open Sans" ng-model="userSettings.typefaceheadline">Open Sans</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Rokkitt'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Rokkitt" ng-model="userSettings.typefaceheadline">Rokkitt</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Fredoka One'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Fredoka One" ng-model="userSettings.typefaceheadline">Fredoka One</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Libre Baskerville'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Libre Baskerville" ng-model="userSettings.typefaceheadline">Libre Baskerville</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'EB Garamond'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="EB Garamond" ng-model="userSettings.typefaceheadline">EB Garamond</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Geo'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Geo" ng-model="userSettings.typefaceheadline">Geo</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'VT323'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="VT323" ng-model="userSettings.typefaceheadline">VT323</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Text Me One'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Text Me One" ng-model="userSettings.typefaceheadline">Text Me One</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Nova Cut'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Nova Cut" ng-model="userSettings.typefaceheadline">Nova Cut</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Cherry Swash'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Cherry Swash" ng-model="userSettings.typefaceheadline">Cherry Swash</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Italiana'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Italiana" ng-model="userSettings.typefaceheadline">Italiana</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Inconsolata'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Inconsolata" ng-model="userSettings.typefaceheadline">Inconsolata</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Abril Fatface'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Abril Fatface" ng-model="userSettings.typefaceheadline">Abril Fatface</span>
+					</span>
+				</label>
+				<label class="panel-nav-item is-static is-narrow" style="font-family: 'Chivo'">
+					<span class="panel-preview-full">
+						<span class="panel-preview-font"><input type="radio" value="Chivo" ng-model="userSettings.typefaceheadline">Chivo</span>
+					</span>
+				</label>
+			</div>
 		</div>
 
 		<div class="panel" id="panelBoxColor">
