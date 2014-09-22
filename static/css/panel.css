@@ -104,6 +104,8 @@
 
 .panel-item-text.is-larger {
   font-size: 125%;
+  white-space: nowrap;
+  word-wrap: normal;
 }
 
 /* Result/preview area */

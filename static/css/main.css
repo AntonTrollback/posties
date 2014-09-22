@@ -95,19 +95,22 @@ pre:focus {
 	height: 35px;
 	margin-left: 1rem;
 	text-decoration: none;
+	user-select: none;
 }
 .username {
 	padding-top: 6px;
 }
 #customize {
 	float: right;
-	background: url('../img/iconCustomize.png') no-repeat 0 0;
+	background: url('../img/iconCustomizeActive.png') no-repeat 0 0;
 	width: 35px;
 	height: 35px;
 	margin-left: 1rem;
+	user-select: none;
+	opacity: 0.6;
 }
 #customize.active {
-	background: url('../img/iconCustomizeActive.png') no-repeat 0 0;
+	opacity: 1;
 }
 /*** GLOBAL FORMS ***/
 fieldset select,

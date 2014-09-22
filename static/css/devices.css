@@ -42,11 +42,10 @@ and (min-width : 1824px) {
 /* iPhone 4 ----------- */
 @media (--high-resolution) {
 	#customize {
-		background: url('../img/iconCustomize@2x.png') no-repeat 0 0;
+		background: url('../img/iconCustomizeActive@2x.png') no-repeat 0 0;
 		background-size: 100% 100%;
 	}
 	#customize.active {
-		background: url('../img/iconCustomizeActive@2x.png') no-repeat 0 0;
 		background-size: 100% 100%;
 	}
 	#logo {

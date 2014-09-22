@@ -17,11 +17,21 @@
   font-size: 13px;
   user-select: none;
   max-height: var(--popover-height);
-  overflow: hidden;
 
   /* Todo */
   top: 64px;
   right: 7px;
+}
+
+.popover:before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  right: 54px;
+  width: 29px;
+  height: 12px;
+  background-image: url('../img/popover-arrow.png');
+  background-size: 29px 12px;
 }
 
 .popover-body {
