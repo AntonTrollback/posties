@@ -9,6 +9,15 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
 
+	var firstRun = true;
+
+	$scope.$watchCollection('userSettings', function() {
+		if(!firstRun) {
+			SettingsService.submitUpdateSettings($scope.userSettings);
+		}
+		firstRun = false;
+	});
+
 	$scope.addPost = function($event) {
 		var post = {
 			id : Math.round(Math.random() * 1000),
@@ -37,7 +46,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 	$scope.savePostImage = function($files) {
 		var imageType = /image.*/;
-		
+
 		for (var i = 0; i < $files.length; i++) {
 			var file = $files[i];
 
@@ -59,7 +68,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 						imagePost.uploadProgress = event.total;
 					}
 				};
-				
+
 				reader.onload = function(e) {
 					$scope.$apply(function() {
 						imagePost.isUploaded = true;
@@ -152,7 +161,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		var redirectUser = false;
 
 		if($scope.formCreateUser.$valid) {
-			var jsonPost = { 
+			var jsonPost = {
 				email : $scope.user.email,
 				username : $scope.user.username,
 				password : $scope.user.password,
@@ -189,7 +198,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 								onFinishS3Put: function(url) {
 									console.log('Upload completed. Uploaded to: ' + url);
 									if(redirectUser) {
-										forwardToUserPage();	
+										forwardToUserPage();
 									}
 								},
 								onError: function(status) {
@@ -201,7 +210,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				} else {
 					forwardToUserPage();
 				}
-				
+
 			}, function(response) {
 				console.log(response);
 			});
@@ -244,7 +253,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 	$scope.flash = FlashService.getFlash();
 
 	$scope.submitLogin = function() {
-		var jsonPost = JSON.stringify({ 
+		var jsonPost = JSON.stringify({
 			'email' : $scope.user.email,
 			'password' : $scope.user.password
 		});
@@ -261,7 +270,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize,
-	config, UserService, SettingsService, 
+	config, UserService, SettingsService,
 	LoaderService, FlashService) {
 
 	$scope.posts = [];
@@ -313,7 +322,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			headers: config.headerJSON
 		}).then(function(response) {
 			var post = response.data;
-			
+
 			if(post.type == 0) {
 				post.template = 'postText.html';
 			} else if(post.type == 1) {
@@ -336,7 +345,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	$scope.savePost = function($event, post) {
 		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
 		var postTextContent = $sanitize($event.target.innerHTML);
-		
+
 		postTextContent = Autolinker.link(postTextContent);
 
 		if(postTextContent.length && $($event.target).data('changed')) {
@@ -344,7 +353,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				content: postTextContent,
 				id: post.id
 			};
-			
+
 			$http({
 				url: '/api/postText',
 				method: 'put',
@@ -380,7 +389,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				var jsonPost = response.data;
 				jsonPost['file'] = file;
 				$scope.posts.push(jsonPost);
-				
+
 				var s3upload = new S3Upload({
 					s3_object_name: jsonPost.key,
 					s3_file: jsonPost.file,

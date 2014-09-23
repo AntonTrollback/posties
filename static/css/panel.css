@@ -49,12 +49,6 @@
   background: #f2f2f2;
 }
 
-/* Narrow navigation item */
-
-.panel-item.is-narrow {
-  min-height: 2.74em;
-}
-
 /**
  * Chevron with white gradient background
  */

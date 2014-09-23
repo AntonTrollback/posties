@@ -54,22 +54,19 @@ postiesApp.service('SettingsService', function($http, config) {
 				console.log(response);
 			});
 
-			this.close();
-
 			return promise;
     	} else {
     		localStorage.setItem(config.keySettings, JSON.stringify(userSettings));
-    		this.close();
     	}
     };
 
     this.open = function() {
-		return this.isOpen = !this.isOpen;
+		    return this.isOpen = !this.isOpen;
     };
 
     this.close = function() {
-		return this.isOpen = false;
-	};
+		  return this.isOpen = false;
+	  };
 
 	this.getRandomSettings = function() {
 		return {
@@ -85,8 +82,6 @@ postiesApp.service('SettingsService', function($http, config) {
 	};
 
 	this.getDefaultSettings = function($event) {
-    $event.preventDefault();
-
 		return {
 			created: new Date(),
 			id: 0,
