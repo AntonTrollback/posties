@@ -5,7 +5,7 @@ rethinkdb_data
 
 # Libs
 node_modules/
-bower_components/
+# bower_components/
 
 # Compiled files
 static/build
