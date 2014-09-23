@@ -1,13 +1,15 @@
-<button class="button addPost" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes"><span></span> Add content</button>
+<div class="block">
+	<button class="button is-large is-full" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes"><span class="icon is-plus"></span> Add content</button>
 
-<ul class="postTypes" ng-show="showPostTypes" ng-cloak>
-	<li>
-		<button class="button addPostText" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="">Body text</button>
-	</li>
-	<li>
-		<button class="button addPostHeadline" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="">Headline</button>
-	</li>
-	<li>
-		<label class="button addPostImage"><input class="hidden" type="file" accept="image/*" capture="camera" name="image" ng-file-select="savePostImage($files)" />Image</label>
-	</li>
-</ul>
+	<ul class="postTypes" ng-show="showPostTypes" ng-cloak>
+		<li>
+			<button class="button addPostText" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="">Body text</button>
+		</li>
+		<li>
+			<button class="button addPostHeadline" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="">Headline</button>
+		</li>
+		<li>
+			<label class="button addPostImage"><input class="hidden" type="file" accept="image/*" capture="camera" name="image" ng-file-select="savePostImage($files)" />Image</label>
+		</li>
+	</ul>
+</div>

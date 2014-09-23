@@ -12,8 +12,8 @@
 					</li>
 				</ul>
 				{% include 'modules/postTypes.html' %}
-				<div class="btnPublishContainer">
-					<button class="button" ng-click="showModalCreateUser = !showModalCreateUser"><span></span> Publish this page</button>
+				<div class="block">
+					<button class="button is-larger is-full" ng-click="showModalCreateUser = !showModalCreateUser"><span class="icon is-forward"></span> Publish this page</button>
 					{% include 'modules/modalCreateUser.html' %}
 				</div>
 				{% include 'modules/jsTemplates/postTextAuthenticated.html' %}

@@ -1,0 +1,17 @@
+.icon {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  vertical-align: text-top;
+  margin: 0 3px;
+}
+
+.icon.is-forward {
+  background-image: url('../img/icon-forward.png');
+}
+
+.icon.is-plus {
+  background-image: url('../img/icon-plus.png');
+}

@@ -52,14 +52,4 @@ and (min-width : 1824px) {
 		background: url('../img/logo@2x.png') no-repeat 0 0;
 		background-size: 100% 100%;
 	}
-	.addPost span {
-		background: url('../img/iconAdd@2x.png') no-repeat 0 3px;
-		background-size: 85% 85%;
-	}
-
-	.btnPublishContainer button span {
-		background: url('../img/iconPublish@2x.png') no-repeat 0 1px;
-		background-size: 90% 90%;
-	}
-
 }

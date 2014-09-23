@@ -81,7 +81,7 @@ header p {
 	float: right;
 }
 pre {
-	text-rendering: optimizeLegibility
+	text-rendering: optimizeLegibility;
 }
 pre:focus {
 	outline: 0;
@@ -200,35 +200,6 @@ input[type="checkbox"]:checked + span {
 	font-size: 1.4rem;
 	font-family: 'Helvetica', arial, sans-serif;
 }
-.btnPublishContainer {
-	display: block;
-	text-align: center;
-	margin-top: 2rem;
-	position: relative;
-}
-.button.addPost,
-.btnPublishContainer button.button {
-	display: block;
-	margin: 0 auto;
-	width: 80%;
-	max-width: 660px;
-	margin-bottom: 2rem;
-}
-.addPost span {
-	background: url('../img/iconAdd.png') no-repeat 0 0;
-	height: 19px;
-	width: 19px;
-	display: inline-block;
-}
-.btnPublishContainer button {
-	height: 88px;
-}
-.btnPublishContainer button span {
-	background: url('../img/iconPublish.png') no-repeat 0 50% #faf8c6;
-	width: 24px;
-	height: 16px;
-	display:  inline-block;
-}
 .postTypes {
 	color: #8a8a8a;
 	margin: 0;
@@ -330,10 +301,10 @@ header div.menu li {
 .post {
 	position: relative;
 	box-sizing: border-box;
+	margin: var(--spacing) 0;
 }
 .post img {
 	width: 100%;
-	margin-bottom: .5rem;
 }
 .post pre a {
 	text-decoration: underline;
@@ -374,11 +345,12 @@ header div.menu li {
 	display: inline-block;
 }
 .postText {
-	display: inline-block;
+	display: block;
 	font-size: 2.3rem;
 	white-space: pre-line;
 }
 .postHeadline {
+	display: block;
 	white-space: pre-line;
 	font-size: 4rem;
 	font-style: normal;
@@ -391,7 +363,6 @@ header div.menu li {
 	line-height: 1;
 	font-weight: lighter;
 	box-sizing: border-box;
-	margin: 0 0 .5rem 0;
 }
 #closeOverlays {
 	width: 100%;
