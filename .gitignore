@@ -1,9 +1,20 @@
-*.pyc
-.elasticbeanstalk/
-tmp/*
-rethinkdb_data
-static/build
-node_modules
-bower_components
 *.log
+tmp/*
+.elasticbeanstalk/
+rethinkdb_data
+
+# Libs
+node_modules/
+bower_components/
+
+# Compiled files
+static/build
+*.pyc
+
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
