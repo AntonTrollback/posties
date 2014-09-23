@@ -160,6 +160,10 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		var redirectUser = false;
 
 		if($scope.formCreateUser.$valid) {
+			var $button =
+			$('#formCreateUser button[type="submit"]').attr('disabled', true).text('Loading…');
+
+
 			var jsonPost = {
 				email : $scope.user.email,
 				username : $scope.user.username,
@@ -215,7 +219,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			});
 
 			function forwardToUserPage() {
-				localStorage.removeItem(config.keySettings)
+				localStorage.removeItem(config.keySettings);
 				$scope.loader.hide();
 				window.location = "/by/" + $scope.user.username + "?intro=true";
 			}
