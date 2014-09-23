@@ -10,7 +10,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	$scope.flash = FlashService.getFlash();
 
 	var firstRun = true;
-
 	$scope.$watchCollection('userSettings', function() {
 		if(!firstRun) {
 			SettingsService.submitUpdateSettings($scope.userSettings);
@@ -216,6 +215,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			});
 
 			function forwardToUserPage() {
+				localStorage.removeItem(config.keySettings)
 				$scope.loader.hide();
 				window.location = "/by/" + $scope.user.username + "?intro=true";
 			}
@@ -280,7 +280,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	$scope.flash = FlashService.getFlash();
 
 	var firstRun = true;
-
 	$scope.$watchCollection('userSettings', function() {
 		if(!firstRun) {
 			SettingsService.submitUpdateSettings($scope.userSettings);
