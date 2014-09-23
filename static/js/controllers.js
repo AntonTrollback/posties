@@ -219,9 +219,9 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			});
 
 			function forwardToUserPage() {
-				localStorage.removeItem(config.keySettings);
 				$scope.loader.hide();
-				window.location = "/by/" + $scope.user.username + "?intro=true";
+				localStorage.setItem(config.keySettings + 'Welcome', true);
+				window.location = "/by/" + $scope.user.username;
 			}
 		} else {
 			console.log("form is invalid");
@@ -291,9 +291,11 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		firstRun = false;
 	});
 
-	if(posties.util.getQueryParamByName('intro')) {
+	if(localStorage.getItem(config.keySettings + 'Welcome')) {
 		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
+		localStorage.removeItem(config.keySettings + 'Welcome');
 	}
+	localStorage.removeItem(config.keySettings);
 
 	var urlPathName = location.pathname;
 	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);

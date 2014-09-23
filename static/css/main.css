@@ -213,6 +213,7 @@ input[type="checkbox"]:checked + span {
 	color: #8a8a8a;
 	margin: 0;
 	text-align: center;
+	margin: 0 -15px;
 }
 .postTypes li {
 	display: inline-block;
