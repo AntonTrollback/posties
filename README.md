@@ -50,8 +50,8 @@ r.db('posties').table('users_settings').delete();
 - CD to your posties repo in the command line
 - Run the command `sudo [PATH_TO_ELASTIC_BEANSTALK]/elasticbeanstalk-cli/AWSDevTools/[Linux or Windows]/AWSDevTools-RepositorySetup.sh`
 - If there's an error in the above step, make sure you create a ~/.bash_profile` and add the following two lines:
--- `export LC_ALL=en_US.UTF-8`
--- `export LANG=en_US.UTF-8`
+  - `export LC_ALL=en_US.UTF-8`
+  - `export LANG=en_US.UTF-8`
 - Then run the command `git aws.config`
 - Enter AWS Access Key, AWS Secret Key, AWS Region, and enter the existing name of your AWS Application and AWS Environment.
 - Now you can git add, git commit as usual, and use git aws.push to push to your EB environment
