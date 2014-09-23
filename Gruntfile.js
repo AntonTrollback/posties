@@ -14,7 +14,7 @@ module.exports = function(grunt) {
      */
 
     suitcss: {
-      'build': {
+      build: {
         files: {
           'static/build/posties.css': ['static/css/setup.css']
         }
@@ -22,21 +22,27 @@ module.exports = function(grunt) {
     },
 
     'string-replace': {
-      inline: {
+      build: {
         files: {
           'static/build/posties.css': ['static/build/posties.css']
         },
         options: {
-          replacements: [{
-            pattern: '../img/',
-            replacement: ''
-          }]
+          replacements: [
+            {
+              pattern: '../img/',
+              replacement: ''
+            },
+            {
+              pattern: '../font/',
+              replacement: ''
+            }
+          ]
         }
       }
     },
 
     cssmin: {
-      combine: {
+      build: {
         files: {
           'static/build/posties.css': ['static/build/posties.css']
         }
@@ -47,21 +53,12 @@ module.exports = function(grunt) {
      * JS related
      */
 
-    uglify: {
-      'build': {
-        preserveComments: false,
-        files: {
-          'static/build/posties.js': ['static/build/posties.js']
-        }
-      }
-    },
-
     concat: {
       options: {
         separator: ';',
         stripBanners: true
       },
-      dist: {
+      build: {
         src: [
           'bower_components/jquery/dist/jquery.js',
           'bower_components/angular/angular.js',
@@ -81,12 +78,29 @@ module.exports = function(grunt) {
       },
     },
 
+    ngAnnotate: {
+      dist: {
+        files: {
+          'static/build/posties.js': ['static/build/posties.js']
+        }
+      }
+    },
+
+    uglify: {
+      build: {
+        preserveComments: false,
+        files: {
+          'static/build/posties.js': ['static/build/posties.js']
+        }
+      }
+    },
+
     /**
      * Copy assets
      */
 
     copy: {
-      'to build folder': {
+      build: {
         files: [{
           expand: true,
           flatten: true,
@@ -97,7 +111,7 @@ module.exports = function(grunt) {
     },
 
     /**
-     * Tasks
+     * Bind Grunt tasks
      */
 
     watch: {
@@ -126,12 +140,14 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['build']);
+
   grunt.registerTask('build', [
     'suitcss',
     'string-replace',
     'cssmin',
+    'copy',
     'concat',
-    //'uglify',
-    'copy'
+    'ngAnnotate',
+    'uglify'
   ]);
 };
