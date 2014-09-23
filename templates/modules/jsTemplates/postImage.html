@@ -1,3 +1,7 @@
 <script type="text/ng-template" id="postImage.html">
-	<img src="[[post.key]]" />
+	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
+		<div class="post-image">
+			<img src="[[post.key]]">
+		</div>
+	</div>
 </script>

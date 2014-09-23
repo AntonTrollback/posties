@@ -1,10 +1,12 @@
 <script type="text/ng-template" id="postHeadline.html">
-	<div class="options">
-		<a class="up" ng-click="movePost($index, $index - 1)" title="move up">&#x25B2;</a>
-		<a class="down" ng-click="movePost($index, $index + 1)" title="move down">&#x25BC;</a>
-		<a href="#" ng-click="deletePost($index, post)" class="delete" title="delete">×</a>
+	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
+		<div class="post-options">
+			<a class="post-up" ng-click="movePost($index, $index - 1)" title="move up">&#x25B2;</a>
+			<a class="post-down" ng-click="movePost($index, $index + 1)" title="move down">&#x25BC;</a>
+			<a class="post-delete"href="#" ng-click="deletePost($index, post)" title="delete">×</a>
+		</div>
+		<form class="form createPostHeadline">
+			<pre ng-blur="savePost($event, post)" class="post-headline" data-changed="false" contenteditable ng-bind-html="post.content" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }"></pre>
+		</form>
 	</div>
-	<form class="form createPostHeadline">
-		<pre ng-blur="savePost($event, post)" class="postHeadline" data-changed="false" contenteditable ng-bind-html="post.content" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor, 'padding' : userSettings.showboxes ? '2rem' : '1rem' }"></pre>
-	</form>
 </script>

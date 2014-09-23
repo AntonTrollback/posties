@@ -1,18 +1,27 @@
 html {
 	font-size: 62.5%;
 }
+
 body {
-	width: 80%;
+	box-sizing: border-box;
+	width: 100%;
 	margin: 0 auto;
 	font-size: 1.4rem;
 	font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	letter-spacing: -0.3px;
-	min-width: 300px;
+	min-width: 270px;
 	background: #f5f5f5;
 	color: #888;
-	padding-bottom: 4rem;
-	max-width: 700px;
+	padding: 0 11px 4rem;
+	max-width: 568px;
 }
+
+@media (--lg-viewport) {
+	body {
+		max-width: 750px;
+	}
+}
+
 /* Basic typography */
 h1, h2, h3 {
 	color: #666;
@@ -275,15 +284,6 @@ input[type="checkbox"]:checked + span {
 	}
 }
 
-#publishNow {
-	width: 80%;
-	max-width: 660px;
-	padding-bottom: 10px;
-	margin-right: auto;
-	margin-left: auto;
-
-}
-
 /*** GLOBAL CLASSES ***/
 header div.menu {
 	position: absolute;
@@ -297,72 +297,6 @@ header div.menu {
 header div.menu li {
 	margin-bottom: .8rem;
 	text-decoration: none;
-}
-.post {
-	position: relative;
-	box-sizing: border-box;
-	margin: var(--spacing) 0;
-}
-.post img {
-	width: 100%;
-}
-.post pre a {
-	text-decoration: underline;
-	color: inherit;
-}
-.post .options {
-	position: absolute;
-	top: -4px;
-	right: 8px;
-	font-size: 22px;
-}
-.post .image .options {
-	top: -5px;
-}
-.post .image h3 {
-	font-size: 2rem;
-	color: #8a8a8a;
-	padding: 2rem 0;
-	border-top: 1px solid #8a8a8a;
-	border-bottom: 1px solid #8a8a8a;
-	text-align: center;
-}
-.post .options a {
-	cursor: pointer;
-	color: #a9a9a9;
-	text-decoration: none;
-}
-.post:first-child .options a:first-child,
-.post.firstChild .options a:first-child,
-.post:last-child .options a:nth-child(2),
-.post.lastChild .options a:nth-child(2) {
-	display: none;
-}
-.post .delete {
-	font-size: 3rem;
-}
-.userOwnsPage .post .delete {
-	display: inline-block;
-}
-.postText {
-	display: block;
-	font-size: 2.3rem;
-	white-space: pre-line;
-}
-.postHeadline {
-	display: block;
-	white-space: pre-line;
-	font-size: 4rem;
-	font-style: normal;
-}
-.postText,
-.postHeadline {
-	background: #fff;
-	width: 100%;
-	border: 0;
-	line-height: 1;
-	font-weight: lighter;
-	box-sizing: border-box;
 }
 #closeOverlays {
 	width: 100%;

@@ -1,11 +1,14 @@
 <script type="text/ng-template" id="postImage.html">
-	<div class="image">
-		<div class="options">
-			<a class="up" ng-click="movePost($index, $index - 1)" title="move up">&#x25B2;</a>
-			<a class="down" ng-click="movePost($index, $index + 1)" title="move down">&#x25BC;</a>
-			<a href="#" ng-click="deletePost($index, post)" class="delete" title="delete">×</a>
+	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
+		<div class="post-image">
+			<div class="post-options">
+				<a class="post-up" ng-click="movePost($index, $index - 1)" title="move up">&#x25B2;</a>
+				<a class="post-down" ng-click="movePost($index, $index + 1)" title="move down">&#x25BC;</a>
+				<a class="post-delete"href="#" ng-click="deletePost($index, post)" title="delete">×</a>
+			</div>
+			<h3 ng-show="!post.isUploaded">Adding your image: <strong>[[post.uploadProgress]]</strong>%</h3>
+
+			<img ng-show="post.isUploaded" src="[[post.key]]" />
 		</div>
-		<h3 ng-show="!post.isUploaded">Adding your image: <strong>[[post.uploadProgress]]</strong>%</h3>
-		<img ng-show="post.isUploaded" src="[[post.key]]" />
 	</div>
 </script>

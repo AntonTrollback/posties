@@ -1,3 +1,5 @@
 <script type="text/ng-template" id="postText.html">
-	<p class="postText" ng-bind-html="post.content" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor, 'padding' : userSettings.showboxes ? '2rem' : '1rem' }"></p>
+	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
+		<p class="post-text" ng-bind-html="post.content" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></p>
+	</div>
 </script>

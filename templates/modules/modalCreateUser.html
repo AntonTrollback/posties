@@ -17,8 +17,8 @@
       <a ng-click="formCreateUser.showPassword = !formCreateUser.showPassword" class="togglePasswordMask" ng-class="formCreateUser.showPassword ? 'visible' : ''"></a>
       <p ng-show="formCreateUser.password.$touched && formCreateUser.password.$invalid">[[formCreateUser.password.error]]</p>
     </fieldset>
-    <fieldset>
-    	<button type="submit" id="publishNow" class="button" ng-disabled="formCreateUser.$invalid"><span class="icon is-plus"></span> Publish now!</button>
+    <fieldset class="block is-padded">
+    	<button class="button is-larger is-full" type="submit" ng-disabled="formCreateUser.$invalid"><span class="icon is-forward"></span> Publish now!</button>
     </fieldset>
   </form>
 </div>
