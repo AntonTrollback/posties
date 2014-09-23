@@ -279,6 +279,15 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
 
+	var firstRun = true;
+
+	$scope.$watchCollection('userSettings', function() {
+		if(!firstRun) {
+			SettingsService.submitUpdateSettings($scope.userSettings);
+		}
+		firstRun = false;
+	});
+
 	if(posties.util.getQueryParamByName('intro')) {
 		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
 	}

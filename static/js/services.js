@@ -43,18 +43,17 @@ postiesApp.service('SettingsService', function($http, config) {
     this.submitUpdateSettings = function(userSettings) {
     	if($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
     		var promise = $http({
-				url: '/api/settings',
-				method: 'put',
-				data: userSettings,
-				headers: config.headerJSON
-			}).then(function(response) {
-				this.data = response.data;
-				return response.data;
-			}, function(response) {
-				console.log(response);
-			});
-
-			return promise;
+  				url: '/api/settings',
+  				method: 'put',
+  				data: userSettings,
+  				headers: config.headerJSON
+  			}).then(function(response) {
+  				this.data = response.data;
+  				return response.data;
+  			}, function(response) {
+  				console.log(response);
+  			});
+        return promise;
     	} else {
     		localStorage.setItem(config.keySettings, JSON.stringify(userSettings));
     	}
