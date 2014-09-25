@@ -54,7 +54,7 @@ r.db('posties').table('users_settings').delete();
   - `export LANG=en_US.UTF-8`
 - Then run the command `git aws.config`
 - Enter AWS Access Key, AWS Secret Key, AWS Region, and enter the existing name of your AWS Application and AWS Environment.
-- Now you can git add, git commit as usual, and use git aws.push to push to your EB environment
+- Now you can `git add`, `git commit` as usual, and use `git aws.push` to push to your EB environment
 - Now get the correct pem files from Nima
 - Copy the pem files to the folder `~/.ssh/` (create the folder if it doesn't exist)
 
