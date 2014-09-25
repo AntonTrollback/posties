@@ -8,6 +8,10 @@
   margin: 5px 0;
 }
 
+.post p {
+  margin: 0;
+}
+
 .post img {
   width: 100%;
   display: block;
