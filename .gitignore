@@ -6,10 +6,10 @@ AWSDevTools
 
 # Libs
 node_modules/
-# bower_components/
+bower_components/
 
 # Compiled files
-static/build
+# static/build
 *.pyc
 
 # OS generated files
