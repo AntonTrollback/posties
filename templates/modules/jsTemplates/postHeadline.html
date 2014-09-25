@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="postHeadline.html">
 	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
-		<p class="post-headline [[userSettings.showboxes ? userSettings.postbackgroundcolor]]" ng-bind-html="post.content " ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }"></p>
+		<p class="post-headline" ng-bind-html="post.content" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }"></p>
 	</div>
 </script>
