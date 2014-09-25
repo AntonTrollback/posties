@@ -187,7 +187,7 @@ postiesApp.service('FlashService', function($timeout) {
 	flash.showMessage = function(message) {
 		flash.message = message;
 		flash.element.fadeIn(function() {
-			$(this).delay(500).fadeOut();
+			$(this).delay(1000).fadeOut();
 		});
 	};
 

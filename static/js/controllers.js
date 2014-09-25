@@ -99,9 +99,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			return;
 		}
 
-		console.log($scope.formCreateUser.email.$invalid)
 		if($scope.formCreateUser.email.$viewValue && $scope.formCreateUser.email.$invalid) {
-			$scope.formCreateUser.email.error = 'Your email needs to be between 5 and 40 characters';
+			$scope.flash.showMessage("Uups. That's not a valid email");
 			return;
 		} else {
 			delete $scope.formCreateUser.email.error;
@@ -114,7 +113,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		}).then(function(response) {
 			if(response.data.user) {
 				$scope.formCreateUser.email.$invalid = true;
-				$scope.formCreateUser.email.error = 'The email address is already taken!';
+				$scope.flash.showMessage("The email address is already taken!");
 			} else {
 				$scope.formCreateUser.email.$invalid = false;
 				delete $scope.formCreateUser.email.error;
@@ -129,8 +128,10 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			return;
 		}
 
+		console.log($scope.formCreateUser.username.$viewValue)
+
 		if($scope.formCreateUser.username.$viewValue && $scope.formCreateUser.username.$invalid) {
-			$scope.formCreateUser.username.error = 'The username needs to be between 3 and 20 characters';
+			$scope.flash.showMessage('The username needs to be between 3 and 20 characters');
 			return;
 		} else {
 			delete $scope.formCreateUser.username.error;
@@ -143,7 +144,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		}).then(function(response) {
 			if(response.data.user) {
 				$scope.formCreateUser.username.$invalid = true;
-				$scope.formCreateUser.username.error = 'The username is already taken!';
+				$scope.flash.showMessage('The username is already taken!');
 			} else {
 				$scope.formCreateUser.username.$invalid = false;
 				delete $scope.formCreateUser.username.error;
@@ -159,7 +160,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		}
 
 		if($scope.formCreateUser.password.$viewValue && $scope.formCreateUser.password.$invalid) {
-			$scope.formCreateUser.password.error = 'Your password needs to be between 5 and 20 characters long';
+			$scope.flash.showMessage('Your password needs to be between 5 and 20 characters long');
 
 			return;
 		} else {
