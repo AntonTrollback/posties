@@ -95,9 +95,13 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	};
 
 	$scope.validateUserEmail = function($event) {
+		if (typeof $scope.formCreateUser.email.$viewValue === 'undefined') {
+			return;
+		}
+
+		console.log($scope.formCreateUser.email.$invalid)
 		if($scope.formCreateUser.email.$viewValue && $scope.formCreateUser.email.$invalid) {
 			$scope.formCreateUser.email.error = 'Your email needs to be between 5 and 40 characters';
-
 			return;
 		} else {
 			delete $scope.formCreateUser.email.error;
@@ -121,9 +125,12 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	};
 
 	$scope.validateUserUsername = function($event) {
+		if (typeof $scope.formCreateUser.username.$viewValue === 'undefined') {
+			return;
+		}
+
 		if($scope.formCreateUser.username.$viewValue && $scope.formCreateUser.username.$invalid) {
 			$scope.formCreateUser.username.error = 'The username needs to be between 3 and 20 characters';
-
 			return;
 		} else {
 			delete $scope.formCreateUser.username.error;
@@ -147,6 +154,10 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	};
 
 	$scope.validateUserPassword = function($event) {
+		if (typeof $scope.formCreateUser.password.$viewValue === 'undefined') {
+			return;
+		}
+
 		if($scope.formCreateUser.password.$viewValue && $scope.formCreateUser.password.$invalid) {
 			$scope.formCreateUser.password.error = 'Your password needs to be between 5 and 20 characters long';
 
