@@ -136,18 +136,19 @@ def api_create_user():
 
 		# create all posts
 		for post in posts:
-			#create all posts that aren't images
-			#the rest are called directly via JS to api_post_image
-			if post['type'] != 2:
-				post = r.table(TABLE_POSTS).insert({
-					'content' : post['content'],
+			#create all posts that are paragraphs or headlines
+			if int(post['type']) == 0 or int(post['type']) == 1:
+				post = r.table(TABLE_POSTS).insert({ 
+					'content' : post['content'], 
 					'username' : username,
 					'sortrank' : post['sortrank'],
 					'type' : int(post['type']),
 					'created' : r.now()}).run(conn, return_changes = True)
 
 				result['posts'].append(post['changes'][0]['new_val'])
-			else:
+			
+			#create all posts that are images
+			elif int(post['type']) == 2:
 				post = r.table(TABLE_POSTS).insert({
 					'username' : username,
 					'sortrank' : post['sortrank'],
@@ -156,6 +157,17 @@ def api_create_user():
 					'created' : r.now()}).run(conn, return_changes = True)
 
 				result['posts'].append(post['changes'][0]['new_val'])
+			
+			#create all posts that are YouTube videos
+			elif int(post['type']) == 3:
+				post = r.table(TABLE_POSTS).insert({
+					'username' : username,
+					'sortrank' : post['sortrank'],
+					'type' : int(post['type']),
+					'key' : post['key'],
+					'created' : r.now()}).run(conn, return_changes = True)
+
+			result['posts'].append(post['changes'][0]['new_val'])
 
 		settings = r.table(TABLE_USERS_SETTINGS).insert({
 			'username' : username,
@@ -189,6 +201,26 @@ def api_post_text():
 	elif request.method == 'PUT':
 		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
 			'content' : content
+			}).run(conn, return_changes = True);
+
+	return jsonify(result['changes'][0]['new_val'])
+
+@application.route('/api/postVideo', methods=['POST', 'PUT'])
+@login_required
+def api_post_video():
+	jsonData = request.json
+	key = jsonData['key']
+	
+	if request.method == 'POST':
+		result = r.table(TABLE_POSTS).insert({ 
+			'key' : key, 
+			'username' : current_user.username,
+			'sortrank' : jsonData['sortrank'],
+			'type' : int(jsonData['type']),
+			'created' : r.now()}).run(conn, return_changes = True)
+	elif request.method == 'PUT':
+		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
+			'key' : key
 			}).run(conn, return_changes = True);
 
 	return jsonify(result['changes'][0]['new_val'])

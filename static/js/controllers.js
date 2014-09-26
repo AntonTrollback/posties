@@ -23,7 +23,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			sortrank : $scope.posts.length,
 			content : $event.target.getAttribute('data-content'),
 			type : parseInt($event.target.getAttribute('data-type')),
-			template : $event.target.getAttribute('data-template')
+			template : $event.target.getAttribute('data-template'),
+			helpText : $event.target.getAttribute('data-helptext')
 		};
 
 		$scope.posts.push(post);
@@ -80,6 +81,22 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				reader.readAsDataURL(file);
 			}
 	    }
+	};
+
+	$scope.savePostVideo = function($event, post) {
+		if($($event.target).data('changed')) {
+			$($event.target).data('changed', false);
+
+			post.key = posties.util.getYouTubeVideoID($event.target.innerHTML);
+			if(post.key) {
+				$scope.flash.showMessage('saved...');
+				post.isValidVideo = true;
+			} else {
+				$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
+
+				return;
+			}
+		}
 	};
 
 	$scope.movePost = function(currentIndex, newIndex) {
@@ -285,7 +302,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize,
+postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize, $filter,
 	config, UserService, SettingsService,
 	LoaderService, FlashService) {
 
@@ -328,6 +345,9 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				post.template = 'postImage.html';
 				post.isUploaded = true;
 				post.key = config.S3URL + post.key;
+			} else if(post.type == 3) {
+				post.template = 'postVideo.html';
+				post.isValidVideo = true;
 			}
 
 			$scope.posts.push(post);
@@ -348,6 +368,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			headers: config.headerJSON
 		}).then(function(response) {
 			var post = response.data;
+			post.helpText = $event.target.getAttribute('data-helptext')
 
 			if(post.type == 0) {
 				post.template = 'postText.html';
@@ -355,6 +376,8 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				post.template = 'postHeadline.html';
 			} else if(post.type == 2) {
 				post.template = 'postImage.html';
+			} else if(post.type == 3) {
+				post.template = 'postVideo.html';
 			}
 
 			$scope.posts.push(post);
@@ -439,6 +462,36 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			}, function(response) {
 				console.log(response);
 			});
+		}
+	};
+
+	$scope.savePostVideo = function($event, post) {
+		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
+		var postKey = posties.util.getYouTubeVideoID($sanitize($event.target.innerHTML));
+
+		if(postKey && $($event.target).data('changed')) {
+			var jsonPost = {
+				key: postKey,
+				id: post.id
+			};
+			
+			$http({
+				url: '/api/postVideo',
+				method: 'put',
+				data: jsonPost,
+				headers: config.headerJSON
+			}).then(function(response) {
+				$($event.target).data('changed', false);
+				$scope.flash.showMessage('saved...');
+				post.isValidVideo = true;
+				post.key = postKey;
+			}, function(response) {
+				console.log(response);
+			});
+		} else if(!postKey && $($event.target).data('changed')) {
+			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
+			
+			return;
 		}
 	};
 

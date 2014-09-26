@@ -1,0 +1,5 @@
+<script type="text/ng-template" id="postVideo.html">
+	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
+		<iframe width="100%" height="360" ng-src="[[post.key | safeYoutubeUrl ]]" frameborder="0" allowfullscreen ></iframe>
+	</div>
+</script>

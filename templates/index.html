@@ -2,7 +2,6 @@
 <html ng-app="posties" ng-controller="PageIndexCtrl" class="pageIndex">
 	{% include 'modules/head.html' %}
 	<body ng-style="{ 'background': userSettings.pagebackgroundcolor }" {% if current_user and current_user.is_authenticated() %} class="authenticated userOwnsPage" {% endif %}>
-
 		{% include 'modules/header.html' %}
 		<div id="body">
 			{% if not current_user.is_authenticated() %}
@@ -19,6 +18,7 @@
 				{% include 'modules/jsTemplates/postTextAuthenticated.html' %}
 				{% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
 				{% include 'modules/jsTemplates/postImageAuthenticated.html' %}
+				{% include 'modules/jsTemplates/postVideoAuthenticated.html' %}
 			{% endif %}
 		</div>
 

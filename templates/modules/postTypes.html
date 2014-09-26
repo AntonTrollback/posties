@@ -1,6 +1,5 @@
 <div class="block is-padded">
 	<button class="button is-large is-full" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes"><span class="icon is-plus"></span> Add content</button>
-
 	<ul class="postTypes" ng-show="showPostTypes" ng-cloak>
 		<li>
 			<button class="button addPostText" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="">Body text</button>
@@ -10,6 +9,9 @@
 		</li>
 		<li>
 			<label class="button addPostImage"><input class="hidden" type="file" accept="image/*" capture="camera" name="image" ng-file-select="savePostImage($files)" />Image</label>
+		</li>
+		<li>
+			<button class="button addPostVideo" ng-click="addPost($event)" data-type="3" data-template="postVideo.html" data-helptext="Paste your YouTube link here">YouTube video</button>
 		</li>
 	</ul>
 </div>

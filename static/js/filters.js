@@ -4,7 +4,7 @@ postiesApp.filter('getById', function () {
         for(; i < len; i++) {
             if(+input[i].id == +id) {
                 var item = input[i];
-                item['iteration'] = i;
+                item['index'] = i;
 
                 return item;
             }
@@ -13,3 +13,9 @@ postiesApp.filter('getById', function () {
         return null;
     }
 });
+postiesApp.filter('safeYoutubeUrl', ['$sce',
+  function($sce) {
+    return function(sourceId) {
+      return $sce.trustAsResourceUrl('//www.youtube.com/embed/' + sourceId);
+    }
+}]);

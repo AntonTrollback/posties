@@ -32,9 +32,22 @@ posties.util = (function() {
         }
     };
 
+    // Get the YouTube video ID from a URL. Supports multiple YouTube URL types, such as embed and watch.
+    // Will return false if the url parameter isn't a valid YouTube url
+    var getYouTubeVideoID = function(url) {
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if(match&&match[7].length==11) {
+            return match[7];
+        } else {
+            return false;
+        }
+    }
+
     return {
         swapItems : swapItems,
         getBase64Image : getBase64Image,
-        getArrayIndexBy : getArrayIndexBy
+        getArrayIndexBy : getArrayIndexBy,
+        getYouTubeVideoID : getYouTubeVideoID
     };
 }());

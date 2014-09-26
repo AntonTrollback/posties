@@ -240,6 +240,11 @@ input[type="checkbox"]:checked + span {
 	background-repeat: no-repeat;
 	background-position: center 17px;
 }
+.button.addPostVideo {
+	background-image: url('../img/iconAddVideo.png');
+	background-repeat: no-repeat;
+	background-position: center 14px;	
+}
 .button.addPostImage {
 	background-image: url('../img/iconAddImage.png');
 	background-repeat: no-repeat;
