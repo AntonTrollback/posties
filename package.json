@@ -23,8 +23,5 @@
     "grunt-suitcss": "^0.4.0",
     "load-grunt-tasks": "^0.6.0",
     "suitcss-preprocessor": "^0.3.0"
-  },
-  "dependencies": {
-    "normalize.css": "^3.0.1"
   }
 }
