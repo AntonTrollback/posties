@@ -8,7 +8,7 @@
 			</div>
 			<h3 ng-show="!post.isUploaded">Adding your image: <strong>[[post.uploadProgress]]</strong>%</h3>
 
-			<img ng-show="post.isUploaded" src="[[post.key]]" />
+			<img ng-show="post.isUploaded" ng-src="[[post.key]]">
 		</div>
 	</div>
 </script>
