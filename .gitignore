@@ -9,7 +9,7 @@ node_modules/
 bower_components/
 
 # Compiled files
-static/build
+#static/build
 *.pyc
 
 # OS generated files
