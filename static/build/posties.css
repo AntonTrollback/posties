@@ -1755,14 +1755,14 @@ input:-webkit-autofill {
  * Off content
  */
 
-.toggle input:checked + .toggle-handle:before,
-.toggle input[checked] + .toggle-handle:before {
+.toggle input:not(:checked) + .toggle-handle:before,
+.toggle input:not([checked]) + .toggle-handle:before {
   right: auto;
   left: 4px;
 }
 
-.toggle input:checked + .toggle-handle:after,
-.toggle input[checked] + .toggle-handle:after {
+.toggle input:not(:checked) + .toggle-handle:after,
+.toggle input:not([checked]) + .toggle-handle:after {
   content: "OFF";
   right: 10px;
   left: auto;
@@ -1808,8 +1808,7 @@ input:-webkit-autofill {
  */
 
 .post-text,
-.post-headline,
-.post-video {
+.post-headline {
   box-sizing: border-box;
   display: block;
   width: 100%;
@@ -1825,8 +1824,7 @@ input:-webkit-autofill {
   padding: 20px;
 }
 
-.post-headline,
-.post-video {
+.post-headline {
   font-size: 32px;
   padding: 17px 20px;
 }
