@@ -6,7 +6,7 @@
 			<a class="post-delete"href="#" ng-click="deletePost($index, post)" title="delete">×</a>
 		</div>
 		<form class="form createPostText">
-			<pre ng-blur="savePost($event, post)" class="post-text" data-changed="false" contenteditable ng-bind-html="post.content"  ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
+			<pre ng-blur="savePost($event, post)" class="post-text" data-changed="false" contenteditable ng-bind-html="post.content" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
 		</form>
 	</div>
 </script>
