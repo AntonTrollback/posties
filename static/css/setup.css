@@ -34,7 +34,7 @@
  */
 
 @import "./static/css/font.css";
-@import "normalize.css";
+@import "./static/css/normalize.css";
 @import "./static/css/base.css";
 @import "./static/css/colorpicker.css";
 @import "./static/css/main.css";
