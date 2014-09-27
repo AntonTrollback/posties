@@ -18,35 +18,29 @@ module.exports = function(grunt) {
     suitcss: {
       build: {
         files: {
-          'static/build/posties.css': ['static/css/setup.css']
+          'static/build/posties.css': 'static/css/setup.css'
         }
       }
     },
 
-    'string-replace': {
+    replace: {
       build: {
-        files: {
-          'static/build/posties.css': ['static/build/posties.css']
-        },
-        options: {
-          replacements: [
-            {
-              pattern: '../img/',
-              replacement: ''
-            },
-            {
-              pattern: '../font/',
-              replacement: ''
-            }
-          ]
-        }
+        src: ['static/build/*.css'],
+        overwrite: true,
+        replacements: [{
+          from: /..\/img\//ig,
+          to: ''
+        }, {
+          from: /..\/font\//ig,
+          to: ''
+        }]
       }
     },
 
     cssmin: {
       build: {
         files: {
-          'static/build/posties.css': ['static/build/posties.css']
+          'static/build/posties.css': 'static/build/posties.css'
         }
       }
     },
@@ -83,7 +77,7 @@ module.exports = function(grunt) {
     ngAnnotate: {
       dist: {
         files: {
-          'static/build/posties.js': ['static/build/posties.js']
+          'static/build/posties.js': 'static/build/posties.js'
         }
       }
     },
@@ -92,7 +86,7 @@ module.exports = function(grunt) {
       build: {
         preserveComments: false,
         files: {
-          'static/build/posties.js': ['static/build/posties.js']
+          'static/build/posties.js': 'static/build/posties.js'
         }
       }
     },
@@ -137,7 +131,7 @@ module.exports = function(grunt) {
     watch: {
       css: {
         files: ['static/css/**/*'],
-        tasks: ['suitcss', 'string-replace'],
+        tasks: ['suitcss', 'replace'],
         options: {
           spawn: false
         }
@@ -163,17 +157,17 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'suitcss',
-    'string-replace',
+    'replace',
     'cssmin',
     'copy',
-    'concat',
-    'ngAnnotate',
-    'uglify'
+    'concat'
   ]);
 
 
   grunt.registerTask('deploy', [
     'build',
+    'ngAnnotate',
+    'uglify',
     's3'
   ]);
 };
