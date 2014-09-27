@@ -18,7 +18,7 @@ TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['Akkurat', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
-application = Flask(__name__, static_folder='static')
+application = Flask(__name__, static_folder='static/build')
 application.config['SECRET_KEY'] = 'secretmonkey123'
 
 if IS_IN_PRODUCTION_MODE:
@@ -38,7 +38,7 @@ def load_user(id):
 		logout_user()
 
 ###############
-#  WEB VIEWS  #
+#	WEB VIEWS	#
 ###############
 @application.route('/', methods=['GET'])
 def index():
@@ -87,7 +87,7 @@ def logout():
 	return redirect(url_for('index'))
 
 ###############
-#  API CALLS  #
+#	API CALLS	#
 ###############
 @application.route('/api/users', methods=['GET'])
 def api_get_user_by_username():
@@ -138,15 +138,15 @@ def api_create_user():
 		for post in posts:
 			#create all posts that are paragraphs or headlines
 			if int(post['type']) == 0 or int(post['type']) == 1:
-				post = r.table(TABLE_POSTS).insert({ 
-					'content' : post['content'], 
+				post = r.table(TABLE_POSTS).insert({
+					'content' : post['content'],
 					'username' : username,
 					'sortrank' : post['sortrank'],
 					'type' : int(post['type']),
 					'created' : r.now()}).run(conn, return_changes = True)
 
 				result['posts'].append(post['changes'][0]['new_val'])
-			
+
 			#create all posts that are images
 			elif int(post['type']) == 2:
 				post = r.table(TABLE_POSTS).insert({
@@ -157,7 +157,7 @@ def api_create_user():
 					'created' : r.now()}).run(conn, return_changes = True)
 
 				result['posts'].append(post['changes'][0]['new_val'])
-			
+
 			#create all posts that are YouTube videos
 			elif int(post['type']) == 3:
 				post = r.table(TABLE_POSTS).insert({
@@ -210,10 +210,10 @@ def api_post_text():
 def api_post_video():
 	jsonData = request.json
 	key = jsonData['key']
-	
+
 	if request.method == 'POST':
-		result = r.table(TABLE_POSTS).insert({ 
-			'key' : key, 
+		result = r.table(TABLE_POSTS).insert({
+			'key' : key,
 			'username' : current_user.username,
 			'sortrank' : jsonData['sortrank'],
 			'type' : int(jsonData['type']),
@@ -378,8 +378,19 @@ def not_found(error):
 
 @application.errorhandler(401)
 def unauthorized(error):
-    response = {"error" : "permission denied"}
-    return json.dumps(response)
+		response = {"error" : "permission denied"}
+		return json.dumps(response)
+
+# UTILS
+@application.context_processor
+def utility_processor():
+	def asset_url_for(file):
+		if IS_IN_PRODUCTION_MODE:
+			return 'https://s3-eu-west-1.amazonaws.com/posties-images/assets/' + file
+		else:
+			return '/build/' + file
+
+	return dict(asset_url_for=asset_url_for)
 
 #NON VIEW METHODS
 def date_handler(obj):
@@ -397,4 +408,4 @@ def generate_safe_filename(username, filename):
 	return username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 
 if __name__ == '__main__':
-    application.run(host = '0.0.0.0', debug = not IS_IN_PRODUCTION_MODE)
+		application.run(host = '0.0.0.0', debug = not IS_IN_PRODUCTION_MODE)

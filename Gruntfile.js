@@ -5,9 +5,11 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   var pkg = grunt.file.readJSON('package.json');
+  var secret = grunt.file.readJSON('secret.json');
 
   grunt.initConfig({
     pkg: pkg,
+    secret: secret,
 
     /**
      * CSS related
@@ -111,6 +113,24 @@ module.exports = function(grunt) {
     },
 
     /**
+     * Deploy
+     */
+
+    s3: {
+      options: {
+        accessKeyId: '<%= secret.s3Key %>',
+        secretAccessKey: '<%= secret.s3Secret %>',
+        bucket: '<%= secret.s3Bucket %>',
+        region: '<%= secret.s3Region %>'
+      },
+      build: {
+        cwd: "static/build/",
+        src: "**",
+        dest: "assets/"
+      }
+    },
+
+    /**
      * Bind Grunt tasks
      */
 
@@ -149,5 +169,11 @@ module.exports = function(grunt) {
     'concat',
     'ngAnnotate',
     'uglify'
+  ]);
+
+
+  grunt.registerTask('deploy', [
+    'build',
+    's3'
   ]);
 };

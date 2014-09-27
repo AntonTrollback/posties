@@ -3,6 +3,7 @@ tmp/*
 .elasticbeanstalk/
 rethinkdb_data
 AWSDevTools
+secret.json
 
 # Libs
 node_modules/
