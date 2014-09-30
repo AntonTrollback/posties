@@ -201,7 +201,7 @@ def api_post_text():
 	elif request.method == 'PUT':
 		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
 			'content' : content
-			}).run(conn, return_changes = True);
+		}).run(conn, return_changes = True);
 
 	return jsonify(result['changes'][0]['new_val'])
 
@@ -221,7 +221,7 @@ def api_post_video():
 	elif request.method == 'PUT':
 		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
 			'key' : key
-			}).run(conn, return_changes = True);
+		}).run(conn, return_changes = True);
 
 	return jsonify(result['changes'][0]['new_val'])
 
@@ -245,6 +245,7 @@ def sign_s3():
 
 	# Generate the signature with which the request can be signed:
 	signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
+
 	# Remove surrounding whitespace and quote special characters:
 	signature = urllib.quote_plus(signature.strip())
 
@@ -304,7 +305,6 @@ def api_update_settings():
 	and len(page_background_color) is 7
 	and typeface_paragraph in WHITELIST_TYPEFACES
 	and typeface_headline in WHITELIST_TYPEFACES):
-
 		result = r.table(TABLE_USERS_SETTINGS).filter(
 			r.row['username'] == current_user.username).update({
 				'typefaceparagraph' : typeface_paragraph,
@@ -378,8 +378,8 @@ def not_found(error):
 
 @application.errorhandler(401)
 def unauthorized(error):
-		response = {"error" : "permission denied"}
-		return json.dumps(response)
+	response = {"error" : "permission denied"}
+	return json.dumps(response)
 
 # UTILS
 @application.context_processor
@@ -389,7 +389,6 @@ def utility_processor():
 			return 'https://s3-eu-west-1.amazonaws.com/posties-images/assets/' + file
 		else:
 			return '/build/' + file
-
 	return dict(asset_url_for=asset_url_for)
 
 #NON VIEW METHODS
@@ -402,10 +401,8 @@ def generate_safe_filename(username, filename):
 		fileExtension = fileExtension + os.path.splitext(filename)[1][1:].strip()
 	except Error:
 		fileExtension = ''
-
 	filename = secure_filename(filename)
-
 	return username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 
 if __name__ == '__main__':
-		application.run(host = '0.0.0.0', debug = not IS_IN_PRODUCTION_MODE)
+	application.run(host = '0.0.0.0', debug = not IS_IN_PRODUCTION_MODE)
