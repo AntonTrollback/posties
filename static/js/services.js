@@ -9,7 +9,9 @@ postiesApp.constant('config', {
     keySettings: 'postiesKeySettings'
 });
 
-postiesApp.service('SettingsService', function($http, config) {
+postiesApp.service('SettingsService', function($http, config, Fonts) {
+
+  var fonts = Fonts.getFonts();
 
 	this.isOpen = false;
 
@@ -60,7 +62,8 @@ postiesApp.service('SettingsService', function($http, config) {
     };
 
     this.open = function() {
-		    return this.isOpen = !this.isOpen;
+      fonts.loadAll();
+		  return this.isOpen = !this.isOpen;
     };
 
     this.close = function() {
@@ -204,4 +207,53 @@ postiesApp.service('FlashService', function($timeout) {
 		return flash;
 	}
 
+});
+
+
+postiesApp.service('Fonts', function($http, config) {
+  var fonts = {
+    fontList: FONTS,
+    fontListLoaded: false
+  }
+
+  WebFontConfig = {};
+
+  fonts.loadAll = function() {
+    if (fonts.fontListLoaded) {
+      return;
+    }
+
+    fonts.load(fonts.fontList);
+    fonts.fontListLoaded = true;
+  }
+
+  fonts.load = function(fonts) {
+    var cleanFonts = [];
+
+    for(item in fonts) {
+      if (fonts[item] !== 'Akkurat') {
+        cleanFonts.push(fonts[item] + '::latin')
+      }
+    }
+
+    var uniqueFonts = cleanFonts.filter(function(item, pos) {
+      return cleanFonts.indexOf(item) == pos;
+    });
+
+    if (uniqueFonts.length === 0) {
+      return;
+    }
+
+    console.log('Loaded fonts: ', uniqueFonts)
+
+    WebFont.load({
+      google: {
+        families: uniqueFonts
+      }
+    });
+  }
+
+  this.getFonts = function() {
+    return fonts;
+  }
 });

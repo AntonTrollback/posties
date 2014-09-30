@@ -25,8 +25,6 @@ $(function() {
     theme: 'default'
   });
 
-
-
   $navigators.on('click', function(e) {
     e.preventDefault();
     switchSection($(this).data('go-to-panel'));

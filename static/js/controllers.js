@@ -1,5 +1,5 @@
 postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize,
-	config, SettingsService, LoaderService, FlashService) {
+	config, SettingsService, LoaderService, FlashService, Fonts) {
 
 	$scope.posts = [];
 	$scope.userHasUploadedImage = false;
@@ -8,6 +8,9 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	$scope.userSettings = $scope.settingsService.getSettings();
 	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
+	$scope.fonts = Fonts.getFonts();
+
+	$scope.fonts.load([$scope.userSettings.typefaceparagraph, $scope.userSettings.typefaceheadline]);
 
 	var firstRun = true;
 	$scope.$watchCollection('userSettings', function() {
@@ -304,13 +307,14 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize, $filter,
 	config, UserService, SettingsService,
-	LoaderService, FlashService) {
+	LoaderService, FlashService, Fonts) {
 
 	$scope.posts = [];
 	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 	$scope.settingsService = SettingsService;
 	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
+	$scope.fonts = Fonts.getFonts();
 
 	var firstRun = true;
 	$scope.$watchCollection('userSettings', function() {
@@ -332,6 +336,10 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	//Fetch user posts
 	UserService.getUserWithPosts(username).then(function(data) {
 		$scope.userSettings = data.settings;
+
+		// Load fonts
+		$scope.fonts.load([data.settings.typefaceparagraph, data.settings.typefaceheadline]);
+
 		$scope.user = { 'username' : data.username, 'isAuthenticated' : data.is_authenticated };
 
 		for(i = 0; i < data.posts.length; i++) {
@@ -474,7 +482,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				key: postKey,
 				id: post.id
 			};
-			
+
 			$http({
 				url: '/api/postVideo',
 				method: 'put',
@@ -490,7 +498,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			});
 		} else if(!postKey && $($event.target).data('changed')) {
 			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
-			
+
 			return;
 		}
 	};

@@ -26,6 +26,11 @@
 			{% include 'modules/jsTemplates/postVideo.html' %}
 		{% endif %}
 
+		{% if current_user and current_user.is_authenticated() and user_owns_page %}
+			{% include 'modules/spinner.html' %}
+			{% include 'modules/modalSettings.html' %}
+		{% endif %}
+
 		{% include 'modules/footer.html' %}
 	</body>
 </html>

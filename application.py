@@ -12,14 +12,16 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 from hashlib import sha1
 
-#The production DB connection will only work from a EC2 server, and not locally
-IS_IN_PRODUCTION_MODE = False
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['Akkurat', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
+
 application = Flask(__name__, static_folder='static/build')
 application.config['SECRET_KEY'] = 'secretmonkey123'
+
+# The production DB connection will only work from a EC2 server, and not locally
+IS_IN_PRODUCTION_MODE = False
 
 if IS_IN_PRODUCTION_MODE:
 	conn = r.connect(host='ec2-54-77-148-4.eu-west-1.compute.amazonaws.com', port=28015, auth_key='c0penhagenrethink', db='posties')
@@ -42,10 +44,15 @@ def load_user(id):
 ###############
 @application.route('/', methods=['GET'])
 def index():
+
 	if current_user and current_user.is_authenticated():
 		return redirect("/by/" + current_user.username, code=302)
 	else:
-		return render_template('index.html', is_start_page = True)
+		return render_template(
+			'index.html',
+			is_start_page = True,
+			fonts = WHITELIST_TYPEFACES
+		)
 
 @application.route('/login', methods=['GET', 'POST'])
 def login():
@@ -68,6 +75,7 @@ def login():
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
+	fonts = WHITELIST_TYPEFACES
 	users = r.table(TABLE_USERS).filter(
 		(r.row['username'] == username)).run(conn)
 
@@ -77,7 +85,11 @@ def get_posts_by_username(username = None):
 		user_owns_page = username == current_user.username
 
 	for user in users:
-		return render_template('postsByUser.html', user_owns_page = user_owns_page)
+		return render_template(
+			'postsByUser.html',
+			user_owns_page = user_owns_page,
+			fonts = WHITELIST_TYPEFACES
+		)
 
 	abort(404)
 
@@ -405,4 +417,4 @@ def generate_safe_filename(username, filename):
 	return username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 
 if __name__ == '__main__':
-	application.run(host = '0.0.0.0', debug = not IS_IN_PRODUCTION_MODE)
+	application.run(host = '0.0.0.0', port = 5001, debug = not IS_IN_PRODUCTION_MODE)
