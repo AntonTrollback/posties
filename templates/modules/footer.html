@@ -1,6 +1,6 @@
 <script>FONTS = [{% for font in fonts %}'{{font}}',{% endfor %}];</script>
 <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
-<script src="{{ url_for('static', filename='posties.js') }}"></script>
+<script src="{{ asset_url_for('posties.js') }}"></script>
 
 <script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
