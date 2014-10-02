@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html ng-app="posties" ng-controller="PageIndexCtrl" class="pageIndex">
+<html ng-app="posties" ng-controller="PageIndexCtrl" class="pageIndex" ng-style="{ 'background': userSettings.pagebackgroundcolor }">
 	{% include 'modules/head.html' %}
-	<body ng-style="{ 'background': userSettings.pagebackgroundcolor }" {% if current_user and current_user.is_authenticated() %} class="authenticated userOwnsPage" {% endif %}>
+	<body class="site {% if current_user and current_user.is_authenticated() %} authenticated userOwnsPage {% endif %}">
 		{% include 'modules/header.html' %}
-		<div id="body">
+		<div class="site-container">
 			{% if not current_user.is_authenticated() %}
 				<ul id="posts">
 					<li ng-repeat="post in posts" data-id="[[post.id]]" data-rank="[[post.sortrank]]" class="post">

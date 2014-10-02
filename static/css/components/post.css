@@ -22,6 +22,10 @@
   color: inherit;
 }
 
+.post a:active {
+  opacity: 0.8;
+}
+
 /**
  * Post types
  */

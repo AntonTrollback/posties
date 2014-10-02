@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="posties" ng-controller="PageLoginCtrl" class="pageLogin">
 	{% include 'modules/head.html' %}
-	<body {% if current_user and current_user.is_authenticated() %} class="authenticated" {% endif %}>
+	<body class="site {% if current_user and current_user.is_authenticated() %}authenticated{% endif %}">
 
 		{% include 'modules/header.html' %}
-		<div id="body">
+		<div class="site-container">
 			<div class="editorial">
 				<h2>Login</h2>
 				<form name="formLogin" class="form" method="post" ng-submit="submitLogin(userSettings)">
