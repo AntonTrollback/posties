@@ -10,19 +10,18 @@
 
 ## Deploy
 - Run `npm run deploy`
-- See below how it works
 
 ### How the deploy script works
 The `npm run deploy` command triggers a chain of CLI commands. In short:
-1. Build the font end folder
-2. Minify and uglify CSS and Javascript
-3. Upload the build folder to Amazon S3
-4. Set the environment varable in `config.json` to `prod`
-5. Add a revision number `config.json`
-6. Commit the changes to `config.json`
-7. Push to AWS
-8. Remove the commit that just got created
-9. Empty the revision number and set the environment varable to `dev`, in `config.json`
+ 1. Build the font end folder
+ 2. Minify and uglify CSS and Javascript
+ 3. Upload the build folder to Amazon S3
+ 4. Set the environment varable in `config.json` to `prod`
+ 5. Add a revision number `config.json`
+ 6. Commit the changes to `config.json`
+ 7. Push to AWS
+ 8. Remove the commit that just got created
+ 9. Empty the revision number and set the environment varable to `dev`, in `config.json`
 
 ## Setting up EB/AWS Tools on your computer
 - Download AWSDevTools from Amazon
