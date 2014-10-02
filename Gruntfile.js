@@ -4,36 +4,18 @@ module.exports = function(grunt) {
 
   require('load-grunt-tasks')(grunt);
 
-  var pkg = grunt.file.readJSON('package.json');
-  var secret = grunt.file.readJSON('secret.json');
+  var config = grunt.file.readJSON('config.json');
+  var revistion = Math.random().toString(36).substr(2);
 
   grunt.initConfig({
-    pkg: pkg,
-    secret: secret,
-
-    /**
-     * CSS related
-     */
+    config: config,
+    revistion: revistion,
 
     suitcss: {
       build: {
         files: {
           'static/build/posties.css': 'static/css/setup.css'
         }
-      }
-    },
-
-    replace: {
-      build: {
-        src: ['static/build/*.css'],
-        overwrite: true,
-        replacements: [{
-          from: /..\/img\//ig,
-          to: ''
-        }, {
-          from: /..\/font\//ig,
-          to: ''
-        }]
       }
     },
 
@@ -112,15 +94,73 @@ module.exports = function(grunt) {
 
     s3: {
       options: {
-        accessKeyId: '<%= secret.s3Key %>',
-        secretAccessKey: '<%= secret.s3Secret %>',
-        bucket: '<%= secret.s3Bucket %>',
-        region: '<%= secret.s3Region %>'
+        accessKeyId: '<%= config.s3.key %>',
+        secretAccessKey: '<%= config.s3.secret %>',
+        bucket: '<%= config.s3.bucket %>',
+        region: '<%= config.s3.region %>',
+        headers: {
+          CacheControl: 'public, max-age=31377926' // one year
+        }
       },
       build: {
         cwd: "static/build/",
         src: "**",
         dest: "assets/"
+      }
+    },
+
+    replace: {
+      css: {
+        src: ['static/build/*.css'],
+        overwrite: true,
+        replacements: [{
+          from: /..\/img\//ig,
+          to: ''
+        }, {
+          from: /..\/font\//ig,
+          to: ''
+        }]
+      },
+      setProd: {
+        src: ['config.json'],
+        overwrite: true,
+        replacements: [{
+          from: '"environment": "dev"',
+          to: '"environment": "prod"'
+        }, {
+          from: '"revision": ""',
+          to: '"revision": "<%= revistion %>"'
+        }]
+      },
+      setDev: {
+        src: ['config.json'],
+        overwrite: true,
+        replacements: [{
+          from: '"environment": "prod"',
+          to: '"environment": "dev"'
+        }, {
+          from: '"revision": "<%= config.revision %>"',
+          to: '"revision": ""'
+        }]
+      }
+    },
+
+    rename: {
+      jsProd: {
+        src: 'static/build/posties.js',
+        dest: 'static/build/posties.<%= revistion %>.js'
+      },
+      cssProd: {
+        src: 'static/build/posties.css',
+        dest: 'static/build/posties.<%= revistion %>.css'
+      },
+      jsDev: {
+        src: 'static/build/posties.<%= config.revision %>.js',
+        dest: 'static/build/posties.js'
+      },
+      cssDev: {
+        src: 'static/build/posties.<%= config.revision %>.css',
+        dest: 'static/build/posties.css'
       }
     },
 
@@ -131,7 +171,7 @@ module.exports = function(grunt) {
     watch: {
       css: {
         files: ['static/css/**/*'],
-        tasks: ['suitcss', 'replace'],
+        tasks: ['suitcss', 'replace:css'],
         options: {
           spawn: false
         }
@@ -157,7 +197,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'suitcss',
-    'replace',
+    'replace:css',
     'cssmin',
     'copy',
     'concat'
@@ -168,6 +208,19 @@ module.exports = function(grunt) {
     'build',
     'ngAnnotate',
     'uglify',
-    's3'
+    'setProd',
+    's3',
+  ]);
+
+  grunt.registerTask('setProd', [
+    'replace:setProd',
+    'rename:jsProd',
+    'rename:cssProd'
+  ]);
+
+  grunt.registerTask('setDev', [
+    'replace:setDev',
+    'rename:jsDev',
+    'rename:cssDev'
   ]);
 };

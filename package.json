@@ -7,7 +7,7 @@
   "repository": "https://github.com/sunmer/posties",
   "scripts": {
     "build": "grunt build",
-    "deploy": "grunt deploy; git aws.push",
+    "deploy": "grunt deploy; git aws.push; grunt setDev",
     "watch": "grunt watch"
   },
   "devDependencies": {
@@ -21,6 +21,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-ng-annotate": "^0.4.0",
     "grunt-notify": "^0.3.1",
+    "grunt-rename": "^0.1.4",
     "grunt-suitcss": "^0.4.0",
     "grunt-text-replace": "^0.3.12",
     "load-grunt-tasks": "^0.6.0",

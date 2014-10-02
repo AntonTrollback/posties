@@ -1,0 +1,31 @@
+{
+  "environment": "dev",
+  "revision": "",
+  "flask": {
+    "key": "secretmonkey123"
+  },
+  "database": {
+    "dev": {
+      "host": "localhost",
+      "port": "28015",
+      "db": "posties",
+      "key": ""
+    },
+    "prod": {
+      "host": "ec2-54-77-148-4.eu-west-1.compute.amazonaws.com",
+      "port": "28015",
+      "db": "posties",
+      "key": "c0penhagenrethink"
+    }
+  },
+  "aws": {
+    "access_key": "AKIAJK3UN2XK7GJREFWA",
+    "secret_key": "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"
+  },
+  "s3": {
+    "key": "AKIAJK3UN2XK7GJREFWA",
+    "secret": "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",
+    "bucket": "posties-images",
+    "region": "eu-west-1"
+  }
+}

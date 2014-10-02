@@ -1,32 +1,34 @@
 import os
 import base64
+import time, json, string, random, os, base64, hmac, urllib
+import rethinkdb as r
+
 from flask import Flask
 from flask import Response, render_template, session, abort, redirect, request, url_for, jsonify, make_response
 from flask.ext import login
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
-from user import User
-import time, json, string, random, os, base64, hmac, urllib
-import rethinkdb as r
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 from hashlib import sha1
+
+from user import User
+
+CONFIG = json.load(open('config.json'))
+ENV = CONFIG["environment"]
+DB_CONFIG = CONFIG["database"][ENV]
+PRODUCTION = True if ENV == 'prod' else False
+REVISION = CONFIG["revision"]
+print('Running in ' + ENV + ' mode.')
 
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['Akkurat', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
 
+conn = r.connect(host=DB_CONFIG["host"].encode('utf-8'), port=DB_CONFIG["port"].encode('utf-8'), auth_key=DB_CONFIG["key"].encode('utf-8'), db=DB_CONFIG["db"].encode('utf-8'))
 application = Flask(__name__, static_folder='static/build')
-application.config['SECRET_KEY'] = 'secretmonkey123'
-
-# The production DB connection will only work from a EC2 server, and not locally
-IS_IN_PRODUCTION_MODE = False
-
-if IS_IN_PRODUCTION_MODE:
-	conn = r.connect(host='ec2-54-77-148-4.eu-west-1.compute.amazonaws.com', port=28015, auth_key='c0penhagenrethink', db='posties')
-else:
-	conn = r.connect(host='localhost', port=28015, auth_key='', db='posties')
+application.config['SECRET_KEY'] = CONFIG["flask"]["key"].encode('utf-8')
 
 login_manager = login.LoginManager()
 login_manager.init_app(application)
@@ -239,10 +241,6 @@ def api_post_video():
 
 @application.route('/api/sign_upload_url', methods=['GET'])
 def sign_s3():
-	# Load necessary information into the application:
-	AWS_ACCESS_KEY = 'AKIAJK3UN2XK7GJREFWA'
-	AWS_SECRET_KEY = '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'
-	S3_BUCKET = 'posties-images'
 
 	# Collect information on the file from the GET parameters of the request:
 	object_name = urllib.quote_plus(request.args.get('s3_object_name'))
@@ -253,10 +251,10 @@ def sign_s3():
 	amz_headers = "x-amz-acl:public-read"
 
 	# Generate the PUT request that JavaScript will use:
-	put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
+	put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, CONFIG["s3"]["bucket"], object_name)
 
 	# Generate the signature with which the request can be signed:
-	signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
+	signature = base64.encodestring(hmac.new(CONFIG["aws"]["secret_key"], put_request, sha1).digest())
 
 	# Remove surrounding whitespace and quote special characters:
 	signature = urllib.quote_plus(signature.strip())
@@ -265,7 +263,7 @@ def sign_s3():
 	url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
 
 	content = json.dumps({
-		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
+		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, CONFIG["aws"]["access_key"], expires, signature),
 		'url': url
 	})
 
@@ -396,11 +394,16 @@ def unauthorized(error):
 # UTILS
 @application.context_processor
 def utility_processor():
-	def asset_url_for(file):
-		if IS_IN_PRODUCTION_MODE:
-			return 'https://s3-eu-west-1.amazonaws.com/posties-images/assets/' + file
+	def asset_url_for(file, extension, add_revision=True):
+
+		if PRODUCTION:
+			url = 'https://s3-eu-west-1.amazonaws.com/' + CONFIG["s3"]["bucket"] + '/assets/'
+			if add_revision:
+				return url + file + '.' + REVISION + '.' + extension
+			else:
+				return url + file + '.' + extension
 		else:
-			return '/build/' + file
+			return '/build/' + file + '.' + extension
 	return dict(asset_url_for=asset_url_for)
 
 #NON VIEW METHODS
@@ -417,4 +420,4 @@ def generate_safe_filename(username, filename):
 	return username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 
 if __name__ == '__main__':
-	application.run(host = '0.0.0.0', port = 5001, debug = not IS_IN_PRODUCTION_MODE)
+	application.run(host = '0.0.0.0', port = 5000, debug = not PRODUCTION)
