@@ -496,7 +496,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			}, function(response) {
 				console.log(response);
 			});
-		} else if(!videoURL && $($event.target).data('changed')) {
+		} else {
 			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
 
 			return;
