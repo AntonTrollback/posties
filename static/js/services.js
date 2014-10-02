@@ -231,7 +231,7 @@ postiesApp.service('Fonts', function($http, config) {
     var cleanFonts = [];
 
     for(item in fonts) {
-      if (fonts[item] !== 'Akkurat') {
+      if (fonts[item] !== 'Akkurat' && fonts[item] !== 'sans-serif') {
         cleanFonts.push(fonts[item] + '::latin')
       }
     }
