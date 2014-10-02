@@ -198,7 +198,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'suitcss',
     'replace:css',
-    'cssmin',
     'copy',
     'concat'
   ]);
@@ -206,6 +205,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     'build',
+    'cssmin',
     'ngAnnotate',
     'uglify',
     'setProd',
