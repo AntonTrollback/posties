@@ -1,12 +1,41 @@
-## User interface code
-
-**Setup**
+## Setup
+- Setup the python app (todo: add steps)
+- Setup the EB/AWS Tools (see below)
 - Install [node.js](http://nodejs.org/)
-- run `sudo npm install` and `bower install` in repo dir
+- Run `sudo npm install` and `sudo bower install` in repo dir
+- Build the front end code (`static/build`) by running: `npm run build`
 
-**Develop**
-- Build the `static/build` folder by running: `npm run build`
-- Build when files change: `npm run watch`
+## Develop
+- Rebuild when files change: `npm run watch`
+
+## Deploy
+- Run `npm run deploy`
+- See below how it works
+
+### How the deploy script works
+The `npm run deploy` command triggers a chain of CLI commands. In short:
+1. Build the font end folder
+2. Minify and uglify CSS and Javascript
+3. Upload the build folder to Amazon S3
+4. Set the environment varable in `config.json` to `prod`
+5. Add a revision number `config.json`
+6. Commit the changes to `config.json`
+7. Push to AWS
+8. Remove the commit that just got created
+9. Empty the revision number and set the environment varable to `dev`, in `config.json`
+
+## Setting up EB/AWS Tools on your computer
+- Download AWSDevTools from Amazon
+- CD to your posties repo in the command line
+- Run the command `sudo [PATH_TO_ELASTIC_BEANSTALK]/elasticbeanstalk-cli/AWSDevTools/[Linux or Windows]/AWSDevTools-RepositorySetup.sh`
+- If there's an error in the above step, make sure you create a ~/.bash_profile` and add the following two lines:
+  - `export LC_ALL=en_US.UTF-8`
+  - `export LANG=en_US.UTF-8`
+- Then run the command `git aws.config`
+- Enter AWS Access Key, AWS Secret Key, AWS Region, and enter the existing name of your AWS Application and AWS Environment.
+- Now you can `git add`, `git commit` as usual, and use `git aws.push` to push to your EB environment
+- Now get the correct pem files from Nima
+- Copy the pem files to the folder `~/.ssh/` (create the folder if it doesn't exist)
 
 ## Ajax
 **Create user**
@@ -44,19 +73,6 @@ r.db('posties').table('users').delete();
 r.db('posties').table('posts').delete();
 r.db('posties').table('users_settings').delete();
 ```
-
-## Setting up EB / AWS Tools on your computer
-- Download AWSDevTools from Amazon
-- CD to your posties repo in the command line
-- Run the command `sudo [PATH_TO_ELASTIC_BEANSTALK]/elasticbeanstalk-cli/AWSDevTools/[Linux or Windows]/AWSDevTools-RepositorySetup.sh`
-- If there's an error in the above step, make sure you create a ~/.bash_profile` and add the following two lines:
-  - `export LC_ALL=en_US.UTF-8`
-  - `export LANG=en_US.UTF-8`
-- Then run the command `git aws.config`
-- Enter AWS Access Key, AWS Secret Key, AWS Region, and enter the existing name of your AWS Application and AWS Environment.
-- Now you can `git add`, `git commit` as usual, and use `git aws.push` to push to your EB environment
-- Now get the correct pem files from Nima
-- Copy the pem files to the folder `~/.ssh/` (create the folder if it doesn't exist)
 
 ## S3 Policy FOR IAM USER POSTIES
 ```
