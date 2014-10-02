@@ -43,13 +43,19 @@
   padding: 20px;
 }
 
+.post-video {
+  font-size: 18px;
+  padding: 20px;
+}
+
 .post-headline {
   font-size: 32px;
   padding: 17px 20px;
 }
 
 .post-inner.is-unboxed .post-text,
-.post-inner.is-unboxed .post-headline {
+.post-inner.is-unboxed .post-headline,
+.post-inner.is-unboxed .post-video {
   padding: 10px;
 }
 
@@ -62,12 +68,14 @@
     padding: 34px 32px;
   }
 
-  .post-headline {
+  .post-headline,
+  .post-video {
     padding: 28px 32px;
   }
 
   .post-inner.is-unboxed .post-text,
-  .post-inner.is-unboxed .post-headline {
+  .post-inner.is-unboxed .post-headline,
+  .post-inner.is-unboxed .post-video {
     padding: 10px 32px;
   }
 
