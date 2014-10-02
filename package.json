@@ -1,5 +1,4 @@
 {
-  "name": "posties",
   "version": "0.0.1",
   "description": "Posti.es",
   "author": "Posti.es",
@@ -7,7 +6,7 @@
   "repository": "https://github.com/sunmer/posties",
   "scripts": {
     "build": "grunt build",
-    "deploy": "grunt deploy; git aws.push; grunt setDev",
+    "deploy": "grunt deploy; git add .; git commit -m 'Temp: prepair for prod'; git aws.push; git reset HEAD~1; grunt setDev",
     "watch": "grunt watch"
   },
   "devDependencies": {
