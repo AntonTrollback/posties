@@ -34,16 +34,17 @@
  */
 
 @import "./static/css/font.css";
-@import "./static/css/normalize.css";
+@import "normalize.css";
 @import "./static/css/base.css";
-@import "./static/css/colorpicker.css";
 @import "./static/css/main.css";
-@import "./static/css/button.css";
-@import "./static/css/toggle.css";
-@import "./static/css/block.css";
-@import "./static/css/post.css";
-@import "./static/css/icon.css";
-@import "./static/css/panel.css";
-@import "./static/css/modal.css";
-@import "./static/css/popover.css";
 @import "./static/css/devices.css";
+
+@import "./static/css/components/colorpicker.css";
+@import "./static/css/components/button.css";
+@import "./static/css/components/toggle.css";
+@import "./static/css/components/block.css";
+@import "./static/css/components/post.css";
+@import "./static/css/components/icon.css";
+@import "./static/css/components/panel.css";
+@import "./static/css/components/modal.css";
+@import "./static/css/components/popover.css";
