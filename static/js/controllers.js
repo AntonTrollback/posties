@@ -87,18 +87,16 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	};
 
 	$scope.savePostVideo = function($event, post) {
-		if($($event.target).data('changed')) {
-			$($event.target).data('changed', false);
+		$event.target.innerHTML = $event.target.innerHTML.replace(post.helpText, "");
+		var videoURL = posties.util.getYouTubeVideoID($sanitize($event.originalEvent.clipboardData.getData('text/plain')));
+		if(videoURL) {
+			post.key = videoURL;
+			post.isValidVideo = true;
+			$scope.flash.showMessage('saved...');
+		} else {
+			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
 
-			post.key = posties.util.getYouTubeVideoID($event.target.innerHTML);
-			if(post.key) {
-				$scope.flash.showMessage('saved...');
-				post.isValidVideo = true;
-			} else {
-				$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
-
-				return;
-			}
+			return;
 		}
 	};
 
@@ -474,12 +472,14 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	};
 
 	$scope.savePostVideo = function($event, post) {
-		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
-		var postKey = posties.util.getYouTubeVideoID($sanitize($event.target.innerHTML));
+		$event.target.innerHTML = $event.target.innerHTML.replace(post.helpText, "");
+		var videoURL = posties.util.getYouTubeVideoID($sanitize($event.originalEvent.clipboardData.getData('text/plain')));
 
-		if(postKey && $($event.target).data('changed')) {
+		if(videoURL) {
+			$event.target.innerHTML = videoURL;
+
 			var jsonPost = {
-				key: postKey,
+				key: videoURL,
 				id: post.id
 			};
 
@@ -492,11 +492,11 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				$($event.target).data('changed', false);
 				$scope.flash.showMessage('saved...');
 				post.isValidVideo = true;
-				post.key = postKey;
+				post.key = videoURL;
 			}, function(response) {
 				console.log(response);
 			});
-		} else if(!postKey && $($event.target).data('changed')) {
+		} else if(!videoURL && $($event.target).data('changed')) {
 			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
 
 			return;
