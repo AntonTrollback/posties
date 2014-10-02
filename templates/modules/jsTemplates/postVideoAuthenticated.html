@@ -5,7 +5,7 @@
 			<a class="post-down" ng-click="movePost($index, $index + 1)" title="move down">&#x25BC;</a>
 			<a href="#" ng-click="deletePost($index, post)" class="post-delete" title="delete">×</a>
 		</div>
-		<pre ng-show="!post.isValidVideo" ng-blur="savePostVideo($event, post)" class="post-video" data-changed="false" contenteditable ng-bind="post.helpText ? post.helpText : post.key" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
+		<pre ng-show="!post.isValidVideo" ng-paste="savePostVideo($event, post)" class="post-video" data-changed="false" contenteditable ng-bind="post.helpText ? post.helpText : post.key" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
 		<iframe ng-show="post.isValidVideo" width="100%" height="360" ng-src="[[post.key | safeYoutubeUrl ]]" frameborder="0" allowfullscreen></iframe>
 	</div>
 </script>
