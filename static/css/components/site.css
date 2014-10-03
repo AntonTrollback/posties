@@ -10,10 +10,9 @@
   box-sizing: border-box;
   width: 100%;
   margin: 0 auto;
-  padding: 0 11px 4em;
+  padding: 0 8px 80px;
   min-width: 270px;
   max-width: 568px;
-  padding-top: 50px;
 }
 
 @media (--lg-viewport) {
