@@ -43,6 +43,20 @@
   background: #f2f2f2;
 }
 
+.panel-item.is-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.panel-item.is-disabled .panel-item-chevron,
+.panel-item.is-disabled .panel-item-preview {
+  display: none;
+}
+
+.panel-item.is-disabled .panel-item-text {
+  opacity: 0.3;
+}
+
 /**
  * Chevron with white gradient background
  */

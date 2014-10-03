@@ -7,6 +7,15 @@ $(function() {
     $('#'+ id).show();
   }
 
+  function disableBoxColor() {
+    console.log($('#showBoxes').is(':checked'))
+    if ($('#showBoxes').is(':checked')) {
+      $('[data-go-to-panel="panelBoxColor"]').removeClass('is-disabled');
+    } else {
+      $('[data-go-to-panel="panelBoxColor"]').addClass('is-disabled');
+    }
+  }
+
   $panels.find('.minicolors').minicolors('create', {
     animationSpeed: 50,
     animationEasing: 'swing',
@@ -34,4 +43,10 @@ $(function() {
     $(this).siblings().removeClass('is-active');
     $(this).addClass('is-active');
   });
+
+  $('#showBoxes').on('change', function(e) {
+    disableBoxColor();
+  });
+
+  window.setTimeout(disableBoxColor, 300)
 });
