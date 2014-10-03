@@ -53,13 +53,14 @@ def index():
 		return render_template(
 			'index.html',
 			is_start_page = True,
-			fonts = WHITELIST_TYPEFACES
+			fonts = WHITELIST_TYPEFACES,
+			in_production = PRODUCTION
 		)
 
 @application.route('/login', methods=['GET', 'POST'])
 def login():
 	if request.method == 'GET':
-		return render_template('login.html')
+		return render_template('login.html', in_production = PRODUCTION, fonts = False)
 	elif request.method == 'POST':
 		jsonData = request.json
 		email = jsonData['email'].lower()
@@ -77,7 +78,6 @@ def login():
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
-	fonts = WHITELIST_TYPEFACES
 	users = r.table(TABLE_USERS).filter(
 		(r.row['username'] == username)).run(conn)
 
@@ -90,7 +90,8 @@ def get_posts_by_username(username = None):
 		return render_template(
 			'postsByUser.html',
 			user_owns_page = user_owns_page,
-			fonts = WHITELIST_TYPEFACES
+			fonts = WHITELIST_TYPEFACES,
+			in_production = PRODUCTION
 		)
 
 	abort(404)
@@ -384,7 +385,7 @@ def api_delete_post():
 #STATUS CODE HANDLERS AND ERROR PAGES
 @application.errorhandler(404)
 def not_found(error):
-	return render_template('errorPageNotFound.html')
+	return render_template('errorPageNotFound.html', in_production = PRODUCTION, fonts = False)
 
 @application.errorhandler(401)
 def unauthorized(error):
@@ -397,11 +398,7 @@ def utility_processor():
 	def asset_url_for(file, extension, add_revision=True):
 
 		if PRODUCTION:
-			url = 'https://s3-eu-west-1.amazonaws.com/' + CONFIG["s3"]["bucket"] + '/assets/'
-			if add_revision:
-				return url + file + '.' + REVISION + '.' + extension
-			else:
-				return url + file + '.' + extension
+			return '/build/' + file + '.' + extension
 		else:
 			return '/build/' + file + '.' + extension
 	return dict(asset_url_for=asset_url_for)
