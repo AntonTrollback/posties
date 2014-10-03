@@ -1,6 +1,7 @@
-<div id="closeOverlays" ng-show="settingsService.isOpen" ng-click="settingsService.close()"></div>
-
-<div class="popover updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
+<div class="popover is-customize updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
+	<div class="popover-arrow">
+		{% include 'modules/inlineSvg/popoverArrow.html' %}
+	</div>
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
 		<div class="panel is-active" id="panelPrimary">
 
@@ -40,7 +41,7 @@
 
 			<!-- Links to color panels -->
 
-			<a class="panel-item" data-go-to-panel="panelBoxColor">
+			<a class="panel-item" data-go-to-panel="panelBoxColor" ng-class="userSettings.showboxes ? '' : 'is-disabled'">
 				<span class="panel-item-text">Box color</span>
 				<span class="panel-item-preview" style="background-color: [[userSettings.postbackgroundcolor]]"></span>
 				<div class="panel-item-chevron is-transparent"></div>

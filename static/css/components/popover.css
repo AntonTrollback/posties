@@ -1,0 +1,135 @@
+:root {
+  --popover-header-height: 55px;
+  --popover-header-height-lg: 58px;
+}
+
+.popover {
+  position: absolute;
+  z-index: 10;
+  background: #fff;
+  box-shadow: 2px 2px 30px rgba(0, 0, 0, .2);
+  color: var(--color-text-light);
+  font-size: 13px;
+  user-select: none;
+}
+
+@media (--lg-viewport) {
+  .popover {
+    font-size: 15px;
+  }
+}
+
+.popover-arrow {
+  content: "";
+  position: absolute;
+  top: -12px;
+  width: 29px;
+  height: 14px;
+  right: calc(50% - 14px);
+}
+
+.popover-arrow path {
+  fill: #fff;
+}
+
+/**
+ * Header and body sections
+ */
+
+.popover-header {
+  box-sizing: border-box;
+  position: relative;
+  padding: 0.7em 1.2em;
+  cursor: default;
+  border-bottom: 1px solid var(--color-divider);
+  height: var(--popover-header-height);
+}
+
+@media (--lg-viewport) {
+  .popover-header {
+    height: var(--popover-header-height-lg);
+  }
+}
+
+.popover-body {
+  box-sizing: border-box;
+  position: relative;
+  padding: 1.55em 1.2em;
+  cursor: default;
+}
+
+/**
+ * Scrollable section
+ */
+
+.popover-scroll {
+  overflow: auto;
+}
+
+/**
+ * Navigation list
+ */
+
+.popover-nav {
+
+}
+
+.popover-nav a {
+  display: block;
+  text-decoration: none;
+  padding: 0.8em 1.2em 0;
+}
+
+.popover-nav li:last-child a {
+  display: block;
+  text-decoration: none;
+  padding-bottom: 0.8em;
+}
+
+/**
+ * Tweak dimension and position based on state
+ */
+
+.popover.is-nav,
+.popover.is-customize {
+  top: 59px;
+  right: 7px;
+}
+
+.popover.is-nav .popover-arrow {
+  right: 9px;
+}
+
+.popover.is-customize {
+  width: 90%;
+  max-width: 17em;
+}
+
+.popover.is-customize .popover-arrow {
+  right: 50px;
+}
+
+.popover.is-customize .popover-scroll {
+  /* Kinda like: popover header + popover top position + some bottom spacing */
+  max-height: calc(100vh - 123px);
+}
+
+@media (--md-viewport) {
+  .popover.is-nav,
+  .popover.is-customize {
+    top: 71px;
+    right: 11px;
+  }
+
+  .popover.is-nav .popover-arrow {
+    right: 15px;
+  }
+
+  .popover.is-customize .popover-arrow {
+    right: 61px;
+  }
+
+  .popover.is-customize .popover-scroll {
+    max-height: calc(100vh - 141px);
+  }
+}

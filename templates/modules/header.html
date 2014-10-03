@@ -1,28 +1,37 @@
-<div id="flash">
-	<a class="close" ng-click="flash.hide()">×</a>
-	<pre>[[flash.message]]</pre>
+<div class="clearfix">
+	<div class="header">
+
+		<button class="header-action is-logo" ng-class="showNavigation ? 'is-active' : ''" ng-click="showNavigation = !showNavigation">
+			{% include 'modules/inlineSvg/logo.html' %}
+		</button>
+
+		{% if is_start_page or (current_user and current_user.is_authenticated()) %}
+			<button class="header-action is-customize" ng-class="settingsService.isOpen ? 'is-active' : ''" ng-click="settingsService.open(); showNavigation = false">
+				{% include 'modules/inlineSvg/sliders.html' %}
+			</button>
+		{% endif %}
+
+		{% if current_user and current_user.is_authenticated() %}
+			<a class="header-action is-link" href="/by/{{current_user.username}}">{{current_user.username}}</a>
+		{% endif %}
+
+		<nav class="popover is-nav" ng-show="showNavigation" ng-cloak>
+			<div class="popover-arrow">
+				{% include 'modules/inlineSvg/popoverArrow.html' %}
+			</div>
+			<ul class="popover-nav">
+				{% if current_user and current_user.is_authenticated() %}
+					<li><a href="/logout">Sign out</a></li>
+				{% else %}
+					<li><a href="/login">Login</a></li>
+				{% endif %}
+				<li><a href="http://posti.es/by/posties" target="_blank">About Posti.es</a></li>
+			</ul>
+		</nav>
+	</div>
+
+	<div id="flash">
+		<a class="close" ng-click="flash.hide()">×</a>
+		<pre>[[flash.message]]</pre>
+	</div>
 </div>
-
-<header>
-	<a id="logo" ng-click="showMenuTop = !showMenuTop">&nbsp;</a>
-	{% if is_start_page or (current_user and current_user.is_authenticated()) %}
-		<a id="customize" ng-click="settingsService.open(); showMenuTop = false" ng-class="settingsService.isOpen ? 'active' : ''"></a>
-	{% endif %}
-
-	{% if current_user and current_user.is_authenticated() %}
-		<a class="username" href="/by/{{current_user.username}}">{{current_user.username}}</a>
-		<div class="menu" ng-show="showMenuTop" ng-cloak>
-			<ul>
-				<li><a href="/logout">Sign out</a></li>
-				<li><a href="http://getposties.tumblr.com/what-is-posties" target="blank">About Posti.es</a></li>
-			</ul>
-		</div>
-	{% else %}
-		<div class="menu" ng-show="showMenuTop" ng-cloak>
-			<ul>
-				<li><a href="/login">Login</a></li>
-				<li><a href="http://getposties.tumblr.com/what-is-posties" target="blank">About Posti.es</a></li>
-			</ul>
-		</div>
-	{% endif %}
-</header>

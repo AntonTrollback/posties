@@ -15,7 +15,7 @@
   box-sizing: border-box;
   display: block;
   width: 100%;
-  min-height: 2.85em;
+  min-height: 3em;
   padding: 0 0 0 1.2em;
   border: 0;
   border-bottom: 1px solid var(--color-divider);
@@ -30,12 +30,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-@media (--lg-viewport) {
-  .panel-item {
-    min-height: 3em;
-  }
-}
-
 /* States */
 
 .panel-item:hover,
@@ -47,6 +41,20 @@
 
 .panel-item.is-active {
   background: #f2f2f2;
+}
+
+.panel-item.is-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.panel-item.is-disabled .panel-item-chevron,
+.panel-item.is-disabled .panel-item-preview {
+  display: none;
+}
+
+.panel-item.is-disabled .panel-item-text {
+  opacity: 0.3;
 }
 
 /**
@@ -124,13 +132,6 @@
 }
 
 .panel-item-toggle {
-  margin: 0.47em 0.85em;
+  margin: 0.53em 0.85em;
   float: right;
-}
-
-@media (--lg-viewport) {
-  .panel-item-toggle {
-    margin: 0.53em 0.85em;
-    float: right;
-  }
 }

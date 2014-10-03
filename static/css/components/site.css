@@ -1,0 +1,22 @@
+/**
+ * Primary site layout
+ */
+
+.site {
+  position: relative;
+}
+
+.site-container {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 8px 80px;
+  min-width: 270px;
+  max-width: 568px;
+}
+
+@media (--lg-viewport) {
+  .site-container {
+    max-width: 750px;
+  }
+}
