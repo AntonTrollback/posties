@@ -29,26 +29,36 @@
   }
 }
 
-.header-action.is-logo,
-.header-action.is-customize {
-  overflow: hidden;
-  text-indent: -200%;
-  color: transparent;
-}
+/* Logo */
 
 .header-action.is-logo {
-  background-image: url('../img/logo@2x.png');
+
 }
 
-.header-action.is-customize {
-  background-image: url('../img/iconCustomizeActive@2x.png');
-  opacity: 0.6;
+.header-action.is-logo path:first-child {
+  fill: var(--color-element-light);
 }
+
+.header-action.is-logo.is-active path:first-child {
+  fill: var(--color-element-dark);
+}
+
+/* Customize */
+
+.header-action.is-customize {
+  padding: 4px;
+}
+
+.header-action.is-customize path {
+  fill: var(--color-element-light);
+}
+
+.header-action.is-customize.is-active path {
+  fill: var(--color-element-dark);
+}
+
+/* User link */
 
 .header-action.is-link {
   width: auto;
-}
-
-.header-action.is-active {
-  opacity: 1;
 }
