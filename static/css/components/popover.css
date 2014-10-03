@@ -1,6 +1,4 @@
 :root {
-  --popover-height: 296px;
-  --popover-height-lg: 350px;
   --popover-header-height: 55px;
   --popover-header-height-lg: 58px;
 }
@@ -13,8 +11,15 @@
   color: var(--color-text-light);
   font-size: 13px;
   user-select: none;
-  max-height: var(--popover-height);
 }
+
+@media (--lg-viewport) {
+  .popover {
+    font-size: 15px;
+  }
+}
+
+/* Arrow */
 
 .popover:before {
   content: "";
@@ -22,58 +27,14 @@
   top: -12px;
   width: 29px;
   height: 12px;
+  right: calc(50% - 14px);
   background-image: url('../img/popover-arrow.png');
   background-size: 29px 12px;
 }
 
-.popover.is-nav {
-  top: 59px;
-  right: 7px;
-}
-
-.popover.is-nav:before {
-  right: 9px;
-}
-
-.popover.is-customize {
-  width: 90%;
-  max-width: 16em;
-  top: 59px;
-  right: 7px;
-}
-
-.popover.is-customize:before {
-  right: 50px;
-}
-
-@media (--md-viewport) {
-  .popover.is-nav {
-    top: 71px;
-    right: 11px;
-  }
-
-  .popover.is-nav:before {
-    right: 15px;
-  }
-
-  .popover.is-customize {
-    width: 90%;
-    max-width: 16em;
-    top: 71px;
-    right: 11px;
-  }
-
-  .popover.is-customize:before {
-    right: 61px;
-  }
-}
-
-.popover-body {
-  box-sizing: border-box;
-  position: relative;
-  padding: 1.55em 1.2em;
-  cursor: default;
-}
+/**
+ * Header and body sections
+ */
 
 .popover-header {
   box-sizing: border-box;
@@ -84,28 +45,30 @@
   height: var(--popover-header-height);
 }
 
-.popover-scroll {
-  overflow: auto;
-  height: calc(var(--popover-height) - var(--popover-header-height));
-}
-
 @media (--lg-viewport) {
-  .popover {
-    font-size: 15px;
-    max-width: 17em;
-    max-height: var(--popover-height-lg);
-  }
-
   .popover-header {
     height: var(--popover-header-height-lg);
   }
-
-  .popover-scroll {
-    overflow: auto;
-    height: calc(var(--popover-height-lg) - var(--popover-header-height-lg));
-  }
 }
 
+.popover-body {
+  box-sizing: border-box;
+  position: relative;
+  padding: 1.55em 1.2em;
+  cursor: default;
+}
+
+/**
+ * Scrollable section
+ */
+
+.popover-scroll {
+  overflow: auto;
+}
+
+/**
+ * Navigation list
+ */
 
 .popover-nav {
 
@@ -121,4 +84,52 @@
   display: block;
   text-decoration: none;
   padding-bottom: 0.8em;
+}
+
+/**
+ * Tweak dimension and position based on state
+ */
+
+.popover.is-nav,
+.popover.is-customize {
+  top: 59px;
+  right: 7px;
+}
+
+.popover.is-nav:before {
+  right: 9px;
+}
+
+.popover.is-customize {
+  width: 90%;
+  max-width: 17em;
+}
+
+.popover.is-customize:before {
+  right: 50px;
+}
+
+.popover.is-customize .popover-scroll {
+  /* Kinda like: popover header + popover top position + some bottom spacing */
+  max-height: calc(100vh - 123px);
+}
+
+@media (--md-viewport) {
+  .popover.is-nav,
+  .popover.is-customize {
+    top: 71px;
+    right: 11px;
+  }
+
+  .popover.is-nav:before {
+    right: 15px;
+  }
+
+  .popover.is-customize:before {
+    right: 61px;
+  }
+
+  .popover.is-customize .popover-scroll {
+    max-height: calc(100vh - 141px);
+  }
 }
