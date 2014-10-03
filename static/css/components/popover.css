@@ -19,17 +19,17 @@
   }
 }
 
-/* Arrow */
-
-.popover:before {
+.popover-arrow {
   content: "";
   position: absolute;
   top: -12px;
   width: 29px;
-  height: 12px;
+  height: 14px;
   right: calc(50% - 14px);
-  background-image: url('../img/popover-arrow.png');
-  background-size: 29px 12px;
+}
+
+.popover-arrow path {
+  fill: #fff;
 }
 
 /**
@@ -96,7 +96,7 @@
   right: 7px;
 }
 
-.popover.is-nav:before {
+.popover.is-nav .popover-arrow {
   right: 9px;
 }
 
@@ -105,7 +105,7 @@
   max-width: 17em;
 }
 
-.popover.is-customize:before {
+.popover.is-customize .popover-arrow {
   right: 50px;
 }
 
@@ -121,11 +121,11 @@
     right: 11px;
   }
 
-  .popover.is-nav:before {
+  .popover.is-nav .popover-arrow {
     right: 15px;
   }
 
-  .popover.is-customize:before {
+  .popover.is-customize .popover-arrow {
     right: 61px;
   }
 

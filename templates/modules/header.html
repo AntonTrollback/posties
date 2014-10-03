@@ -15,6 +15,9 @@
 	{% endif %}
 
 	<nav class="popover is-nav" ng-show="showNavigation" ng-cloak>
+		<div class="popover-arrow">
+			{% include 'modules/inlineSvg/popoverArrow.html' %}
+		</div>
 		<ul class="popover-nav">
 			{% if current_user and current_user.is_authenticated() %}
 				<li><a href="/logout">Sign out</a></li>

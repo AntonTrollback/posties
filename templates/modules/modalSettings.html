@@ -1,4 +1,7 @@
 <div class="popover is-customize updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
+	<div class="popover-arrow">
+		{% include 'modules/inlineSvg/popoverArrow.html' %}
+	</div>
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
 		<div class="panel is-active" id="panelPrimary">
 
