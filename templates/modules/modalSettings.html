@@ -1,6 +1,6 @@
 <div id="closeOverlays" ng-show="settingsService.isOpen" ng-click="settingsService.close()"></div>
 
-<div class="popover updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
+<div class="popover is-customize updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
 	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
 		<div class="panel is-active" id="panelPrimary">
 

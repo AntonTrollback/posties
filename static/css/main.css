@@ -1,24 +1,3 @@
-header {
-	height: 60px;
-	position: absolute;
-	right: 15px;
-	top: -1px;
-}
-header > a {
-	float: right;
-	margin-top: 1.5rem;
-	font-size: 1.4rem;
-	color: #555;
-}
-header > a:visited {
-	color: #555;
-}
-
-header p {
-	margin: 2rem 1rem 0 0;
-	float: right;
-}
-
 #logo {
 	background: url('../img/logo.png') no-repeat 0 0;
 	width: 33px;
@@ -30,18 +9,6 @@ header p {
 .username {
 	padding-top: 6px;
 	text-decoration: none;
-}
-#customize {
-	float: right;
-	background: url('../img/iconCustomizeActive.png') no-repeat 0 0;
-	width: 35px;
-	height: 35px;
-	margin-left: 1rem;
-	user-select: none;
-	opacity: 0.6;
-}
-#customize.active {
-	opacity: 1;
 }
 
 .editorial h2,

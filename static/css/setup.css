@@ -40,6 +40,7 @@
 @import "./static/css/devices.css";
 
 @import "./static/css/components/site.css";
+@import "./static/css/components/header.css";
 @import "./static/css/components/colorpicker.css";
 @import "./static/css/components/button.css";
 @import "./static/css/components/toggle.css";
