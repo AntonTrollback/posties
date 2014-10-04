@@ -8,13 +8,37 @@
   margin: 5px 0;
 }
 
-.post p {
-  margin: 0;
+.post:first-child {
+  margin-top: 0;
 }
 
-.post img {
+.post:last-child {
+  margin-bottom: 0;
+}
+
+.post:first-child .post-inner.is-unboxed {
+  margin-top: 13px;
+}
+
+.post p,
+.post h1 {
+  margin: 0;
+  font: inherit;
+}
+
+.post img,
+.post iframe {
   width: 100%;
   display: block;
+}
+
+.post pre {
+  width: 100%;
+  display: block;
+  border: 0;
+  font: inherit;
+  white-space: pre-line;
+  background: transparent;
 }
 
 .post a {
@@ -27,73 +51,75 @@
 }
 
 /**
- * Post types
+ * Post content types
  */
 
-.post-text,
-.post-headline {
+.post-content-pre {
   box-sizing: border-box;
-  display: block;
-  width: 100%;
-  border: 0;
   line-height: 1.2;
-  font-weight: normal;
-  white-space: pre-line;
+  font-size: 18px;
   background: #fff;
+  padding: 26px 20px;
 }
 
-.post-text {
-  font-size: 18px;
-  padding: 20px;
-}
-
-.post-video {
-  font-size: 18px;
-  padding: 20px;
-}
-
-.post-headline {
+.post-content-pre.is-larger {
   font-size: 32px;
-  padding: 17px 20px;
+  padding: 22px 20px;
 }
 
-.post-inner.is-unboxed .post-text,
-.post-inner.is-unboxed .post-headline,
-.post-inner.is-unboxed .post-video {
-  padding: 10px;
+.post-content-block {
+
 }
 
-.post-inner.is-unboxed .post-image {
-  margin: 12px 10px;
+.post-content-loading {
+  font-size: 20px;
+  padding: 20px 0;
+  border-top: 2px solid #8a8a8a;
+  border-bottom: 2px solid #8a8a8a;
+  text-align: center;
 }
+
+.post-inner.is-unboxed .post-content-pre {
+  padding: 13px 10px;
+}
+
+.post-inner.is-unboxed .post-content-pre.is-larger {
+  padding: 9px 10px;
+}
+
+.post-inner.is-unboxed .post-content-block {
+  margin: 13px 10px;
+}
+
 
 @media (--md-viewport) {
-  .post-text {
+  .post-content-pre {
     padding: 34px 32px;
   }
 
-  .post-headline,
-  .post-video {
-    padding: 28px 32px;
+  .post-content-pre.is-larger {
+    padding-top: 28px 32px;
   }
 
-  .post-inner.is-unboxed .post-text,
-  .post-inner.is-unboxed .post-headline,
-  .post-inner.is-unboxed .post-video {
-    padding: 10px 32px;
+  .post-inner.is-unboxed .post-content-pre {
+    padding: 13px 32px;
   }
 
-  .post-inner.is-unboxed .post-image {
-    margin: 18px 32px;
+  .post-inner.is-unboxed .post-content-pre.is-larger {
+    padding: 9px 32px;
+  }
+
+  .post-inner.is-unboxed .post-content-block {
+    margin: 0 32px;
   }
 }
 
 @media (--lg-viewport) {
-  .post-text {
+  .post-content-pre {
     font-size: 23px;
   }
 
-  .post-headline {
+  .post-content-pre.is-larger {
     font-size: 40px;
   }
 }
@@ -102,53 +128,76 @@
  * Post options
  */
 
-.post-options {
+.post-option {
   position: absolute;
-  top: -4px;
-  right: 8px;
-  font-size: 22px;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+  padding: 0 2px;
 }
 
-.post-inner.is-unboxed .post-options {
-  right: 16px;
+.post-inner.is-unboxed .post-option {
+  margin-top: -15px;
+}
+
+.post-option-action {
+  width: 15px;
+  height: 15px;
+  padding: 8px 6px;
+  box-sizing: content-box;
+  float: left;
+}
+
+.post-inner.is-unboxed .post-option {
+  margin: -13px 10px 0 0;
+}
+
+.post-inner.is-unboxed .post-content-block .post-option {
+  margin-top: 0;
+}
+
+.post-option-action svg {
+  border-radius: 50%;
+  padding: 4px;
+  margin: -4px 0 0 -4px;
 }
 
 @media (--md-viewport) {
-  .post-inner.is-unboxed .post-options {
-    right: 40px;
+  .post-inner.is-unboxed .post-option {
+    margin-right: 32px;
+  }
+
+  .post-option-action {
+    width: 22px;
+    height: 22px;
+    padding: 10px 8px;
+  }
+
+  .post-option-action svg {
+    padding: 6px;
+    margin: -6px 0 0 -6px;
   }
 }
 
-.post-options a {
-  cursor: pointer;
-  color: #a9a9a9;
-  text-decoration: none;
+.post-content-block .post-option-action svg {
+  background: #fff;
 }
 
-.post-delete {
-  font-size: 3rem;
+.post-option-action path {
+  stroke: var(--color-text);
 }
 
-.userOwnsPage .post-delete {
-  display: inline-block;
+.post-option-action:hover path {
+  stroke: var(--color-text-dark);
 }
 
-.post:first-child .post-options a:first-child,
-.post.firstChild .post-options a:first-child,
-.post:last-child .post-options a:nth-child(2),
-.post.lastChild .post-options a:nth-child(2) {
-  display: none;
+.post:first-child .post-option-action.is-up,
+.post:last-child .post-option-action.is-down {
+  cursor: default;
+  pointer-events: none;
 }
 
-/**
- * Loading state
- */
-
-.post-image h3 {
-  font-size: 2rem;
-  color: #8a8a8a;
-  padding: 2rem 0;
-  border-top: 1px solid #8a8a8a;
-  border-bottom: 1px solid #8a8a8a;
-  text-align: center;
+.post:first-child .post-option-action.is-up svg,
+.post:last-child .post-option-action.is-down svg {
+  opacity: 0.2;
 }

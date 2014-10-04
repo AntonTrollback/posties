@@ -1,5 +1,7 @@
 <script type="text/ng-template" id="postText.html">
 	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
-		<p class="post-text" ng-bind-html="post.content" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></p>
+		<div class="post-content-pre" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
+			<p ng-bind-html="post.content"></p>
+		</div>
 	</div>
 </script>
