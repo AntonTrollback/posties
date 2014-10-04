@@ -64,6 +64,7 @@
 
 .popover-scroll {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /**
@@ -111,7 +112,7 @@
 
 .popover.is-customize .popover-scroll {
   /* Kinda like: popover header + popover top position + some bottom spacing */
-  max-height: calc(100vh - 123px);
+  max-height: calc(100vh - 190px);
 }
 
 @media (--md-viewport) {

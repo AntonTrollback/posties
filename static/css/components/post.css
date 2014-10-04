@@ -6,6 +6,13 @@
   position: relative;
   box-sizing: border-box;
   margin: 5px 0;
+  font-size: 18px;
+}
+
+@media (--lg-viewport) {
+  .post {
+    font-size: 23px;
+  }
 }
 
 .post:first-child {
@@ -39,6 +46,9 @@
   font: inherit;
   white-space: pre-line;
   background: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
 }
 
 .post a {
@@ -54,29 +64,47 @@
  * Post content types
  */
 
+.post-content-block {
+  user-select: none;
+}
+
 .post-content-pre {
   box-sizing: border-box;
   line-height: 1.2;
-  font-size: 18px;
   background: #fff;
   padding: 26px 20px;
 }
 
 .post-content-pre.is-larger {
-  font-size: 32px;
+  font-size: 3.2em;
   padding: 22px 20px;
 }
 
-.post-content-block {
-
+@media (--lg-viewport) {
+  .post-content-pre.is-larger {
+    font-size: 40px;
+  }
 }
 
 .post-content-loading {
-  font-size: 20px;
-  padding: 20px 0;
-  border-top: 2px solid #8a8a8a;
-  border-bottom: 2px solid #8a8a8a;
-  text-align: center;
+  font-size: 18px;
+  border: solid var(--color-element-dark);
+  border-width: 1px 0;
+  font-weight: bold;
+  overflow: hidden;
+  position: relative;
+  padding: 20px;
+}
+
+.post-content-loading span {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5em;
+  font-weight: normal;
+  user-select: none;
+  cursor: default;
 }
 
 .post-inner.is-unboxed .post-content-pre {
@@ -91,6 +119,14 @@
   margin: 13px 10px;
 }
 
+.post-inner.is-unboxed .post-content-loading {
+  padding: 20px 10px;
+}
+
+.post-inner.is-unboxed .post-content-loading strong {
+  right: 10px;
+}
+
 
 @media (--md-viewport) {
   .post-content-pre {
@@ -99,6 +135,14 @@
 
   .post-content-pre.is-larger {
     padding-top: 28px 32px;
+  }
+
+  .post-content-loading {
+    padding: 28px 32px;
+  }
+
+  .post-content-loading strong {
+    right: 32px;
   }
 
   .post-inner.is-unboxed .post-content-pre {
@@ -111,16 +155,6 @@
 
   .post-inner.is-unboxed .post-content-block {
     margin: 0 32px;
-  }
-}
-
-@media (--lg-viewport) {
-  .post-content-pre {
-    font-size: 23px;
-  }
-
-  .post-content-pre.is-larger {
-    font-size: 40px;
   }
 }
 
@@ -146,6 +180,8 @@
   padding: 8px 6px;
   box-sizing: content-box;
   float: left;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .post-inner.is-unboxed .post-option {

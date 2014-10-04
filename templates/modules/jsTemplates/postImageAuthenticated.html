@@ -1,7 +1,7 @@
 <script type="text/ng-template" id="postImage.html">
 	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
 		<div class="post-content-loading" ng-show="!post.isUploaded">
-			<span>Adding your image: <strong>[[post.uploadProgress]]</strong>%</span>
+			Adding your image: <span>[[post.uploadProgress]]%</span>
 		</div>
 		<div class="post-content-block" ng-show="post.isUploaded">
 			{% include 'modules/postOptions.html' %}

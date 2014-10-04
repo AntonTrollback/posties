@@ -32,7 +32,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 		$scope.posts.push(post);
 		$timeout(function() {
-			$('#posts li:last-child pre:eq(0)').focus();
+			$('.post:last-child pre').focus();
 		}, 100);
 
 		$scope.showPostTypes = false;
@@ -280,7 +280,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$scope.posts.push(post);
 
 		$timeout(function() {
-			$('#posts li:last-child pre:eq(0)').focus();
+			$('.post:last-child pre').focus();
 		}, 100);
 
 	})();
@@ -393,7 +393,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 
 			$scope.posts.push(post);
 			$timeout(function() {
-				$('#posts li:last-child pre:eq(0)').focus();
+				$('.post:last-child pre').focus();
 			}, 100);
 		}, function(response) {
 			console.log(response);
