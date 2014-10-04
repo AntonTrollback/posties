@@ -26,6 +26,10 @@ TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
 WHITELIST_TYPEFACES = ['Akkurat', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
 
+AWS_ACCESS_KEY = CONFIG["aws"]["access_key"].encode('utf-8')
+AWS_SECRET_KEY = CONFIG["aws"]["secret_key"].encode('utf-8')
+AWS_S3_BUCKET = CONFIG["s3"]["bucket"]
+
 conn = r.connect(host=DB_CONFIG["host"].encode('utf-8'), port=DB_CONFIG["port"].encode('utf-8'), auth_key=DB_CONFIG["key"].encode('utf-8'), db=DB_CONFIG["db"].encode('utf-8'))
 application = Flask(__name__, static_folder='static/build')
 application.config['SECRET_KEY'] = CONFIG["flask"]["key"].encode('utf-8')
@@ -242,7 +246,6 @@ def api_post_video():
 
 @application.route('/api/sign_upload_url', methods=['GET'])
 def sign_s3():
-
 	# Collect information on the file from the GET parameters of the request:
 	object_name = urllib.quote_plus(request.args.get('s3_object_name'))
 	mime_type = request.args.get('s3_object_type')
@@ -252,19 +255,19 @@ def sign_s3():
 	amz_headers = "x-amz-acl:public-read"
 
 	# Generate the PUT request that JavaScript will use:
-	put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, CONFIG["s3"]["bucket"], object_name)
+	put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, AWS_S3_BUCKET, object_name)
 
 	# Generate the signature with which the request can be signed:
-	signature = base64.encodestring(hmac.new(CONFIG["aws"]["secret_key"], put_request, sha1).digest())
+	signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
 
 	# Remove surrounding whitespace and quote special characters:
 	signature = urllib.quote_plus(signature.strip())
 
 	# Build the URL of the file in anticipation of its imminent upload:
-	url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
+	url = 'https://%s.s3.amazonaws.com/%s' % (AWS_S3_BUCKET, object_name)
 
 	content = json.dumps({
-		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, CONFIG["aws"]["access_key"], expires, signature),
+		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
 		'url': url
 	})
 
