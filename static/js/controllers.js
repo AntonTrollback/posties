@@ -225,23 +225,25 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 							var loadingImage = loadImage(
 								file,
 								function(resizedImage) {
-									var s3upload = new S3Upload({
-										s3_object_name: jsonPost.key,
-										s3_file: file,
-										onProgress: function(percent, message) {
-											console.log('Upload progress: ' + percent + '% ' + message);
-										},
-										onFinishS3Put: function(url) {
-											console.log('Upload completed. Uploaded to: ' + url);
-											if(redirectUser) {
-												forwardToUserPage();
+									resizedImage.toBlob(function(blob) {
+										var s3upload = new S3Upload({
+											s3_object_name: jsonPost.key,
+											s3_file: blob,
+											onProgress: function(percent, message) {
+												console.log('Upload progress: ' + percent + '% ' + message);
+											},
+											onFinishS3Put: function(url) {
+												console.log('Upload completed. Uploaded to: ' + url);
+												if(redirectUser) {
+													forwardToUserPage();
+												}
+											},
+											onError: function(status) {
+												console.log('Upload error: ' + status);
 											}
-										},
-										onError: function(status) {
-											console.log('Upload error: ' + status);
-										}
-									});
-								}, { maxWidth: 600 }
+										});
+									}, file.type);
+								}, { maxWidth: 600, canvas: true }
 							);
 						}
 					}
