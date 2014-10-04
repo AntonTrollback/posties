@@ -432,10 +432,17 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		for(var i = 0; i < $files.length; i++) {
 			var file = $files[i];
 
+			var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    			return v.toString(16);
+			});
+
+			var filename = guid + "." + file.name.split('.').pop();
+
 			var jsonPost = {
 				type : 2,
 				sortrank : $scope.posts.length,
-				file : file,
+				filename : filename,
 				isUploaded : false,
 				template : 'postImage.html'
 			};
@@ -452,29 +459,31 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				var loadingImage = loadImage(
 					file,
 					function(resizedImage) {
-						$scope.posts.push(jsonPost);
+						resizedImage.toBlob(function(blob) {
+							$scope.posts.push(jsonPost);
+							var s3upload = new S3Upload({
+								s3_object_name: filename,
+								s3_file: blob,
+								onProgress: function(percent, message) {
+									$scope.$apply(function() {
+										jsonPost.uploadProgress = percent;
+									});
+					            },
+					            onFinishS3Put: function(url) {
+									jsonPost.key = config.S3URL + jsonPost.key;
+									jsonPost.isUploaded = true;
 
-						var s3upload = new S3Upload({
-							s3_object_name: jsonPost.key,
-							s3_file: jsonPost.file,
-							onProgress: function(percent, message) {
-								$scope.$apply(function() {
-									jsonPost.uploadProgress = percent;
-								});
-				            },
-				            onFinishS3Put: function(url) {
-								jsonPost.key = config.S3URL + jsonPost.key;
-								jsonPost.isUploaded = true;
+									$scope.$apply(function() {
+										$scope.showPostTypes = false;
+									});
+								},
+								onError: function(status) {
+									console.log('Upload error: ' + status);
+								}
+							});
 
-								$scope.$apply(function() {
-									$scope.showPostTypes = false;
-								});
-							},
-				            onError: function(status) {
-				                console.log('Upload error: ' + status);
-				            }
-				        });
-					}, { maxWidth: 600 }
+						}, file.type);
+					}, { maxWidth: 600, canvas: true }
 				);
 
 			}, function(response) {
