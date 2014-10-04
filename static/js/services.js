@@ -1,12 +1,12 @@
-var postiesApp = angular.module('posties', ['ngSanitize', 'angularFileUpload'], function ($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
+var postiesApp = angular.module('posties', ['ngSanitize', 'angularFileUpload', 'angular-medium-editor'], function ($interpolateProvider) {
+  $interpolateProvider.startSymbol('[[');
+  $interpolateProvider.endSymbol(']]');
 });
 
 postiesApp.constant('config', {
-    headerJSON: { 'Content-Type': 'application/json;charset=UTF-8' },
-    S3URL : 'https://s3-eu-west-1.amazonaws.com/posties-images/',
-    keySettings: 'postiesKeySettings'
+  headerJSON: { 'Content-Type': 'application/json;charset=UTF-8' },
+  S3URL : 'https://s3-eu-west-1.amazonaws.com/posties-images/',
+  keySettings: 'postiesKeySettings'
 });
 
 postiesApp.service('SettingsService', function($http, config, Fonts) {

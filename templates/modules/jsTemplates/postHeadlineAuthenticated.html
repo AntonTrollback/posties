@@ -2,7 +2,12 @@
 	<div class="post-inner is-headline" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
 		<form class="post-content-pre is-larger" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }">
 			{% include 'modules/postOptions.html' %}
-			<pre ng-blur="savePost($event, post)" data-changed="false" contenteditable ng-bind-html="post.content"></pre>
+			<div ng-model="post.content"
+				   class="post-editor"
+					 medium-editor
+					 options='{"placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
+					 ng-blur="savePost($event, post)"
+					 data-changed="false"></div>
 		</form>
 	</div>
 </script>

@@ -6,12 +6,12 @@
   --color-text-light: #888;
   --color-text: #848483;
   --color-text-dark: #525252;
+  --color-text-darker: #141414;
   --color-element-light: #cacaca;
   --color-element-dark: #b2b2b2;
   --color-divider: #e8e9e9;
   --color-postit: #f7f5c7;
   --color-postit-highlight: #fcf9af;
-
   --spacing: 18px;
 }
 
@@ -50,4 +50,6 @@
 @import "./static/css/components/panel.css";
 @import "./static/css/components/modal.css";
 @import "./static/css/components/popover.css";
+@import "./static/css/components/editor.css";
+
 @import "./static/css/components/utils.css";

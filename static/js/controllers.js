@@ -38,15 +38,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$scope.showPostTypes = false;
 	};
 
-	$scope.savePost = function($event, post) {
-		if($($event.target).data('changed')) {
-			$($event.target).data('changed', false);
-			$scope.flash.showMessage('saved...');
-
-			post.content = $sanitize($event.target.innerHTML);
-		}
-	};
-
 	$scope.savePostImage = function($files) {
 		var imageType = /image.*/;
 
@@ -405,12 +396,11 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	};
 
 	$scope.savePost = function($event, post) {
-		//Fix for Angulars non-handling of ng-model/two way data binding for contenteditable
-		var postTextContent = $sanitize($event.target.innerHTML);
+		var postTextContent = post.content;
 
-		postTextContent = Autolinker.link(postTextContent);
+		postTextContent = Autolinker.link(postTextContent, { truncate: false, stripPrefix: false });
 
-		if(postTextContent.length && $($event.target).data('changed')) {
+		if(postTextContent.length) {
 			var jsonPost = {
 				content: postTextContent,
 				id: post.id
@@ -559,11 +549,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			console.log(response);
 		});
 	};
-
-	//Angular doesn't do ng-change on contenteditable, using jQuery
-	$('#posts').on('propertychange, input', 'pre', function(el) {
-		$(this).data('changed', true);
-	});
 });
 
 postiesApp.controller('PageErrorCtrl', function() {});
