@@ -193,7 +193,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			var $button =
 			$('#formCreateUser button[type="submit"]').attr('disabled', true).text('Loading…');
 
-
 			var jsonPost = {
 				email : $scope.user.email,
 				username : $scope.user.username,
@@ -221,23 +220,29 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 						}
 
 						if(jsonPost.type == 2) {
-							jsonPost['file'] = $scope.posts[i].file;
-							var s3upload = new S3Upload({
-								s3_object_name: jsonPost.key,
-								s3_file: jsonPost.file,
-								onProgress: function(percent, message) {
-									console.log('Upload progress: ' + percent + '% ' + message);
-								},
-								onFinishS3Put: function(url) {
-									console.log('Upload completed. Uploaded to: ' + url);
-									if(redirectUser) {
-										forwardToUserPage();
-									}
-								},
-								onError: function(status) {
-									console.log('Upload error: ' + status);
-								}
-							});
+							var file = $scope.posts[i].file;
+
+							var loadingImage = loadImage(
+								file,
+								function(resizedImage) {
+									var s3upload = new S3Upload({
+										s3_object_name: jsonPost.key,
+										s3_file: file,
+										onProgress: function(percent, message) {
+											console.log('Upload progress: ' + percent + '% ' + message);
+										},
+										onFinishS3Put: function(url) {
+											console.log('Upload completed. Uploaded to: ' + url);
+											if(redirectUser) {
+												forwardToUserPage();
+											}
+										},
+										onError: function(status) {
+											console.log('Upload error: ' + status);
+										}
+									});
+								}, { maxWidth: 600 }
+							);
 						}
 					}
 				} else {
@@ -443,28 +448,35 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			}).then(function(response) {
 				var jsonPost = response.data;
 				jsonPost['file'] = file;
-				$scope.posts.push(jsonPost);
 
-				var s3upload = new S3Upload({
-					s3_object_name: jsonPost.key,
-					s3_file: jsonPost.file,
-					onProgress: function(percent, message) {
-						$scope.$apply(function() {
-							jsonPost.uploadProgress = percent;
-						});
-		            },
-		            onFinishS3Put: function(url) {
-						jsonPost.key = config.S3URL + jsonPost.key;
-						jsonPost.isUploaded = true;
+				var loadingImage = loadImage(
+					file,
+					function(resizedImage) {
+						$scope.posts.push(jsonPost);
 
-						$scope.$apply(function() {
-							$scope.showPostTypes = false;
-						});
-					},
-		            onError: function(status) {
-		                console.log('Upload error: ' + status);
-		            }
-		        });
+						var s3upload = new S3Upload({
+							s3_object_name: jsonPost.key,
+							s3_file: jsonPost.file,
+							onProgress: function(percent, message) {
+								$scope.$apply(function() {
+									jsonPost.uploadProgress = percent;
+								});
+				            },
+				            onFinishS3Put: function(url) {
+								jsonPost.key = config.S3URL + jsonPost.key;
+								jsonPost.isUploaded = true;
+
+								$scope.$apply(function() {
+									$scope.showPostTypes = false;
+								});
+							},
+				            onError: function(status) {
+				                console.log('Upload error: ' + status);
+				            }
+				        });
+					}, { maxWidth: 600 }
+				);
+
 			}, function(response) {
 				console.log(response);
 			});

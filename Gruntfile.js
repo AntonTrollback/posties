@@ -45,6 +45,7 @@ module.exports = function(grunt) {
           'bower_components/jquery-minicolors/jquery.minicolors.js',
           'bower_components/ng-file-upload/angular-file-upload.js',
           'bower_components/Autolinker.js/dist/Autolinker.js',
+          'bower_components/blueimp-load-image/js/load-image.js',
           'static/js/s3upload.js',
           'static/js/util.js',
           'static/js/services.js',
