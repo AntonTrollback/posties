@@ -1,7 +1,7 @@
 <script type="text/ng-template" id="postHeadline.html">
 	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
 		<div class="post-content-pre is-larger" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }">
-			<h1 ng-bind-html="post.content"></h1>
+			<div ng-bind-html="post.content"></div>
 		</div>
 	</div>
 </script>

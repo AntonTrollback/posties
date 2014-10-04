@@ -46,11 +46,13 @@ module.exports = function(grunt) {
           'bower_components/ng-file-upload/angular-file-upload.js',
           'bower_components/Autolinker.js/dist/Autolinker.js',
           'bower_components/blueimp-load-image/js/load-image.js',
+          'bower_components/medium-editor/dist/js/medium-editor.js',
+          'bower_components/angular-medium-editor/dist/angular-medium-editor.js',
           'static/js/s3upload.js',
           'static/js/util.js',
+          'static/js/directives.js',
           'static/js/services.js',
           'static/js/filters.js',
-          'static/js/directives.js',
           'static/js/controllers.js'
         ],
         dest: 'static/build/posties.js',
@@ -178,7 +180,7 @@ module.exports = function(grunt) {
         }
       },
       js: {
-        files: ['static/js/**/*'],
+        files: ['static/js/**/*', 'Gruntfile.js'],
         tasks: ['concat'],
         options: {
           spawn: false
