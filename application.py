@@ -283,7 +283,7 @@ def api_post_image():
 		'username' : current_user.username,
 		'sortrank' : jsonData['sortrank'],
 		'type' : int(jsonData['type']),
-		'key' : generate_safe_filename(current_user.username, jsonData['file']['name']),
+		'key' : jsonData['filename'],
 		'created' : r.now()}).run(conn, return_changes = True)
 
 	result = post['changes'][0]['new_val']
