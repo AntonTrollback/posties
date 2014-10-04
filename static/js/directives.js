@@ -22,7 +22,10 @@ $(function() {
     position: 'bottom left',
     show: null,
     showSpeed: 100,
-    theme: 'default'
+    theme: 'default',
+    change: function() {
+      console.log('Changed')
+    }
   });
 
   $navigators.on('click', function(e) {
