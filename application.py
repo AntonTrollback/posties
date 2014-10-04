@@ -398,7 +398,11 @@ def utility_processor():
 	def asset_url_for(file, extension, add_revision=True):
 
 		if PRODUCTION:
-			return '/build/' + file + '.' + extension
+			url = 'https://s3-eu-west-1.amazonaws.com/' + CONFIG["s3"]["bucket"] + '/assets/'
+			if add_revision:
+				return url + file + '.' + REVISION + '.' + extension
+			else:
+				return url + file + '.' + extension
 		else:
 			return '/build/' + file + '.' + extension
 	return dict(asset_url_for=asset_url_for)
