@@ -86,7 +86,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			$scope.flash.showMessage('saved...');
 		} else {
 			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
-
 			return;
 		}
 	};
@@ -181,8 +180,19 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		var redirectUser = false;
 
 		if($scope.formCreateUser.$valid) {
-			var $button =
-			$('#formCreateUser button[type="submit"]').attr('disabled', true).text('Loading…');
+			var $button = $('#formCreateUser button[type="submit"]').attr('disabled', true).text('Loading…');
+			var posts = [];
+
+			// Remove empty video posts
+			for (i in $scope.posts) {
+				if($scope.posts[i].type == 3 && !$scope.posts[i].content) {
+					console.log('not a valid video')
+				} else {
+					posts.push($scope.posts[i])
+				}
+			}
+
+			$scope.posts = posts;
 
 			var jsonPost = {
 				email : $scope.user.email,
@@ -232,7 +242,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 											console.log('Upload error: ' + status);
 										}
 									});
-								}, { maxWidth: 600 }
+								}, { maxWidth: 1000 }
 							);
 						}
 					}
