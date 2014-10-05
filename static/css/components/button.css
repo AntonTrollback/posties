@@ -40,8 +40,7 @@
 .button:active {
   text-decoration: none;
   outline: 0;
-  /*background: var(--color-postit-highlight);
-  color: var(--color-text-dark);*/
+  color: var(--color-text-dark);
 }
 
 .button:active {
