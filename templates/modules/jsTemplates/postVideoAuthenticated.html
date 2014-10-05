@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="postVideo.html">
 	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
-		<div class="post-content-pre" ng-show="!post.isValidVideo" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
+		<div class="post-content-pre is-input" ng-show="!post.isValidVideo" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
 			{% include 'modules/postOptions.html' %}
 			<div ng-model="test"
 					class="post-editor"

@@ -147,8 +147,12 @@
 }
 
 .medium-editor-placeholder:after {
-  color: red;
   content: attr(data-placeholder);
+  font-style: italic;
+  cursor: italic;
+  text-align: center;
+  display: block;
+  pointer-events: none;
 }
 
 

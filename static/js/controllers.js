@@ -78,7 +78,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 	};
 
 	$scope.savePostVideo = function($event, post) {
-		$event.target.innerHTML = $event.target.innerHTML.replace(post.helpText, "");
 		var videoURL = posties.util.getYouTubeVideoID($sanitize($event.originalEvent.clipboardData.getData('text/plain')));
 		if(videoURL) {
 			post.key = videoURL;
@@ -478,7 +477,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	};
 
 	$scope.savePostVideo = function($event, post) {
-		$event.target.innerHTML = $event.target.innerHTML.replace(post.helpText, "");
 		var videoURL = posties.util.getYouTubeVideoID($sanitize($event.originalEvent.clipboardData.getData('text/plain')));
 
 		if(videoURL) {
@@ -503,8 +501,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				console.log(response);
 			});
 		} else {
-			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
-
+			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');	
 			return;
 		}
 	};
