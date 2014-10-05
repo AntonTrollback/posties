@@ -12,7 +12,10 @@
 				</ul>
 				{% include 'modules/postTypes.html' %}
 				<div class="block is-padded">
-					<button class="button is-larger is-full" ng-click="showModalCreateUser = !showModalCreateUser"><span class="icon is-forward"></span> Publish this page</button>
+					<button class="button is-larger is-full" ng-click="showModalCreateUser = !showModalCreateUser">
+						{% include 'modules/inlineSvg/arrowOut.html' %}
+						Publish this page
+					</button>
 					{% include 'modules/modalCreateUser.html' %}
 				</div>
 				{% include 'modules/jsTemplates/postTextAuthenticated.html' %}

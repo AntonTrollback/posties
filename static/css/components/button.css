@@ -86,12 +86,12 @@
 
 .button svg {
   position: relative;
-  top: 1px;
-  margin-right: 7px;
+  top: -1px;
+  margin-right: 5px;
   display: inline-block;
   vertical-align: top;
-  width: 1em;
-  height: 1em;
+  width: 1.2em;
+  height: 1.2em;
 }
 
 .button path {
@@ -101,7 +101,7 @@
 .button.is-vertical svg {
   width: 3em;
   height: 3em;
-  margin: -3px auto 2px;
+  margin: 1px auto -2px;
   display: block;
 }
 
@@ -112,6 +112,7 @@
 .button-group {
   user-select: none;
   text-align: center;
+  margin-bottom: -10px;
 }
 
 .button-group .button {

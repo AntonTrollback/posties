@@ -32,31 +32,11 @@
   }
 }
 
-/* Logo */
-
-.header-action.is-logo {
-
-}
-
-.header-action.is-logo path:first-child {
+.header-action path:first-child {
   fill: var(--color-element-light);
 }
 
-.header-action.is-logo.is-active path:first-child {
-  fill: var(--color-element-dark);
-}
-
-/* Customize */
-
-.header-action.is-customize {
-  padding: 4px;
-}
-
-.header-action.is-customize path {
-  fill: var(--color-element-light);
-}
-
-.header-action.is-customize.is-active path {
+.header-action.is-active path:first-child {
   fill: var(--color-element-dark);
 }
 
