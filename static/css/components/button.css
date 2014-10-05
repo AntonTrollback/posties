@@ -76,8 +76,8 @@
 }
 
 .button.is-vertical {
-  font-size: 14px;
-  padding: 9px 20px;
+  font-size: 12px;
+  padding: 10px;
 }
 
 /**
@@ -88,7 +88,7 @@
   position: relative;
   top: -1px;
   margin-right: 5px;
-  display: inline-block;
+  display: inline;
   vertical-align: top;
   width: 1.2em;
   height: 1.2em;
@@ -99,9 +99,9 @@
 }
 
 .button.is-vertical svg {
-  width: 3em;
-  height: 3em;
-  margin: 1px auto -2px;
+  width: 3.4em;
+  height: 3.4em;
+  margin: 0px auto -3px;
   display: block;
 }
 
