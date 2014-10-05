@@ -54,9 +54,23 @@
 .popover-body {
   box-sizing: border-box;
   position: relative;
-  padding: 1.55em 1.2em;
+  padding: 1em 1.2em;
   cursor: default;
 }
+
+.popover-body .palette {
+  margin-bottom: 15px;
+}
+.popover-body .palette li {
+  display: inline-block;
+}
+.popover-body .palette a {
+  padding: 10px;
+  border: 1px solid #fff;
+  display: inline-block;
+  border-right: 0;
+}
+
 
 /**
  * Scrollable section

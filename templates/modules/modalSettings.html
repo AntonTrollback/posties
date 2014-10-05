@@ -104,6 +104,13 @@
 		<div class="panel" id="panelBoxColor">
 			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
 			<div class="popover-body">
+				<div class="palette">
+					<ul>
+						<li ng-repeat="color in settingsService.getPalette()">
+							<a ng-style="{ 'background': color }" ng-click="userSettings.postbackgroundcolor = color"></a>
+						</li>
+					</ul>
+				</div>
 				<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.postbackgroundcolor">
 				<input id="resultBoxColor" class="minicolors-result" type="hidden">
 			</div>
@@ -112,6 +119,13 @@
 		<div class="panel" id="panelTextColor">
 			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
 			<div class="popover-body">
+				<div class="palette">
+					<ul>
+						<li ng-repeat="color in settingsService.getPalette()">
+							<a ng-style="{ 'background': color }" ng-click="userSettings.posttextcolor = color"></a>
+						</li>
+					</ul>
+				</div>
 				<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.posttextcolor">
 				<input id="resultTextColor" class="minicolors-result" type="hidden">
 			</div>
@@ -120,6 +134,13 @@
 		<div class="panel" id="panelBackground">
 			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
 			<div class="popover-body">
+				<div class="palette">
+					<ul>
+						<li ng-repeat="color in settingsService.getPalette()">
+							<a ng-style="{ 'background': color }" ng-click="userSettings.pagebackgroundcolor = color"></a>
+						</li>
+					</ul>
+				</div>
       	<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.pagebackgroundcolor">
 				<input id="resultBackground" class="minicolors-result" type="hidden">
 			</div>
