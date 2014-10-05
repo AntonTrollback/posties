@@ -87,6 +87,11 @@
   padding: 22px 20px;
 }
 
+.post-content-pre.is-input {
+  text-align: center;
+  font-size: 18px;
+}
+
 .post-content-pre.is-larger .post-editor {
   padding: 22px 20px;
   margin: -22px -20px;
