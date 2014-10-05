@@ -389,7 +389,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 
 	$scope.savePost = function($event, post) {
 		var postTextContent = post.content;
-		console.log(post.content)
 
 		postTextContent = Autolinker.link(postTextContent, { truncate: false, stripPrefix: false });
 
@@ -405,7 +404,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				data: jsonPost,
 				headers: config.headerJSON
 			}).then(function(response) {
-				$($event.target).data('changed', false);
 				$scope.flash.showMessage('saved...');
 			}, function(response) {
 				console.log(response);
