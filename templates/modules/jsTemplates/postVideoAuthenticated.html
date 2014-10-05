@@ -5,7 +5,7 @@
 			<div ng-model="test"
 					class="post-editor"
 					medium-editor
-					options='{"placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
+					options='{"placeholder": "[[post.helpText]]", "disableToolbar": true, "disableReturn": true, "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
 					ng-paste="savePostVideo($event, post)"></div>
 		</div>
 		<div class="post-content-block" ng-show="post.isValidVideo">

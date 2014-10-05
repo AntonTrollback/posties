@@ -147,7 +147,7 @@
 }
 
 .medium-editor-placeholder:after {
-  display: none;
+  color: red;
   content: attr(data-placeholder);
 }
 
