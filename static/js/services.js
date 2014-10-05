@@ -30,15 +30,7 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 
 			return promise;
 		} else {
-			var userSettings = localStorage.getItem(config.keySettings);
-			if(userSettings != null) {
-				return JSON.parse(userSettings);
-			} else {
-				var defaultSettings = this.getDefaultSettings();
-				localStorage.setItem(config.keySettings, JSON.stringify(defaultSettings));
-
-				return defaultSettings;
-			}
+			return this.getDefaultSettings();
 		}
 	};
 
@@ -56,8 +48,6 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
   				console.log(response);
   			});
         return promise;
-    	} else {
-    		localStorage.setItem(config.keySettings, JSON.stringify(userSettings));
     	}
     };
 

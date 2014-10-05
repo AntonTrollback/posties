@@ -40,8 +40,7 @@
 .button:active {
   text-decoration: none;
   outline: 0;
-  /*background: var(--color-postit-highlight);
-  color: var(--color-text-dark);*/
+  color: var(--color-text-dark);
 }
 
 .button:active {
@@ -74,4 +73,59 @@
 .button.is-full {
   display: block;
   width: 100%;
+}
+
+.button.is-vertical {
+  font-size: 12px;
+  padding: 10px;
+}
+
+/**
+ * Icons
+ */
+
+.button svg {
+  position: relative;
+  top: -1px;
+  margin-right: 5px;
+  display: inline;
+  vertical-align: top;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.button path {
+  fill: currentColor;
+}
+
+.button.is-vertical svg {
+  width: 3.4em;
+  height: 3.4em;
+  margin: 0px auto -3px;
+  display: block;
+}
+
+/**
+ * Group of buttons
+ */
+
+.button-group {
+  user-select: none;
+  text-align: center;
+  margin-bottom: -10px;
+}
+
+.button-group .button {
+  margin: 0 3px 10px;
+  width: 98px;
+}
+
+.button-group-break {
+  display: block;
+}
+
+@media (--sm-viewport) {
+  .button-group-break {
+    display: none;
+  }
 }

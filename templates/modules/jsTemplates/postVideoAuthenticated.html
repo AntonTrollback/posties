@@ -1,8 +1,12 @@
 <script type="text/ng-template" id="postVideo.html">
 	<div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
-		<div class="post-content-pre" ng-show="!post.isValidVideo">
+		<div class="post-content-pre" ng-show="!post.isValidVideo" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
 			{% include 'modules/postOptions.html' %}
-			<pre ng-paste="savePostVideo($event, post)" data-changed="false" contenteditable ng-bind="post.helpText ? post.helpText : post.key" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }"></pre>
+			<div ng-model="test"
+					class="post-editor"
+					medium-editor
+					options='{"placeholder": "[[post.helpText]]", "disableToolbar": true, "disableReturn": true, "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
+					ng-paste="savePostVideo($event, post)"></div>
 		</div>
 		<div class="post-content-block" ng-show="post.isValidVideo">
 			{% include 'modules/postOptions.html' %}

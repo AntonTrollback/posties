@@ -77,9 +77,19 @@
   padding: 26px 20px;
 }
 
+.post-editor {
+  padding: 26px 20px;
+  margin: -26px -20px;
+}
+
 .post-content-pre.is-larger {
-  font-size: 3.2em;
+  font-size: 32px;
   padding: 22px 20px;
+}
+
+.post-content-pre.is-larger .post-editor {
+  padding: 22px 20px;
+  margin: -22px -20px;
 }
 
 @media (--lg-viewport) {
@@ -113,8 +123,18 @@
   padding: 13px 10px;
 }
 
+.post-inner.is-unboxed .post-editor {
+  padding: 13px 10px;
+  margin: -13px -10px;
+}
+
 .post-inner.is-unboxed .post-content-pre.is-larger {
   padding: 9px 10px;
+}
+
+.post-inner.is-unboxed .post-content-pre.is-larger .post-editor {
+  padding: 9px 10px;
+  margin: -9px -10px;
 }
 
 .post-inner.is-unboxed .post-content-block {
@@ -135,8 +155,18 @@
     padding: 34px 32px;
   }
 
+  .post-editor {
+    padding: 34px 32px;
+    margin: -34px -32px;
+  }
+
   .post-content-pre.is-larger {
-    padding-top: 28px 32px;
+    padding: 28px 32px;
+  }
+
+  .post-content-pre.is-larger .post-editor {
+    padding: 28px 32px;
+    margin: -28px -32px;
   }
 
   .post-content-loading {
@@ -151,12 +181,22 @@
     padding: 13px 32px;
   }
 
+  .post-inner.is-unboxed .post-editor {
+    padding: 13px 32px;
+    margin: -13px -32px;
+  }
+
   .post-inner.is-unboxed .post-content-pre.is-larger {
     padding: 9px 32px;
   }
 
+  .post-inner.is-unboxed .post-content-pre.is-larger .post-editor {
+    padding: 9px 32px;
+    margin: -9px -32px;
+  }
+
   .post-inner.is-unboxed .post-content-block {
-    margin: 0 32px;
+    margin: 16px 32px;
   }
 }
 
@@ -170,6 +210,7 @@
   right: 0;
   overflow: hidden;
   padding: 0 2px;
+  z-index: 10;
 }
 
 .post-inner.is-unboxed .post-option {

@@ -1,11 +1,11 @@
 <div class="post-option">
-  <button class="post-option-action is-up" ng-click="movePost($index, $index - 1)" title="move up">
+  <button class="post-option-action is-up" ng-click="movePost($index, $index - 1)" title="move up" tabindex="-1">
     {% include 'modules/inlineSvg/arrowUp.html' %}
   </button>
-  <button class="post-option-action is-down" ng-click="movePost($index, $index + 1)" title="move down">
+  <button class="post-option-action is-down" ng-click="movePost($index, $index + 1)" title="move down" tabindex="-1">
     {% include 'modules/inlineSvg/arrowDown.html' %}
   </button>
-  <button class="post-option-action is-delete" ng-click="deletePost($index, post)" title="delete">
+  <button class="post-option-action is-delete" ng-click="deletePost($index, post)" title="delete" tabindex="-1">
     {% include 'modules/inlineSvg/cross.html' %}
   </button>
 </div>

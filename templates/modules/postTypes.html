@@ -1,17 +1,27 @@
 <div class="block is-padded">
-	<button class="button is-large is-full" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes"><span class="icon is-plus"></span> Add content</button>
-	<ul class="postTypes" ng-show="showPostTypes" ng-cloak>
-		<li>
-			<button class="button addPostText" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="">Body text</button>
-		</li>
-		<li>
-			<button class="button addPostHeadline" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="">Headline</button>
-		</li>
-		<li>
-			<label class="button addPostImage"><input class="hidden" type="file" accept="image/*" capture="camera" name="image" ng-file-select="savePostImage($files)" />Image</label>
-		</li>
-		<li>
-			<button class="button addPostVideo" ng-click="addPost($event)" data-type="3" data-template="postVideo.html" data-helptext="Paste your YouTube link here">YouTube video</button>
-		</li>
-	</ul>
+	<button class="button is-large is-full" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes">
+		{% include 'modules/inlineSvg/plus.html' %}
+		Add content
+	</button>
+
+	<div class="button-group" ng-show="showPostTypes" ng-cloak>
+		<button class="button is-vertical" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="">
+			{% include 'modules/inlineSvg/contentText.html' %}
+			Body text
+		</button>
+		<button class="button is-vertical" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="">
+			{% include 'modules/inlineSvg/contentHeadline.html' %}
+			Headline
+		</button>
+		<div class="button-group-break"></div>
+		<label class="button is-vertical" for="uploadImage">
+			<input class="hidden" id="uploadImage" type="file" accept="image/*" capture="camera" name="image" ng-file-select="savePostImage($files)">
+			{% include 'modules/inlineSvg/contentImage.html' %}
+			Image
+		</label>
+		<button class="button is-vertical" ng-click="addPost($event)" data-type="3" data-template="postVideo.html" data-helptext="Paste your YouTube link here">
+			{% include 'modules/inlineSvg/contentVideo.html' %}
+			Video
+		</button>
+	</div>
 </div>

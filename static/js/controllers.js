@@ -256,16 +256,11 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		}
 	};
 
-	//Angular doesn't do ng-change on contenteditable, using jQuery
-	$('#posts').on('propertychange, input', 'pre', function(el) {
-		$(this).data('changed', true);
-	});
-
 	(function() {
 	   var post = {
 			id : 0,
 			sortrank : 0,
-			content : "Hello \nI'm a text that you can edit \n\n Add images and texts until you're happy. \n Then publish your new website! \n\n Customize your design by hitting the sliders in the top right corner.",
+			content : "<p>Hello</p><p>I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>",
 			type : 0,
 			template : 'postText.html'
 		};
@@ -324,7 +319,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
 		localStorage.removeItem(config.keySettings + 'Welcome');
 	}
-	localStorage.removeItem(config.keySettings);
 
 	var urlPathName = location.pathname;
 	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
@@ -412,7 +406,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				data: jsonPost,
 				headers: config.headerJSON
 			}).then(function(response) {
-				$($event.target).data('changed', false);
 				$scope.flash.showMessage('saved...');
 			}, function(response) {
 				console.log(response);

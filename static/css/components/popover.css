@@ -79,6 +79,8 @@
   display: block;
   text-decoration: none;
   padding: 0.8em 1.2em 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .popover-nav li:last-child a {
