@@ -21,11 +21,11 @@
     };
 
     function S3Upload(options) {
-      if(options == null) options = {};
-      for (option in options) {
+      if(options === null) options = {};
+      for (var option in options) {
         this[option] = options[option];
       }
-      this.handleFileSelect(this.s3_file);  
+      this.handleFileSelect(this.s3_file);
     }
 
     S3Upload.prototype.handleFileSelect = function(file) {
@@ -34,7 +34,7 @@
       //Commented out since it broke our update status
       //this.onProgress(0, 'Upload started.');
       _results = [];
-      
+
       _results.push(this.uploadFile(file));
 
       return _results;
@@ -43,7 +43,7 @@
     S3Upload.prototype.createCORSRequest = function(method, url) {
       var xhr;
       xhr = new XMLHttpRequest();
-      if (xhr.withCredentials != null) {
+      if (xhr.withCredentials !== null) {
         xhr.open(method, url, true);
       } else if (typeof XDomainRequest !== "undefined") {
         xhr = new XDomainRequest();

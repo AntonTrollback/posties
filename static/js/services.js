@@ -53,11 +53,13 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 
     this.open = function() {
       fonts.loadAll();
-		  return this.isOpen = !this.isOpen;
+      var result = this.isOpen = !this.isOpen;
+		  return result;
     };
 
     this.close = function() {
-		  return this.isOpen = false;
+      var result = this.isOpen = false;
+		  return result;
 	  };
 
 	this.getRandomSettings = function() {
@@ -67,10 +69,10 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 			pagebackgroundcolor: getRandomHex(),
 			postbackgroundcolor: getRandomHex(),
 			posttextcolor: getRandomHex(),
-			showboxes : Math.random() < .5,
+			showboxes : Math.random() < 0.5,
 			typefaceheadline: setRandomTypeface('#panelHeadlineFont'),
 			typefaceparagraph: setRandomTypeface('#panelTextFont')
-		}
+		};
 	};
 
 	this.getDefaultSettings = function($event) {
@@ -83,7 +85,7 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 			showboxes: true,
 			typefaceheadline: "Akkurat",
 			typefaceparagraph: "Akkurat"
-		}
+		};
 	};
 
 	this.getPalette = function() {
@@ -140,13 +142,15 @@ postiesApp.service('AuthService', function($http, config) {
 		}, function(error) {
 			return error;
 		});
-	}
+	};
 
 	this.isLoggedIn = function() {
-		return this.user != false;
-	}
+		return this.user !== false;
+	};
 
-	this.currentUserInSession = function() {}
+	this.currentUserInSession = function() {
+
+  };
 });
 
 postiesApp.service('LoaderService', function() {
@@ -170,7 +174,7 @@ postiesApp.service('LoaderService', function() {
 
 	this.getLoader = function() {
 		return loader;
-	}
+	};
 
 });
 
@@ -199,7 +203,7 @@ postiesApp.service('FlashService', function($timeout) {
 
 	this.getFlash = function() {
 		return flash;
-	}
+	};
 
 });
 
@@ -208,7 +212,7 @@ postiesApp.service('Fonts', function($http, config) {
   var fonts = {
     fontList: FONTS,
     fontListLoaded: false
-  }
+  };
 
   WebFontConfig = {};
 
@@ -219,17 +223,19 @@ postiesApp.service('Fonts', function($http, config) {
 
     fonts.load(fonts.fontList);
     fonts.fontListLoaded = true;
-  }
+  };
 
   fonts.load = function(fonts) {
     var cleanFonts = [];
 
-    for(item in fonts) {
+    // Remove Akkurat, should already be loaded
+    for(var item in fonts) {
       if (fonts[item] !== 'Akkurat' && fonts[item] !== 'sans-serif') {
-        cleanFonts.push(fonts[item] + '::latin')
+        cleanFonts.push(fonts[item] + '::latin');
       }
     }
 
+    // Remove duplicates
     var uniqueFonts = cleanFonts.filter(function(item, pos) {
       return cleanFonts.indexOf(item) == pos;
     });
@@ -238,16 +244,19 @@ postiesApp.service('Fonts', function($http, config) {
       return;
     }
 
-    console.log('Loaded fonts: ', uniqueFonts)
+    // Prevent crash if no network connection
+    if (typeof WebFont !== "undefined") {
 
-    WebFont.load({
-      google: {
-        families: uniqueFonts
-      }
-    });
-  }
+      // Load the fonts
+      WebFont.load({
+        google: {
+          families: uniqueFonts
+        }
+      });
+    }
+  };
 
   this.getFonts = function() {
     return fonts;
-  }
+  };
 });
