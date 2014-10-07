@@ -68,7 +68,7 @@ def login():
 	elif request.method == 'POST':
 		jsonData = request.json
 		email = jsonData['email'].lower()
-		password = jsonData['password'].lower()
+		password = jsonData['password']
 
 		users = r.table(TABLE_USERS).filter(
 			(r.row['email'] == email) &
