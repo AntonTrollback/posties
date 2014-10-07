@@ -1,0 +1,11 @@
+.palette {
+  margin-bottom: 22px;
+  overflow: hidden;
+}
+
+.palette-item {
+  float: left;
+  padding: 10px;
+  margin-right: 1px;
+  display: block;
+}
