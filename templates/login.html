@@ -4,19 +4,21 @@
 	<body class="site {% if current_user and current_user.is_authenticated() %}authenticated{% endif %}">
 
 		{% include 'modules/header.html' %}
-		<div class="site-container">
-			<div class="editorial">
-				<h2>Login</h2>
-				<form name="formLogin" class="form" method="post" ng-submit="submitLogin(userSettings)">
-					<fieldset>
-						<input type="text" class="email" name="email" ng-model="user.email" placeholder="email" required pattern=".{5,}" autocapitalize="off" autocorrect="off" />
-						<input type="password" class="password" name="password" ng-model="user.password" placeholder="password" required pattern=".{4,}" autocapitalize="off" autocorrect="off" />
-					</fieldset>
-					<fieldset class="buttonContainer">
-						<button class="button">Login</button>
-					</fieldset>
-				</form>
-			</div>
+		<div class="site-container" style="max-width: 500px;">
+
+			<form name="formLogin" method="post" ng-submit="submitLogin(userSettings)">
+				<div class="block is-padded">
+					<input type="text" name="email" ng-model="user.email" placeholder="Email" required pattern=".{5,}" autocapitalize="off" autocorrect="off" />
+				</div>
+				<div class="block is-padded">
+					<input type="password" name="password" ng-model="user.password" placeholder="Password" required pattern=".{4,}" autocapitalize="off" autocorrect="off" />
+				</div>
+				<div class="block is-padded">
+					<div class="block is-padded">
+						<button class="button is-large is-full">Login</button>
+					</div>
+				</div>
+			</form>
 		</div>
 
 		{% include 'modules/footer.html' %}
