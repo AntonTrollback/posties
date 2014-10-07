@@ -26,16 +26,11 @@
 
 
 /*** GLOBAL FORMS ***/
-fieldset,
 .formGroup {
 	margin-bottom: 1rem;
 	border: 0;
 	padding: 0;
 }
-fieldset select,
-fieldset input[type="text"],
-fieldset input[type="email"],
-fieldset input[type="password"],
 .formGroup select,
 .formGroup input[type="text"],
 .formGroup input[type="email"],
@@ -44,9 +39,6 @@ fieldset input[type="password"],
 	padding: 8px;
 	font: inherit;
 }
-fieldset input[type="text"],
-fieldset input[type="email"],
-fieldset input[type="password"],
 .formGroup input[type="text"],
 .formGroup input[type="email"],
 .formGroup input[type="password"] {
@@ -55,11 +47,10 @@ fieldset input[type="password"],
 	font-style: italic;
 	font-weight: lighter;
 }
-fieldset:last-child,
 .formGroup:last-child {
 	margin-top: 3rem;
 }
-label + select {
+.formGroup label + select {
 	display: block;
 	border: 1px solid #ddd;
 	color: #666;
@@ -72,7 +63,7 @@ label + select {
     -moz-appearance:none;
     appearance:none;
 }
-input[type="checkbox"] + span {
+.formGroup input[type="checkbox"] + span {
 	height: 20px;
 	border: 1px solid #ddd;
 	background: #fff;
@@ -84,7 +75,7 @@ input[type="checkbox"] + span {
 	text-align: center;
 	text-indent: -99999px;
 }
-input[type="checkbox"]:checked + span {
+.formGroup input[type="checkbox"]:checked + span {
 	text-indent: 0;
 }
 

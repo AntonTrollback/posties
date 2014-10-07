@@ -1,28 +1,23 @@
-
-
-
 .modal {
   position: absolute;
   background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 1px 16px #888;
+  box-shadow: 2px 2px 30px rgba(0, 0, 0, .2);
   border: 1px solid #ddd;
-  width: 55%;
+  width: 100%;
   right: 0;
   left: 0;
   margin: 0 auto;
   top: 5%;
   padding: 2rem 3rem;
   z-index: 10;
+  box-sizing: border-box;
 }
+
 .modal h3 {
   text-align: center;
   font-size: 2.2rem;
 }
-.modal input[type="text"],
-.modal input[type="email"],
-.modal input[type="password"] {
-  width: 90%;
-}
+
 .modal .formGroup.buttonContainer {
   clear: both;
   width: 100%;
@@ -35,15 +30,9 @@
   width: 95%;
   box-sizing: border-box;
 }
-.modal .formGroup {
-  position: relative;
-}
 .modal.createUser {
-  width: 90%;
   top: 0;
-}
-.modal.createUser fieldset {
-  position: relative;
+  margin-bottom: 100px;
 }
 .modal.createUser .togglePasswordMask {
   width: 26px;

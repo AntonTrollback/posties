@@ -102,77 +102,43 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$scope.posts.splice(currentIndex, 1);
 	};
 
-	$scope.validateUserEmail = function($event) {
-		if (typeof $scope.formCreateUser.email.$viewValue === 'undefined') {
-			return;
-		}
-
-		if($scope.formCreateUser.email.$viewValue && $scope.formCreateUser.email.$invalid) {
-			$scope.flash.showMessage("Uups. That's not a valid email");
-			return;
-		} else {
-			delete $scope.formCreateUser.email.error;
-		}
-
-		$http({
-			url: '/api/users/email',
-			method: 'get',
-			params: { email : $scope.user.email }
-		}).then(function(response) {
-			if(response.data.user) {
-				$scope.formCreateUser.email.$invalid = true;
-				$scope.flash.showMessage("The email address is already taken!");
-			} else {
-				$scope.formCreateUser.email.$invalid = false;
-				delete $scope.formCreateUser.email.error;
-			}
-		}, function(response) {
-			console.log(response);
-		});
-	};
-
-	$scope.validateUserUsername = function($event) {
-		if (typeof $scope.formCreateUser.username.$viewValue === 'undefined') {
-			return;
-		}
-
-		console.log($scope.formCreateUser.username.$viewValue)
-
-		if($scope.formCreateUser.username.$viewValue && $scope.formCreateUser.username.$invalid) {
-			$scope.flash.showMessage('The username needs to be between 3 and 20 characters');
-			return;
-		} else {
-			delete $scope.formCreateUser.username.error;
-		}
-
+	$scope.checkUsername = function() {
 		$http({
 			url: '/api/users',
 			method: 'get',
-			params: { username : $scope.user.username }
+			params: { username : $scope.user.username.toLowerCase() }
 		}).then(function(response) {
-			if(response.data.user) {
-				$scope.formCreateUser.username.$invalid = true;
-				$scope.flash.showMessage('The username is already taken!');
+			if (typeof response.data.user === 'undefined') {
+				$scope.submitCreateUser();
 			} else {
-				$scope.formCreateUser.username.$invalid = false;
-				delete $scope.formCreateUser.username.error;
+				$scope.formCreateUser.username.error = "Sorry, that URL is already taken";
 			}
 		}, function(response) {
 			console.log(response);
 		});
 	};
 
-	$scope.validateUserPassword = function($event) {
-		if (typeof $scope.formCreateUser.password.$viewValue === 'undefined') {
-			return;
+	$scope.validateUserForm = function($event) {
+		$scope.formCreateUser.username.error = "";
+		$scope.formCreateUser.email.error = "";
+		$scope.formCreateUser.password.error = "";
+
+		if ($scope.formCreateUser.email.$invalid) {
+			$scope.formCreateUser.email.error = "Not a valid email";
 		}
 
-		if($scope.formCreateUser.password.$viewValue && $scope.formCreateUser.password.$invalid) {
-			$scope.flash.showMessage('Your password needs to be between 5 and 20 characters long');
+		if ($scope.formCreateUser.password.$invalid) {
+			$scope.formCreateUser.password.error = "Can't be empty";
+		}
 
-			return;
+		if ($scope.formCreateUser.username.$invalid) {
+			if ($scope.formCreateUser.username.$error.pattern) {
+					$scope.formCreateUser.username.error = "Sorry, no spaces or weird characters";
+			} else {
+				$scope.formCreateUser.username.error = "Can't be empty";
+			}
 		} else {
-			delete $scope.formCreateUser.password.error;
+			$scope.checkUsername();
 		}
 	};
 
@@ -184,14 +150,14 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			$('#formCreateUser button[type="submit"]').attr('disabled', true).text('Loading…');
 
 			var jsonPost = {
-				email : $scope.user.email,
-				username : $scope.user.username,
+				email : $scope.user.email.toLowerCase(),
+				username : $scope.user.username.toLowerCase(),
 				password : $scope.user.password,
 				posts : $scope.posts,
 				settings : $scope.userSettings
 			};
 
-			jsonPost.settings['username'] = $scope.user.username;
+			jsonPost.settings.username = $scope.user.username;
 
 			$http({
 				url: '/api/users',
@@ -248,7 +214,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			function forwardToUserPage() {
 				$scope.loader.hide();
 				localStorage.setItem(config.keySettings + 'Welcome', true);
-				window.location = "/by/" + $scope.user.username;
+				window.location = "/by/" + $scope.user.username.toLowerCase();
 			}
 		} else {
 			console.log("form is invalid");
@@ -417,8 +383,8 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			var file = $files[i];
 
 			var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-    			return v.toString(16);
+  			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+  			return v.toString(16);
 			});
 
 			var filename = guid + "." + file.name.split('.').pop();
@@ -501,7 +467,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				console.log(response);
 			});
 		} else {
-			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');	
+			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
 			return;
 		}
 	};
