@@ -145,8 +145,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		var redirectUser = false;
 
 		if($scope.formCreateUser.$valid) {
-			var $button =
-			$('#formCreateUser button[type="submit"]').attr('disabled', true).text('Loading…');
+			var $button = $('#formCreateUser button[type="submit"]').attr('disabled', true);
 
 			var jsonPost = {
 				email : $scope.user.email.toLowerCase(),
@@ -175,29 +174,30 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 						if(jsonPost.type == 2) {
 							var file = $scope.posts[i].file;
 
-							var loadingImage = loadImage(
-								file,
-								function(resizedImage) {
-									resizedImage.toBlob(function(blob) {
-										var s3upload = new S3Upload({
-											s3_object_name: jsonPost.key,
-											s3_file: blob,
-											onProgress: function(percent, message) {
-												console.log('Upload progress: ' + percent + '% ' + message);
-											},
-											onFinishS3Put: function(url) {
-												console.log('Upload completed. Uploaded to: ' + url);
-												if(redirectUser) {
-													forwardToUserPage();
-												}
-											},
-											onError: function(status) {
-												console.log('Upload error: ' + status);
+							var loadingImage = loadImage(file, function(resizedImage) {
+								resizedImage.toBlob(function(blob) {
+									var s3upload = new S3Upload({
+										s3_object_name: jsonPost.key,
+										s3_file: blob,
+										onProgress: function(percent, message) {
+											console.log('Upload progress: ' + percent + '% ' + message);
+											$scope.formCreateUser.loadingText = 'Uploading images: ' + percent + '%, ' + message.toLowerCase();
+										},
+										onFinishS3Put: function(url) {
+											console.log('Upload completed. Uploaded to: ' + url);
+											if(redirectUser) {
+												forwardToUserPage();
 											}
-										});
-									}, file.type);
-								}, { maxWidth: 600, canvas: true }
-							);
+										},
+										onError: function(status) {
+											forwardToUserPage();
+										}
+									});
+								}, file.type);
+							}, {
+								maxWidth: 600,
+								canvas: true
+							});
 						}
 					}
 				} else {
@@ -207,13 +207,13 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			}, function(response) {
 				console.log(response);
 			});
-
-			function forwardToUserPage() {
-				localStorage.setItem(config.keySettings + 'Welcome', true);
-				window.location = "/by/" + $scope.user.username.toLowerCase();
-			}
 		} else {
 			console.log("form is invalid");
+		}
+
+		function forwardToUserPage() {
+			localStorage.setItem(config.keySettings + 'Welcome', true);
+			window.location = "/by/" + $scope.user.username.toLowerCase();
 		}
 	};
 
@@ -250,7 +250,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 			if(response.status == 200) {
 				window.location = "/by/" + response.data.username;
 			} else {
-				$scope.flash.showPermanentMessage(response.data.error);
+				$scope.flash.showPermanentMessage('Sorry, email or password is incorrect');
 			}
 		});
 	};
