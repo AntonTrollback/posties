@@ -71,7 +71,7 @@
 
 		<div class="panel" id="panelTextFont">
 			<div class="popover-header">
-				<button class="button" data-go-to-panel="panelPrimarySettings">Back</button>
+				<button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button>
 			</div>
 
 			<div class="popover-scroll">
@@ -87,7 +87,7 @@
 
 		<div class="panel" id="panelHeadlineFont">
 			<div class="popover-header">
-				<button class="button" data-go-to-panel="panelPrimarySettings">Back</button>
+				<button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button>
 			</div>
 
 			<div class="popover-scroll">
@@ -102,7 +102,7 @@
 		</div>
 
 		<div class="panel" id="panelBoxColor">
-			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimarySettings">Back</button></div>
+			<div class="popover-header"><button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button></div>
 			<div class="popover-body">
 				<div class="palette">
 					<button class="palette-item" ng-repeat="color in settingsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="userSettings.postbackgroundcolor = color"></button>
@@ -113,7 +113,7 @@
 		</div>
 
 		<div class="panel" id="panelTextColor">
-			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimarySettings">Back</button></div>
+			<div class="popover-header"><button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button></div>
 			<div class="popover-body">
 				<div class="palette">
 					<button class="palette-item" ng-repeat="color in settingsService.getFontPalette()" ng-style="{ 'background': color }" ng-click="userSettings.posttextcolor = color"></button>
@@ -124,12 +124,12 @@
 		</div>
 
 		<div class="panel" id="panelBackground">
-			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimarySettings">Back</button></div>
+			<div class="popover-header"><button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button></div>
 			<div class="popover-body">
 				<div class="palette">
 					<button class="palette-item" ng-repeat="color in settingsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="userSettings.pagebackgroundcolor = color"></button>
 				</div>
-      	<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.pagebackgroundcolor">
+      			<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.pagebackgroundcolor">
 				<input id="resultBackground" class="minicolors-result" type="hidden">
 			</div>
 		</div>

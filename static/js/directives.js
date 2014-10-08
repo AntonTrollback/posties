@@ -25,10 +25,7 @@ $(function() {
     position: 'bottom left',
     show: null,
     showSpeed: 100,
-    theme: 'default',
-    change: function() {
-      console.log('Changed');
-    }
+    theme: 'default'
   });
 
   // Selected state for items in font lists
