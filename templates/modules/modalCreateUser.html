@@ -46,8 +46,11 @@
 
     <div class="block is-padded" style="padding-top: 15px;">
     	<button class="button is-larger is-full" type="submit">
-				{% include 'modules/inlineSvg/arrowOut.html' %}
-				Publish now!
+				<div ng-hide="formCreateUser.loadingText">
+					{% include 'modules/inlineSvg/arrowOut.html' %}
+					Publish now!
+				</div>
+				<span ng-show="formCreateUser.loadingText">[[formCreateUser.loadingText]]</span>
 			</button>
     </div>
   </form>

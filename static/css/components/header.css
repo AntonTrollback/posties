@@ -36,7 +36,8 @@
   fill: var(--color-element-light);
 }
 
-.header-action.is-active path:first-child {
+.header-action.is-active path:first-child,
+.header-action:hover path:first-child {
   fill: var(--color-element-dark);
 }
 

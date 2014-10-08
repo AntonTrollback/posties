@@ -174,31 +174,6 @@ postiesApp.service('AuthService', function($http, config) {
   };
 });
 
-postiesApp.service('LoaderService', function() {
-
-	var loader = {
-		isShown : false,
-		message : 'loading'
-	};
-
-	loader.show = function() {
-		loader.isShown = true;
-	};
-
-	loader.hide = function() {
-		loader.isShown = false;
-	};
-
-	loader.setMessage = function(message) {
-		loader.message = message;
-	};
-
-	this.getLoader = function() {
-		return loader;
-	};
-
-});
-
 postiesApp.service('FlashService', function($timeout) {
 
 	var flash = {
