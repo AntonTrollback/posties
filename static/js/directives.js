@@ -1,5 +1,4 @@
 // Todo: create directives
-
 $(function() {
   // Navigate panels
   $('.panels').each(function() {
@@ -30,6 +29,15 @@ $(function() {
     change: function() {
       console.log('Changed');
     }
+  });
+
+  $panels.find('[data-go-to-panel]').on('click', function(e) {
+    e.preventDefault();
+    switchSection($(this).data('go-to-panel'));
+  });
+
+  $('.palette-item').on('click', function(e) {
+    $(this).closest('.popover-body').find('.minicolors input').trigger('keyup');
   });
 
   // Selected state for items in font lists

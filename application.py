@@ -24,8 +24,7 @@ print('Running in ' + ENV + ' mode.')
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
-WHITELIST_TYPEFACES = ['Akkurat', 'Source Sans Pro', 'Reenie Beanie', 'Raleway', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface', 'Chivo']
-
+WHITELIST_TYPEFACES = ['Akkurat', 'Reenie Beanie', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface']
 AWS_ACCESS_KEY = CONFIG["aws"]["access_key"].encode('utf-8')
 AWS_SECRET_KEY = CONFIG["aws"]["secret_key"].encode('utf-8')
 AWS_S3_BUCKET = CONFIG["s3"]["bucket"]
@@ -63,7 +62,7 @@ def login():
 	elif request.method == 'POST':
 		jsonData = request.json
 		email = jsonData['email'].lower()
-		password = jsonData['password'].lower()
+		password = jsonData['password']
 
 		users = r.table(TABLE_USERS).filter(
 			(r.row['email'] == email) &
@@ -257,6 +256,7 @@ def sign_s3():
 
 	# Remove surrounding whitespace and quote special characters:
 	signature = urllib.quote_plus(signature.strip())
+	signature = urllib.quote_plus(signature.strip())
 
 	# Build the URL of the file in anticipation of its imminent upload:
 	url = 'https://%s.s3.amazonaws.com/%s' % (AWS_S3_BUCKET, object_name)
@@ -265,6 +265,8 @@ def sign_s3():
 		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
 		'url': url
 	})
+
+	print content
 
 	# Return the signed request and the anticipated URL back to the browser in JSON format:
 	return Response(content, mimetype='text/plain; charset=x-user-defined')

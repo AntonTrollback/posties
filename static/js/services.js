@@ -88,6 +88,14 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 		};
 	};
 
+	this.getBackgroundPalette = function() {
+		return ['#e5fff5', '#bbf8ff', '#405559', '#512d59', '#ff033e', '#ffffff', '#fbff05', '#ff8f8f'];
+	};
+
+  this.getFontPalette = function() {
+    return ['#000000', '#ffffff'];
+  };
+
 	function getRandomHex() {
 		return '#'+(function lol(m,s,c){return s[m.floor(m.random() * s.length)] + (c && lol(m,s,c-1));})(Math,'0123456789ABCDEF', 4);
 	}
@@ -147,31 +155,6 @@ postiesApp.service('AuthService', function($http, config) {
 	this.currentUserInSession = function() {
 
   };
-});
-
-postiesApp.service('LoaderService', function() {
-
-	var loader = {
-		isShown : false,
-		message : 'loading'
-	};
-
-	loader.show = function() {
-		loader.isShown = true;
-	};
-
-	loader.hide = function() {
-		loader.isShown = false;
-	};
-
-	loader.setMessage = function(message) {
-		loader.message = message;
-	};
-
-	this.getLoader = function() {
-		return loader;
-	};
-
 });
 
 postiesApp.service('FlashService', function($timeout) {

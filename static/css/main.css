@@ -26,16 +26,11 @@
 
 
 /*** GLOBAL FORMS ***/
-fieldset,
 .formGroup {
 	margin-bottom: 1rem;
 	border: 0;
 	padding: 0;
 }
-fieldset select,
-fieldset input[type="text"],
-fieldset input[type="email"],
-fieldset input[type="password"],
 .formGroup select,
 .formGroup input[type="text"],
 .formGroup input[type="email"],
@@ -44,9 +39,6 @@ fieldset input[type="password"],
 	padding: 8px;
 	font: inherit;
 }
-fieldset input[type="text"],
-fieldset input[type="email"],
-fieldset input[type="password"],
 .formGroup input[type="text"],
 .formGroup input[type="email"],
 .formGroup input[type="password"] {
@@ -55,11 +47,10 @@ fieldset input[type="password"],
 	font-style: italic;
 	font-weight: lighter;
 }
-fieldset:last-child,
 .formGroup:last-child {
 	margin-top: 3rem;
 }
-label + select {
+.formGroup label + select {
 	display: block;
 	border: 1px solid #ddd;
 	color: #666;
@@ -72,7 +63,7 @@ label + select {
     -moz-appearance:none;
     appearance:none;
 }
-input[type="checkbox"] + span {
+.formGroup input[type="checkbox"] + span {
 	height: 20px;
 	border: 1px solid #ddd;
 	background: #fff;
@@ -84,7 +75,7 @@ input[type="checkbox"] + span {
 	text-align: center;
 	text-indent: -99999px;
 }
-input[type="checkbox"]:checked + span {
+.formGroup input[type="checkbox"]:checked + span {
 	text-indent: 0;
 }
 
@@ -104,6 +95,7 @@ input[type="checkbox"]:checked + span {
 	top: 0;
 	right: 6px;
 	position: absolute;
+	text-decoration: none;
 }
 #flash pre {
 	color: #fff;
@@ -154,42 +146,6 @@ input[type="checkbox"]:checked + span {
 .postTypes .item {
 	display: inline-block;
 	padding: 0 5em;
-}
-.loader {
-	position: absolute;
-	left: 0;
-	right: 0;
-	text-align: center;
-	top: 200px;
-}
-.loader p {
-	font-size: 1.8rem;
-}
-.spinner {
-	display: inline-block;
-	width: 30px;
-	height: 30px;
-	background-color: #333;
-	-webkit-animation: rotateplane 1.2s infinite ease-in-out;
-	animation: rotateplane 1.2s infinite ease-in-out;
-}
-
-@-webkit-keyframes rotateplane {
-	0% { -webkit-transform: perspective(120px) }
-	50% { -webkit-transform: perspective(120px) rotateY(180deg) }
-	100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
-}
-@keyframes rotateplane {
-	0% {
-		transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-		-webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
-	} 50% {
-		transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-		-webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
-	} 100% {
-		transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-		-webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-	}
 }
 
 /*** GLOBAL CLASSES ***/

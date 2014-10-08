@@ -1,12 +1,11 @@
 postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize,
-	config, SettingsService, LoaderService, FlashService, Fonts) {
+	config, SettingsService, FlashService, Fonts) {
 
 	$scope.posts = [];
 	$scope.userHasUploadedImage = false;
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
-	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
 	$scope.fonts = Fonts.getFonts();
 
@@ -85,6 +84,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			$scope.flash.showMessage('saved...');
 		} else {
 			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
+
 			return;
 		}
 	};
@@ -101,77 +101,43 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$scope.posts.splice(currentIndex, 1);
 	};
 
-	$scope.validateUserEmail = function($event) {
-		if (typeof $scope.formCreateUser.email.$viewValue === 'undefined') {
-			return;
-		}
-
-		if($scope.formCreateUser.email.$viewValue && $scope.formCreateUser.email.$invalid) {
-			$scope.flash.showMessage("Uups. That's not a valid email");
-			return;
-		} else {
-			delete $scope.formCreateUser.email.error;
-		}
-
-		$http({
-			url: '/api/users/email',
-			method: 'get',
-			params: { email : $scope.user.email }
-		}).then(function(response) {
-			if(response.data.user) {
-				$scope.formCreateUser.email.$invalid = true;
-				$scope.flash.showMessage("The email address is already taken!");
-			} else {
-				$scope.formCreateUser.email.$invalid = false;
-				delete $scope.formCreateUser.email.error;
-			}
-		}, function(response) {
-			console.log(response);
-		});
-	};
-
-	$scope.validateUserUsername = function($event) {
-		if (typeof $scope.formCreateUser.username.$viewValue === 'undefined') {
-			return;
-		}
-
-		console.log($scope.formCreateUser.username.$viewValue)
-
-		if($scope.formCreateUser.username.$viewValue && $scope.formCreateUser.username.$invalid) {
-			$scope.flash.showMessage('The username needs to be between 3 and 20 characters');
-			return;
-		} else {
-			delete $scope.formCreateUser.username.error;
-		}
-
+	$scope.checkUsername = function() {
 		$http({
 			url: '/api/users',
 			method: 'get',
-			params: { username : $scope.user.username }
+			params: { username : $scope.user.username.toLowerCase() }
 		}).then(function(response) {
-			if(response.data.user) {
-				$scope.formCreateUser.username.$invalid = true;
-				$scope.flash.showMessage('The username is already taken!');
+			if (typeof response.data.user === 'undefined') {
+				$scope.submitCreateUser();
 			} else {
-				$scope.formCreateUser.username.$invalid = false;
-				delete $scope.formCreateUser.username.error;
+				$scope.formCreateUser.username.error = "Sorry, that URL is already taken";
 			}
 		}, function(response) {
 			console.log(response);
 		});
 	};
 
-	$scope.validateUserPassword = function($event) {
-		if (typeof $scope.formCreateUser.password.$viewValue === 'undefined') {
-			return;
+	$scope.validateUserForm = function($event) {
+		$scope.formCreateUser.username.error = "";
+		$scope.formCreateUser.email.error = "";
+		$scope.formCreateUser.password.error = "";
+
+		if ($scope.formCreateUser.email.$invalid) {
+			$scope.formCreateUser.email.error = "Not a valid email";
 		}
 
-		if($scope.formCreateUser.password.$viewValue && $scope.formCreateUser.password.$invalid) {
-			$scope.flash.showMessage('Your password needs to be between 5 and 20 characters long');
+		if ($scope.formCreateUser.password.$invalid) {
+			$scope.formCreateUser.password.error = "Can't be empty";
+		}
 
-			return;
+		if ($scope.formCreateUser.username.$invalid) {
+			if ($scope.formCreateUser.username.$error.pattern) {
+					$scope.formCreateUser.username.error = "Sorry, no spaces or weird characters";
+			} else {
+				$scope.formCreateUser.username.error = "Can't be empty";
+			}
 		} else {
-			delete $scope.formCreateUser.password.error;
+			$scope.checkUsername();
 		}
 	};
 
@@ -179,7 +145,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		var redirectUser = false;
 
 		if($scope.formCreateUser.$valid) {
-			var $button = $('#formCreateUser button[type="submit"]').attr('disabled', true).text('Loading…');
+			var $button = $('#formCreateUser button[type="submit"]').attr('disabled', true);
 			var posts = [];
 
 			// Remove empty video posts
@@ -194,8 +160,8 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			$scope.posts = posts;
 
 			var jsonPost = {
-				email : $scope.user.email,
-				username : $scope.user.username,
+				email : $scope.user.email.toLowerCase(),
+				username : $scope.user.username.toLowerCase(),
 				password : $scope.user.password,
 				posts : $scope.posts,
 				settings : $scope.userSettings
@@ -210,8 +176,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				headers: config.headerJSON
 			}).then(function(response) {
 				if($scope.userHasUploadedImage) {
-					$scope.loader.show();
-
 					for(i = 0; i < response.data.posts.length; i++) {
 						var jsonPost = response.data.posts[i];
 
@@ -222,14 +186,14 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 						if(jsonPost.type == 2) {
 							var file = $scope.posts[i].file;
 
-							var loadingImage = loadImage(
-								file,
-								function(resizedImage) {
+							var loadingImage = loadImage(file, function(resizedImage) {
+								resizedImage.toBlob(function(blob) {
 									var s3upload = new S3Upload({
 										s3_object_name: jsonPost.key,
-										s3_file: file,
+										s3_file: blob,
 										onProgress: function(percent, message) {
 											console.log('Upload progress: ' + percent + '% ' + message);
+											$scope.formCreateUser.loadingText = 'Uploading images: ' + percent + '%, ' + message.toLowerCase();
 										},
 										onFinishS3Put: function(url) {
 											console.log('Upload completed. Uploaded to: ' + url);
@@ -238,11 +202,14 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 											}
 										},
 										onError: function(status) {
-											console.log('Upload error: ' + status);
+											forwardToUserPage();
 										}
 									});
-								}, { maxWidth: 1000 }
-							);
+								}, file.type);
+							}, {
+								maxWidth: 600,
+								canvas: true
+							});
 						}
 					}
 				} else {
@@ -252,14 +219,13 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			}, function(response) {
 				console.log(response);
 			});
-
-			function forwardToUserPage() {
-				$scope.loader.hide();
-				localStorage.setItem(config.keySettings + 'Welcome', true);
-				window.location = "/by/" + $scope.user.username;
-			}
 		} else {
 			console.log("form is invalid");
+		}
+
+		function forwardToUserPage() {
+			localStorage.setItem(config.keySettings + 'Welcome', true);
+			window.location = "/by/" + $scope.user.username.toLowerCase();
 		}
 	};
 
@@ -282,14 +248,34 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 });
 
+postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashService) {
+
+	$scope.flash = FlashService.getFlash();
+
+	$scope.submitLogin = function() {
+		var jsonPost = JSON.stringify({
+			'email' : $scope.user.email,
+			'password' : $scope.user.password
+		});
+
+		AuthService.login(jsonPost).then(function(response) {
+			if(response.status == 200) {
+				window.location = "/by/" + response.data.username;
+			} else {
+				$scope.flash.showPermanentMessage('Sorry, email or password is incorrect');
+			}
+		});
+	};
+
+});
+
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize, $filter,
 	config, AuthService, UserService, SettingsService,
-	LoaderService, FlashService, Fonts) {
+	FlashService, Fonts) {
 
 	$scope.posts = [];
 	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 	$scope.settingsService = SettingsService;
-	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
 	$scope.fonts = Fonts.getFonts();
 
@@ -404,8 +390,8 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			var file = $files[i];
 
 			var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-    			return v.toString(16);
+  			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+  			return v.toString(16);
 			});
 
 			var filename = guid + "." + file.name.split('.').pop();
