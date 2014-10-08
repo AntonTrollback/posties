@@ -6,8 +6,13 @@
     <div class="panel is-active" id="panelPrimaryNavigation">
       {% if is_start_page %}
         <div class="popover-body">
-          <p class="popover-intro">Need a website? You're at the right place.</p>
-          <em>We could list sites currently logged in to here</em>
+          <form class="popover-form" name="formLogin" method="post" ng-submit="submitUsernameLogin()">
+            <span class="popover-form-title">Sign in</span>
+            <input type="text" name="username" ng-model="user.username" placeholder="Website address" required autocapitalize="off" autocorrect="off">
+            <input type="password" name="password" ng-model="user.password" placeholder="Password" required autocapitalize="off" autocorrect="off">
+            <button class="button is-full">OK</button>
+            <a class="popover-form-link">Forgot password?</a>
+          </form>
         </div>
       {% endif %}
 
@@ -47,7 +52,7 @@
         <div class="popover-body">
           <form class="popover-form" name="formLogin" method="post" ng-submit="submitUsernameLogin()">
             <span class="popover-form-title">Edit this website</span>
-            <input type="hidden" value="{{page_username}}" ng-model="user.username">
+            <input type="hidden" name="username" value="{{page_username}}" ng-model="user.username">
             <input type="password" name="password" ng-model="user.password" placeholder="Password" required autocapitalize="off" autocorrect="off">
             <button class="button is-full">OK</button>
             <a class="popover-form-link">Forgot password?</a>

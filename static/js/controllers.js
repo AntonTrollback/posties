@@ -1,5 +1,5 @@
 postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize,
-	config, SettingsService, FlashService, Fonts) {
+	config, SettingsService, AuthService, FlashService, Fonts) {
 
 	$scope.posts = [];
 	$scope.userHasUploadedImage = false;
@@ -250,6 +250,20 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 	})();
 
+	$scope.submitUsernameLogin = function() {
+		var jsonPost = JSON.stringify({
+			'username' : $scope.user.username,
+			'password' : $scope.user.password
+		});
+
+		AuthService.login(jsonPost).then(function(response) {
+			if(response.status == 200) {
+				window.location = "/by/" + response.data.username;
+			} else {
+				$scope.flash.showMessage("Bummer, password is incorrect");
+			}
+		});
+	};
 });
 
 postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashService) {
@@ -266,7 +280,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 			if(response.status == 200) {
 				window.location = "/by/" + response.data.username;
 			} else {
-				$scope.flash.showPermanentMessage('Sorry, email or password is incorrect');
+				$scope.flash.showPermanentMessage('Bummer, email or password is incorrect');
 			}
 		});
 	};
@@ -514,21 +528,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			$scope.posts.splice(currentIndex, 1);
 		}, function(response) {
 			console.log(response);
-		});
-	};
-
-	$scope.submitLogin = function() {
-		var jsonPost = JSON.stringify({
-			'email' : $scope.user.email,
-			'password' : $scope.user.password
-		});
-
-		AuthService.login(jsonPost).then(function(response) {
-			if(response.status == 200) {
-				window.location = "/by/" + response.data.username;
-			} else {
-				$scope.flash.showPermanentMessage("Bummer, email or password is incorrect");
-			}
 		});
 	};
 
