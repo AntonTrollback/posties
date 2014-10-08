@@ -61,18 +61,25 @@ def login():
 		return render_template('index.html', is_start_page = True, fonts = WHITELIST_TYPEFACES, in_production = PRODUCTION)
 	elif request.method == 'POST':
 		jsonData = request.json
-		email = jsonData['email'].lower()
+		print jsonData
 		password = jsonData['password']
-
-		users = r.table(TABLE_USERS).filter(
-			(r.row['email'] == email) &
-			(r.row['password'] == password)).run(conn)
+		if hasattr(jsonData, 'email'):
+			email = jsonData['email'].lower()
+			users = r.table(TABLE_USERS).filter(
+				(r.row['email'] == email) &
+				(r.row['password'] == password)).run(conn)
+		else:
+			username = jsonData['username'].lower()
+			users = r.table(TABLE_USERS).filter(
+				(r.row['username'] == username) &
+				(r.row['password'] == password)).run(conn)
 
 		for user in users:
 			login_user(User(user['id'], user['email'], user['username']))
 			return jsonify(user)
+			
+		return make_response(jsonify( { 'error': 'Bad login' } ), 400)
 
-		return make_response(jsonify( { 'error': 'The e-mail address doesn\'t exist' } ), 400)
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
@@ -88,6 +95,7 @@ def get_posts_by_username(username = None):
 		return render_template(
 			'postsByUser.html',
 			user_owns_page = user_owns_page,
+			page_username = username,
 			fonts = WHITELIST_TYPEFACES,
 			in_production = PRODUCTION
 		)

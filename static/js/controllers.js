@@ -110,7 +110,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			if (typeof response.data.user === 'undefined') {
 				$scope.submitCreateUser();
 			} else {
-				$scope.formCreateUser.username.error = "Sorry, that URL is already taken";
+				$scope.formCreateUser.username.error = "Our apologies, that website address is already taken";
 			}
 		}, function(response) {
 			console.log(response);
@@ -123,18 +123,22 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$scope.formCreateUser.password.error = "";
 
 		if ($scope.formCreateUser.email.$invalid) {
-			$scope.formCreateUser.email.error = "Not a valid email";
+			if ($scope.formCreateUser.email.$error.required) {
+					$scope.formCreateUser.email.error = "You have to put <em>something</em> there";
+			} else {
+				$scope.formCreateUser.email.error = "We both know that's not a valid email";
+			}
 		}
 
 		if ($scope.formCreateUser.password.$invalid) {
-			$scope.formCreateUser.password.error = "Can't be empty";
+			$scope.formCreateUser.password.error = "You have to put <em>something</em> there";
 		}
 
 		if ($scope.formCreateUser.username.$invalid) {
 			if ($scope.formCreateUser.username.$error.pattern) {
 					$scope.formCreateUser.username.error = "Sorry, no spaces or weird characters";
 			} else {
-				$scope.formCreateUser.username.error = "Can't be empty";
+				$scope.formCreateUser.username.error = "You have to put <em>something</em> there";
 			}
 		} else {
 			$scope.checkUsername();
@@ -523,7 +527,22 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			if(response.status == 200) {
 				window.location = "/by/" + response.data.username;
 			} else {
-				$scope.flash.showPermanentMessage(response.data.error);
+				$scope.flash.showPermanentMessage("Bummer, email or password is incorrect");
+			}
+		});
+	};
+
+	$scope.submitUsernameLogin = function() {
+		var jsonPost = JSON.stringify({
+			'username' : $scope.user.username,
+			'password' : $scope.user.password
+		});
+
+		AuthService.login(jsonPost).then(function(response) {
+			if(response.status == 200) {
+				window.location = "/by/" + response.data.username;
+			} else {
+				$scope.flash.showMessage("Bummer, password is incorrect");
 			}
 		});
 	};

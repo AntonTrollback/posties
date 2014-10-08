@@ -34,10 +34,6 @@
   fill: #fff;
 }
 
-/**
- * Header and body sections
- */
-
 .popover-header {
   box-sizing: border-box;
   position: relative;
@@ -60,22 +56,51 @@
   cursor: default;
 }
 
-/**
- * Scrollable section
- */
-
 .popover-scroll {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/**
- * Popover elements
- */
-
 .popover-intro {
-  font-size: 18px;
-  margin: 0 0 20px;
+  font-size: 17px;
+  margin: 0 0 12px;
+  padding: 10px 11px;
+}
+
+.popover-intro span {
+  margin-right: 15px;
+}
+
+.popover-intro-button {
+  margin-left: 11px;
+  margin-bottom: 25px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.popover-form {
+  padding: 7px 11px;
+}
+
+.popover-form input {
+  margin-bottom: 10px;
+}
+
+.popover-form-title {
+  display: block;
+  text-align: center;
+  font-size: 17px;
+  margin: 0 0 17px;
+}
+
+.popover-form-link {
+  display: block;
+  text-align: center;
+  margin: 20px 0 10px;
+  pointer-events: none;
+  text-decoration: line-through;
+  font-size: 14px;
+  opacity: 0.8;
 }
 
 /**

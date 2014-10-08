@@ -125,6 +125,10 @@
   word-wrap: normal;
 }
 
+.panel-item-text.is-padded {
+  padding-left: 11px;
+}
+
 /* Result/preview area */
 
 .panel-item-preview {

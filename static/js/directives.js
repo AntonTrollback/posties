@@ -31,18 +31,13 @@ $(function() {
     }
   });
 
-  $panels.find('[data-go-to-panel]').on('click', function(e) {
-    e.preventDefault();
-    switchSection($(this).data('go-to-panel'));
-  });
-
-  $('.palette-item').on('click', function(e) {
-    $(this).closest('.popover-body').find('.minicolors input').trigger('keyup');
-  });
-
   // Selected state for items in font lists
   $('#panelTextFont .panel-item, #panelHeadlineFont .panel-item').on('click', function(e) {
     $(this).siblings().removeClass('is-active');
     $(this).addClass('is-active');
+  });
+
+  $('.palette-item').on('click', function(e) {
+    $(this).closest('.popover-body').find('.minicolors input').trigger('keyup');
   });
 });
