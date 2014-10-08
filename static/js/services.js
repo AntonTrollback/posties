@@ -59,8 +59,6 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 	  			});
 
 	        	return promise;
-    		} else {
-    			console.log("not saving settings");
     		}
     	}
     };
