@@ -7,6 +7,7 @@
   box-sizing: border-box;
   margin: 5px 0;
   font-size: 18px;
+  text-rendering: optimizeLegibility;
 }
 
 @media (--lg-viewport) {
