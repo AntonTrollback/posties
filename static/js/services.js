@@ -23,6 +23,7 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 				headers: config.headerJSON
 			}).then(function(response) {
 				this.data = response.data;
+        console.log(this.data)
 				return response.data;
 			}, function(response) {
 				console.log(response);
@@ -117,7 +118,7 @@ postiesApp.service('UserService', function($http, config) {
 		var promise = $http({
 			url: '/api/user',
 			method: 'get',
-			params: { 'username' : username },
+			params: { 'username' : username.toLowerCase() },
 			headers: config.headerJSON
 		}).then(function(response) {
 			this.data = response.data;

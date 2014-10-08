@@ -105,7 +105,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$http({
 			url: '/api/users',
 			method: 'get',
-			params: { username : $scope.user.username.toLowerCase() }
+			params: { username : $scope.user.username }
 		}).then(function(response) {
 			if (typeof response.data.user === 'undefined') {
 				$scope.submitCreateUser();
@@ -165,7 +165,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 			var jsonPost = {
 				email : $scope.user.email.toLowerCase(),
-				username : $scope.user.username.toLowerCase(),
+				username : $scope.user.username,
 				password : $scope.user.password,
 				posts : $scope.posts,
 				settings : $scope.userSettings

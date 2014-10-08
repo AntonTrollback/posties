@@ -18,8 +18,7 @@
 
       {% if user_owns_page %}
         <div class="popover-body">
-          <p class="popover-intro">You are currently editing <strong>{{current_user.username}}</strong></p>
-          <em>We could ask user related questions here</em>
+          <p class="popover-intro">You are currenty editing <strong>{{current_user.username}}</strong></p>
         </div>
         <a class="panel-item is-first is-underlined" href="/logout">
           <span class="panel-item-text is-padded">Sign out</span>
@@ -37,7 +36,7 @@
         </a>
       {% endif %}
 
-      <a href="http://posti.es/by/posties" class="panel-item is-underlined {% if is_start_page %}is-first{% endif %}">
+      <a href="http://posti.es/by/posties" {% if not user_owns_page %}target="_blank"{% endif %} class="panel-item is-underlined {% if is_start_page %}is-first{% endif %}">
         <span class="panel-item-text is-padded">About Posti.es</span>
       </a>
     </div>
