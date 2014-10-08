@@ -260,6 +260,7 @@ def sign_s3():
 	signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
 
 	# Remove surrounding whitespace and quote special characters:
+	# Escape the signature twice, other wise Amazon might throw errors
 	signature = urllib.quote_plus(signature.strip())
 	signature = urllib.quote_plus(signature.strip())
 
@@ -329,7 +330,9 @@ def api_update_settings():
 				'showboxes' : show_boxes,
 				'postbackgroundcolor' : post_background_color,
 				'pagebackgroundcolor' : page_background_color,
-				'created' : r.now()}).run(conn)
+				'created' : r.now()}).run(conn, return_changes = True)
+
+		result = result['changes'][0]['new_val']	
 
 		return jsonify(result)
 	else:

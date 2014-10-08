@@ -20,10 +20,7 @@ $(function() {
     position: 'bottom left',
     show: null,
     showSpeed: 100,
-    theme: 'default',
-    change: function() {
-      console.log('Changed');
-    }
+    theme: 'default'
   });
 
   $panels.find('[data-go-to-panel]').on('click', function(e) {

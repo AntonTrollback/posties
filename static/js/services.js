@@ -11,9 +11,13 @@ postiesApp.constant('config', {
 
 postiesApp.service('SettingsService', function($http, config, Fonts) {
 
-  var fonts = Fonts.getFonts();
+  	var fonts = Fonts.getFonts();
 
 	this.isOpen = false;
+
+	//We hold the most recent settings object from the DB, so that we can check incoming
+	//objects for equality - determining if a DB update is needed
+	this.currentSettings = {};
 
 	this.getSettings = function() {
 		if($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
@@ -22,8 +26,9 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 				method: 'get',
 				headers: config.headerJSON
 			}).then(function(response) {
-				this.data = response.data;
-				return response.data;
+				this.currentSettings = response.data;
+
+				return this.currentSettings;
 			}, function(response) {
 				console.log(response);
 			});
@@ -36,31 +41,44 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 
     this.submitUpdateSettings = function(userSettings) {
     	if($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
-    		var promise = $http({
-  				url: '/api/settings',
-  				method: 'put',
-  				data: userSettings,
-  				headers: config.headerJSON
-  			}).then(function(response) {
-  				this.data = response.data;
-  				return response.data;
-  			}, function(response) {
-  				console.log(response);
-  			});
-        return promise;
+    		if(!angular.equals(this.currentSettings, userSettings)) {
+
+    			//Make a deep copy of the settings object, otherwise the equality check will always pass
+    			this.currentSettings = jQuery.extend(true, {}, userSettings);
+
+    			var promise = $http({
+	  				url: '/api/settings',
+	  				method: 'put',
+	  				data: userSettings,
+	  				headers: config.headerJSON
+	  			}).then(function(response) {
+
+	  				return this.currentSettings;
+	  			}, function(response) {
+	  				console.log(response);
+	  			});
+
+	        	return promise;
+    		} else {
+    			console.log("not saving settings");
+    		}
     	}
     };
 
+    this.submitUpdateSettingsAndClose = function(userSettings) {
+    	this.submitUpdateSettings(userSettings);
+    	this.close();
+    };
+
     this.open = function() {
-      fonts.loadAll();
-      var result = this.isOpen = !this.isOpen;
-		  return result;
+      	fonts.loadAll();
+
+		this.isOpen = true;
     };
 
     this.close = function() {
-      var result = this.isOpen = false;
-		  return result;
-	  };
+      	this.isOpen = false;
+	};
 
 	this.getRandomSettings = function() {
 		return {
@@ -92,22 +110,21 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 		return ['#e5fff5', '#bbf8ff', '#405559', '#512d59', '#ff033e', '#ffffff', '#fbff05', '#ff8f8f'];
 	};
 
-  this.getFontPalette = function() {
-    return ['#000000', '#ffffff'];
-  };
+	this.getFontPalette = function() {
+	    return ['#000000', '#ffffff'];
+	};
 
 	function getRandomHex() {
 		return '#'+(function lol(m,s,c){return s[m.floor(m.random() * s.length)] + (c && lol(m,s,c-1));})(Math,'0123456789ABCDEF', 4);
 	}
 
-  function setRandomTypeface(id) {
-    var $options = $(id).find('[type="radio"]');
-    random = ~~(Math.random() * $options.length);
-    $options.eq(random).prop('checked', true).closest('.panel-item').click();
+  	function setRandomTypeface(id) {
+    	var $options = $(id).find('[type="radio"]');
+    	random = ~~(Math.random() * $options.length);
+    	$options.eq(random).prop('checked', true).closest('.panel-item').click();
 
-    return $options.eq(random).val();
-  }
-
+    	return $options.eq(random).val();
+  	}
 
 });
 

@@ -12,14 +12,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 	$scope.fonts.load([$scope.userSettings.typefaceparagraph, $scope.userSettings.typefaceheadline]);
 
-	var firstRun = true;
-	$scope.$watchCollection('userSettings', function() {
-		if(!firstRun) {
-			SettingsService.submitUpdateSettings($scope.userSettings);
-		}
-		firstRun = false;
-	});
-
 	$scope.addPost = function($event) {
 		var post = {
 			id : Math.round(Math.random() * 1000),
@@ -272,14 +264,6 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 	$scope.flash = FlashService.getFlash();
 	$scope.fonts = Fonts.getFonts();
 
-	var firstRun = true;
-	$scope.$watchCollection('userSettings', function() {
-		if(!firstRun) {
-			SettingsService.submitUpdateSettings($scope.userSettings);
-		}
-		firstRun = false;
-	});
-
 	if(localStorage.getItem(config.keySettings + 'Welcome')) {
 		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
 		localStorage.removeItem(config.keySettings + 'Welcome');
@@ -383,8 +367,8 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			var file = $files[i];
 
 			var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-  			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-  			return v.toString(16);
+  				var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+  				return v.toString(16);
 			});
 
 			var filename = guid + "." + file.name.split('.').pop();
