@@ -105,7 +105,7 @@
 			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
 			<div class="popover-body">
 				<div class="palette">
-					<button class="palette-item" ng-repeat="color in settingsService.getPalette()" ng-style="{ 'background': color }" ng-click="userSettings.postbackgroundcolor = color"></button>
+					<button class="palette-item" ng-repeat="color in settingsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="userSettings.postbackgroundcolor = color"></button>
 				</div>
 				<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.postbackgroundcolor">
 				<input id="resultBoxColor" class="minicolors-result" type="hidden">
@@ -116,7 +116,7 @@
 			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
 			<div class="popover-body">
 				<div class="palette">
-					<button class="palette-item" ng-repeat="color in settingsService.getPalette()" ng-style="{ 'background': color }" ng-click="userSettings.posttextcolor = color"></button>
+					<button class="palette-item" ng-repeat="color in settingsService.getFontPalette()" ng-style="{ 'background': color }" ng-click="userSettings.posttextcolor = color"></button>
 				</div>
 				<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.posttextcolor">
 				<input id="resultTextColor" class="minicolors-result" type="hidden">
@@ -127,7 +127,7 @@
 			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
 			<div class="popover-body">
 				<div class="palette">
-					<button class="palette-item" ng-repeat="color in settingsService.getPalette()" ng-style="{ 'background': color }" ng-click="userSettings.pagebackgroundcolor = color"></button>
+					<button class="palette-item" ng-repeat="color in settingsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="userSettings.pagebackgroundcolor = color"></button>
 				</div>
       	<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.pagebackgroundcolor">
 				<input id="resultBackground" class="minicolors-result" type="hidden">
