@@ -1,12 +1,11 @@
 postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize,
-	config, SettingsService, LoaderService, FlashService, Fonts) {
+	config, SettingsService, FlashService, Fonts) {
 
 	$scope.posts = [];
 	$scope.userHasUploadedImage = false;
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
-	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
 	$scope.fonts = Fonts.getFonts();
 
@@ -166,8 +165,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				headers: config.headerJSON
 			}).then(function(response) {
 				if($scope.userHasUploadedImage) {
-					$scope.loader.show();
-
 					for(i = 0; i < response.data.posts.length; i++) {
 						var jsonPost = response.data.posts[i];
 
@@ -212,7 +209,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			});
 
 			function forwardToUserPage() {
-				$scope.loader.hide();
 				localStorage.setItem(config.keySettings + 'Welcome', true);
 				window.location = "/by/" + $scope.user.username.toLowerCase();
 			}
@@ -263,12 +259,11 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize, $filter,
 	config, UserService, SettingsService,
-	LoaderService, FlashService, Fonts) {
+	FlashService, Fonts) {
 
 	$scope.posts = [];
 	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 	$scope.settingsService = SettingsService;
-	$scope.loader = LoaderService.getLoader();
 	$scope.flash = FlashService.getFlash();
 	$scope.fonts = Fonts.getFonts();
 
