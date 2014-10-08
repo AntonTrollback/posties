@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html class="pagePostsByUser" ng-app="posties" ng-controller="PagePostsByUserCtrl" ng-style="{ 'background': userSettings.pagebackgroundcolor }">
-	{% include 'modules/head.html' %}
-	<body class="site {% if current_user and current_user.is_authenticated() %}authenticated{% if user_owns_page %} userOwnsPage{% endif %}{% endif %}">
+  {% include 'modules/head.html' %}
+  <body class="site {% if current_user and current_user.is_authenticated() %}authenticated{% if user_owns_page %} userOwnsPage{% endif %}{% endif %}">
 
-		{% include 'modules/header.html' %}
-		<div class="site-container">
-			<ul id="posts" ng-style="{ 'color': userSettings.posttextcolor }">
-				<li ng-repeat="post in posts" class="post">
-					<ng-include src="post.template"></ng-include>
-				</li>
-			</ul>
-			{% if current_user and current_user.is_authenticated() and user_owns_page %}
-				{% include 'modules/postTypes.html' %}
-			{% endif %}
-		</div>
-		{% if current_user and current_user.is_authenticated() and user_owns_page %}
-			{% include 'modules/jsTemplates/postTextAuthenticated.html' %}
-			{% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
-			{% include 'modules/jsTemplates/postImageAuthenticated.html' %}
-			{% include 'modules/jsTemplates/postVideoAuthenticated.html' %}
-		{% else %}
-			{% include 'modules/jsTemplates/postText.html' %}
-			{% include 'modules/jsTemplates/postHeadline.html' %}
-			{% include 'modules/jsTemplates/postImage.html' %}
-			{% include 'modules/jsTemplates/postVideo.html' %}
-		{% endif %}
+    {% include 'modules/header.html' %}
+    <div class="site-container">
+      <ul id="posts" ng-style="{ 'color': userSettings.posttextcolor }">
+        <li ng-repeat="post in posts" class="post">
+          <ng-include src="post.template"></ng-include>
+        </li>
+      </ul>
+      {% if current_user and current_user.is_authenticated() and user_owns_page %}
+        {% include 'modules/postTypes.html' %}
+      {% endif %}
+    </div>
+    {% if current_user and current_user.is_authenticated() and user_owns_page %}
+      {% include 'modules/jsTemplates/postTextAuthenticated.html' %}
+      {% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
+      {% include 'modules/jsTemplates/postImageAuthenticated.html' %}
+      {% include 'modules/jsTemplates/postVideoAuthenticated.html' %}
+    {% else %}
+      {% include 'modules/jsTemplates/postText.html' %}
+      {% include 'modules/jsTemplates/postHeadline.html' %}
+      {% include 'modules/jsTemplates/postImage.html' %}
+      {% include 'modules/jsTemplates/postVideo.html' %}
+    {% endif %}
 
-		{% if current_user and current_user.is_authenticated() and user_owns_page %}
-			{% include 'modules/modalSettings.html' %}
-		{% endif %}
+    {% if current_user and current_user.is_authenticated() and user_owns_page %}
+      {% include 'modules/modalSettings.html' %}
+    {% endif %}
 
-		{% include 'modules/footer.html' %}
-	</body>
+    {% include 'modules/footer.html' %}
+  </body>
 </html>

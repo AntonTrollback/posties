@@ -1,12 +1,12 @@
 <script type="text/ng-template" id="postHeadline.html">
-	<div class="post-inner is-headline" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
-		<form class="post-content-pre is-larger" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }">
-			{% include 'modules/postOptions.html' %}
-			<div ng-model="post.content"
-				   class="post-editor"
-					 medium-editor
-					 options='{"placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
-					 ng-blur="savePost($event, post)"></div>
-		</form>
-	</div>
+  <div class="post-inner is-headline" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
+    <form class="post-content-pre is-larger" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }">
+      {% include 'modules/postOptions.html' %}
+      <div ng-model="post.content"
+           class="post-editor"
+           medium-editor
+           options='{"placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
+           ng-blur="savePost($event, post)"></div>
+    </form>
+  </div>
 </script>

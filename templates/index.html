@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html ng-app="posties" ng-controller="PageIndexCtrl" class="pageIndex" ng-style="{ 'background': userSettings.pagebackgroundcolor }">
-	{% include 'modules/head.html' %}
-	<body class="site {% if current_user and current_user.is_authenticated() %} authenticated userOwnsPage {% endif %}">
-		{% include 'modules/header.html' %}
-		<div class="site-container">
-			{% if not current_user.is_authenticated() %}
-				<ul id="posts">
-					<li ng-repeat="post in posts" data-id="[[post.id]]" data-rank="[[post.sortrank]]" class="post">
-						<ng-include src="post.template"></ng-include>
-					</li>
-				</ul>
-				{% include 'modules/postTypes.html' %}
-				<div class="block is-padded">
-					<button class="button is-larger is-full" ng-click="showModalCreateUser = !showModalCreateUser">
-						{% include 'modules/inlineSvg/arrowOut.html' %}
-						Publish this page
-					</button>
-					{% include 'modules/modalCreateUser.html' %}
-				</div>
-				{% include 'modules/jsTemplates/postTextAuthenticated.html' %}
-				{% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
-				{% include 'modules/jsTemplates/postImageAuthenticated.html' %}
-				{% include 'modules/jsTemplates/postVideoAuthenticated.html' %}
-			{% endif %}
-		</div>
+  {% include 'modules/head.html' %}
+  <body class="site {% if current_user and current_user.is_authenticated() %} authenticated userOwnsPage {% endif %}">
+    {% include 'modules/header.html' %}
+    <div class="site-container">
+      {% if not current_user.is_authenticated() %}
+        <ul id="posts">
+          <li ng-repeat="post in posts" data-id="[[post.id]]" data-rank="[[post.sortrank]]" class="post">
+            <ng-include src="post.template"></ng-include>
+          </li>
+        </ul>
+        {% include 'modules/postTypes.html' %}
+        <div class="block is-padded">
+          <button class="button is-larger is-full" ng-click="showModalCreateUser = !showModalCreateUser">
+            {% include 'modules/inlineSvg/arrowOut.html' %}
+            Publish this page
+          </button>
+          {% include 'modules/modalCreateUser.html' %}
+        </div>
+        {% include 'modules/jsTemplates/postTextAuthenticated.html' %}
+        {% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
+        {% include 'modules/jsTemplates/postImageAuthenticated.html' %}
+        {% include 'modules/jsTemplates/postVideoAuthenticated.html' %}
+      {% endif %}
+    </div>
 
-		{% include 'modules/modalSettings.html' %}
+    {% include 'modules/modalSettings.html' %}
 
-		{% include 'modules/footer.html' %}
-	</body>
+    {% include 'modules/footer.html' %}
+  </body>
 </html>

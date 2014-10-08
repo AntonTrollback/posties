@@ -1,21 +1,21 @@
 <div class="clearfix">
-	<div class="header">
+  <div class="header">
 
-		<button class="header-action" ng-class="showNavigation ? 'is-active' : ''" ng-click="showNavigation = !showNavigation">
-			{% include 'modules/inlineSvg/logo.html' %}
-		</button>
+    <button class="header-action" ng-class="showNavigation ? 'is-active' : ''" ng-click="showNavigation = !showNavigation">
+      {% include 'modules/inlineSvg/logo.html' %}
+    </button>
 
-		{% if is_start_page or user_owns_page %}
-			<button class="header-action" ng-class="settingsService.isOpen ? 'is-active' : ''" ng-click="settingsService.open(); showNavigation = false">
-				{% include 'modules/inlineSvg/sliders.html' %}
-			</button>
-		{% endif %}
+    {% if is_start_page or user_owns_page %}
+      <button class="header-action" ng-class="settingsService.isOpen ? 'is-active' : ''" ng-click="settingsService.open(); showNavigation = false">
+        {% include 'modules/inlineSvg/sliders.html' %}
+      </button>
+    {% endif %}
 
-		{% include 'modules/navigation.html' %}
-	</div>
+    {% include 'modules/navigation.html' %}
+  </div>
 
-	<div id="flash">
-		<a class="close" ng-click="flash.hide()">×</a>
-		<pre>[[flash.message]]</pre>
-	</div>
+  <div id="flash">
+    <a class="close" ng-click="flash.hide()">×</a>
+    <pre>[[flash.message]]</pre>
+  </div>
 </div>
