@@ -261,6 +261,7 @@ def sign_s3():
 
 	# Remove surrounding whitespace and quote special characters:
 	signature = urllib.quote_plus(signature.strip())
+	signature = urllib.quote_plus(signature.strip())
 
 	# Build the URL of the file in anticipation of its imminent upload:
 	url = 'https://%s.s3.amazonaws.com/%s' % (AWS_S3_BUCKET, object_name)
@@ -269,6 +270,8 @@ def sign_s3():
 		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
 		'url': url
 	})
+
+	print content
 
 	# Return the signed request and the anticipated URL back to the browser in JSON format:
 	return Response(content, mimetype='text/plain; charset=x-user-defined')
