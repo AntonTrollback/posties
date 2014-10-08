@@ -2,8 +2,8 @@
 	<div class="popover-arrow">
 		{% include 'modules/inlineSvg/popoverArrow.html' %}
 	</div>
-	<form id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
-		<div class="panel is-active" id="panelPrimary">
+	<form class="panels" id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
+		<div class="panel is-active" id="panelPrimarySettings">
 
 			<!-- Links to font panels -->
 
@@ -71,7 +71,7 @@
 
 		<div class="panel" id="panelTextFont">
 			<div class="popover-header">
-				<button class="button" data-go-to-panel="panelPrimary">Back</button>
+				<button class="button" data-go-to-panel="panelPrimarySettings">Back</button>
 			</div>
 
 			<div class="popover-scroll">
@@ -87,7 +87,7 @@
 
 		<div class="panel" id="panelHeadlineFont">
 			<div class="popover-header">
-				<button class="button" data-go-to-panel="panelPrimary">Back</button>
+				<button class="button" data-go-to-panel="panelPrimarySettings">Back</button>
 			</div>
 
 			<div class="popover-scroll">
@@ -102,7 +102,7 @@
 		</div>
 
 		<div class="panel" id="panelBoxColor">
-			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
+			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimarySettings">Back</button></div>
 			<div class="popover-body">
 				<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.postbackgroundcolor">
 				<input id="resultBoxColor" class="minicolors-result" type="hidden">
@@ -110,7 +110,7 @@
 		</div>
 
 		<div class="panel" id="panelTextColor">
-			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
+			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimarySettings">Back</button></div>
 			<div class="popover-body">
 				<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.posttextcolor">
 				<input id="resultTextColor" class="minicolors-result" type="hidden">
@@ -118,7 +118,7 @@
 		</div>
 
 		<div class="panel" id="panelBackground">
-			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimary">Back</button></div>
+			<div class="popover-header"><button class="button" data-go-to-panel="panelPrimarySettings">Back</button></div>
 			<div class="popover-body">
       	<input class="minicolors" maxlength="7" type="text" ng-model="userSettings.pagebackgroundcolor">
 				<input id="resultBackground" class="minicolors-result" type="hidden">

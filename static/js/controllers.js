@@ -32,7 +32,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 		$scope.posts.push(post);
 		$timeout(function() {
-			$('.post:last-child pre').focus();
+			$('.post:last-child .post-editor').focus();
 		}, 100);
 
 		$scope.showPostTypes = false;
@@ -66,11 +66,11 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				reader.onload = function(e) {
 					$scope.$apply(function() {
 						imagePost.isUploaded = true;
-						imagePost.key = reader.result,
+						imagePost.key = reader.result;
 						$scope.userHasUploadedImage = true;
 						$scope.showPostTypes = false;
 					});
-				}
+				};
 
 				reader.readAsDataURL(file);
 			}
@@ -183,11 +183,11 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			var posts = [];
 
 			// Remove empty video posts
-			for (i in $scope.posts) {
+			for (var i in $scope.posts) {
 				if($scope.posts[i].type == 3 && !$scope.posts[i].content) {
-					console.log('not a valid video')
+					console.log('not a valid video');
 				} else {
-					posts.push($scope.posts[i])
+					posts.push($scope.posts[i]);
 				}
 			}
 
@@ -201,7 +201,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				settings : $scope.userSettings
 			};
 
-			jsonPost.settings['username'] = $scope.user.username;
+			jsonPost.settings.username = $scope.user.username;
 
 			$http({
 				url: '/api/users',
@@ -275,36 +275,15 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$scope.posts.push(post);
 
 		$timeout(function() {
-			$('.post:last-child pre').focus();
+			$('.post:last-child .post-editor').focus();
 		}, 100);
 
 	})();
 
 });
 
-postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashService) {
-
-	$scope.flash = FlashService.getFlash();
-
-	$scope.submitLogin = function() {
-		var jsonPost = JSON.stringify({
-			'email' : $scope.user.email,
-			'password' : $scope.user.password
-		});
-
-		AuthService.login(jsonPost).then(function(response) {
-			if(response.status == 200) {
-				window.location = "/by/" + response.data.username;
-			} else {
-				$scope.flash.showPermanentMessage(response.data.error);
-			}
-		});
-	};
-
-});
-
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize, $filter,
-	config, UserService, SettingsService,
+	config, AuthService, UserService, SettingsService,
 	LoaderService, FlashService, Fonts) {
 
 	$scope.posts = [];
@@ -342,7 +321,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		for(i = 0; i < data.posts.length; i++) {
 			var post = data.posts[i];
 
-			if(post.type == 0) {
+			if(post.type === 0) {
 				post.template = 'postText.html';
 			} else if(post.type == 1) {
 				post.template = 'postHeadline.html';
@@ -387,7 +366,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 
 			$scope.posts.push(post);
 			$timeout(function() {
-				$('.post:last-child pre').focus();
+				$('.post:last-child .post-editor').focus();
 			}, 100);
 		}, function(response) {
 			console.log(response);
@@ -446,7 +425,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				headers: config.headerJSON
 			}).then(function(response) {
 				var jsonPost = response.data;
-				jsonPost['file'] = file;
+				jsonPost.file = file;
 
 				var loadingImage = loadImage(
 					file,
@@ -509,7 +488,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				console.log(response);
 			});
 		} else {
-			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');	
+			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
 			return;
 		}
 	};
@@ -545,6 +524,21 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			$scope.posts.splice(currentIndex, 1);
 		}, function(response) {
 			console.log(response);
+		});
+	};
+
+	$scope.submitLogin = function() {
+		var jsonPost = JSON.stringify({
+			'email' : $scope.user.email,
+			'password' : $scope.user.password
+		});
+
+		AuthService.login(jsonPost).then(function(response) {
+			if(response.status == 200) {
+				window.location = "/by/" + response.data.username;
+			} else {
+				$scope.flash.showPermanentMessage(response.data.error);
+			}
 		});
 	};
 });

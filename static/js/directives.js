@@ -1,16 +1,20 @@
+// Todo: create directives
+
 $(function() {
-  $panels = $('.panel');
-  $navigators = $panels.find('[data-go-to-panel]');
+  // Navigate panels
+  $('.panels').each(function() {
+    var $this = $(this);
+    $this.find('[data-go-to-panel]').on('click', function(e) {
+      e.preventDefault();
+      $this.find('.panel').hide();
+      $('#'+ $(this).data('go-to-panel')).show();
+    });
+  });
 
-  function switchSection(id) {
-    $panels.hide();
-    $('#'+ id).show();
-  }
-
-  $panels.find('.minicolors').minicolors('create', {
+  // Init color pickers
+  $('.minicolors').minicolors('create', {
     animationSpeed: 50,
     animationEasing: 'swing',
-    change: null,
     changeDelay: 300,
     control: 'wheel',
     defaultValue: '',
@@ -24,15 +28,11 @@ $(function() {
     showSpeed: 100,
     theme: 'default',
     change: function() {
-      console.log('Changed')
+      console.log('Changed');
     }
   });
 
-  $navigators.on('click', function(e) {
-    e.preventDefault();
-    switchSection($(this).data('go-to-panel'));
-  });
-
+  // Selected state for items in font lists
   $('#panelTextFont .panel-item, #panelHeadlineFont .panel-item').on('click', function(e) {
     $(this).siblings().removeClass('is-active');
     $(this).addClass('is-active');

@@ -11,6 +11,8 @@
   color: var(--color-text-light);
   font-size: 13px;
   user-select: none;
+  width: 90%;
+  max-width: 17em;
 }
 
 @media (--lg-viewport) {
@@ -68,25 +70,12 @@
 }
 
 /**
- * Navigation list
+ * Popover elements
  */
 
-.popover-nav {
-
-}
-
-.popover-nav a {
-  display: block;
-  text-decoration: none;
-  padding: 0.8em 1.2em 0;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.popover-nav li:last-child a {
-  display: block;
-  text-decoration: none;
-  padding-bottom: 0.8em;
+.popover-intro {
+  font-size: 18px;
+  margin: 0 0 20px;
 }
 
 /**
@@ -101,11 +90,6 @@
 
 .popover.is-nav .popover-arrow {
   right: 9px;
-}
-
-.popover.is-customize {
-  width: 90%;
-  max-width: 17em;
 }
 
 .popover.is-customize .popover-arrow {

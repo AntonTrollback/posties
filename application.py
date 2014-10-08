@@ -54,17 +54,12 @@ def index():
 	if current_user and current_user.is_authenticated():
 		return redirect("/by/" + current_user.username, code=302)
 	else:
-		return render_template(
-			'index.html',
-			is_start_page = True,
-			fonts = WHITELIST_TYPEFACES,
-			in_production = PRODUCTION
-		)
+		return render_template('index.html', is_start_page = True, fonts = WHITELIST_TYPEFACES, in_production = PRODUCTION)
 
 @application.route('/login', methods=['GET', 'POST'])
 def login():
 	if request.method == 'GET':
-		return render_template('login.html', in_production = PRODUCTION, fonts = False)
+		return render_template('index.html', is_start_page = True, fonts = WHITELIST_TYPEFACES, in_production = PRODUCTION)
 	elif request.method == 'POST':
 		jsonData = request.json
 		email = jsonData['email'].lower()
