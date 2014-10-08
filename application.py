@@ -53,34 +53,37 @@ def index():
 	if current_user and current_user.is_authenticated():
 		return redirect("/by/" + current_user.username, code=302)
 	else:
-		return render_template(
-			'index.html',
-			is_start_page = True,
-			fonts = WHITELIST_TYPEFACES,
-			in_production = PRODUCTION
-		)
+		return render_template('index.html', is_start_page = True, fonts = WHITELIST_TYPEFACES, in_production = PRODUCTION)
 
 @application.route('/login', methods=['GET', 'POST'])
 def login():
 	if request.method == 'GET':
-		return render_template('login.html', in_production = PRODUCTION, fonts = False)
+		return render_template('index.html', is_start_page = True, fonts = WHITELIST_TYPEFACES, in_production = PRODUCTION)
 	elif request.method == 'POST':
 		jsonData = request.json
-		email = jsonData['email'].lower()
 		password = jsonData['password']
 
-		users = r.table(TABLE_USERS).filter(
-			(r.row['email'] == email) &
-			(r.row['password'] == password)).run(conn)
+		if hasattr(jsonData, 'email'):
+			email = jsonData['email'].lower()
+			users = r.table(TABLE_USERS).filter(
+				(r.row['email'] == email) &
+				(r.row['password'] == password)).run(conn)
+		else:
+			username = jsonData['username'].lower()
+			users = r.table(TABLE_USERS).filter(
+				(r.row['username'] == username) &
+				(r.row['password'] == password)).run(conn)
 
 		for user in users:
 			login_user(User(user['id'], user['email'], user['username']))
 			return jsonify(user)
 
-		return make_response(jsonify( { 'error': 'The e-mail address doesn\'t exist' } ), 400)
+		return make_response(jsonify( { 'error': 'Bad login' } ), 400)
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
+	username = username.lower()
+
 	users = r.table(TABLE_USERS).filter(
 		(r.row['username'] == username)).run(conn)
 
@@ -93,6 +96,7 @@ def get_posts_by_username(username = None):
 		return render_template(
 			'postsByUser.html',
 			user_owns_page = user_owns_page,
+			page_username = username,
 			fonts = WHITELIST_TYPEFACES,
 			in_production = PRODUCTION
 		)
@@ -341,9 +345,10 @@ def api_update_settings():
 @application.route('/api/settings', methods=['GET'])
 @login_required
 def api_get_settings():
+	print current_user.username.lower()
 	settings = list(
 		r.table(TABLE_USERS_SETTINGS).filter(
-		(r.row['username'] == current_user.username))
+		(r.row['username'].lower() == current_user.username.lower()))
 		.run(conn))
 
 	return jsonify(settings[0])

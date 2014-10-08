@@ -11,6 +11,8 @@
   color: var(--color-text-light);
   font-size: 13px;
   user-select: none;
+  width: 90%;
+  max-width: 17em;
 }
 
 @media (--lg-viewport) {
@@ -31,10 +33,6 @@
 .popover-arrow path {
   fill: #fff;
 }
-
-/**
- * Header and body sections
- */
 
 .popover-header {
   box-sizing: border-box;
@@ -58,35 +56,51 @@
   cursor: default;
 }
 
-/**
- * Scrollable section
- */
-
 .popover-scroll {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/**
- * Navigation list
- */
-
-.popover-nav {
-
+.popover-intro {
+  font-size: 17px;
+  margin: 0 0 12px;
+  padding: 10px 11px;
 }
 
-.popover-nav a {
-  display: block;
-  text-decoration: none;
-  padding: 0.8em 1.2em 0;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-tap-highlight-color: transparent;
+.popover-intro span {
+  margin-right: 15px;
 }
 
-.popover-nav li:last-child a {
+.popover-intro-button {
+  margin-left: 11px;
+  margin-bottom: 25px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.popover-form {
+  padding: 7px 11px;
+}
+
+.popover-form input {
+  margin-bottom: 10px;
+}
+
+.popover-form-title {
   display: block;
-  text-decoration: none;
-  padding-bottom: 0.8em;
+  text-align: center;
+  font-size: 17px;
+  margin: 0 0 17px;
+}
+
+.popover-form-link {
+  display: block;
+  text-align: center;
+  margin: 20px 0 10px;
+  pointer-events: none;
+  text-decoration: line-through;
+  font-size: 14px;
+  opacity: 0.8;
 }
 
 /**
@@ -101,11 +115,6 @@
 
 .popover.is-nav .popover-arrow {
   right: 9px;
-}
-
-.popover.is-customize {
-  width: 90%;
-  max-width: 17em;
 }
 
 .popover.is-customize .popover-arrow {

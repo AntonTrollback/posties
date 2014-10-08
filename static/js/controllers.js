@@ -1,5 +1,5 @@
 postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize,
-	config, SettingsService, FlashService, Fonts) {
+	config, SettingsService, AuthService, FlashService, Fonts) {
 
 	$scope.posts = [];
 	$scope.userHasUploadedImage = false;
@@ -23,7 +23,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 		$scope.posts.push(post);
 		$timeout(function() {
-			$('.post:last-child pre').focus();
+			$('.post:last-child .post-editor').focus();
 		}, 100);
 
 		$scope.showPostTypes = false;
@@ -57,11 +57,11 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 				reader.onload = function(e) {
 					$scope.$apply(function() {
 						imagePost.isUploaded = true;
-						imagePost.key = reader.result,
+						imagePost.key = reader.result;
 						$scope.userHasUploadedImage = true;
 						$scope.showPostTypes = false;
 					});
-				}
+				};
 
 				reader.readAsDataURL(file);
 			}
@@ -97,12 +97,12 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$http({
 			url: '/api/users',
 			method: 'get',
-			params: { username : $scope.user.username.toLowerCase() }
+			params: { username : $scope.user.username }
 		}).then(function(response) {
 			if (typeof response.data.user === 'undefined') {
 				$scope.submitCreateUser();
 			} else {
-				$scope.formCreateUser.username.error = "Sorry, that URL is already taken";
+				$scope.formCreateUser.username.error = "Our apologies, that website address is already taken";
 			}
 		}, function(response) {
 			console.log(response);
@@ -115,18 +115,22 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$scope.formCreateUser.password.error = "";
 
 		if ($scope.formCreateUser.email.$invalid) {
-			$scope.formCreateUser.email.error = "Not a valid email";
+			if ($scope.formCreateUser.email.$error.required) {
+					$scope.formCreateUser.email.error = "You have to put <em>something</em> there";
+			} else {
+				$scope.formCreateUser.email.error = "We both know that's not a valid email";
+			}
 		}
 
 		if ($scope.formCreateUser.password.$invalid) {
-			$scope.formCreateUser.password.error = "Can't be empty";
+			$scope.formCreateUser.password.error = "You have to put <em>something</em> there";
 		}
 
 		if ($scope.formCreateUser.username.$invalid) {
 			if ($scope.formCreateUser.username.$error.pattern) {
 					$scope.formCreateUser.username.error = "Sorry, no spaces or weird characters";
 			} else {
-				$scope.formCreateUser.username.error = "Can't be empty";
+				$scope.formCreateUser.username.error = "You have to put <em>something</em> there";
 			}
 		} else {
 			$scope.checkUsername();
@@ -138,10 +142,22 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
 		if($scope.formCreateUser.$valid) {
 			var $button = $('#formCreateUser button[type="submit"]').attr('disabled', true);
+			var posts = [];
+
+			// Remove empty video posts
+			for (var i in $scope.posts) {
+				if($scope.posts[i].type == 3 && !$scope.posts[i].content) {
+					console.log('not a valid video');
+				} else {
+					posts.push($scope.posts[i]);
+				}
+			}
+
+			$scope.posts = posts;
 
 			var jsonPost = {
 				email : $scope.user.email.toLowerCase(),
-				username : $scope.user.username.toLowerCase(),
+				username : $scope.user.username,
 				password : $scope.user.password,
 				posts : $scope.posts,
 				settings : $scope.userSettings
@@ -221,11 +237,25 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		$scope.posts.push(post);
 
 		$timeout(function() {
-			$('.post:last-child pre').focus();
+			$('.post:last-child .post-editor').focus();
 		}, 100);
 
 	})();
 
+	$scope.submitUsernameLogin = function() {
+		var jsonPost = JSON.stringify({
+			'username' : $scope.user.username,
+			'password' : $scope.user.password
+		});
+
+		AuthService.login(jsonPost).then(function(response) {
+			if(response.status == 200) {
+				window.location = "/by/" + response.data.username;
+			} else {
+				$scope.flash.showMessage("Bummer, password is incorrect");
+			}
+		});
+	};
 });
 
 postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashService) {
@@ -242,7 +272,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 			if(response.status == 200) {
 				window.location = "/by/" + response.data.username;
 			} else {
-				$scope.flash.showPermanentMessage('Sorry, email or password is incorrect');
+				$scope.flash.showPermanentMessage('Bummer, email or password is incorrect');
 			}
 		});
 	};
@@ -250,7 +280,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize, $filter,
-	config, UserService, SettingsService,
+	config, AuthService, UserService, SettingsService,
 	FlashService, Fonts) {
 
 	$scope.posts = [];
@@ -279,7 +309,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 		for(i = 0; i < data.posts.length; i++) {
 			var post = data.posts[i];
 
-			if(post.type == 0) {
+			if(post.type === 0) {
 				post.template = 'postText.html';
 			} else if(post.type == 1) {
 				post.template = 'postHeadline.html';
@@ -324,7 +354,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 
 			$scope.posts.push(post);
 			$timeout(function() {
-				$('.post:last-child pre').focus();
+				$('.post:last-child .post-editor').focus();
 			}, 100);
 		}, function(response) {
 			console.log(response);
@@ -383,7 +413,7 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 				headers: config.headerJSON
 			}).then(function(response) {
 				var jsonPost = response.data;
-				jsonPost['file'] = file;
+				jsonPost.file = file;
 
 				var loadingImage = loadImage(
 					file,
@@ -482,6 +512,21 @@ postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $
 			$scope.posts.splice(currentIndex, 1);
 		}, function(response) {
 			console.log(response);
+		});
+	};
+
+	$scope.submitUsernameLogin = function() {
+		var jsonPost = JSON.stringify({
+			'username' : $scope.user.username,
+			'password' : $scope.user.password
+		});
+
+		AuthService.login(jsonPost).then(function(response) {
+			if(response.status == 200) {
+				window.location = "/by/" + response.data.username;
+			} else {
+				$scope.flash.showMessage("Bummer, password is incorrect");
+			}
 		});
 	};
 });
