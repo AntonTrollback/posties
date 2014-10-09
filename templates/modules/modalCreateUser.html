@@ -2,7 +2,7 @@
   <p class="close" ng-click="showModalCreateUser = !showModalCreateUser"><a>×</a></p>
   <h3>Just one more step...</h3>
 
-  <form id="formCreateUser" name="formCreateUser" class="form" ng-submit="validateUserForm()" method="post" novalidate>
+  <form name="formCreateUser" class="form" ng-submit="validateUserForm()" method="post" novalidate>
     <div class="block" style="position: relative;">
       <input type="text"
              name="username"
@@ -45,12 +45,12 @@
     </div>
 
     <div class="block is-padded" style="padding-top: 15px;">
-      <button class="button is-larger is-full" type="submit">
-        <div ng-hide="formCreateUser.loadingText">
+      <button class="button is-larger is-full" type="submit" ng-disabled="formCreateUser.loading">
+        <div ng-hide="formCreateUser.loading">
           {% include 'modules/inlineSvg/arrowOut.html' %}
           Publish now!
         </div>
-        <span ng-show="formCreateUser.loadingText">[[formCreateUser.loadingText]]</span>
+        <span ng-show="formCreateUser.loading">[[formCreateUser.loadingText]]</span>
       </button>
     </div>
   </form>

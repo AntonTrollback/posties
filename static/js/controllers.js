@@ -145,85 +145,82 @@ postiesApp.controller('PageIndexCtrl', function(
   };
 
   $scope.submitCreateUser = function() {
-    var redirectUser = false;
-
-    if($scope.formCreateUser.$valid) {
-      var $button = $('#formCreateUser button[type="submit"]').attr('disabled', true);
-      var posts = [];
-
-      // Remove empty video posts
-      for (var i in $scope.posts) {
-        if($scope.posts[i].type == 3 && !$scope.posts[i].content) {
-          console.log('not a valid video');
-        } else {
-          posts.push($scope.posts[i]);
-        }
-      }
-
-      $scope.posts = posts;
-
-      var jsonPost = {
-        email : $scope.user.email.toLowerCase(),
-        username : $scope.user.username,
-        password : $scope.user.password,
-        posts : $scope.posts,
-        settings : $scope.userSettings
-      };
-
-      jsonPost.settings.username = $scope.user.username;
-
-      $http({
-        url: '/api/users',
-        method: 'post',
-        data: jsonPost,
-        headers: config.headerJSON
-      }).then(function(response) {
-        if($scope.userHasUploadedImage) {
-          for(i = 0; i < response.data.posts.length; i++) {
-            var jsonPost = response.data.posts[i];
-
-            if(i + 1 == response.data.posts.length) {
-              redirectUser = true;
-            }
-
-            if(jsonPost.type == 2) {
-              var file = $scope.posts[i].file;
-
-              var loadingImage = loadImage(file, function(resizedImage) {
-                resizedImage.toBlob(function(blob) {
-                  var s3upload = new S3Upload({
-                    s3_object_name: jsonPost.key,
-                    s3_file: blob,
-                    onProgress: function(percent, message) {
-                      console.log('Upload progress: ' + percent + '% ' + message);
-                      $scope.formCreateUser.loadingText = 'Uploading images: ' + percent + '%, ' + message.toLowerCase();
-                    },
-                    onFinishS3Put: function(url) {
-                      console.log('Upload completed. Uploaded to: ' + url);
-                      if(redirectUser) {
-                        forwardToUserPage();
-                      }
-                    },
-                    onError: function(status) {
-                      forwardToUserPage();
-                    }
-                  });
-                }, file.type);
-              }, {
-                maxWidth: 600,
-                canvas: true
-              });
-            }
-          }
-        } else {
-          forwardToUserPage();
-        }
-
-      }, function(response) {
-        console.log(response);
-      });
-    } else {
+    if($scope.formCreateUser.$invalid) {
       console.log("form is invalid");
+      return;
+    }
+
+    $scope.formCreateUser.loading = true;
+    $scope.formCreateUser.loadingText = 'Loading…';
+    var posts = [];
+
+    // Remove empty video posts
+    for (var i in $scope.posts) {
+      if($scope.posts[i].type == 3 && !$scope.posts[i].content) {
+        console.log('not a valid video');
+      } else {
+        posts.push($scope.posts[i]);
+      }
+    }
+
+    $scope.posts = posts;
+
+    var jsonPost = {
+      email : $scope.user.email.toLowerCase(),
+      username : $scope.user.username,
+      password : $scope.user.password,
+      posts : $scope.posts,
+      settings : $scope.userSettings
+    };
+
+    jsonPost.settings.username = $scope.user.username;
+
+    $http({
+      url: '/api/users',
+      method: 'post',
+      data: jsonPost,
+      headers: config.headerJSON
+    }).then(function(response) {
+      if($scope.userHasUploadedImage) {
+        $scope.formCreateUser.loadingText = 'Uploading images…';
+        for(i = 0; i < response.data.posts.length; i++) {
+          if(jsonPost.type == 2) {
+            uploadUserImage(response.data.posts[i]);
+          }
+        }
+      } else {
+        forwardToUserPage();
+      }
+    }, function(response) {
+      console.log(response);
+    });
+
+    function uploadUserImage(jsonPost) {
+      if(jsonPost.type == 2) {
+        var file = $scope.posts[i].file;
+
+        var loadingImage = loadImage(file, function(resizedImage) {
+          resizedImage.toBlob(function(blob) {
+            var s3upload = new S3Upload({
+              s3_object_name: jsonPost.key,
+              s3_file: blob,
+              onProgress: function(percent, message) {
+                console.log('Uploading images…', percent, message);
+              },
+              onFinishS3Put: function(url) {
+                console.log('Upload completed. Uploaded to: ' + url);
+                forwardToUserPage();
+              },
+              onError: function(status) {
+                forwardToUserPage();
+              }
+            });
+          }, file.type);
+        }, {
+          maxWidth: 600,
+          canvas: true
+        });
+      }
     }
 
     function forwardToUserPage() {
