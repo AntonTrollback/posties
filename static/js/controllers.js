@@ -1,243 +1,20 @@
-postiesApp.controller('PageIndexCtrl', function(
-  $scope, $http, $timeout, $upload, $sanitize, config,
+postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize, config,
   SettingsService, AuthService, FlashService, Fonts) {
 
-  $scope.posts = [];
-  $scope.userHasUploadedImage = false;
+  	$scope.posts = [];
+  	$scope.userHasUploadedImage = false;
 
 	$scope.settingsService = SettingsService;
-  $scope.flash = FlashService.getFlash();
-  $scope.fonts = Fonts.getFonts();
+  	$scope.flash = FlashService.getFlash();
+  	$scope.fonts = Fonts.getFonts();
 
 	$scope.userSettings = $scope.settingsService.getSettings();
-<<<<<<< HEAD
-	$scope.flash = FlashService.getFlash();
-	$scope.fonts = Fonts.getFonts();
 
-	$scope.fonts.load([$scope.userSettings.typefaceparagraph, $scope.userSettings.typefaceheadline]);
-
-	$scope.addPost = function($event) {
-		var post = {
-			id : Math.round(Math.random() * 1000),
-			sortrank : $scope.posts.length,
-			content : $event.target.getAttribute('data-content'),
-			type : parseInt($event.target.getAttribute('data-type')),
-			template : $event.target.getAttribute('data-template'),
-			helpText : $event.target.getAttribute('data-helptext')
-		};
-
-		$scope.posts.push(post);
-		$timeout(function() {
-			$('.post:last-child pre').focus();
-		}, 100);
-
-		$scope.showPostTypes = false;
-	};
-
-	$scope.savePostImage = function($files) {
-		var imageType = /image.*/;
-
-		for (var i = 0; i < $files.length; i++) {
-			var file = $files[i];
-
-			if(file.type.match(imageType)) {
-				var imagePost = {
-					type : 2,
-					sortrank : $scope.posts.length,
-					template : 'postImage.html',
-					file : file,
-					isUploaded : false,
-					uploadProgress : 0
-				};
-
-				$scope.posts.push(imagePost);
-
-				var reader = new FileReader();
-				reader.onprogress = function(e) {
-					if(e.lengthComputable) {
-						imagePost.uploadProgress = event.total;
-					}
-				};
-
-				reader.onload = function(e) {
-					$scope.$apply(function() {
-						imagePost.isUploaded = true;
-						imagePost.key = reader.result,
-						$scope.userHasUploadedImage = true;
-						$scope.showPostTypes = false;
-					});
-				}
-
-				reader.readAsDataURL(file);
-			}
-	    }
-	};
-
-	$scope.savePostVideo = function($event, post) {
-		var videoURL = posties.util.getYouTubeVideoID($sanitize($event.originalEvent.clipboardData.getData('text/plain')));
-		if(videoURL) {
-			post.key = videoURL;
-			post.isValidVideo = true;
-			$scope.flash.showMessage('saved...');
-		} else {
-			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
-
-			return;
-		}
-	};
-
-	$scope.movePost = function(currentIndex, newIndex) {
-		posties.util.swapItems($scope.posts, currentIndex, newIndex);
-
-		for(i = 0; i < $scope.posts.length; i++) {
-			$scope.posts[i].sortrank = i;
-		}
-	};
-
-	$scope.deletePost = function(currentIndex, post) {
-		$scope.posts.splice(currentIndex, 1);
-	};
-
-	$scope.checkUsername = function() {
-		$http({
-			url: '/api/users',
-			method: 'get',
-			params: { username : $scope.user.username.toLowerCase() }
-		}).then(function(response) {
-			if(response.data.username != undefined) {
-				$scope.formCreateUser.username.error = "Sorry, that URL is already taken";
-			} else {
-				$scope.submitCreateUser();
-			}
-		}, function(response) {
-			console.log(response);
-		});
-	};
-
-	$scope.validateUserForm = function($event) {
-		$scope.formCreateUser.username.error = "";
-		$scope.formCreateUser.email.error = "";
-		$scope.formCreateUser.password.error = "";
-
-		if ($scope.formCreateUser.email.$invalid) {
-			$scope.formCreateUser.email.error = "Not a valid email";
-		}
-
-		if ($scope.formCreateUser.password.$invalid) {
-			$scope.formCreateUser.password.error = "Can't be empty";
-		}
-
-		if ($scope.formCreateUser.username.$invalid) {
-			if ($scope.formCreateUser.username.$error.pattern) {
-					$scope.formCreateUser.username.error = "Sorry, no spaces or weird characters";
-			} else {
-				$scope.formCreateUser.username.error = "Can't be empty";
-			}
-		} else {
-			$scope.checkUsername();
-		}
-	};
-
-	$scope.submitCreateUser = function() {
-		var redirectUser = false;
-
-		if($scope.formCreateUser.$valid) {
-			var $button = $('#formCreateUser button[type="submit"]').attr('disabled', true);
-
-			var jsonPost = {
-				email : $scope.user.email.toLowerCase(),
-				username : $scope.user.username.toLowerCase(),
-				password : $scope.user.password,
-				posts : $scope.posts,
-				settings : $scope.userSettings
-			};
-
-			jsonPost.settings.username = $scope.user.username;
-
-			$http({
-				url: '/api/users',
-				method: 'post',
-				data: jsonPost,
-				headers: config.headerJSON
-			}).then(function(response) {
-				if($scope.userHasUploadedImage) {
-					for(i = 0; i < response.data.posts.length; i++) {
-						var jsonPost = response.data.posts[i];
-
-						if(i + 1 == response.data.posts.length) {
-							redirectUser = true;
-						}
-
-						if(jsonPost.type == 2) {
-							var file = $scope.posts[i].file;
-
-							var loadingImage = loadImage(file, function(resizedImage) {
-								resizedImage.toBlob(function(blob) {
-									var s3upload = new S3Upload({
-										s3_object_name: jsonPost.key,
-										s3_file: blob,
-										onProgress: function(percent, message) {
-											console.log('Upload progress: ' + percent + '% ' + message);
-											$scope.formCreateUser.loadingText = 'Uploading images: ' + percent + '%, ' + message.toLowerCase();
-										},
-										onFinishS3Put: function(url) {
-											console.log('Upload completed. Uploaded to: ' + url);
-											if(redirectUser) {
-												forwardToUserPage();
-											}
-										},
-										onError: function(status) {
-											forwardToUserPage();
-										}
-									});
-								}, file.type);
-							}, {
-								maxWidth: 600,
-								canvas: true
-							});
-						}
-					}
-				} else {
-					forwardToUserPage();
-				}
-
-			}, function(response) {
-				console.log(response);
-			});
-		} else {
-			console.log("form is invalid");
-		}
-
-		function forwardToUserPage() {
-			localStorage.setItem(config.keySettings + 'Welcome', true);
-			window.location = "/by/" + $scope.user.username.toLowerCase();
-		}
-	};
-
-	(function() {
-	   var post = {
-			id : 0,
-			sortrank : 0,
-			content : "<p>Hello</p><p>I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>",
-			type : 0,
-			template : 'postText.html'
-		};
-
-		$scope.posts.push(post);
-
-		$timeout(function() {
-			$('.post:last-child pre').focus();
-		}, 100);
-
-	})();
-=======
->>>>>>> eb8a8dc2f15116fbe01e124b784844fd470268d8
-
-  // Initial font load
-  $scope.fonts.load([
-    $scope.userSettings.typefaceparagraph,
-    $scope.userSettings.typefaceheadline
-  ]);
+  	// Initial font load
+  	$scope.fonts.load([
+    	$scope.userSettings.typefaceparagraph,
+    	$scope.userSettings.typefaceheadline
+  	]);
 
   $scope.addPost = function($event) {
     var post = {
@@ -329,21 +106,21 @@ postiesApp.controller('PageIndexCtrl', function(
 
     if ($scope.formCreateUser.email.$invalid) {
       if ($scope.formCreateUser.email.$error.required) {
-          $scope.formCreateUser.email.error = "You have to put <em>something</em> there";
+          $scope.formCreateUser.email.error = "You're missing an email address";
       } else {
         $scope.formCreateUser.email.error = "We both know that's not a valid email";
       }
     }
 
     if ($scope.formCreateUser.password.$invalid) {
-      $scope.formCreateUser.password.error = "You have to put <em>something</em> there";
+      $scope.formCreateUser.password.error = "Don't forget the password";
     }
 
     if ($scope.formCreateUser.username.$invalid) {
       if ($scope.formCreateUser.username.$error.pattern) {
           $scope.formCreateUser.username.error = "Sorry, no spaces or weird characters";
       } else {
-        $scope.formCreateUser.username.error = "You have to put <em>something</em> there";
+        $scope.formCreateUser.username.error = "Don't forget the username";
       }
     } else {
       $scope.checkUsername();
@@ -356,10 +133,10 @@ postiesApp.controller('PageIndexCtrl', function(
       method: 'get',
       params: { username : $scope.user.username }
     }).then(function(response) {
-      if (typeof response.data.user === 'undefined') {
+      if (typeof response.data.username === 'undefined') {
         $scope.submitCreateUser();
       } else {
-        $scope.formCreateUser.username.error = "Our apologies, that website address is already taken";
+        $scope.formCreateUser.username.error = "Sorry, that website address is already taken";
       }
     }, function(response) {
       console.log(response);

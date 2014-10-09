@@ -124,29 +124,11 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 });
 
 
-<<<<<<< HEAD
-	this.getUserWithPosts = function(username) {
-		var promise = $http({
-			url: '/api/users',
-			method: 'get',
-			params: { 'username' : username },
-			headers: config.headerJSON
-		}).then(function(response) {
-			this.data = response.data;
-			return response.data;
-		}, function(response) {
-			console.log(response);
-		});
-
-		return promise;
-	};
-=======
->>>>>>> eb8a8dc2f15116fbe01e124b784844fd470268d8
 
 postiesApp.service('UserService', function($http, config) {
   this.getUserWithPosts = function(username) {
     var promise = $http({
-      url: '/api/user',
+      url: '/api/users',
       method: 'get',
       params: { 'username' : username.toLowerCase() },
       headers: config.headerJSON
