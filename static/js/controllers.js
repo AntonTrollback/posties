@@ -526,17 +526,17 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 		});
 	};
 
-	$scope.submitUsernameLogin = function() {
-		var jsonPost = JSON.stringify({
+	$scope.submitLogin = function() {
+		var jsonPost = {
 			'username': $scope.login.username,
 			'password': $scope.login.password
-		});
+		};
 
 		AuthService.login(jsonPost).then(function(response) {
-			if (response.status == 200) {
+			if (typeof response.data.username !== 'undefined') {
 				window.location = "/by/" + response.data.username;
 			} else {
-				$scope.flash.showMessage("Bummer, password is incorrect");
+				$scope.flash.showMessage("Your password is incorrect");
 			}
 		});
 	};
