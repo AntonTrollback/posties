@@ -21,7 +21,10 @@
     "Autolinker.js": "~0.11.2",
     "jquery-minicolors": "~2.1.7",
     "blueimp-load-image": "~1.13.0",
-    "angular-medium-editor": "*",
-    "blueimp-canvas-to-blob": "~2.1.1"
+    "blueimp-canvas-to-blob": "~2.1.1",
+    "medium-editor": "~1.9.4"
+  },
+  "resolutions": {
+    "medium-editor": "~1.9.4"
   }
 }
