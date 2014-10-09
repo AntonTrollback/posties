@@ -240,7 +240,7 @@
   top: 0;
   right: 0;
   overflow: hidden;
-  padding: 0 2px;
+  padding: 0 1px;
   z-index: 2;
 }
 
@@ -251,7 +251,7 @@
 .post-option-action {
   width: 15px;
   height: 15px;
-  padding: 8px 6px;
+  padding: 8px;
   box-sizing: content-box;
   float: left;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
