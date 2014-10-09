@@ -528,7 +528,7 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 
 	$scope.submitLogin = function() {
 		var jsonPost = {
-			'username': $scope.login.username,
+			'username': USERNAME,
 			'password': $scope.login.password
 		};
 
