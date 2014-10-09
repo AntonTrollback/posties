@@ -215,6 +215,12 @@ module.exports = function(grunt) {
     's3',
   ]);
 
+  grunt.registerTask('deploy-debug', [
+    'build',
+    'setProd',
+    's3',
+  ]);
+
   grunt.registerTask('setProd', [
     'replace:setProd',
     'rename:jsProd',
