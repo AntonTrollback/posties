@@ -11,6 +11,10 @@
       </button>
     {% endif %}
 
+    {% if user_owns_page %}
+      <span class="header-action is-link">{{page_username}}</span>
+    {% endif %}
+
     {% include 'modules/navigation.html' %}
   </div>
 
