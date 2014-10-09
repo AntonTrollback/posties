@@ -139,8 +139,7 @@ postiesApp.service('UserService', function($http, config) {
 			},
 			headers: config.headerJSON
 		}).then(function(response) {
-			this.data = response.data;
-			return response.data;
+			return response;
 		}, function(response) {
 			console.log(response);
 		});

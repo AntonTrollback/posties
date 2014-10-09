@@ -293,19 +293,20 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
 
 	// Fetch user posts
-	UserService.getUserWithPosts(username).then(function(data) {
-		$scope.userSettings = data.settings;
+	UserService.getUserWithPosts(username).then(function(response) {
+		var user = response.data;
+		$scope.userSettings = user.settings;
 
 		// Load fonts
-		$scope.fonts.load([data.settings.typefaceparagraph, data.settings.typefaceheadline]);
+		$scope.fonts.load([user.settings.typefaceparagraph, user.settings.typefaceheadline]);
 
 		$scope.user = {
-			'username': data.username,
-			'isAuthenticated': data.is_authenticated
+			'username': user.username,
+			'isAuthenticated': user.is_authenticated
 		};
 
-		for (i = 0; i < data.posts.length; i++) {
-			var post = data.posts[i];
+		for (i = 0; i < user.posts.length; i++) {
+			var post = user.posts[i];
 
 			if (post.type === 0) {
 				post.template = 'postText.html';
