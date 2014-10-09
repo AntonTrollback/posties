@@ -1,20 +1,20 @@
 postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize, config,
   SettingsService, AuthService, FlashService, Fonts) {
 
-  	$scope.posts = [];
-  	$scope.userHasUploadedImage = false;
+	$scope.posts = [];
+	$scope.userHasUploadedImage = false;
 
-	$scope.settingsService = SettingsService;
-  	$scope.flash = FlashService.getFlash();
-  	$scope.fonts = Fonts.getFonts();
+  $scope.settingsService = SettingsService;
+	$scope.flash = FlashService.getFlash();
+	$scope.fonts = Fonts.getFonts();
 
-	$scope.userSettings = $scope.settingsService.getSettings();
+  $scope.userSettings = $scope.settingsService.getSettings();
 
-  	// Initial font load
-  	$scope.fonts.load([
-    	$scope.userSettings.typefaceparagraph,
-    	$scope.userSettings.typefaceheadline
-  	]);
+	// Initial font load
+	$scope.fonts.load([
+  	$scope.userSettings.typefaceparagraph,
+  	$scope.userSettings.typefaceheadline
+	]);
 
   $scope.addPost = function($event) {
     var post = {
@@ -284,7 +284,7 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 
 postiesApp.controller('PagePostsByUserCtrl', function(
   $scope, $http, $timeout, $upload, $sanitize, $filter, config,
-  Fonts, config, AuthService, UserService, FlashService, SettingsService) {
+  Fonts, AuthService, UserService, FlashService, SettingsService) {
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();

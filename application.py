@@ -92,6 +92,7 @@ def get_posts_by_username(username = None):
 		return render_template(
 			'postsByUser.html',
 			user_owns_page = user_owns_page,
+      page_username = current_user.username,
 			fonts = WHITELIST_TYPEFACES,
 			in_production = PRODUCTION
 		)
@@ -134,7 +135,7 @@ def api_get_user():
 
 	user['posts'] = posts
 	user['settings'] = settings
-	
+
 	return jsonify(user)
 
 @application.route('/api/users/email', methods=['GET'])
