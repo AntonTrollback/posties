@@ -24,7 +24,7 @@ print('Running in ' + ENV + ' mode.')
 TABLE_POSTS = 'posts'
 TABLE_USERS = 'users'
 TABLE_USERS_SETTINGS = 'users_settings'
-WHITELIST_TYPEFACES = ['Akkurat', 'Reenie Beanie', 'Josefin Sans', 'Open Sans', 'Rokkitt', 'Fredoka One', 'Libre Baskerville', 'EB Garamond', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Inconsolata', 'Abril Fatface']
+WHITELIST_TYPEFACES = ['Akkurat', 'Inconsolata', 'EB Garamond', 'Josefin Sans', 'Rokkitt', 'Reenie Beanie', 'Open Sans', 'Fredoka One', 'Libre Baskerville', 'Geo', 'VT323', 'Text Me One', 'Nova Cut', 'Cherry Swash', 'Italiana', 'Abril Fatface']
 AWS_ACCESS_KEY = CONFIG["aws"]["access_key"].encode('utf-8')
 AWS_SECRET_KEY = CONFIG["aws"]["secret_key"].encode('utf-8')
 AWS_S3_BUCKET = CONFIG["s3"]["bucket"]
