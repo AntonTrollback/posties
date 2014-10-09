@@ -54,6 +54,19 @@
   outline: 0;
 }
 
+.medium-editor-placeholder.post-editor:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: attr(data-placeholder) !important;
+  font-style: italic;
+  pointer-events: none;
+  text-align: center;
+  width: 100%;
+  padding: 34px 0;
+  color: var(--color-text-light);
+}
+
 .post a {
   text-decoration: underline;
   color: inherit;
@@ -81,6 +94,10 @@
 .post-editor {
   padding: 26px 20px;
   margin: -26px -20px;
+}
+
+.medium-editor-placeholder.post-editor:after {
+  padding: 26px 0;
 }
 
 .post-content-pre.is-larger {
@@ -134,6 +151,10 @@
   margin: -13px -10px;
 }
 
+.post-inner.is-unboxed .medium-editor-placeholder.post-editor:after {
+  padding: 13px 0;
+}
+
 .post-inner.is-unboxed .post-content-pre.is-larger {
   padding: 9px 10px;
 }
@@ -164,6 +185,10 @@
   .post-editor {
     padding: 34px 32px;
     margin: -34px -32px;
+  }
+
+  .medium-editor-placeholder.post-editor:after {
+    padding: 34px 0;
   }
 
   .post-content-pre.is-larger {
@@ -215,7 +240,7 @@
   top: 0;
   right: 0;
   overflow: hidden;
-  padding: 0 2px;
+  padding: 0 1px;
   z-index: 2;
 }
 
@@ -226,7 +251,7 @@
 .post-option-action {
   width: 15px;
   height: 15px;
-  padding: 8px 6px;
+  padding: 8px;
   box-sizing: content-box;
   float: left;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
