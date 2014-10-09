@@ -64,8 +64,6 @@ r.db('posties').tableCreate('users');
 r.db('posties').tableCreate('posts');
 r.db('posties').tableCreate('users_settings');
 r.db('posties').table('posts').indexCreate('sortrank');
-r.db('posties').table('users_settings').indexCreate('username');
-r.db('posties').table('posts').indexCreate('username');
 ```
 
 **Rethink Database Clean**
