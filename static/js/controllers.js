@@ -228,11 +228,11 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
     }
   };
 
-  $scope.submitUsernameLogin = function() {
-    var jsonPost = JSON.stringify({
+  $scope.submitLogin = function() {
+    var jsonPost = {
       'username' : $scope.login.username,
       'password' : $scope.login.password
-    });
+    };
 
     AuthService.login(jsonPost).then(function(response) {
       if(response.status == 200) {
@@ -259,27 +259,6 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
       $('.post:last-child .post-editor').focus();
     }, 100);
   })();
-});
-
-
-
-postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashService) {
-  $scope.flash = FlashService.getFlash();
-
-  $scope.submitLogin = function() {
-    var jsonPost = JSON.stringify({
-      'email' : $scope.login.email,
-      'password' : $scope.login.password
-    });
-
-    AuthService.login(jsonPost).then(function(response) {
-      if(response.status == 200) {
-        window.location = "/by/" + response.data.username;
-      } else {
-        $scope.flash.showPermanentMessage('Bummer, email or password is incorrect');
-      }
-    });
-  };
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function(
