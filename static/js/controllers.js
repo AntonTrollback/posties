@@ -1,8 +1,10 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize, config,
+postiesApp.controller('PageIndexCtrl', function(
+  $scope, $http, $timeout, $upload, $sanitize, config,
   SettingsService, AuthService, FlashService, Fonts) {
 
 	$scope.posts = [];
 	$scope.userHasUploadedImage = false;
+  var iOS = /(iPad|iPhone|iPod)/g.test( navigator.userAgent );
 
   $scope.settingsService = SettingsService;
 	$scope.flash = FlashService.getFlash();
@@ -27,9 +29,11 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
     };
 
     $scope.posts.push(post);
-    $timeout(function() {
-      $('.post:last-child .post-editor').focus();
-    }, 100);
+    if (!iOS) {
+      $timeout(function() {
+        $('.post:last-child .post-editor').focus();
+      }, 100);
+    }
 
     $scope.showPostTypes = false;
   };
@@ -255,9 +259,11 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 
     $scope.posts.push(post);
 
-    $timeout(function() {
-      $('.post:last-child .post-editor').focus();
-    }, 100);
+    if (!iOS) {
+      $timeout(function() {
+        $('.post:last-child .post-editor').focus();
+      }, 100);
+    }
   })();
 });
 
@@ -267,6 +273,7 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 
 	$scope.settingsService = SettingsService;
 	$scope.userSettings = $scope.settingsService.getSettings();
+  var iOS = /(iPad|iPhone|iPod)/g.test( navigator.userAgent );
 
   $scope.posts = [];
   $scope.userOwnsPage = $('body').hasClass('userOwnsPage');
@@ -339,9 +346,11 @@ postiesApp.controller('PagePostsByUserCtrl', function(
       }
 
       $scope.posts.push(post);
-      $timeout(function() {
-        $('.post:last-child .post-editor').focus();
-      }, 100);
+      if (!iOS) {
+        $timeout(function() {
+          $('.post:last-child .post-editor').focus();
+        }, 100);
+      }
     }, function(response) {
       console.log(response);
     });
