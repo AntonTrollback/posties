@@ -114,25 +114,18 @@ def api_get_user():
 			'posts': r.table('posts').get_all(user['username'], index='username')
 			.order_by(r.asc('sortrank')).coerce_to('array') 
 		}
-	).run(conn))
+	).inner_join(r.table('users_settings'), lambda left, right: left['username'] == right['username']).run(conn))
 
 	if not len(users):
 		return jsonify({})
 	else:
 		user = users[0]
 
-	user['is_authenticated'] = current_user.is_authenticated()
+	user['user'] = user.pop('left')
+	user['user']['settings'] = user.pop('right')
+	user['user']['is_authenticated'] = current_user.is_authenticated()
 
-	settings = list(
-		r.table(TABLE_USERS_SETTINGS).filter(
-		(r.row['username'] == username))
-		.run(conn))
-
-	settings = settings[0] if len(settings) else {}
-
-	user['settings'] = settings
-
-	return jsonify(user)
+	return jsonify(user['user'])
 
 @application.route('/api/users/email', methods=['GET'])
 def api_get_user_by_email():
