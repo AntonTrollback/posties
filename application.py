@@ -65,15 +65,16 @@ def login():
 	username = jsonData['username'].lower()
 	password = jsonData['password']
 
-	users = r.table(TABLE_USERS).filter(
+	users = list(r.table(TABLE_USERS).filter(
 		(r.row['username'] == username) &
-		(r.row['password'] == password)).run(conn)
+		(r.row['password'] == password)).run(conn))
 
-	for user in users:
+	if not len(users):
+		return jsonify({})
+	else:
+		user = users[0]
 		login_user(User(user['id'], user['email'], user['username']))
 		return jsonify(user)
-
-	return make_response(jsonify( { 'error': 'The e-mail address doesn\'t exist' } ), 400)
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):

@@ -133,7 +133,7 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
       method: 'get',
       params: { username : $scope.user.username }
     }).then(function(response) {
-      if (typeof response.data.username === 'undefined') {
+      if(typeof response.data.username === 'undefined') {
         $scope.submitCreateUser();
       } else {
         $scope.formCreateUser.username.error = "Sorry, that website address is already taken";
@@ -235,10 +235,10 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
     };
 
     AuthService.login(jsonPost).then(function(response) {
-      if(response.status == 200) {
-        window.location = "/by/" + response.data.username;
+      if(typeof response.data.username !== 'undefined') {
+      	window.location = "/by/" + response.data.username;
       } else {
-        $scope.flash.showMessage("Bummer, password is incorrect");
+        $scope.flash.showMessage("Your password is incorrect");
       }
     });
   };
