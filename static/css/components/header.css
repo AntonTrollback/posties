@@ -45,4 +45,5 @@
 
 .header-action.is-link {
   width: auto;
+  cursor: default;
 }

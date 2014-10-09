@@ -2,10 +2,10 @@
 @media only screen
 and (min-device-width : 320px)
 and (max-device-width : 480px) {
-	button,
-	.button {
-		font-size: 1.6rem;
-	}
+  button,
+  .button {
+    font-size: 1.6rem;
+  }
 }
 
 /* Smartphones (portrait) ----------- */
@@ -28,15 +28,15 @@ and (min-width : 1824px) {
 
 /* iPhone 4 ----------- */
 @media (--high-resolution) {
-	#customize {
-		background: url('../img/iconCustomizeActive@2x.png') no-repeat 0 0;
-		background-size: 100% 100%;
-	}
-	#customize.active {
-		background-size: 100% 100%;
-	}
-	#logo {
-		background: url('../img/logo@2x.png') no-repeat 0 0;
-		background-size: 100% 100%;
-	}
+  #customize {
+    background: url('../img/iconCustomizeActive@2x.png') no-repeat 0 0;
+    background-size: 100% 100%;
+  }
+  #customize.active {
+    background-size: 100% 100%;
+  }
+  #logo {
+    background: url('../img/logo@2x.png') no-repeat 0 0;
+    background-size: 100% 100%;
+  }
 }

@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html ng-app="posties" ng-controller="PageLoginCtrl" class="pageLogin">
-	{% include 'modules/head.html' %}
-	<body class="site {% if current_user and current_user.is_authenticated() %}authenticated{% endif %}">
+  {% include 'modules/head.html' %}
+  <body class="site {% if current_user and current_user.is_authenticated() %}authenticated{% endif %}">
 
-		{% include 'modules/header.html' %}
-		<div class="site-container" style="max-width: 500px;">
+    {% include 'modules/header.html' %}
+    <div class="site-container" style="max-width: 500px;">
 
-			<form name="formLogin" method="post" ng-submit="submitLogin(userSettings)" novalidate>
-				<div class="block is-padded">
-					<input type="text" name="email" ng-model="user.email" placeholder="Email" ng-required autocapitalize="off" autocorrect="off" />
-				</div>
-				<div class="block is-padded">
-					<input type="password" name="password" ng-model="user.password" placeholder="Password" ng-required autocapitalize="off" autocorrect="off" />
-				</div>
-				<div class="block is-padded">
-					<div class="block is-padded">
-						<button class="button is-large is-full">Login</button>
-					</div>
-				</div>
-			</form>
-		</div>
+      <form name="formLogin" method="post" ng-submit="submitLogin(userSettings)" novalidate>
+        <div class="block is-padded">
+          <input type="text" name="email" ng-model="login.email" placeholder="Email" ng-required autocapitalize="off" autocorrect="off">
+        </div>
+        <div class="block is-padded">
+          <input type="password" name="password" ng-model="login.password" placeholder="Password" ng-required autocapitalize="off" autocorrect="off">
+        </div>
+        <div class="block is-padded">
+          <div class="block is-padded">
+            <button class="button is-large is-full">Login</button>
+          </div>
+        </div>
+      </form>
+    </div>
 
-		{% include 'modules/footer.html' %}
-	</body>
+    {% include 'modules/footer.html' %}
+  </body>
 </html>

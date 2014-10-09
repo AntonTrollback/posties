@@ -1,12 +1,17 @@
+// Todo: create directives
 $(function() {
-  $panels = $('.panel');
+  // Navigate panels
+  $('.panels').each(function() {
+    var $this = $(this);
+    $this.find('[data-go-to-panel]').on('click', function(e) {
+      e.preventDefault();
+      $this.find('.panel').hide();
+      $('#'+ $(this).data('go-to-panel')).show();
+    });
+  });
 
-  function switchSection(id) {
-    $panels.hide();
-    $('#'+ id).show();
-  }
-
-  $panels.find('.minicolors').minicolors('create', {
+  // Init color pickers
+  $('.minicolors').minicolors('create', {
     animationSpeed: 50,
     animationEasing: 'swing',
     changeDelay: 300,
@@ -23,17 +28,13 @@ $(function() {
     theme: 'default'
   });
 
-  $panels.find('[data-go-to-panel]').on('click', function(e) {
-    e.preventDefault();
-    switchSection($(this).data('go-to-panel'));
+  // Selected state for items in font lists
+  $('#panelTextFont .panel-item, #panelHeadlineFont .panel-item').on('click', function(e) {
+    $(this).siblings().removeClass('is-active');
+    $(this).addClass('is-active');
   });
 
   $('.palette-item').on('click', function(e) {
     $(this).closest('.popover-body').find('.minicolors input').trigger('keyup');
-  });
-
-  $('#panelTextFont .panel-item, #panelHeadlineFont .panel-item').on('click', function(e) {
-    $(this).siblings().removeClass('is-active');
-    $(this).addClass('is-active');
   });
 });

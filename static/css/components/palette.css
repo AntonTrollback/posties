@@ -6,13 +6,17 @@
 .palette-item {
   float: left;
   padding: 10px;
-  margin-right: 3px;
+  margin-left: 3px;
   display: block;
   box-shadow: inset 0 0 0px 1px rgba(0, 0, 0, 0.06);
 }
 
+.palette-item:first-child {
+  margin-left: 0;
+}
+
 @media (--lg-viewport) {
   .palette-item {
-    margin-left: 4px;
+    margin-left: 5px;
   }
 }

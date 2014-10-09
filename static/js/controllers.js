@@ -1,11 +1,16 @@
-postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload, $sanitize,
-	config, SettingsService, FlashService, Fonts) {
+postiesApp.controller('PageIndexCtrl', function(
+  $scope, $http, $timeout, $upload, $sanitize, config,
+  SettingsService, AuthService, FlashService, Fonts) {
 
-	$scope.posts = [];
-	$scope.userHasUploadedImage = false;
+  $scope.posts = [];
+  $scope.userHasUploadedImage = false;
 
 	$scope.settingsService = SettingsService;
+  $scope.flash = FlashService.getFlash();
+  $scope.fonts = Fonts.getFonts();
+
 	$scope.userSettings = $scope.settingsService.getSettings();
+<<<<<<< HEAD
 	$scope.flash = FlashService.getFlash();
 	$scope.fonts = Fonts.getFonts();
 
@@ -225,265 +230,539 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 		}, 100);
 
 	})();
+=======
+>>>>>>> eb8a8dc2f15116fbe01e124b784844fd470268d8
 
+  // Initial font load
+  $scope.fonts.load([
+    $scope.userSettings.typefaceparagraph,
+    $scope.userSettings.typefaceheadline
+  ]);
+
+  $scope.addPost = function($event) {
+    var post = {
+      id : Math.round(Math.random() * 1000),
+      sortrank : $scope.posts.length,
+      content : $event.target.getAttribute('data-content'),
+      type : parseInt($event.target.getAttribute('data-type')),
+      template : $event.target.getAttribute('data-template'),
+      helpText : $event.target.getAttribute('data-helptext')
+    };
+
+    $scope.posts.push(post);
+    $timeout(function() {
+      $('.post:last-child .post-editor').focus();
+    }, 100);
+
+    $scope.showPostTypes = false;
+  };
+
+  $scope.savePostImage = function($files) {
+    var imageType = /image.*/;
+
+    for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];
+
+      if (file.type.match(imageType)) {
+        var imagePost = {
+          type : 2,
+          sortrank : $scope.posts.length,
+          template : 'postImage.html',
+          file : file,
+          isUploaded : false,
+          uploadProgress : 0
+        };
+
+        $scope.posts.push(imagePost);
+
+        var reader = new FileReader();
+        reader.onprogress = function(e) {
+          if(e.lengthComputable) {
+            imagePost.uploadProgress = event.total;
+          }
+        };
+
+        reader.onload = function(e) {
+          $scope.$apply(function() {
+            imagePost.isUploaded = true;
+            imagePost.key = reader.result;
+            $scope.userHasUploadedImage = true;
+            $scope.showPostTypes = false;
+          });
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+
+  $scope.savePostVideo = function($event, post) {
+    var clipboardData = $event.originalEvent.clipboardData.getData('text/plain');
+    var videoURL = posties.util.getYouTubeVideoID($sanitize(clipboardData));
+
+    if(videoURL) {
+      post.key = videoURL;
+      post.isValidVideo = true;
+      $scope.flash.showMessage('saved...');
+    } else {
+      $scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
+      return;
+    }
+  };
+
+  $scope.movePost = function(currentIndex, newIndex) {
+    posties.util.swapItems($scope.posts, currentIndex, newIndex);
+
+    for(i = 0; i < $scope.posts.length; i++) {
+      $scope.posts[i].sortrank = i;
+    }
+  };
+
+  $scope.deletePost = function(currentIndex, post) {
+    $scope.posts.splice(currentIndex, 1);
+  };
+
+  $scope.validateUserForm = function($event) {
+    $scope.formCreateUser.username.error = "";
+    $scope.formCreateUser.email.error = "";
+    $scope.formCreateUser.password.error = "";
+
+    if ($scope.formCreateUser.email.$invalid) {
+      if ($scope.formCreateUser.email.$error.required) {
+          $scope.formCreateUser.email.error = "You have to put <em>something</em> there";
+      } else {
+        $scope.formCreateUser.email.error = "We both know that's not a valid email";
+      }
+    }
+
+    if ($scope.formCreateUser.password.$invalid) {
+      $scope.formCreateUser.password.error = "You have to put <em>something</em> there";
+    }
+
+    if ($scope.formCreateUser.username.$invalid) {
+      if ($scope.formCreateUser.username.$error.pattern) {
+          $scope.formCreateUser.username.error = "Sorry, no spaces or weird characters";
+      } else {
+        $scope.formCreateUser.username.error = "You have to put <em>something</em> there";
+      }
+    } else {
+      $scope.checkUsername();
+    }
+  };
+
+  $scope.checkUsername = function() {
+    $http({
+      url: '/api/users',
+      method: 'get',
+      params: { username : $scope.user.username }
+    }).then(function(response) {
+      if (typeof response.data.user === 'undefined') {
+        $scope.submitCreateUser();
+      } else {
+        $scope.formCreateUser.username.error = "Our apologies, that website address is already taken";
+      }
+    }, function(response) {
+      console.log(response);
+    });
+  };
+
+  $scope.submitCreateUser = function() {
+    if($scope.formCreateUser.$invalid) {
+      console.log("form is invalid");
+      return;
+    }
+
+    $scope.formCreateUser.loading = true;
+    $scope.formCreateUser.loadingText = 'Loading…';
+    var posts = [];
+
+    // Remove empty video posts
+    for (var i in $scope.posts) {
+      if($scope.posts[i].type == 3 && !$scope.posts[i].content) {
+        console.log('not a valid video');
+      } else {
+        posts.push($scope.posts[i]);
+      }
+    }
+
+    $scope.posts = posts;
+
+    var jsonPost = {
+      email : $scope.user.email.toLowerCase(),
+      username : $scope.user.username,
+      password : $scope.user.password,
+      posts : $scope.posts,
+      settings : $scope.userSettings
+    };
+
+    jsonPost.settings.username = $scope.user.username;
+
+    $http({
+      url: '/api/users',
+      method: 'post',
+      data: jsonPost,
+      headers: config.headerJSON
+    }).then(function(response) {
+      if($scope.userHasUploadedImage) {
+        $scope.formCreateUser.loadingText = 'Uploading images…';
+        for(i = 0; i < response.data.posts.length; i++) {
+          if(jsonPost.type == 2) {
+            uploadUserImage(response.data.posts[i]);
+          }
+        }
+      } else {
+        forwardToUserPage();
+      }
+    }, function(response) {
+      console.log(response);
+    });
+
+    function uploadUserImage(jsonPost) {
+      if(jsonPost.type == 2) {
+        var file = $scope.posts[i].file;
+
+        var loadingImage = loadImage(file, function(resizedImage) {
+          resizedImage.toBlob(function(blob) {
+            var s3upload = new S3Upload({
+              s3_object_name: jsonPost.key,
+              s3_file: blob,
+              onProgress: function(percent, message) {
+                console.log('Uploading images…', percent, message);
+              },
+              onFinishS3Put: function(url) {
+                console.log('Upload completed. Uploaded to: ' + url);
+                forwardToUserPage();
+              },
+              onError: function(status) {
+                forwardToUserPage();
+              }
+            });
+          }, file.type);
+        }, {
+          maxWidth: 600,
+          canvas: true
+        });
+      }
+    }
+
+    function forwardToUserPage() {
+      localStorage.setItem(config.keySettings + 'Welcome', true);
+      window.location = "/by/" + $scope.user.username.toLowerCase();
+    }
+  };
+
+  $scope.submitUsernameLogin = function() {
+    var jsonPost = JSON.stringify({
+      'username' : $scope.login.username,
+      'password' : $scope.login.password
+    });
+
+    AuthService.login(jsonPost).then(function(response) {
+      if(response.status == 200) {
+        window.location = "/by/" + response.data.username;
+      } else {
+        $scope.flash.showMessage("Bummer, password is incorrect");
+      }
+    });
+  };
+
+  // Init
+  (function() {
+    var post = {
+      id : 0,
+      sortrank : 0,
+      content : "<p>Hello</p><p>I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>",
+      type : 0,
+      template : 'postText.html'
+    };
+
+    $scope.posts.push(post);
+
+    $timeout(function() {
+      $('.post:last-child .post-editor').focus();
+    }, 100);
+  })();
 });
+
+
 
 postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashService) {
+  $scope.flash = FlashService.getFlash();
 
-	$scope.flash = FlashService.getFlash();
+  $scope.submitLogin = function() {
+    var jsonPost = JSON.stringify({
+      'email' : $scope.login.email,
+      'password' : $scope.login.password
+    });
 
-	$scope.submitLogin = function() {
-		var jsonPost = JSON.stringify({
-			'email' : $scope.user.email,
-			'password' : $scope.user.password
-		});
-
-		AuthService.login(jsonPost).then(function(response) {
-			if(response.status == 200) {
-				window.location = "/by/" + response.data.username;
-			} else {
-				$scope.flash.showPermanentMessage('Sorry, email or password is incorrect');
-			}
-		});
-	};
-
+    AuthService.login(jsonPost).then(function(response) {
+      if(response.status == 200) {
+        window.location = "/by/" + response.data.username;
+      } else {
+        $scope.flash.showPermanentMessage('Bummer, email or password is incorrect');
+      }
+    });
+  };
 });
 
-postiesApp.controller('PagePostsByUserCtrl', function($scope, $http, $timeout, $upload, $sanitize, $filter,
-	config, UserService, SettingsService,
-	FlashService, Fonts) {
+postiesApp.controller('PagePostsByUserCtrl', function(
+  $scope, $http, $timeout, $upload, $sanitize, $filter, config,
+  Fonts, config, AuthService, UserService, FlashService, SettingsService) {
 
-	$scope.posts = [];
-	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 	$scope.settingsService = SettingsService;
-	$scope.flash = FlashService.getFlash();
-	$scope.fonts = Fonts.getFonts();
+	$scope.userSettings = $scope.settingsService.getSettings();
 
-	if(localStorage.getItem(config.keySettings + 'Welcome')) {
-		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
-		localStorage.removeItem(config.keySettings + 'Welcome');
-	}
+  $scope.posts = [];
+  $scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 
-	var urlPathName = location.pathname;
-	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
+  $scope.flash = FlashService.getFlash();
+  $scope.fonts = Fonts.getFonts();
 
-	//Fetch user posts
-	UserService.getUserWithPosts(username).then(function(data) {
-		$scope.userSettings = data.settings;
+  // Display welcome message
+  if (localStorage.getItem(config.keySettings + 'Welcome')) {
+    $scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
+    localStorage.removeItem(config.keySettings + 'Welcome');
+  }
 
-		// Load fonts
-		$scope.fonts.load([data.settings.typefaceparagraph, data.settings.typefaceheadline]);
+  var urlPathName = location.pathname;
+  var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
 
-		$scope.user = { 'username' : data.username, 'isAuthenticated' : data.is_authenticated };
+  // Fetch user posts
+  UserService.getUserWithPosts(username).then(function(data) {
+    $scope.userSettings = data.settings;
 
-		for(i = 0; i < data.posts.length; i++) {
-			var post = data.posts[i];
+    // Load fonts
+    $scope.fonts.load([data.settings.typefaceparagraph, data.settings.typefaceheadline]);
 
-			if(post.type == 0) {
-				post.template = 'postText.html';
-			} else if(post.type == 1) {
-				post.template = 'postHeadline.html';
-			} else if(post.type == 2) {
-				post.template = 'postImage.html';
-				post.isUploaded = true;
-				post.key = config.S3URL + post.key;
-			} else if(post.type == 3) {
-				post.template = 'postVideo.html';
-				post.isValidVideo = true;
-			}
+    $scope.user = { 'username' : data.username, 'isAuthenticated' : data.is_authenticated };
 
-			$scope.posts.push(post);
-		}
-	});
+    for (i = 0; i < data.posts.length; i++) {
+      var post = data.posts[i];
 
-	$scope.addPost = function($event) {
-		var jsonPost = {
-			type : $event.target.getAttribute('data-type'),
-			content : '',
-			sortrank : $scope.posts.length
-		};
+      if (post.type === 0) {
+        post.template = 'postText.html';
+      } else if(post.type == 1) {
+        post.template = 'postHeadline.html';
+      } else if(post.type == 2) {
+        post.template = 'postImage.html';
+        post.isUploaded = true;
+        post.key = config.S3URL + post.key;
+      } else if(post.type == 3) {
+        post.template = 'postVideo.html';
+        post.isValidVideo = true;
+      }
 
-		$http({
-			url: '/api/postText',
-			method: 'post',
-			data: jsonPost,
-			headers: config.headerJSON
-		}).then(function(response) {
-			var post = response.data;
-			post.helpText = $event.target.getAttribute('data-helptext')
+      $scope.posts.push(post);
+    }
+  });
 
-			if(post.type == 0) {
-				post.template = 'postText.html';
-			} else if(post.type == 1) {
-				post.template = 'postHeadline.html';
-			} else if(post.type == 2) {
-				post.template = 'postImage.html';
-			} else if(post.type == 3) {
-				post.template = 'postVideo.html';
-			}
+  $scope.addPost = function($event) {
+    var jsonPost = {
+      type : $event.target.getAttribute('data-type'),
+      content : '',
+      sortrank : $scope.posts.length
+    };
 
-			$scope.posts.push(post);
-			$timeout(function() {
-				$('.post:last-child pre').focus();
-			}, 100);
-		}, function(response) {
-			console.log(response);
-		});
+    $http({
+      url: '/api/postText',
+      method: 'post',
+      data: jsonPost,
+      headers: config.headerJSON
+    }).then(function(response) {
+      var post = response.data;
+      post.helpText = $event.target.getAttribute('data-helptext');
 
-		$scope.showPostTypes = false;
-	};
+      if (post.type === 0) {
+        post.template = 'postText.html';
+      } else if(post.type == 1) {
+        post.template = 'postHeadline.html';
+      } else if(post.type == 2) {
+        post.template = 'postImage.html';
+      } else if(post.type == 3) {
+        post.template = 'postVideo.html';
+      }
 
-	$scope.savePost = function($event, post) {
-		var postTextContent = post.content;
+      $scope.posts.push(post);
+      $timeout(function() {
+        $('.post:last-child .post-editor').focus();
+      }, 100);
+    }, function(response) {
+      console.log(response);
+    });
 
-		postTextContent = Autolinker.link(postTextContent, { truncate: false, stripPrefix: false });
+    $scope.showPostTypes = false;
+  };
 
-		if(postTextContent.length) {
-			var jsonPost = {
-				content: postTextContent,
-				id: post.id
-			};
+  $scope.savePost = function($event, post) {
+    var postTextContent = post.content;
 
-			$http({
-				url: '/api/postText',
-				method: 'put',
-				data: jsonPost,
-				headers: config.headerJSON
-			}).then(function(response) {
-				$scope.flash.showMessage('saved...');
-			}, function(response) {
-				console.log(response);
-			});
-		}
-	};
+    postTextContent = Autolinker.link(postTextContent, { truncate: false, stripPrefix: false });
 
-	$scope.savePostImage = function($files) {
-		for(var i = 0; i < $files.length; i++) {
-			var file = $files[i];
+    if(postTextContent.length) {
+      var jsonPost = {
+        content: postTextContent,
+        id: post.id
+      };
 
-			var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-  				var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-  				return v.toString(16);
-			});
+      $http({
+        url: '/api/postText',
+        method: 'put',
+        data: jsonPost,
+        headers: config.headerJSON
+      }).then(function(response) {
+        $scope.flash.showMessage('saved...');
+      }, function(response) {
+        console.log(response);
+      });
+    }
+  };
 
-			var filename = guid + "." + file.name.split('.').pop();
+  $scope.savePostImage = function($files) {
+    for(var i = 0; i < $files.length; i++) {
+      var file = $files[i];
 
-			var jsonPost = {
-				type : 2,
-				sortrank : $scope.posts.length,
-				filename : filename,
-				isUploaded : false,
-				template : 'postImage.html'
-			};
+      var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+      });
 
-			$http({
-				url: '/api/postImage',
-				method: 'post',
-				data: jsonPost,
-				headers: config.headerJSON
-			}).then(function(response) {
-				var jsonPost = response.data;
-				jsonPost['file'] = file;
+      var filename = guid + "." + file.name.split('.').pop();
 
-				var loadingImage = loadImage(
-					file,
-					function(resizedImage) {
-						resizedImage.toBlob(function(blob) {
-							$scope.posts.push(jsonPost);
-							var s3upload = new S3Upload({
-								s3_object_name: filename,
-								s3_file: blob,
-								onProgress: function(percent, message) {
-									$scope.$apply(function() {
-										jsonPost.uploadProgress = percent;
-									});
-					            },
-					            onFinishS3Put: function(url) {
-									jsonPost.key = config.S3URL + jsonPost.key;
-									jsonPost.isUploaded = true;
+      var jsonPost = {
+        type : 2,
+        sortrank : $scope.posts.length,
+        filename : filename,
+        isUploaded : false,
+        template : 'postImage.html'
+      };
 
-									$scope.$apply(function() {
-										$scope.showPostTypes = false;
-									});
-								},
-								onError: function(status) {
-									console.log('Upload error: ' + status);
-								}
-							});
+      $http({
+        url: '/api/postImage',
+        method: 'post',
+        data: jsonPost,
+        headers: config.headerJSON
+      }).then(function(response) {
+        var jsonPost = response.data;
+        jsonPost.file = file;
 
-						}, file.type);
-					}, { maxWidth: 600, canvas: true }
-				);
+        var loadingImage = loadImage(
+          file,
+          function(resizedImage) {
+            resizedImage.toBlob(function(blob) {
+              $scope.posts.push(jsonPost);
+              var s3upload = new S3Upload({
+                s3_object_name: filename,
+                s3_file: blob,
+                onProgress: function(percent, message) {
+                  $scope.$apply(function() {
+                    jsonPost.uploadProgress = percent;
+                  });
+                      },
+                      onFinishS3Put: function(url) {
+                  jsonPost.key = config.S3URL + jsonPost.key;
+                  jsonPost.isUploaded = true;
 
-			}, function(response) {
-				console.log(response);
-			});
-		}
-	};
+                  $scope.$apply(function() {
+                    $scope.showPostTypes = false;
+                  });
+                },
+                onError: function(status) {
+                  console.log('Upload error: ' + status);
+                }
+              });
 
-	$scope.savePostVideo = function($event, post) {
-		var videoURL = posties.util.getYouTubeVideoID($sanitize($event.originalEvent.clipboardData.getData('text/plain')));
+            }, file.type);
+          }, { maxWidth: 600, canvas: true }
+        );
 
-		if(videoURL) {
-			$event.target.innerHTML = videoURL;
+      }, function(response) {
+        console.log(response);
+      });
+    }
+  };
 
-			var jsonPost = {
-				key: videoURL,
-				id: post.id
-			};
+  $scope.savePostVideo = function($event, post) {
+    var clipboardData = $event.originalEvent.clipboardData.getData('text/plain');
+    var videoURL = posties.util.getYouTubeVideoID($sanitize(clipboardData));
 
-			$http({
-				url: '/api/postVideo',
-				method: 'put',
-				data: jsonPost,
-				headers: config.headerJSON
-			}).then(function(response) {
-				$($event.target).data('changed', false);
-				$scope.flash.showMessage('saved...');
-				post.isValidVideo = true;
-				post.key = videoURL;
-			}, function(response) {
-				console.log(response);
-			});
-		} else {
-			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
-			return;
-		}
-	};
+    if (videoURL) {
+      $event.target.innerHTML = videoURL;
 
-	$scope.movePost = function(currentIndex, newIndex) {
-		posties.util.swapItems($scope.posts, currentIndex, newIndex);
+      var jsonPost = {
+        key: videoURL,
+        id: post.id
+      };
 
-		var jsonPost = [];
-		for(i = 0; i < $scope.posts.length; i++) {
-			var post = $scope.posts[i];
-			jsonPost.push({ id : post.id, sortrank : i });
-		}
+      $http({
+        url: '/api/postVideo',
+        method: 'put',
+        data: jsonPost,
+        headers: config.headerJSON
+      }).then(function(response) {
+        $($event.target).data('changed', false);
+        $scope.flash.showMessage('saved...');
+        post.isValidVideo = true;
+        post.key = videoURL;
+      }, function(response) {
+        console.log(response);
+      });
+    } else {
+      $scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
+      return;
+    }
+  };
 
-		$http({
-			url: '/api/postrank',
-			method: 'post',
-			data: jsonPost,
-			headers: config.headerJSON
-		}).then(function(response) {
-			console.log(response);
-		}, function(response) {
-			console.log(response);
-		});
-	};
+  $scope.movePost = function(currentIndex, newIndex) {
+    posties.util.swapItems($scope.posts, currentIndex, newIndex);
 
-	$scope.deletePost = function(currentIndex, post) {
-		$http({
-			url: '/api/posts',
-			method: 'delete',
-			data: post,
-			headers: config.headerJSON
-		}).then(function(response) {
-			$scope.posts.splice(currentIndex, 1);
-		}, function(response) {
-			console.log(response);
-		});
-	};
+    var jsonPost = [];
+    for(i = 0; i < $scope.posts.length; i++) {
+      var post = $scope.posts[i];
+      jsonPost.push({ id : post.id, sortrank : i });
+    }
+
+    $http({
+      url: '/api/postrank',
+      method: 'post',
+      data: jsonPost,
+      headers: config.headerJSON
+    }).then(function(response) {
+      console.log(response);
+    }, function(response) {
+      console.log(response);
+    });
+  };
+
+  $scope.deletePost = function(currentIndex, post) {
+    $http({
+      url: '/api/posts',
+      method: 'delete',
+      data: post,
+      headers: config.headerJSON
+    }).then(function(response) {
+      $scope.posts.splice(currentIndex, 1);
+    }, function(response) {
+      console.log(response);
+    });
+  };
+
+  $scope.submitUsernameLogin = function() {
+    var jsonPost = JSON.stringify({
+      'username' : $scope.login.username,
+      'password' : $scope.login.password
+    });
+
+    AuthService.login(jsonPost).then(function(response) {
+      if(response.status == 200) {
+        window.location = "/by/" + response.data.username;
+      } else {
+        $scope.flash.showMessage("Bummer, password is incorrect");
+      }
+    });
+  };
 });
 
-postiesApp.controller('PageErrorCtrl', function() {});
+
+postiesApp.controller('PageErrorCtrl', function() {
+
+});
