@@ -234,8 +234,8 @@ postiesApp.controller('PageIndexCtrl', function(
 
   $scope.submitUsernameLogin = function() {
     var jsonPost = JSON.stringify({
-      'username' : $scope.user.username,
-      'password' : $scope.user.password
+      'username' : $scope.login.username,
+      'password' : $scope.login.password
     });
 
     AuthService.login(jsonPost).then(function(response) {
@@ -272,8 +272,8 @@ postiesApp.controller('PageLoginCtrl', function($scope, AuthService, FlashServic
 
   $scope.submitLogin = function() {
     var jsonPost = JSON.stringify({
-      'email' : $scope.user.email,
-      'password' : $scope.user.password
+      'email' : $scope.login.email,
+      'password' : $scope.login.password
     });
 
     AuthService.login(jsonPost).then(function(response) {
@@ -529,8 +529,8 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 
   $scope.submitUsernameLogin = function() {
     var jsonPost = JSON.stringify({
-      'username' : $scope.user.username,
-      'password' : $scope.user.password
+      'username' : $scope.login.username,
+      'password' : $scope.login.password
     });
 
     AuthService.login(jsonPost).then(function(response) {

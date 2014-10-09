@@ -8,8 +8,8 @@
         <div class="popover-body">
           <form class="popover-form" name="formLogin" method="post" ng-submit="submitUsernameLogin()">
             <span class="popover-form-title">Sign in</span>
-            <input type="text" name="username" ng-model="user.username" placeholder="Website address" required autocapitalize="off" autocorrect="off">
-            <input type="password" name="password" ng-model="user.password" placeholder="Password" required autocapitalize="off" autocorrect="off">
+            <input type="text" name="username" ng-model="login.username" placeholder="Website address" required autocapitalize="off" autocorrect="off">
+            <input type="password" name="password" ng-model="login.password" placeholder="Password" required autocapitalize="off" autocorrect="off">
             <button class="button is-full">OK</button>
             <a class="popover-form-link">Forgot password?</a>
           </form>
@@ -51,8 +51,8 @@
         <div class="popover-body">
           <form class="popover-form" name="formLogin" method="post" ng-submit="submitUsernameLogin()">
             <span class="popover-form-title">Edit this website</span>
-            <input type="hidden" name="username" value="{{page_username}}" ng-model="user.username">
-            <input type="password" name="password" ng-model="user.password" placeholder="Password" required autocapitalize="off" autocorrect="off">
+            <input type="hidden" name="username" value="{{page_username}}" ng-model="login.username">
+            <input type="password" name="password" ng-model="login.password" placeholder="Password" required autocapitalize="off" autocorrect="off">
             <button class="button is-full">OK</button>
             <a class="popover-form-link">Forgot password?</a>
           </form>
