@@ -130,7 +130,7 @@ postiesApp.service('UserService', function($http, config) {
 
 	this.getUserWithPosts = function(username) {
 		var promise = $http({
-			url: '/api/user',
+			url: '/api/users',
 			method: 'get',
 			params: { 'username' : username },
 			headers: config.headerJSON

@@ -45,11 +45,10 @@ def load_user(id):
 		logout_user()
 
 ###############
-#	WEB VIEWS	#
+#	WEB VIEWS #
 ###############
 @application.route('/', methods=['GET'])
 def index():
-
 	if current_user and current_user.is_authenticated():
 		return redirect("/by/" + current_user.username, code=302)
 	else:
@@ -105,15 +104,38 @@ def logout():
 	return redirect(url_for('index'))
 
 ###############
-#	API CALLS	#
+#	API CALLS #
 ###############
 @application.route('/api/users', methods=['GET'])
-def api_get_user_by_username():
+def api_get_user():
 	username = request.args.get('username')
 	users = list(r.table(TABLE_USERS).filter(
 		(r.row['username'] == username)).run(conn))
 
-	return jsonify({ 'user' : users[0] }) if len(users) else jsonify("")
+	if not len(users):
+		return jsonify({})
+	else:
+		user = users[0]
+
+	user['is_authenticated'] = current_user.is_authenticated()
+
+	posts = list(
+		r.table(TABLE_POSTS).filter(
+		(r.row['username'] == username))
+		.order_by(r.asc('sortrank'))
+		.run(conn))
+
+	settings = list(
+		r.table(TABLE_USERS_SETTINGS).filter(
+		(r.row['username'] == username))
+		.run(conn))
+
+	settings = settings[0] if len(settings) else {}
+
+	user['posts'] = posts
+	user['settings'] = settings
+	
+	return jsonify(user)
 
 @application.route('/api/users/email', methods=['GET'])
 def api_get_user_by_email():
@@ -332,7 +354,8 @@ def api_update_settings():
 				'pagebackgroundcolor' : page_background_color,
 				'created' : r.now()}).run(conn, return_changes = True)
 
-		result = result['changes'][0]['new_val']	
+		print result['changes']
+		result = result['changes'][0]['new_val']
 
 		return jsonify(result)
 	else:
@@ -347,34 +370,6 @@ def api_get_settings():
 		.run(conn))
 
 	return jsonify(settings[0])
-
-@application.route('/api/user', methods=['GET'])
-def api_get_user_with_posts():
-	username = request.args.get('username')
-	users = list(r.table(TABLE_USERS).filter(
-		(r.row['username'] == username)).run(conn))
-
-	if not len(users):
-		abort(404)
-
-	user = { 'username' : username }
-	user['is_authenticated'] = current_user.is_authenticated()
-
-	posts = list(
-		r.table(TABLE_POSTS).filter(
-		(r.row['username'] == username))
-		.order_by(r.asc('sortrank'))
-		.run(conn))
-
-	settings = list(
-		r.table(TABLE_USERS_SETTINGS).filter(
-		(r.row['username'] == username))
-		.run(conn))
-
-	user['settings'] = settings[0]
-	user['posts'] = posts
-
-	return jsonify(user)
 
 @application.route('/api/posts', methods=['DELETE'])
 @login_required

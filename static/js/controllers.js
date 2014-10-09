@@ -99,10 +99,10 @@ postiesApp.controller('PageIndexCtrl', function($scope, $http, $timeout, $upload
 			method: 'get',
 			params: { username : $scope.user.username.toLowerCase() }
 		}).then(function(response) {
-			if (typeof response.data.user === 'undefined') {
-				$scope.submitCreateUser();
-			} else {
+			if(response.data.username != undefined) {
 				$scope.formCreateUser.username.error = "Sorry, that URL is already taken";
+			} else {
+				$scope.submitCreateUser();
 			}
 		}, function(response) {
 			console.log(response);
