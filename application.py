@@ -353,7 +353,6 @@ def api_update_settings():
 				'pagebackgroundcolor' : page_background_color,
 				'created' : r.now()}).run(conn, return_changes = True)
 
-		print result['changes']
 		result = result['changes'][0]['new_val']
 
 		return jsonify(result)
