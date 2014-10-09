@@ -274,7 +274,6 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 	Fonts, AuthService, UserService, FlashService, SettingsService) {
 
 	$scope.settingsService = SettingsService;
-	$scope.userSettings = $scope.settingsService.getSettings();
 	var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
 	$scope.posts = [];
