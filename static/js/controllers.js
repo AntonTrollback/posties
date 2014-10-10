@@ -246,6 +246,7 @@ postiesApp.controller('PageIndexCtrl', function(
 	};
 
 	$scope.submitLogin = function() {
+		$('.popover-form .button').attr('disabled', true).text('Loading…');
 		var jsonPost = {
 			'username': $scope.login.username,
 			'password': $scope.login.password
@@ -256,6 +257,7 @@ postiesApp.controller('PageIndexCtrl', function(
 				window.location = "/by/" + response.data.username;
 			} else {
 				$scope.flash.showMessage("Your password is incorrect");
+				$('.popover-form .button').attr('disabled', false).text('OK');
 			}
 		});
 	};
