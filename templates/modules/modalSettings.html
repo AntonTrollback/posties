@@ -7,7 +7,7 @@
 
       <!-- Links to font panels -->
 
-      <a class="panel-item" data-go-to-panel="panelTextFont">
+      <a class="panel-item" data-go-to-panel="panelTextFont" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Text font">
         <span class="panel-item-text">Text font</span>
         <div class="panel-item-preview">
           <span class="panel-item-text is-larger" ng-model="userSettings.typefaceparagraph" style="font-family: '[[userSettings.typefaceparagraph]]'">
@@ -17,7 +17,7 @@
         <div class="panel-item-chevron"></div>
       </a>
 
-      <a class="panel-item" data-go-to-panel="panelHeadlineFont">
+      <a class="panel-item" data-go-to-panel="panelHeadlineFont" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Headline font">
         <span class="panel-item-text">Headline font</span>
         <div class="panel-item-preview">
           <span class="panel-item-text is-larger" ng-model="userSettings.typefaceheadline" style="font-family: '[[userSettings.typefaceheadline]]'">
@@ -29,7 +29,7 @@
 
       <!-- Inline show boxes -->
 
-      <label class="panel-item" for="showBoxes">
+      <label class="panel-item" for="showBoxes" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Toggle boxes">
         <span class="panel-item-text">Use boxes</span>
         <div class="panel-item-preview">
           <div class="panel-item-toggle toggle">
@@ -41,19 +41,19 @@
 
       <!-- Links to color panels -->
 
-      <a class="panel-item" data-go-to-panel="panelBoxColor" ng-class="userSettings.showboxes ? '' : 'is-disabled'">
+      <a class="panel-item" data-go-to-panel="panelBoxColor" ng-class="userSettings.showboxes ? '' : 'is-disabled'" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Box color">
         <span class="panel-item-text">Box color</span>
         <span class="panel-item-preview" style="background-color: [[userSettings.postbackgroundcolor]]"></span>
         <div class="panel-item-chevron is-transparent"></div>
       </a>
 
-      <a class="panel-item" data-go-to-panel="panelTextColor">
+      <a class="panel-item" data-go-to-panel="panelTextColor" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Text color">
         <span class="panel-item-text">Text color</span>
         <span class="panel-item-preview" style="background-color: [[userSettings.posttextcolor]]"></span>
         <div class="panel-item-chevron is-transparent"></div>
       </a>
 
-      <a class="panel-item" data-go-to-panel="panelBackground">
+      <a class="panel-item" data-go-to-panel="panelBackground" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Background color">
         <span class="panel-item-text">Background</span>
         <span class="panel-item-preview" style="background-color: [[userSettings.pagebackgroundcolor]]"></span>
         <div class="panel-item-chevron is-transparent"></div>
@@ -62,8 +62,8 @@
       <!-- Reset and randomize -->
 
       <div class="popover-body">
-        <button class="button" ng-click="userSettings = settingsService.getDefaultSettings()">Reset</button>
-        <span style="margin-left: 0.5em;">or <a ng-click="userSettings = settingsService.getRandomSettings()">randomize</a>!</span>
+        <button class="button" ng-click="userSettings = settingsService.getDefaultSettings()"><span analytics-on="click" analytics-event="Reset" analytics-category="Website design settings">Reset</span></button>
+        <span style="margin-left: 0.5em;">or <a ng-click="userSettings = settingsService.getRandomSettings()"><span analytics-on="click" analytics-event="Randomize" analytics-category="Website design settings">randomize</span></a>!</span>
         <button id="saveUserSettings" class="button" style="display: none;">Save</button>
       </div>
     </div>

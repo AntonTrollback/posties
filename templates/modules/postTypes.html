@@ -1,25 +1,27 @@
 <div class="block is-padded">
   <button class="button is-large is-full" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes">
-    {% include 'modules/inlineSvg/plus.html' %}
-    Add content
+    <span analytics-on="click" analytics-event="Show" analytics-category="Content boxes">
+      {% include 'modules/inlineSvg/plus.html' %}
+      Add content
+    </span>
   </button>
 
   <div class="button-group" ng-show="showPostTypes" ng-cloak>
-    <button class="button is-vertical" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="">
+    <button class="button is-vertical" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-content="" data-analytics-label="Body text">
       {% include 'modules/inlineSvg/contentText.html' %}
       Body text
     </button>
-    <button class="button is-vertical" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="">
+    <button class="button is-vertical" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-content="" data-analytics-label="Headline">
       {% include 'modules/inlineSvg/contentHeadline.html' %}
       Headline
     </button>
     <div class="button-group-break"></div>
-    <label class="button is-vertical" for="uploadImage">
+    <label class="button is-vertical" for="uploadImage" analytics-on="click" analytics-event="Add" analytics-category="Content boxes" analytics-label="Image">
       <input class="hidden" id="uploadImage" type="file" accept="image/*" capture="camera" name="image" ng-file-select="savePostImage($files)">
       {% include 'modules/inlineSvg/contentImage.html' %}
       Image
     </label>
-    <button class="button is-vertical" ng-click="addPost($event)" data-type="3" data-template="postVideo.html" data-helptext="Paste your YouTube link here">
+    <button class="button is-vertical" ng-click="addPost($event)" data-type="3" data-template="postVideo.html" data-helptext="Paste your YouTube link here" data-analytics-label="Video">
       {% include 'modules/inlineSvg/contentVideo.html' %}
       Video
     </button>

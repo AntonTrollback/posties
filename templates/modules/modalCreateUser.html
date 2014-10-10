@@ -45,7 +45,7 @@
     </div>
 
     <div class="block is-padded" style="padding-top: 15px;">
-      <button class="button is-larger is-full" type="submit" ng-disabled="formCreateUser.loading">
+      <button class="button is-larger is-full" type="submit" ng-disabled="formCreateUser.loading" analytics-on="click" analytics-event="Try publish" analytics-category="Sign up">
         <div ng-hide="formCreateUser.loading">
           {% include 'modules/inlineSvg/arrowOut.html' %}
           Publish now!

@@ -22,6 +22,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Fix tacking click area */
+
+.button span {
+  display: block;
+  padding: 8px 12px;
+  margin: -8px -12px;
+}
+
 /**
  * Remove excess padding and border in Firefox 4+
  */
@@ -65,9 +73,19 @@
   padding: 14px 22px;
 }
 
+.button.is-large span {
+  padding: 14px 22px;
+  margin: -14px -22px;
+}
+
 .button.is-larger {
   font-size: 23px;
   padding: 27px 22px 33px;
+}
+
+.button.is-larger span {
+  padding: 27px 22px 33px;
+  margin: -27px -22px -33px;
 }
 
 .button.is-full {
@@ -78,6 +96,11 @@
 .button.is-vertical {
   font-size: 12px;
   padding: 10px;
+}
+
+.button.is-vertical span {
+  padding: 10px;
+  margin: -10px;
 }
 
 /**

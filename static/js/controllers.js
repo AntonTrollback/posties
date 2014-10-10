@@ -1,5 +1,5 @@
 postiesApp.controller('PageIndexCtrl', function(
-	$scope, $http, $timeout, $upload, $sanitize, config,
+	$scope, $http, $timeout, $upload, $sanitize, $analytics, config,
 	SettingsService, AuthService, FlashService, Fonts) {
 
 	$scope.posts = [];
@@ -19,6 +19,11 @@ postiesApp.controller('PageIndexCtrl', function(
 	]);
 
 	$scope.addPost = function($event) {
+		$analytics.eventTrack('Add', {
+			category: 'Content boxes',
+			label: $event.target.getAttribute('data-analytics-label')
+		});
+
 		var post = {
 			id: Math.round(Math.random() * 1000),
 			sortrank: $scope.posts.length,
@@ -270,7 +275,7 @@ postiesApp.controller('PageIndexCtrl', function(
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function(
-	$scope, $http, $timeout, $upload, $sanitize, $filter, config,
+	$scope, $http, $timeout, $upload, $sanitize, $filter, $analytics, config,
 	Fonts, AuthService, UserService, FlashService, SettingsService) {
 
 	$scope.settingsService = SettingsService;
@@ -284,6 +289,7 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 
 	// Display welcome message
 	if (localStorage.getItem(config.keySettings + 'Welcome')) {
+		$analytics.eventTrack('Success', {  category: 'Sign up' });
 		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
 		localStorage.removeItem(config.keySettings + 'Welcome');
 	}
@@ -325,6 +331,11 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 	});
 
 	$scope.addPost = function($event) {
+		$analytics.eventTrack('Add', {
+			category: 'Content boxes',
+			label: $event.target.getAttribute('data-analytics-label')
+		});
+
 		var jsonPost = {
 			type: $event.target.getAttribute('data-type'),
 			content: '',
