@@ -184,7 +184,7 @@ postiesApp.controller('PageIndexCtrl', function(
 		};
 
 		jsonPost.settings.username = $scope.user.username;
-		
+
 		$http({
 			url: '/api/users',
 			method: 'post',
@@ -192,9 +192,44 @@ postiesApp.controller('PageIndexCtrl', function(
 			headers: config.headerJSON
 		}).then(function(response) {
 			if ($scope.userHasUploadedImage) {
+				$scope.formCreateUser.loadingText = 'Uploading images…';
+
+				var imagesToUpload = 0;
+				var uploadedImages = 0;
+
 				for (i = 0; i < response.data.posts.length; i++) {
 					if (response.data.posts[i].type == 2) {
-						uploadUserImage(response.data.posts[i], $scope.posts[i].file);
+						var post = response.data.posts[i];
+						var file = $scope.posts[i].file;
+
+						imagesToUpload++;
+
+						var loadingImage = loadImage(file, function(resizedImage) {
+							resizedImage.toBlob(function(blob) {
+								var s3upload = new S3Upload({
+									s3_object_name: post.key,
+									s3_file: blob,
+									onProgress: function(percent, message) {
+										console.log('Uploading images…', percent, message);
+									},
+									onFinishS3Put: function(url) {
+										console.log('Upload completed. Uploaded to: ' + url);
+										uploadedImages++;
+
+										if (uploadedImages >= imagesToUpload) {
+											forwardToUserPage();
+										}
+									},
+									onError: function(status) {
+										forwardToUserPage();
+									}
+								});
+							}, file.type);
+						}, {
+							maxWidth: 600,
+							canvas: true
+						});
+
 					}
 				}
 			} else {
@@ -203,32 +238,6 @@ postiesApp.controller('PageIndexCtrl', function(
 		}, function(response) {
 			console.log(response);
 		});
-
-		function uploadUserImage(post, file) {
-			$scope.formCreateUser.loadingText = 'Uploading images…';
-
-			var loadingImage = loadImage(file, function(resizedImage) {
-				resizedImage.toBlob(function(blob) {
-					var s3upload = new S3Upload({
-						s3_object_name: post.key,
-						s3_file: blob,
-						onProgress: function(percent, message) {
-							console.log('Uploading images…', percent, message);
-						},
-						onFinishS3Put: function(url) {
-							console.log('Upload completed. Uploaded to: ' + url);
-							forwardToUserPage();
-						},
-						onError: function(status) {
-							forwardToUserPage();
-						}
-					});
-				}, file.type);
-			}, {
-				maxWidth: 600,
-				canvas: true
-			});
-		};
 
 		function forwardToUserPage() {
 			localStorage.setItem(config.keySettings + 'Welcome', true);
