@@ -306,6 +306,14 @@
   stroke: var(--color-text-dark);
 }
 
+.post-content-block .post-option-action path {
+  stroke: #444;
+}
+
+.post-content-block .post-option-action:hover path {
+  stroke: #000;
+}
+
 .post:first-child .post-option-action.is-up,
 .post:last-child .post-option-action.is-down {
   display: none;
