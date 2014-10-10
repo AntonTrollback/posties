@@ -6,17 +6,13 @@
   overflow: hidden;
   position: relative;
   padding: 20px 0;
-  margin-bottom: 30px;
   text-align: center;
   font-size: 15px;
-}
-
-.welcome {
-  margin: 0 10px;
+  margin: 0 0 14px;
 }
 
 .welcome strong {
-  margin-bottom: 0.4em;
+  margin-bottom: 0.35em;
   display: block;
 }
 
@@ -45,7 +41,6 @@
 
 @media (--md-viewport) {
   .welcome {
-    margin: 0 32px;
     font-size: 23px;
   }
 
