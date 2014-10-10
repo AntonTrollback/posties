@@ -166,7 +166,7 @@ postiesApp.controller('PageIndexCtrl', function(
 
 		// Remove empty video posts
 		for (var i in $scope.posts) {
-			if ($scope.posts[i].type == 3 && !$scope.posts[i].content) {
+			if ($scope.posts[i].type == 3 && !$scope.posts[i].key) {
 				console.log('not a valid video');
 			} else {
 				posts.push($scope.posts[i]);
