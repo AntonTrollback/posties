@@ -79,29 +79,6 @@
   text-indent: 0;
 }
 
-#flash {
-  display: none;
-  z-index: 100;
-  position: fixed;
-  width: 50%;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  padding: 10px;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.8);
-}
-#flash .close {
-  top: 0;
-  right: 6px;
-  position: absolute;
-  text-decoration: none;
-}
-#flash pre {
-  color: #fff;
-  font-size: 1.4rem;
-  font-family: 'Helvetica', arial, sans-serif;
-}
 .postTypes {
   color: #8a8a8a;
   margin: 0;
@@ -171,6 +148,8 @@ header div.menu a {
   background: rgba(0, 0, 0, 0);
   top: 0;
   left: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 /*** ICONS ***/

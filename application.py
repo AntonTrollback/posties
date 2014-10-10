@@ -110,9 +110,9 @@ def api_get_user():
 	username = request.args.get('username')
 
 	users = list(r.table('users').filter({ 'username' : username }).merge(
-		lambda user: { 
+		lambda user: {
 			'posts': r.table('posts').get_all(user['username'], index='username')
-			.order_by(r.asc('sortrank')).coerce_to('array') 
+			.order_by(r.asc('sortrank')).coerce_to('array')
 		}
 	).inner_join(r.table('users_settings'), lambda left, right: left['username'] == right['username']).run(conn))
 
@@ -262,7 +262,7 @@ def sign_s3():
 	mime_type = request.args.get('s3_object_type')
 
 	# Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
-	expires = int(time.time() + 20)
+	expires = int(time.time() + 100)
 	amz_headers = "x-amz-acl:public-read"
 
 	# Generate the PUT request that JavaScript will use:

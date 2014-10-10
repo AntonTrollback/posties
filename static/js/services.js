@@ -198,6 +198,10 @@ postiesApp.service('FlashService', function($timeout) {
 		flash.element.fadeOut();
 	};
 
+	flash.hideWelcome = function() {
+		$('.welcome').hide();
+	};
+
 	this.getFlash = function() {
 		return flash;
 	};

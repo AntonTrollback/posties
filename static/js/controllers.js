@@ -296,7 +296,7 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 	// Display welcome message
 	if (localStorage.getItem(config.keySettings + 'Welcome')) {
 		$analytics.eventTrack('Success', {  category: 'Sign up' });
-		$scope.flash.showPermanentMessage('Welcome to your new Posties page! \n Your address is ' + window.location.host + window.location.pathname);
+		$('.welcome').show();
 		localStorage.removeItem(config.keySettings + 'Welcome');
 	}
 
@@ -436,9 +436,7 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 				var jsonPost = response.data;
 				jsonPost.file = file;
 
-				var loadingImage = loadImage(
-					file,
-					function(resizedImage) {
+				var loadingImage = loadImage(file, function(resizedImage) {
 						resizedImage.toBlob(function(blob) {
 							$scope.posts.push(jsonPost);
 							var s3upload = new S3Upload({
