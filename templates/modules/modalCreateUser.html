@@ -15,7 +15,7 @@
              autocapitalize="off"
              autocomplete="off"
              autocorrect="off">
-      <p ng-show="formCreateUser.username.error" style="position: absolute; top: 17px; right: 18px; margin: 0;">[[formCreateUser.username.error]]</p>
+      <p ng-show="formCreateUser.username.error" class="form-error">[[formCreateUser.username.error]]</p>
       <span style="text-align: center; display: block; margin: 9px 0 0; color: #bababa">posti.es/by/<span ng-hide="user.username">something</span>[[user.username]]</span>
     </div>
 
@@ -28,7 +28,7 @@
             autocapitalize="off"
              autocomplete="off"
             autocorrect="off">
-      <p ng-show="formCreateUser.email.error" style="position: absolute; top: 17px; right: 18px; margin: 0;">[[formCreateUser.email.error]]</p>
+      <p ng-show="formCreateUser.email.error" class="form-error">[[formCreateUser.email.error]]</p>
     </div>
 
     <div class="block" style="position: relative;">
@@ -41,7 +41,7 @@
              autocapitalize="off"
              autocomplete="off"
              autocorrect="off">
-      <p ng-show="formCreateUser.password.error" style="position: absolute; top: 17px; right: 18px; margin: 0;">[[formCreateUser.password.error]]</p>
+      <p ng-show="formCreateUser.password.error" class="form-error">[[formCreateUser.password.error]]</p>
     </div>
 
     <div class="block is-padded" style="padding-top: 15px;">
