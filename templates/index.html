@@ -13,8 +13,10 @@
         {% include 'modules/postTypes.html' %}
         <div class="block is-padded">
           <button class="button is-larger is-full" ng-click="showModalCreateUser = !showModalCreateUser">
-            {% include 'modules/inlineSvg/arrowOut.html' %}
-            Publish this page
+            <span analytics-on="click" analytics-event="Enter sign up" analytics-category="Sign up"></span>
+              {% include 'modules/inlineSvg/arrowOut.html' %}
+              Publish this page
+            </span>
           </button>
           {% include 'modules/modalCreateUser.html' %}
         </div>

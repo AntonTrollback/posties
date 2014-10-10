@@ -2,12 +2,16 @@
   <div class="header">
 
     <button class="header-action" ng-class="showNavigation ? 'is-active' : ''" ng-click="showNavigation = !showNavigation">
-      {% include 'modules/inlineSvg/logo.html' %}
+      <span analytics-on="click" analytics-event="Toggle view" analytics-category="Account settings">
+        {% include 'modules/inlineSvg/logo.html' %}
+      </span>
     </button>
 
     {% if is_start_page or user_owns_page %}
       <button class="header-action" ng-class="settingsService.isOpen ? 'is-active' : ''" ng-click="settingsService.open(); showNavigation = false">
-        {% include 'modules/inlineSvg/sliders.html' %}
+        <span analytics-on="click" analytics-event="Show view" analytics-category="Website design settings">
+          {% include 'modules/inlineSvg/sliders.html' %}
+        </span>
       </button>
     {% endif %}
 

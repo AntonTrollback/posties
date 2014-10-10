@@ -84,6 +84,22 @@
   user-select: none;
 }
 
+.post-content-block.is-fixedratio {
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 */
+  background: #000;
+}
+
+.post-content-block.is-fixedratio iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  visibility: hidden;
+}
+
 .post-content-pre {
   box-sizing: border-box;
   line-height: 1.2;
@@ -288,6 +304,14 @@
 
 .post-option-action:hover path {
   stroke: var(--color-text-dark);
+}
+
+.post-content-block .post-option-action path {
+  stroke: #444;
+}
+
+.post-content-block .post-option-action:hover path {
+  stroke: #000;
 }
 
 .post:first-child .post-option-action.is-up,

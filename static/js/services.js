@@ -1,8 +1,11 @@
-var dependencies = ['ngSanitize', 'angularFileUpload', 'angular-medium-editor'];
+var dependencies = ['ngSanitize', 'angularFileUpload', 'angular-medium-editor', 'angulartics', 'angulartics.google.analytics'];
 
 var postiesApp = angular.module('posties', dependencies, function($interpolateProvider) {
 	$interpolateProvider.startSymbol('[[');
 	$interpolateProvider.endSymbol(']]');
+}).config(function ($analyticsProvider) {
+  $analyticsProvider.firstPageview(true); // Records pages that don't use $state or $route
+  $analyticsProvider.withAutoBase(true);  // Records full path
 });
 
 postiesApp.constant('config', {
