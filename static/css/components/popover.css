@@ -15,7 +15,7 @@
   max-width: 17em;
 }
 
-@media (--lg-viewport) {
+@media (--md-viewport) {
   .popover {
     font-size: 15px;
   }
@@ -43,7 +43,7 @@
   height: var(--popover-header-height);
 }
 
-@media (--lg-viewport) {
+@media (--md-viewport) {
   .popover-header {
     height: var(--popover-header-height-lg);
   }
