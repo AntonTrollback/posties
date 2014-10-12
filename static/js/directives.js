@@ -37,6 +37,18 @@ $(function() {
   $('.palette-item').on('click', function(e) {
     $(this).closest('.popover-body').find('.minicolors input').trigger('keyup');
   });
+
+  $('.PageIndexCtrl .header-action [ng-class*="showNavigation"]').on('click', function() {
+    if (!iOS) {
+      $('.popover-form .username').focus();
+    }
+  });
+
+  $('[data-go-to-panel="panelLogin"]').on('click', function() {
+    if (!iOS) {
+      $('.popover-form input').focus();
+    }
+  });
 });
 
 
