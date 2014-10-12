@@ -5,7 +5,7 @@
       <div ng-model="post.content"
            class="post-editor"
            medium-editor
-           options='{"placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
+           options='{"buttonLabels": {"bold": "{% include 'modules/inlineSvg/formatBold.html' %}", "italic": "{% include 'modules/inlineSvg/formatItalic.html' %}", "anchor": "{% include 'modules/inlineSvg/formatLink.html' %}"}, "placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
            ng-blur="savePost($event, post)"></div>
     </form>
   </div>
