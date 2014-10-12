@@ -14,6 +14,7 @@ from hashlib import sha1
 
 from user import User
 
+# Get environment status and revision numbers
 CONFIG = json.load(open('config.json'))
 ENV = CONFIG["environment"]
 DB_CONFIG = CONFIG["database"][ENV]
@@ -29,10 +30,14 @@ AWS_ACCESS_KEY = CONFIG["aws"]["access_key"].encode('utf-8')
 AWS_SECRET_KEY = CONFIG["aws"]["secret_key"].encode('utf-8')
 AWS_S3_BUCKET = CONFIG["s3"]["bucket"]
 
+# Setup Rethinkdb and Flask
 conn = r.connect(host=DB_CONFIG["host"].encode('utf-8'), port=DB_CONFIG["port"].encode('utf-8'), auth_key=DB_CONFIG["key"].encode('utf-8'), db=DB_CONFIG["db"].encode('utf-8'))
 application = Flask(__name__, static_folder='static/build')
 application.config['SECRET_KEY'] = CONFIG["flask"]["key"].encode('utf-8')
+application.config['in_production'] = PRODUCTION
+application.config['fonts'] = WHITELIST_TYPEFACES
 
+# Setup Flask login manager
 login_manager = login.LoginManager()
 login_manager.init_app(application)
 
@@ -44,20 +49,34 @@ def load_user(id):
 	else:
 		logout_user()
 
-###############
-#	WEB VIEWS #
-###############
+
+# Web views
+################################################################################
+
 @application.route('/', methods=['GET'])
 def index():
 	if current_user and current_user.is_authenticated():
+		# Redirect to user page if logged in
 		return redirect("/by/" + current_user.username, code=302)
 	else:
-		return render_template(
-			'index.html',
-			is_start_page = True,
-			fonts = WHITELIST_TYPEFACES,
-			in_production = PRODUCTION
-		)
+		return render_template('index.html', is_start_page = True)
+
+
+@application.route('/by/<username>', methods=['GET'])
+def get_posts_by_username(username = None):
+	users = r.table(TABLE_USERS).filter(
+		(r.row['username'] == username)).run(conn)
+
+	user_owns_page = False
+
+	if current_user and current_user.is_authenticated():
+		user_owns_page = username == current_user.username
+
+	for user in users:
+		return render_template('postsByUser.html', user_owns_page = user_owns_page, page_username = username)
+
+	abort(404)
+
 
 @application.route('/login', methods=['POST'])
 def login():
@@ -76,43 +95,23 @@ def login():
 		login_user(User(user['id'], user['email'], user['username']))
 		return jsonify(user)
 
-@application.route('/by/<username>', methods=['GET'])
-def get_posts_by_username(username = None):
-	users = r.table(TABLE_USERS).filter(
-		(r.row['username'] == username)).run(conn)
-
-	user_owns_page = False
-
-	if current_user and current_user.is_authenticated():
-		user_owns_page = username == current_user.username
-
-	for user in users:
-		return render_template(
-			'postsByUser.html',
-			user_owns_page = user_owns_page,
-      page_username = username,
-			fonts = WHITELIST_TYPEFACES,
-			in_production = PRODUCTION
-		)
-
-	abort(404)
-
+# Logout
 @application.route('/logout', methods=['GET'])
 def logout():
 	logout_user()
 	return redirect(url_for('index'))
 
-###############
-#	API CALLS #
-###############
+
+#	API calls
+################################################################################
+
 @application.route('/api/users', methods=['GET'])
 def api_get_user():
 	username = request.args.get('username')
 
 	users = list(r.table('users').filter({ 'username' : username }).merge(
 		lambda user: {
-			'posts': r.table('posts').get_all(user['username'], index='username')
-			.order_by(r.asc('sortrank')).coerce_to('array')
+			'posts': r.table('posts').get_all(user['username'], index='username').order_by(r.asc('sortrank')).coerce_to('array')
 		}
 	).inner_join(r.table('users_settings'), lambda left, right: left['username'] == right['username']).run(conn))
 
@@ -127,13 +126,6 @@ def api_get_user():
 
 	return jsonify(user['user'])
 
-@application.route('/api/users/email', methods=['GET'])
-def api_get_user_by_email():
-	email = request.args.get('email')
-	users = list(r.table(TABLE_USERS).filter(
-		(r.row['email'] == email)).run(conn))
-
-	return jsonify({ 'user' : users[0] }) if len(users) else jsonify("")
 
 @application.route('/api/users', methods=['POST'])
 def api_create_user():
@@ -150,23 +142,23 @@ def api_create_user():
 		'password' : password,
 		'created' : r.now()}).run(conn)
 
-	#For assertion, lookup user based on generated ID
+	# For assertion, lookup user based on generated ID
 	generated_id = result['generated_keys'][0]
 	user = r.table(TABLE_USERS).get(generated_id).run(conn)
 
-	#User was created, create initial post content and settings
+	# User was created, create initial post content and settings
 	if user:
 		user = User(user['id'], user['email'], user['username'])
 		login_user(user)
 
-		# we store the returned data for assurance, and for using the generated filenames
+		# We store the returned data for assurance, and for using the generated filenames
 		result = {}
 		result['posts'] = []
 		result['settings'] = {}
 
-		# create all posts
+		# Create all posts
 		for post in posts:
-			#create all posts that are paragraphs or headlines
+			# Create all posts that are paragraphs or headlines
 			if post['type'] == 0 or post['type'] == 1:
 				post = r.table(TABLE_POSTS).insert({
 					'content' : post['content'],
@@ -177,7 +169,7 @@ def api_create_user():
 
 				result['posts'].append(post['changes'][0]['new_val'])
 
-			#create all posts that are images
+			# Create all posts that are images
 			elif post['type'] == 2:
 				post = r.table(TABLE_POSTS).insert({
 					'username' : username,
@@ -188,7 +180,7 @@ def api_create_user():
 
 				result['posts'].append(post['changes'][0]['new_val'])
 
-			#create all posts that are YouTube videos
+			# Create all posts that are YouTube videos
 			elif post['type'] == 3:
 				post = r.table(TABLE_POSTS).insert({
 					'username' : username,
@@ -215,6 +207,7 @@ def api_create_user():
 	else:
 		abort(401)
 
+
 @application.route('/api/postText', methods=['POST', 'PUT'])
 @login_required
 def api_post_text():
@@ -235,6 +228,7 @@ def api_post_text():
 
 	return jsonify(result['changes'][0]['new_val'])
 
+
 @application.route('/api/postVideo', methods=['POST', 'PUT'])
 @login_required
 def api_post_video():
@@ -254,6 +248,97 @@ def api_post_video():
 		}).run(conn, return_changes = True);
 
 	return jsonify(result['changes'][0]['new_val'])
+
+
+@application.route('/api/postImage', methods=['POST'])
+@login_required
+def api_post_image():
+	jsonData = request.json
+
+	post = r.table(TABLE_POSTS).insert({
+		'username' : current_user.username,
+		'sortrank' : jsonData['sortrank'],
+		'type' : int(jsonData['type']),
+		'key' : jsonData['filename'],
+		'created' : r.now()}).run(conn, return_changes = True)
+
+	result = post['changes'][0]['new_val']
+	result['template'] = jsonData['template']
+
+	return jsonify(result)
+
+
+@application.route('/api/postrank', methods=['POST'])
+@login_required
+def api_post_rank():
+	jsonData = request.json
+
+	for post in jsonData:
+		r.table(TABLE_POSTS).get(post['id']).update({
+			'sortrank' : post['sortrank']
+		}).run(conn);
+
+	return jsonify("")
+
+
+@application.route('/api/settings', methods=['PUT'])
+@login_required
+def api_update_settings():
+	jsonData = request.json
+	post_text_color = jsonData['posttextcolor']
+	show_boxes = jsonData['showboxes']
+	post_background_color = jsonData['postbackgroundcolor']
+	page_background_color = jsonData['pagebackgroundcolor']
+	typeface_paragraph = jsonData['typefaceparagraph']
+	typeface_headline = jsonData['typefaceheadline']
+
+	if (len(post_text_color) is 7
+	and len(post_background_color) is 7
+	and len(page_background_color) is 7
+	and typeface_paragraph in WHITELIST_TYPEFACES
+	and typeface_headline in WHITELIST_TYPEFACES):
+		result = r.table(TABLE_USERS_SETTINGS).filter(
+			r.row['username'] == current_user.username).update({
+				'typefaceparagraph' : typeface_paragraph,
+				'typefaceheadline' : typeface_headline,
+				'posttextcolor' : post_text_color,
+				'showboxes' : show_boxes,
+				'postbackgroundcolor' : post_background_color,
+				'pagebackgroundcolor' : page_background_color,
+				'created' : r.now()}).run(conn, return_changes = True)
+
+		result = result['changes'][0]['new_val']
+
+		return jsonify(result)
+	else:
+		abort(401)
+
+
+@application.route('/api/settings', methods=['GET'])
+@login_required
+def api_get_settings():
+	settings = list(
+		r.table(TABLE_USERS_SETTINGS).filter(
+		(r.row['username'] == current_user.username))
+		.run(conn))
+
+	return jsonify(settings[0])
+
+
+@application.route('/api/posts', methods=['DELETE'])
+@login_required
+def api_delete_post():
+	jsonData = request.json
+	id = jsonData['id']
+
+	post_to_delete = r.table(TABLE_POSTS).get(id).run(conn);
+
+	if post_to_delete['username'] == current_user.username:
+		post_to_delete = r.table(TABLE_POSTS).get(id).delete().run(conn)
+		return json.dumps(post_to_delete)
+	else:
+		abort(401)
+
 
 @application.route('/api/sign_upload_url', methods=['GET'])
 def sign_s3():
@@ -289,92 +374,10 @@ def sign_s3():
 	# Return the signed request and the anticipated URL back to the browser in JSON format:
 	return Response(content, mimetype='text/plain; charset=x-user-defined')
 
-@application.route('/api/postImage', methods=['POST'])
-@login_required
-def api_post_image():
-	jsonData = request.json
 
-	post = r.table(TABLE_POSTS).insert({
-		'username' : current_user.username,
-		'sortrank' : jsonData['sortrank'],
-		'type' : int(jsonData['type']),
-		'key' : jsonData['filename'],
-		'created' : r.now()}).run(conn, return_changes = True)
+# Status code handlers and error pages
+################################################################################
 
-	result = post['changes'][0]['new_val']
-	result['template'] = jsonData['template']
-
-	return jsonify(result)
-
-@application.route('/api/postrank', methods=['POST'])
-@login_required
-def api_post_rank():
-	jsonData = request.json
-
-	for post in jsonData:
-		r.table(TABLE_POSTS).get(post['id']).update({
-			'sortrank' : post['sortrank']
-		}).run(conn);
-
-	return jsonify("")
-
-@application.route('/api/settings', methods=['PUT'])
-@login_required
-def api_update_settings():
-	jsonData = request.json
-	post_text_color = jsonData['posttextcolor']
-	show_boxes = jsonData['showboxes']
-	post_background_color = jsonData['postbackgroundcolor']
-	page_background_color = jsonData['pagebackgroundcolor']
-	typeface_paragraph = jsonData['typefaceparagraph']
-	typeface_headline = jsonData['typefaceheadline']
-
-	if (len(post_text_color) is 7
-	and len(post_background_color) is 7
-	and len(page_background_color) is 7
-	and typeface_paragraph in WHITELIST_TYPEFACES
-	and typeface_headline in WHITELIST_TYPEFACES):
-		result = r.table(TABLE_USERS_SETTINGS).filter(
-			r.row['username'] == current_user.username).update({
-				'typefaceparagraph' : typeface_paragraph,
-				'typefaceheadline' : typeface_headline,
-				'posttextcolor' : post_text_color,
-				'showboxes' : show_boxes,
-				'postbackgroundcolor' : post_background_color,
-				'pagebackgroundcolor' : page_background_color,
-				'created' : r.now()}).run(conn, return_changes = True)
-
-		result = result['changes'][0]['new_val']
-
-		return jsonify(result)
-	else:
-		abort(401)
-
-@application.route('/api/settings', methods=['GET'])
-@login_required
-def api_get_settings():
-	settings = list(
-		r.table(TABLE_USERS_SETTINGS).filter(
-		(r.row['username'] == current_user.username))
-		.run(conn))
-
-	return jsonify(settings[0])
-
-@application.route('/api/posts', methods=['DELETE'])
-@login_required
-def api_delete_post():
-	jsonData = request.json
-	id = jsonData['id']
-
-	post_to_delete = r.table(TABLE_POSTS).get(id).run(conn);
-
-	if post_to_delete['username'] == current_user.username:
-		post_to_delete = r.table(TABLE_POSTS).get(id).delete().run(conn)
-		return json.dumps(post_to_delete)
-	else:
-		abort(401)
-
-#STATUS CODE HANDLERS AND ERROR PAGES
 @application.errorhandler(404)
 def not_found(error):
 	return render_template('errorPageNotFound.html', in_production = PRODUCTION, fonts = False)
@@ -384,22 +387,10 @@ def unauthorized(error):
 	response = {"error" : "permission denied"}
 	return json.dumps(response)
 
-# UTILS
-@application.context_processor
-def utility_processor():
-	def asset_url_for(file, extension, add_revision=True):
 
-		if PRODUCTION:
-			url = 'https://s3-eu-west-1.amazonaws.com/' + CONFIG["s3"]["bucket"] + '/assets/'
-			if add_revision:
-				return url + file + '.' + REVISION + '.' + extension
-			else:
-				return url + file + '.' + extension
-		else:
-			return '/build/' + file + '.' + extension
-	return dict(asset_url_for=asset_url_for)
+# Utilities
+################################################################################
 
-#NON VIEW METHODS
 def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
@@ -412,5 +403,20 @@ def generate_safe_filename(username, filename):
 	filename = secure_filename(filename)
 	return username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 
+@application.context_processor
+def utility_processor():
+	def asset_url_for(file, extension, add_revision=True):
+		if PRODUCTION:
+			url = 'https://s3-eu-west-1.amazonaws.com/' + CONFIG["s3"]["bucket"] + '/assets/'
+			if add_revision:
+				return url + file + '.' + REVISION + '.' + extension
+			else:
+				return url + file + '.' + extension
+		else:
+			return '/build/' + file + '.' + extension
+	return dict(asset_url_for=asset_url_for)
+
+
+# Start the app
 if __name__ == '__main__':
 	application.run(host = '0.0.0.0', port = 5000, debug = not PRODUCTION)
