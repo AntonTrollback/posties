@@ -16,14 +16,18 @@
     {% endif %}
 
     {% if user_owns_page %}
-      <span class="header-action is-link">{{page_username}}</span>
+      <span class="header-action is-link">{{username}}</span>
     {% endif %}
-
-    {% include 'modules/navigation.html' %}
   </div>
+</div>
 
-  <div id="flash">
-    <a class="close" ng-click="flash.hide()">×</a>
-    <pre>[[flash.message]]</pre>
-  </div>
+{% include 'modules/accountSettings.html' %}
+
+{% if is_start_page or user_owns_page %}
+  {% include 'modules/designSettings.html' %}
+{% endif %}
+
+<div id="flash">
+  <a class="close" ng-click="flash.hide()">×</a>
+  <pre>[[flash.message]]</pre>
 </div>

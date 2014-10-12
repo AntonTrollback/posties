@@ -59,7 +59,11 @@ def index():
 		# Redirect to user page if logged in
 		return redirect("/by/" + current_user.username, code=302)
 	else:
-		return render_template('index.html', is_start_page = True)
+		return render_template(
+			'layout.html',
+			is_start_page = True,
+			angular_controller = "PageIndexCtrl"
+		)
 
 
 @application.route('/by/<username>', methods=['GET'])
@@ -73,7 +77,11 @@ def get_posts_by_username(username = None):
 		user_owns_page = username == current_user.username
 
 	for user in users:
-		return render_template('postsByUser.html', user_owns_page = user_owns_page, page_username = username)
+		return render_template('layout.html',
+			user_owns_page = user_owns_page,
+			username = username,
+			angular_controller = "PagePostsByUserCtrl"
+		)
 
 	abort(404)
 
@@ -380,7 +388,7 @@ def sign_s3():
 
 @application.errorhandler(404)
 def not_found(error):
-	return render_template('errorPageNotFound.html', in_production = PRODUCTION, fonts = False)
+	return redirect("/", code=302)
 
 @application.errorhandler(401)
 def unauthorized(error):

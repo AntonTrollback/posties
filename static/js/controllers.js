@@ -290,7 +290,6 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 	var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
 	$scope.posts = [];
-	$scope.userOwnsPage = $('body').hasClass('userOwnsPage');
 
 	$scope.flash = FlashService.getFlash();
 	$scope.fonts = Fonts.getFonts();

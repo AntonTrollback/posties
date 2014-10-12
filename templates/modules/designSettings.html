@@ -1,3 +1,5 @@
+<div id="closeOverlays" ng-show="settingsService.isOpen" ng-click="settingsService.submitUpdateSettingsAndClose(userSettings)"></div>
+
 <div class="popover is-customize updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
   <div class="popover-arrow">
     {% include 'modules/inlineSvg/popoverArrow.html' %}
