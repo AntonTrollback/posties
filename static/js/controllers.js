@@ -199,37 +199,35 @@ postiesApp.controller('PageIndexCtrl', function(
 
 				for (i = 0; i < response.data.posts.length; i++) {
 					if (response.data.posts[i].type == 2) {
-						var post = response.data.posts[i];
-						var file = $scope.posts[i].file;
-
 						imagesToUpload++;
 
-						var loadingImage = loadImage(file, function(resizedImage) {
-							resizedImage.toBlob(function(blob) {
-								var s3upload = new S3Upload({
-									s3_object_name: post.key,
-									s3_file: blob,
-									onProgress: function(percent, message) {
-										console.log('Uploading images…', percent, message);
-									},
-									onFinishS3Put: function(url) {
-										console.log('Upload completed. Uploaded to: ' + url);
-										uploadedImages++;
+						(function(post, file) {
+							var loadingImage = loadImage(file, function(resizedImage) {
+								resizedImage.toBlob(function(blob) {
+									var s3upload = new S3Upload({
+										s3_object_name: post.key,
+										s3_file: blob,
+										onProgress: function(percent, message) {
+											console.log('Uploading images…', percent, message);
+										},
+										onFinishS3Put: function(url) {
+											console.log('Upload completed. Uploaded to: ' + url);
+											uploadedImages++;
 
-										if (uploadedImages >= imagesToUpload) {
+											if (uploadedImages >= imagesToUpload) {
+												forwardToUserPage();
+											}
+										},
+										onError: function(status) {
 											forwardToUserPage();
 										}
-									},
-									onError: function(status) {
-										forwardToUserPage();
-									}
-								});
-							}, file.type);
-						}, {
-							maxWidth: 600,
-							canvas: true
-						});
-
+									});
+								}, file.type);
+							}, {
+								maxWidth: 600,
+								canvas: true
+							});
+						})(response.data.posts[i], $scope.posts[i].file);
 					}
 				}
 			} else {
