@@ -26,7 +26,7 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 	this.currentSettings = {};
 
 	this.getSettings = function() {
-		if ($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
+		if (AUTHENTICATED) {
 			var promise = $http({
 				url: '/api/settings',
 				method: 'get',
@@ -45,7 +45,7 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 	};
 
 	this.submitUpdateSettings = function(userSettings) {
-		if ($('html').hasClass('pagePostsByUser') && $('body').hasClass('authenticated')) {
+		if (AUTHENTICATED) {
 			if (!angular.equals(this.currentSettings, userSettings)) {
 
 				// Make a deep copy of the settings object, otherwise the equality check will always pass
