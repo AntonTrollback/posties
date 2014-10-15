@@ -48,7 +48,7 @@
 
     <script>
       var AUTHENTICATED = {% if user_owns_page %}true{% else %}false{% endif %};
-      var FONTS = [{% for font in config.fonts %}'{{font}}'{% if not loop.last %}, {% endif %}{% endfor %}];
+      var FONTS = [{% for font in fonts %}'{{font}}'{% if not loop.last %}, {% endif %}{% endfor %}];
     </script>
 
     <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>

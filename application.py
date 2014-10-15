@@ -35,7 +35,6 @@ conn = r.connect(host=DB_CONFIG["host"].encode('utf-8'), port=DB_CONFIG["port"].
 application = Flask(__name__, static_folder='static/build')
 application.config['SECRET_KEY'] = CONFIG["flask"]["key"].encode('utf-8')
 application.config['in_production'] = PRODUCTION
-application.config['fonts'] = WHITELIST_TYPEFACES
 
 # Setup Flask login manager
 login_manager = login.LoginManager()
@@ -62,7 +61,8 @@ def index():
 		return render_template(
 			'layout.html',
 			is_start_page = True,
-			angular_controller = "PageIndexCtrl"
+			angular_controller = "PageIndexCtrl",
+			fonts = WHITELIST_TYPEFACES
 		)
 
 
@@ -80,7 +80,8 @@ def get_posts_by_username(username = None):
 		return render_template('layout.html',
 			user_owns_page = user_owns_page,
 			username = username,
-			angular_controller = "PagePostsByUserCtrl"
+			angular_controller = "PagePostsByUserCtrl",
+			fonts = WHITELIST_TYPEFACES
 		)
 
 	abort(404)

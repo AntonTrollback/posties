@@ -131,7 +131,7 @@
         <div class="palette">
           <button class="palette-item" ng-repeat="color in settingsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="userSettings.pagebackgroundcolor = color"></button>
         </div>
-            <input class="minicolors" maxlength="7" type="text" ng-model="userSettings.pagebackgroundcolor">
+        <input class="minicolors" maxlength="7" type="text" ng-model="userSettings.pagebackgroundcolor">
         <input id="resultBackground" class="minicolors-result" type="hidden">
       </div>
     </div>
