@@ -24,8 +24,5 @@
     "blueimp-canvas-to-blob": "~2.1.1",
     "medium-editor": "~1.9.4",
     "angulartics": "~0.17.0"
-  },
-  "resolutions": {
-    "medium-editor": "~1.9.4"
   }
 }
