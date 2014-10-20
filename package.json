@@ -5,6 +5,7 @@
   "homepage": "http://post.es",
   "repository": "https://github.com/sunmer/posties",
   "scripts": {
+    "setup": "sudo npm install; sudo npm install bower -g; sudo npm install grunt -g; sudo npm install grunt-cli -g; bower install; grunt build",
     "build": "grunt build",
     "deploy": "grunt deploy; git add .; git commit -m 'Temp: prepair for prod'; git aws.push; git reset HEAD~1; grunt setDev",
     "deploy-debug": "grunt deploy-debug; git add .; git commit -m 'Temp: prepair for prod'; git aws.push; git reset HEAD~1; grunt setDev",

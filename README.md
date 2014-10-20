@@ -2,10 +2,10 @@
 - Setup the python app (todo: add steps)
 - Setup the EB/AWS Tools (see below)
 - Install [node.js](http://nodejs.org/)
-- Run `sudo npm install` and `sudo bower install` in repo dir
-- Build the front end code (`static/build`) by running: `npm run build`
+- In repo dir, run `npm run setup`
 
 ## Develop
+- Build front-end files: `npm run build`
 - Rebuild when files change: `npm run watch`
 
 ## Deploy
@@ -17,11 +17,11 @@ The `npm run deploy` command triggers a chain of CLI commands. In short:
  2. Minify and uglify CSS and Javascript
  3. Upload the build folder to Amazon S3
  4. Set the environment varable in `config.json` to `prod`
- 5. Add a revision number `config.json`
- 6. Commit the changes to `config.json`
+ 5. Add revision number to `config.json`
+ 6. Git commit the `config.json` changes
  7. Push to AWS
- 8. Remove the commit that just got created
- 9. Empty the revision number and set the environment varable to `dev`, in `config.json`
+ 8. Remove the git commit that just got created
+ 9. Revert `config.json` (remove revision number and set the environment varable to `dev`)
 
 ## Setting up EB/AWS Tools on your computer
 - Download AWSDevTools from Amazon
