@@ -1,24 +1,22 @@
-<div class="clearfix">
-  <div class="header">
+<div class="header">
 
-    <button class="header-action" ng-class="showNavigation ? 'is-active' : ''" ng-click="showNavigation = !showNavigation">
-      <span analytics-on="click" analytics-event="Toggle view" analytics-category="Account settings">
-        {% include 'modules/inlineSvg/logo.html' %}
+  <button class="header-action" ng-class="showNavigation ? 'is-active' : ''" ng-click="showNavigation = !showNavigation">
+    <span analytics-on="click" analytics-event="Toggle view" analytics-category="Account settings">
+      {% include 'modules/inlineSvg/logo.html' %}
+    </span>
+  </button>
+
+  {% if is_start_page or user_owns_page %}
+    <button class="header-action" ng-class="settingsService.isOpen ? 'is-active' : ''" ng-click="settingsService.open(); showNavigation = false">
+      <span analytics-on="click" analytics-event="Show view" analytics-category="Website design settings">
+        {% include 'modules/inlineSvg/sliders.html' %}
       </span>
     </button>
+  {% endif %}
 
-    {% if is_start_page or user_owns_page %}
-      <button class="header-action" ng-class="settingsService.isOpen ? 'is-active' : ''" ng-click="settingsService.open(); showNavigation = false">
-        <span analytics-on="click" analytics-event="Show view" analytics-category="Website design settings">
-          {% include 'modules/inlineSvg/sliders.html' %}
-        </span>
-      </button>
-    {% endif %}
-
-    {% if user_owns_page %}
-      <span class="header-action is-link">{{username}}</span>
-    {% endif %}
-  </div>
+  {% if user_owns_page %}
+    <span class="header-action is-link">{{username}}</span>
+  {% endif %}
 </div>
 
 {% include 'modules/accountSettings.html' %}

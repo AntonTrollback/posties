@@ -21,6 +21,12 @@
   }
 }
 
+@media (--xl-viewport) {
+  .popover {
+    position: fixed;
+  }
+}
+
 .popover-arrow {
   content: "";
   position: absolute;

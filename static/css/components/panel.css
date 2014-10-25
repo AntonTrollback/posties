@@ -1,5 +1,7 @@
 .panel {
   display: none;
+  overflow: hidden;
+  width: 100%;
 }
 
 .panel.is-active {
