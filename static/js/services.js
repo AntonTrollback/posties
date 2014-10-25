@@ -109,7 +109,7 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 	};
 
 	this.getBackgroundPalette = function() {
-		return ['#e5fff5', '#bbf8ff', '#405559', '#512d59', '#ff033e', '#ffffff', '#fbff05', '#ff8f8f'];
+		return ['#f5f5f5', '#ffffff', '#000000', '#bbf8ff', '#405559', '#512d59', '#ff033e', '#ff8f8f'];
 	};
 
 	this.getFontPalette = function() {
