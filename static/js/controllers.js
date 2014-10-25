@@ -200,7 +200,7 @@ postiesApp.controller('PageIndexCtrl', function(
 				for (i = 0; i < response.data.posts.length; i++) {
 					if (response.data.posts[i].type == 2) {
 						imagesToUpload++;
-						
+
 						(function(post, file) {
 							var loadingImage = loadImage(file, function(resizedImage) {
 								resizedImage.toBlob(function(blob) {
@@ -225,7 +225,7 @@ postiesApp.controller('PageIndexCtrl', function(
 								canvas: true
 							});
 						})(response.data.posts[i], $scope.posts[i].file);
-						
+
 					}
 				}
 			} else {
@@ -382,7 +382,7 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 
 		postTextContent = Autolinker.link(postTextContent, {
 			truncate: false,
-			stripPrefix: false
+			stripPrefix: true
 		});
 
 		if (postTextContent.length) {
