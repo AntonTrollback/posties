@@ -16,7 +16,7 @@
             [[userSettings.typefaceparagraph]]
           </span>
         </div>
-        <div class="panel-item-chevron"></div>
+        <div class="panel-item-chevron">{% include 'modules/inlineSvg/arrowRight.html' %}</div>
       </a>
 
       <a class="panel-item" data-go-to-panel="panelHeadlineFont" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Headline font">
@@ -26,12 +26,12 @@
             [[userSettings.typefaceheadline]]
           </span>
         </div>
-        <div class="panel-item-chevron"></div>
+        <div class="panel-item-chevron">{% include 'modules/inlineSvg/arrowRight.html' %}</div>
       </a>
 
       <!-- Inline show boxes -->
 
-      <label class="panel-item" for="showBoxes" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Toggle boxes">
+      <label class="panel-item toggle-parent" for="showBoxes" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Toggle boxes">
         <span class="panel-item-text">Use boxes</span>
         <div class="panel-item-preview">
           <div class="panel-item-toggle toggle">
@@ -46,19 +46,19 @@
       <a class="panel-item" data-go-to-panel="panelBoxColor" ng-class="userSettings.showboxes ? '' : 'is-disabled'" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Box color">
         <span class="panel-item-text">Box color</span>
         <span class="panel-item-preview" style="background-color: [[userSettings.postbackgroundcolor]]"></span>
-        <div class="panel-item-chevron is-transparent"></div>
+        <div class="panel-item-chevron is-transparent">{% include 'modules/inlineSvg/arrowRight.html' %}</div>
       </a>
 
       <a class="panel-item" data-go-to-panel="panelTextColor" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Text color">
         <span class="panel-item-text">Text color</span>
         <span class="panel-item-preview" style="background-color: [[userSettings.posttextcolor]]"></span>
-        <div class="panel-item-chevron is-transparent"></div>
+        <div class="panel-item-chevron is-transparent">{% include 'modules/inlineSvg/arrowRight.html' %}</div>
       </a>
 
       <a class="panel-item" data-go-to-panel="panelBackground" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Background color">
         <span class="panel-item-text">Background</span>
         <span class="panel-item-preview" style="background-color: [[userSettings.pagebackgroundcolor]]"></span>
-        <div class="panel-item-chevron is-transparent"></div>
+        <div class="panel-item-chevron is-transparent">{% include 'modules/inlineSvg/arrowRight.html' %}</div>
       </a>
 
       <!-- Reset and randomize -->
@@ -73,7 +73,9 @@
 
     <div class="panel" id="panelTextFont">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button>
+        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+          {% include 'modules/inlineSvg/arrowLeft.html' %} Settings
+        </button>
       </div>
 
       <div class="popover-scroll">
@@ -89,7 +91,9 @@
 
     <div class="panel" id="panelHeadlineFont">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button>
+        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+          {% include 'modules/inlineSvg/arrowLeft.html' %} Settings
+        </button>
       </div>
 
       <div class="popover-scroll">
@@ -104,7 +108,11 @@
     </div>
 
     <div class="panel" id="panelBoxColor">
-      <div class="popover-header"><button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button></div>
+      <div class="popover-header">
+        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+          {% include 'modules/inlineSvg/arrowLeft.html' %} Settings
+        </button>
+      </div>
       <div class="popover-body">
         <div class="palette">
           <button class="palette-item" ng-repeat="color in settingsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="userSettings.postbackgroundcolor = color"></button>
@@ -115,7 +123,11 @@
     </div>
 
     <div class="panel" id="panelTextColor">
-      <div class="popover-header"><button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button></div>
+      <div class="popover-header">
+        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+          {% include 'modules/inlineSvg/arrowLeft.html' %} Settings
+        </button>
+      </div>
       <div class="popover-body">
         <div class="palette">
           <button class="palette-item" ng-repeat="color in settingsService.getFontPalette()" ng-style="{ 'background': color }" ng-click="userSettings.posttextcolor = color"></button>
@@ -126,7 +138,11 @@
     </div>
 
     <div class="panel" id="panelBackground">
-      <div class="popover-header"><button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">Back</button></div>
+      <div class="popover-header">
+        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+          {% include 'modules/inlineSvg/arrowLeft.html' %} Settings
+        </button>
+      </div>
       <div class="popover-body">
         <div class="palette">
           <button class="palette-item" ng-repeat="color in settingsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="userSettings.pagebackgroundcolor = color"></button>

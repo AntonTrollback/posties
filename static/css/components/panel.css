@@ -22,7 +22,7 @@
   border: solid var(--color-divider);
   border-width: 0 0 1px;
   font: inherit;
-  color: inherit;
+  color: var(--color-text-light);
   text-align: left;
   text-decoration: none;
   user-select: none;
@@ -47,6 +47,12 @@
 .panel-item:active {
   color: var(--color-text-dark);
   text-decoration: none;
+}
+
+.panel-item:hover .panel-item-chevron path,
+.panel-item:focus .panel-item-chevron path,
+.panel-item:active .panel-item-chevron path {
+  stroke: var(--color-element-dark);
 }
 
 .panel-item:hover.is-underlined,
@@ -88,17 +94,17 @@
   background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgb(255,255,255) 40%);
 }
 
-.panel-item-chevron:after {
-  content: "";
+.panel-item-chevron svg {
   position: absolute;
   right: 0.85em;
   top: 50%;
   transform: translateY(-50%);
   display: block;
-  width: 9px;
-  height: 13px;
-  background: url('../img/chevron.png') no-repeat;
-  background-size: 9px 13px;
+  width: 17px;
+}
+
+.panel-item-chevron path {
+  stroke: var(--color-element-light);
 }
 
 /* Remove the white background */
@@ -125,6 +131,7 @@
   font-size: 125%;
   white-space: nowrap;
   word-wrap: normal;
+  color: var(--color-text-light);
 }
 
 .panel-item-text.is-padded {

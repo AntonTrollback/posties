@@ -32,7 +32,7 @@
         </div>
         <a class="panel-item is-underlined is-first" data-go-to-panel="panelLogin">
           <span class="panel-item-text is-padded">Edit this website</span>
-          <div class="panel-item-chevron"></div>
+          <div class="panel-item-chevron">{% include 'modules/inlineSvg/arrowRight.html' %}</div>
         </a>
       {% endif %}
 
@@ -44,7 +44,9 @@
     {% if not is_start_page and not user_owns_page %}
       <div class="panel" id="panelLogin">
         <div class="popover-header">
-          <button class="button" data-go-to-panel="panelPrimaryNavigation">Back</button>
+          <button class="button" data-go-to-panel="panelPrimaryNavigation">
+            {% include 'modules/inlineSvg/arrowLeft.html' %} Back
+          </button>
         </div>
 
         <div class="popover-body">
