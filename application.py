@@ -132,7 +132,8 @@ def api_get_user():
 	user['user'] = user.pop('left')
 	user['user']['settings'] = user.pop('right')
 	user['user']['is_authenticated'] = current_user.is_authenticated()
-
+	user['user'].pop('password', None)
+	
 	return jsonify(user['user'])
 
 
