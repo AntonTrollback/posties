@@ -8,10 +8,7 @@ from flask import Response, render_template, session, abort, redirect, request, 
 from flask.ext import login
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
-from boto.s3.connection import S3Connection
-from boto.s3.key import Key
 from hashlib import sha1
-
 from user import User
 
 # Get environment status and revision numbers
@@ -369,8 +366,6 @@ def sign_s3():
 		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
 		'url': url
 	})
-
-	print content
 
 	# Return the signed request and the anticipated URL back to the browser in JSON format:
 	return Response(content, mimetype='text/plain; charset=x-user-defined')
