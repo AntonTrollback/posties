@@ -28,11 +28,46 @@ $(function() {
     theme: 'default'
   });
 
-  // Selected state for items in font lists
-  $('#panelTextFont .panel-item, #panelHeadlineFont .panel-item').on('click', function(e) {
-    $(this).siblings().removeClass('is-active');
-    $(this).addClass('is-active');
+  $('#panelTextFont, #panelHeadlineFont').each(function() {
+    var $panel = $(this);
+    var $items = $panel.find('.panel-item');
+
+    $(window).on('keydown', function(e) {
+      if ($panel.is(':hidden')) {
+        return;
+      }
+
+      e.preventDefault();
+
+      var $selected = $panel.find('.panel-item-icon:visible').closest('.panel-item');
+
+      $items.removeClass('is-active');
+
+      // Key down
+      if (e.which === 40) {
+        var $next = $selected.next();
+        if ($next.length > 0) {
+          $selected = $next.trigger('click');
+        } else {
+          $selected = $items.eq(0).trigger('click');
+        }
+        return;
+      }
+
+      // Key up
+      if (e.which === 38) {
+        var $prev = $selected.prev();
+        if ($prev.length > 0) {
+          $selected = $prev.trigger('click');
+        } else {
+          $selected = $items.last().trigger('click');
+        }
+      }
+    });
   });
+
+
+
 
   $('.palette-item').on('click', function(e) {
     $(this).closest('.popover-body').find('.minicolors input').trigger('keyup');
