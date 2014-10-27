@@ -68,16 +68,12 @@ def index():
 
 @application.route('/by/<username>', methods=['GET'])
 def get_posts_by_username(username = None):
-	users = r.table(TABLE_USERS).filter(
-		(r.row['username'] == username)).run(conn)
-
 	user_owns_page = False
 
 	if current_user and current_user.is_authenticated():
 		user_owns_page = username == current_user.username
 
-	for user in users:
-		return render_template('layout.html',
+	return render_template('layout.html',
 			user_owns_page = user_owns_page,
 			username = username,
 			angular_controller = "PagePostsByUserCtrl",
@@ -93,9 +89,7 @@ def login():
 	username = jsonData['username'].lower()
 	password = jsonData['password']
 
-	users = list(r.table(TABLE_USERS).filter(
-		(r.row['username'] == username) &
-		(r.row['password'] == password)).run(conn))
+	users = list(r.table(TABLE_USERS).filter(({'username' : username }) and ({'password' : password })).run(conn))
 
 	if not len(users):
 		return jsonify({})
@@ -118,23 +112,23 @@ def logout():
 def api_get_user():
 	username = request.args.get('username')
 
-	users = list(r.table('users').filter({ 'username' : username }).merge(
-		lambda user: {
-			'posts': r.table('posts').get_all(user['username'], index='username').order_by(r.asc('sortrank')).coerce_to('array')
-		}
-	).inner_join(r.table('users_settings'), lambda left, right: left['username'] == right['username']).run(conn))
+	users = list(r.table(TABLE_USERS).filter({ 'username' : username }).
+		eq_join('username', r.table(TABLE_USERS_SETTINGS), index='username').merge(
+		lambda user: { 
+    		'posts': r.table(TABLE_POSTS).get_all(username, index='username').coerce_to('array') 
+    	}).run(conn))
 
 	if not len(users):
 		return jsonify({})
 	else:
 		user = users[0]
 
+	user['settings'] = user.pop('right')
 	user['user'] = user.pop('left')
-	user['user']['settings'] = user.pop('right')
 	user['user']['is_authenticated'] = current_user.is_authenticated()
-	user['user'].pop('password', None)
+	user.pop('password', None)
 	
-	return jsonify(user['user'])
+	return jsonify(user)
 
 
 @application.route('/api/users', methods=['POST'])
@@ -308,7 +302,7 @@ def api_update_settings():
 	and typeface_paragraph in WHITELIST_TYPEFACES
 	and typeface_headline in WHITELIST_TYPEFACES):
 		result = r.table(TABLE_USERS_SETTINGS).filter(
-			r.row['username'] == current_user.username).update({
+			{'username' : current_user.username }).update({
 				'typefaceparagraph' : typeface_paragraph,
 				'typefaceheadline' : typeface_headline,
 				'posttextcolor' : post_text_color,
@@ -327,10 +321,7 @@ def api_update_settings():
 @application.route('/api/settings', methods=['GET'])
 @login_required
 def api_get_settings():
-	settings = list(
-		r.table(TABLE_USERS_SETTINGS).filter(
-		(r.row['username'] == current_user.username))
-		.run(conn))
+	settings = list(r.table(TABLE_USERS_SETTINGS).filter({ 'username' : current_user.username}).run(conn))
 
 	return jsonify(settings[0])
 
