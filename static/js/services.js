@@ -86,12 +86,12 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 		return {
 			created: new Date(),
 			id: 0,
-			pagebackgroundcolor: getRandomHex(),
-			postbackgroundcolor: getRandomHex(),
-			posttextcolor: getRandomHex(),
+			typefaceheadline: getRandomTypeface(),
+			typefaceparagraph: getRandomTypeface(),
 			showboxes: Math.random() < 0.5,
-			typefaceheadline: setRandomTypeface('#panelHeadlineFont'),
-			typefaceparagraph: setRandomTypeface('#panelTextFont')
+			postbackgroundcolor: getRandomHex(),
+			pagebackgroundcolor: getRandomHex(),
+			posttextcolor: getRandomHex()
 		};
 	};
 
@@ -122,11 +122,8 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 		})(Math, '0123456789ABCDEF', 4);
 	}
 
-	function setRandomTypeface(id) {
-		var $options = $(id).find('[type="radio"]');
-		random = ~~(Math.random() * $options.length);
-		$options.eq(random).prop('checked', true).closest('.panel-item').click();
-		return $options.eq(random).val();
+	function getRandomTypeface() {
+		return fonts.fontList[Math.floor(Math.random() * fonts.fontList.length)];
 	}
 });
 
