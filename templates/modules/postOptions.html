@@ -1,11 +1,11 @@
 <div class="post-option">
   <button class="post-option-action is-up" ng-click="movePost($index, $index - 1)" title="move up" tabindex="-1">
-    {% include 'modules/inlineSvg/arrowUp.html' %}
+    <svg role="img"><use xlink:href="#arrow-up"></use></svg>
   </button>
   <button class="post-option-action is-down" ng-click="movePost($index, $index + 1)" title="move down" tabindex="-1">
-    {% include 'modules/inlineSvg/arrowDown.html' %}
+    <svg role="img"><use xlink:href="#arrow-down"></use></svg>
   </button>
   <button class="post-option-action is-delete" ng-click="deletePost($index, post)" title="delete" tabindex="-1">
-    {% include 'modules/inlineSvg/cross.html' %}
+    <svg role="img"><use xlink:href="#cross"></use></svg>
   </button>
 </div>

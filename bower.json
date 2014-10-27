@@ -23,6 +23,7 @@
     "blueimp-load-image": "~1.13.0",
     "blueimp-canvas-to-blob": "~2.1.1",
     "medium-editor": "~1.9.4",
-    "angulartics": "~0.17.0"
+    "angulartics": "~0.17.0",
+    "svg4everybody": "*"
   }
 }

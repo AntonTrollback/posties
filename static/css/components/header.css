@@ -30,8 +30,14 @@
   background-repeat: no-repeat;
   font-size: 14px;
   outline: 0;
+  color: var(--color-element-light);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
+}
+
+.header-action.is-active,
+.header-action:hover {
+  color: var(--color-element-dark);
 }
 
 @media (--md-viewport) {
@@ -40,18 +46,10 @@
   }
 }
 
-.header-action path:first-child {
-  fill: var(--color-element-light);
-}
-
-.header-action.is-active path:first-child,
-.header-action:hover path:first-child {
-  fill: var(--color-element-dark);
-}
-
 /* User link */
 
 .header-action.is-link {
   width: auto;
   cursor: default;
+  color: inherit;
 }

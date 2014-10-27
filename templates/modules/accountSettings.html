@@ -1,7 +1,5 @@
 <nav class="popover is-nav" ng-show="showNavigation" ng-cloak>
-  <div class="popover-arrow">
-    {% include 'modules/inlineSvg/popoverArrow.html' %}
-  </div>
+  <div class="popover-arrow"><svg role="img"><use xlink:href="#popover-arrow"></use></svg></div>
   <div class="panels">
     <div class="panel is-active" id="panelPrimaryNavigation">
       {% if is_start_page %}
@@ -32,7 +30,7 @@
         </div>
         <a class="panel-item is-underlined is-first" data-go-to-panel="panelLogin">
           <span class="panel-item-text is-padded">Edit this website</span>
-          <div class="panel-item-chevron">{% include 'modules/inlineSvg/arrowRight.html' %}</div>
+          <div class="panel-item-chevron"><svg role="img"><use xlink:href="#arrow-right"></use></svg></div>
         </a>
       {% endif %}
 
@@ -45,7 +43,7 @@
       <div class="panel" id="panelLogin">
         <div class="popover-header">
           <button class="button" data-go-to-panel="panelPrimaryNavigation">
-            {% include 'modules/inlineSvg/arrowLeft.html' %} Back
+            <svg role="img"><use xlink:href="#arrow-left"></use></svg> Back
           </button>
         </div>
 

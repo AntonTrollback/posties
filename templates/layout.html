@@ -46,6 +46,8 @@
       {% include 'modules/jsTemplates/postVideo.html' %}
     {% endif %}
 
+    {% include 'modules/svgSprite.html' %}
+
     <script>
       var AUTHENTICATED = {% if user_owns_page %}true{% else %}false{% endif %};
       var FONTS = [{% for font in fonts %}'{{font}}'{% if not loop.last %}, {% endif %}{% endfor %}];

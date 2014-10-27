@@ -34,10 +34,7 @@
   width: 29px;
   height: 14px;
   right: calc(50% - 14px);
-}
-
-.popover-arrow path {
-  fill: #fff;
+  color: #fff;
 }
 
 .popover-header {

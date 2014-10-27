@@ -274,6 +274,8 @@
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.14);
   border: 1px solid rgba(0, 0, 0, 0.1);
   font-family: var(--base-font-family);
+  user-drag: none;
+  user-select: none;
 }
 
 .medium-editor-toolbar-anchor-preview-inner {
@@ -302,21 +304,16 @@
   border-right: none;
 }
 
+.medium-editor-action {
+  color: var(--color-element-dark);
+}
+
 .medium-editor-action svg {
   height: 16px;
   width: auto;
   max-width: 32px;
   display: block;
   margin: 0 auto;
-}
-
-.medium-editor-toolbar .medium-editor-button-active path {
-  fill: var(--color-element-dark);
-}
-
-.medium-editor-toolbar .medium-editor-button-active.medium-editor-button-last path {
-  fill: #fff;
-  stroke: var(--color-element-dark);
 }
 
 .medium-editor-toolbar-form-anchor {

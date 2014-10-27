@@ -50,6 +50,8 @@ module.exports = function(grunt) {
           'bower_components/medium-editor/dist/js/medium-editor.js',
           'bower_components/blueimp-load-image/js/load-image.all.min.js',
           'bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js',
+          'bower_components/svg4everybody/svg4everybody.js',
+
           'static/js/s3upload.js',
           'static/js/util.js',
           'static/js/directives.js',
