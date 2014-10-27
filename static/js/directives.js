@@ -66,9 +66,6 @@ $(function() {
     });
   });
 
-
-
-
   $('.palette-item').on('click', function(e) {
     $(this).closest('.popover-body').find('.minicolors input').trigger('keyup');
   });
