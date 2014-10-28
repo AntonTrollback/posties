@@ -150,6 +150,7 @@ header div.menu a {
   left: 0;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
+  z-index: 5;
 }
 
 /*** ICONS ***/
