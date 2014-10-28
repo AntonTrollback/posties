@@ -53,6 +53,18 @@
       var FONTS = [{% for font in fonts %}'{{font}}'{% if not loop.last %}, {% endif %}{% endfor %}];
     </script>
 
+    <script>
+    // Force redraw of svg because of problem in safari
+    document.addEventListener('DOMContentLoaded', function(){
+      var elms = document.getElementsByTagName('use');
+      Array.prototype.forEach.call(elms, function(el, i){
+        var href = el.getAttribute('xlink:href');
+        console.log(href)
+        el.setAttribute('xlink:href', href);
+      });
+    });
+    </script>
+
     <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
     <script src="{{ asset_url_for('posties', 'js') }}"></script>
 

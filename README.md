@@ -13,7 +13,7 @@
 
 ### How the deploy script works
 The `npm run deploy` command triggers a chain of CLI commands. In short:
- 1. Build the font end folder
+ 1. Build the font-end folder
  2. Minify and uglify CSS and Javascript
  3. Upload the build folder to Amazon S3
  4. Set the environment varable in `config.json` to `prod`
