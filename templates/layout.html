@@ -54,12 +54,11 @@
     </script>
 
     <script>
-    // Force redraw of svg because of problem in safari
+    // Trigger svg redraw (safari issue)
     document.addEventListener('DOMContentLoaded', function(){
       var elms = document.getElementsByTagName('use');
       Array.prototype.forEach.call(elms, function(el, i){
         var href = el.getAttribute('xlink:href');
-        console.log(href)
         el.setAttribute('xlink:href', href);
       });
     });
