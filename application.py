@@ -86,7 +86,7 @@ def login():
 	username = jsonData['username'].lower()
 	password = jsonData['password']
 
-	users = list(r.table(TABLE_USERS).filter(({'username' : username }) and ({'password' : password })).run(conn))
+	users = list(r.table(TABLE_USERS).filter({'username' : username,  'password' : password }).run(conn))
 
 	if not len(users):
 		return jsonify({})
