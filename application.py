@@ -111,8 +111,8 @@ def api_get_user():
 
 	users = list(r.table(TABLE_USERS).filter({ 'username' : username }).
 		eq_join('username', r.table(TABLE_USERS_SETTINGS), index='username').merge(
-		lambda user: { 
-    		'posts': r.table(TABLE_POSTS).get_all(username, index='username').coerce_to('array') 
+		lambda user: {
+    		'posts': r.table(TABLE_POSTS).get_all(username, index='username').order_by(r.asc('sortrank')).coerce_to('array')
     	}).run(conn))
 
 	if not len(users):
@@ -124,7 +124,7 @@ def api_get_user():
 	user['user'] = user.pop('left')
 	user['user']['is_authenticated'] = current_user.is_authenticated()
 	user.pop('password', None)
-	
+
 	return jsonify(user)
 
 
