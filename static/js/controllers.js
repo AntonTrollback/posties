@@ -1,5 +1,5 @@
 postiesApp.controller('PageIndexCtrl', function(
-	$scope, $http, $timeout, $upload, $sanitize, $analytics, config,
+	$scope, $http, $timeout, $sanitize, $analytics, config,
 	SettingsService, AuthService, FlashService, Fonts) {
 
 	$scope.posts = [];
@@ -43,43 +43,54 @@ postiesApp.controller('PageIndexCtrl', function(
 		$scope.showPostTypes = false;
 	};
 
-	$scope.savePostImage = function($files) {
-		var imageType = /image.*/;
-
-		for (var i = 0; i < $files.length; i++) {
-			var file = $files[i];
-
-			if (file.type.match(imageType)) {
-				var imagePost = {
-					type: 2,
-					sortrank: $scope.posts.length,
-					template: 'postImage.html',
-					file: file,
-					isUploaded: false,
-					uploadProgress: 0
-				};
-
-				$scope.posts.push(imagePost);
-
-				var reader = new FileReader();
-				reader.onprogress = function(e) {
-					if (e.lengthComputable) {
-						imagePost.uploadProgress = event.total;
-					}
-				};
-
-				reader.onload = function(e) {
-					$scope.$apply(function() {
-						imagePost.isUploaded = true;
-						imagePost.key = reader.result;
-						$scope.userHasUploadedImage = true;
-						$scope.showPostTypes = false;
-					});
-				};
-
-				reader.readAsDataURL(file);
-			}
+	$scope.savePostImage = function($event, $files) {
+		// Validate image
+		if (!$files[0].type.match(/image.*/)) {
+			alert("Not sure that's an image")
+			return;
 		}
+
+		// Hide add content buttons
+		$scope.$apply(function() {
+			$scope.showPostTypes = false;
+		});
+
+		// Setup post
+		var jsonPost = {
+			type: 2,
+			sortrank: $scope.posts.length,
+			isUploaded: false,
+			template: 'postImage.html',
+			uploadProgress: 0
+		};
+
+		$scope.posts.push(jsonPost);
+
+		// Upload to filepicker
+		filepicker.store(
+			$event.target,
+			{
+				mimetypes: ['image/*'],
+				location: 'S3',
+				path: '/images/',
+				access: 'public',
+			},
+			function(blob){
+				$scope.$apply(function() {
+					jsonPost.key = blob.url;
+					jsonPost.isUploaded = true;
+				});
+			},
+			function(FPError) {
+				console.log(FPError.toString());
+			},
+			function(progress) {
+				console.log('Uploading:' + progress + '%');
+				$scope.$apply(function() {
+					jsonPost.uploadProgress = progress + '%';
+				});
+			}
+		);
 	};
 
 	$scope.savePostVideo = function($event, post) {
@@ -191,54 +202,9 @@ postiesApp.controller('PageIndexCtrl', function(
 			data: jsonPost,
 			headers: config.headerJSON
 		}).then(function(response) {
-			if ($scope.userHasUploadedImage) {
-				$scope.formCreateUser.loadingText = 'Uploading images…';
-
-				var imagesToUpload = 0;
-				var uploadedImages = 0;
-
-				for (i = 0; i < response.data.posts.length; i++) {
-					if (response.data.posts[i].type == 2) {
-						imagesToUpload++;
-
-						(function(post, file) {
-							var loadingImage = loadImage(file, function(resizedImage) {
-								resizedImage.toBlob(function(blob) {
-									var s3upload = new S3Upload({
-										s3_object_name: post.key,
-										s3_file: blob,
-										onProgress: function(percent) {},
-										onFinishS3Put: function(url) {
-											uploadedImages++;
-
-											if(uploadedImages >= imagesToUpload) {
-												forwardToUserPage();
-											}
-										},
-										onError: function(status) {
-											//forwardToUserPage();
-										}
-									});
-								}, file.type);
-							}, {
-								maxWidth: 600,
-								canvas: true
-							});
-						})(response.data.posts[i], $scope.posts[i].file);
-
-					}
-				}
-			} else {
-				forwardToUserPage();
-			}
-		}, function(response) {
-			console.log(response);
-		});
-
-		function forwardToUserPage() {
 			localStorage.setItem(config.keySettings + 'Welcome', true);
 			window.location = "/by/" + $scope.user.username.toLowerCase();
-		}
+		});
 	};
 
 	$scope.submitLogin = function() {
@@ -279,7 +245,7 @@ postiesApp.controller('PageIndexCtrl', function(
 });
 
 postiesApp.controller('PagePostsByUserCtrl', function(
-	$scope, $http, $timeout, $upload, $sanitize, $filter, $analytics, config,
+	$scope, $http, $timeout, $sanitize, $filter, $analytics, config,
 	Fonts, AuthService, UserService, FlashService, SettingsService) {
 
 	$scope.settingsService = SettingsService;
@@ -323,7 +289,7 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 			} else if (post.type == 2) {
 				post.template = 'postImage.html';
 				post.isUploaded = true;
-				post.key = config.S3URL + post.key;
+				post.key = post.key;
 			} else if (post.type == 3) {
 				post.template = 'postVideo.html';
 				post.isValidVideo = true;
@@ -404,70 +370,77 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 		}
 	};
 
-	$scope.savePostImage = function($files) {
-		for (var i = 0; i < $files.length; i++) {
-			var file = $files[i];
+	$scope.savePostImageX = function($event, $files) {
+		console.log($event)
 
-			var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-				var r = Math.random() * 16 | 0,
-					v = c == 'x' ? r : (r & 0x3 | 0x8);
-				return v.toString(16);
-			});
+		if (!$files[0].type.match(/image.*/)) {
+			alert("Not sure that's an image")
+			return;
+		}
 
-			var filename = guid + "." + file.name.split('.').pop();
+		$scope.$apply(function() {
+			$scope.showPostTypes = false;
+		});
 
-			var jsonPost = {
-				type: 2,
-				sortrank: $scope.posts.length,
-				filename: filename,
-				isUploaded: false,
-				template: 'postImage.html'
-			};
+		var jsonPost = {
+			type: 2,
+			sortrank: $scope.posts.length,
+			isUploaded: false,
+			template: 'postImage.html',
+			uploadProgress: 0
+		};
 
-			$http({
-				url: '/api/postImage',
-				method: 'post',
-				data: jsonPost,
-				headers: config.headerJSON
-			}).then(function(response) {
-				var jsonPost = response.data;
-				jsonPost.file = file;
+		$scope.posts.push(jsonPost);
 
-				var loadingImage = loadImage(file, function(resizedImage) {
-						resizedImage.toBlob(function(blob) {
-							$scope.posts.push(jsonPost);
-							var s3upload = new S3Upload({
-								s3_object_name: filename,
-								s3_file: blob,
-								onProgress: function(percent, message) {
-									$scope.$apply(function() {
-										jsonPost.uploadProgress = percent;
-									});
-								},
-								onFinishS3Put: function(url) {
-									jsonPost.key = config.S3URL + jsonPost.key;
-									jsonPost.isUploaded = true;
+		// Upload to filepicker
+		console.log('lets do this')
+		filepicker.store(
+			$event.target,
+			{
+				mimetype: 'image/*',
+				location: 'S3',
+				path: '/images/',
+				access: 'public',
+			},
+			function(blob){
+				console.log("Store successful:");
+				console.log(blob)
 
-									$scope.$apply(function() {
-										$scope.showPostTypes = false;
-									});
-								},
-								onError: function(status) {
-									console.log('Upload error: ' + status);
-								}
-							});
-
-						}, file.type);
+				// Fetch converted image
+				filepicker.convert(
+					blob,
+					{
+						width: 740,
+						fit: 'max',
+						quality: 90,
+						rotate: 'exif'
 					}, {
-						maxWidth: 600,
-						canvas: true
+						mimetype: 'image/*',
+						location: 'S3',
+						path: '/images/',
+						access: 'public',
+						cache: true,
+					},
+					function(convertedBlob){
+						jsonPost.key = convertedBlob.url;
+						jsonPost.isUploaded = true;
+					},
+					$scope.imageError,
+					function(progress) {
+						console.log('Coverting:' + progress + '%');
+						jsonPost.uploadProgress = 'converting';
 					}
 				);
+			},
+			$scope.imageError,
+			function(progress) {
+				console.log('Uploading:' + progress + '%')
 
-			}, function(response) {
-				console.log(response);
-			});
-		}
+				$scope.$apply(function() {
+					jsonPost.uploadProgress = progress;
+				});
+			}
+		);
 	};
 
 	$scope.savePostVideo = function($event, post) {

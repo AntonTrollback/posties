@@ -17,11 +17,8 @@
     "angular-sanitize": "~1.2.24",
     "angular": "~1.2.24",
     "jquery": "~2.1.1",
-    "ng-file-upload": "~1.6.6",
     "Autolinker.js": "~0.11.2",
     "jquery-minicolors": "~2.1.7",
-    "blueimp-load-image": "~1.13.0",
-    "blueimp-canvas-to-blob": "~2.1.1",
     "medium-editor": "~1.9.4",
     "angulartics": "~0.17.0",
     "svg4everybody": "*"

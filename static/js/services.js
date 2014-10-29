@@ -1,4 +1,4 @@
-var dependencies = ['ngSanitize', 'angularFileUpload', 'angular-medium-editor', 'angulartics', 'angulartics.google.analytics'];
+var dependencies = ['ngSanitize', 'angular-medium-editor', 'angulartics', 'angulartics.google.analytics'];
 
 var postiesApp = angular.module('posties', dependencies, function($interpolateProvider) {
 	$interpolateProvider.startSymbol('[[');

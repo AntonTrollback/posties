@@ -111,8 +111,8 @@ def api_get_user():
 
 	users = list(r.table(TABLE_USERS).filter({ 'username' : username }).
 		eq_join('username', r.table(TABLE_USERS_SETTINGS), index='username').merge(
-		lambda user: { 
-    		'posts': r.table(TABLE_POSTS).get_all(username, index='username').coerce_to('array') 
+		lambda user: {
+    		'posts': r.table(TABLE_POSTS).get_all(username, index='username').coerce_to('array')
     	}).run(conn))
 
 	if not len(users):
@@ -124,7 +124,7 @@ def api_get_user():
 	user['user'] = user.pop('left')
 	user['user']['is_authenticated'] = current_user.is_authenticated()
 	user.pop('password', None)
-	
+
 	return jsonify(user)
 
 
@@ -170,19 +170,8 @@ def api_create_user():
 
 				result['posts'].append(post['changes'][0]['new_val'])
 
-			# Create all posts that are images
-			elif post['type'] == 2:
-				post = r.table(TABLE_POSTS).insert({
-					'username' : username,
-					'sortrank' : post['sortrank'],
-					'type' : post['type'],
-					'key' : generate_safe_filename(username, post['file']['name']),
-					'created' : r.now()}).run(conn, return_changes = True)
-
-				result['posts'].append(post['changes'][0]['new_val'])
-
-			# Create all posts that are YouTube videos
-			elif post['type'] == 3:
+			# Create all posts that are images or video
+			else:
 				post = r.table(TABLE_POSTS).insert({
 					'username' : username,
 					'sortrank' : post['sortrank'],
@@ -260,7 +249,7 @@ def api_post_image():
 		'username' : current_user.username,
 		'sortrank' : jsonData['sortrank'],
 		'type' : int(jsonData['type']),
-		'key' : jsonData['filename'],
+		'key' : jsonData['key'],
 		'created' : r.now()}).run(conn, return_changes = True)
 
 	result = post['changes'][0]['new_val']
@@ -389,15 +378,6 @@ def unauthorized(error):
 
 def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
-
-def generate_safe_filename(username, filename):
-	fileExtension = '.'
-	try:
-		fileExtension = fileExtension + os.path.splitext(filename)[1][1:].strip()
-	except Error:
-		fileExtension = ''
-	filename = secure_filename(filename)
-	return username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 
 @application.context_processor
 def utility_processor():

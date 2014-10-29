@@ -1,5 +1,6 @@
 // Todo: create directives
 $(function() {
+
   // Navigate panels
   $('.panels').each(function() {
     var $this = $(this);
