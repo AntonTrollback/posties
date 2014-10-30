@@ -5,7 +5,7 @@
     </div>
     <div class="post-content-block" ng-show="post.isUploaded">
       {% include 'modules/postOptions.html' %}
-      <img ng-src="[[post.key]]/convert?cache=true&w=740&fit=max&compress=true&quality=100">
+      <img ng-src="[[post.key]]/convert?cache=true&w=740&fit=max&rotate=exif&compress=true&quality=100">
     </div>
   </div>
 </script>
