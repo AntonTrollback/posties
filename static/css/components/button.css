@@ -58,8 +58,9 @@
 .button:disabled,
 .button.is-disabled {
   cursor: default;
-  background: #f9f9f9;
-  color: #bbb;
+  box-shadow: none;
+  background: transparent;
+  color: inherit;
   pointer-events: none;
 }
 
