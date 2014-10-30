@@ -1,7 +1,5 @@
-gunicorn==19.1.0
 Flask==0.10.1
 flask-login
 Jinja2==2.6
 Werkzeug==0.9
 rethinkdb==1.15.0-1
-boto

@@ -86,7 +86,7 @@ def login():
 	username = jsonData['username'].lower()
 	password = jsonData['password']
 
-	users = list(r.table(TABLE_USERS).filter(({'username' : username }) and ({'password' : password })).run(conn))
+	users = list(r.table(TABLE_USERS).filter({'username' : username,  'password' : password }).run(conn))
 
 	if not len(users):
 		return jsonify({})
@@ -112,8 +112,8 @@ def api_get_user():
 	users = list(r.table(TABLE_USERS).filter({ 'username' : username }).
 		eq_join('username', r.table(TABLE_USERS_SETTINGS), index='username').merge(
 		lambda user: {
-    		'posts': r.table(TABLE_POSTS).get_all(username, index='username').coerce_to('array')
-    	}).run(conn))
+			'posts': r.table(TABLE_POSTS).get_all(username, index='username').order_by(r.asc('sortrank')).coerce_to('array')
+		}).run(conn))
 
 	if not len(users):
 		return jsonify({})
