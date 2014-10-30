@@ -201,22 +201,22 @@ def api_create_user():
 @application.route('/api/postText', methods=['POST', 'PUT'])
 @login_required
 def api_post_text():
-	jsonData = request.json
-	content = jsonData['content']
+	data = request.json
 
 	if request.method == 'POST':
-		result = r.table(TABLE_POSTS).insert({
-			'content' : content,
+		r.table(TABLE_POSTS).insert({
+			'content' : data['content'],
 			'username' : current_user.username,
-			'sortrank' : jsonData['sortrank'],
-			'type' : int(jsonData['type']),
-			'created' : r.now()}).run(conn, return_changes = True)
+			'sortrank' : data['sortrank'],
+			'type' : int(data['type']),
+			'created' : r.now()
+		}).run(conn, return_changes = True)
 	elif request.method == 'PUT':
-		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
-			'content' : content
+		r.table(TABLE_POSTS).get(data['id']).update({
+			'content' : data['content']
 		}).run(conn, return_changes = True);
 
-	return jsonify(result['changes'][0]['new_val'])
+	return 'success'
 
 
 @application.route('/api/postVideo', methods=['POST', 'PUT'])
@@ -226,36 +226,33 @@ def api_post_video():
 	key = jsonData['key']
 
 	if request.method == 'POST':
-		result = r.table(TABLE_POSTS).insert({
+		r.table(TABLE_POSTS).insert({
 			'key' : key,
 			'username' : current_user.username,
 			'sortrank' : jsonData['sortrank'],
 			'type' : int(jsonData['type']),
 			'created' : r.now()}).run(conn, return_changes = True)
 	elif request.method == 'PUT':
-		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
+		r.table(TABLE_POSTS).get(jsonData['id']).update({
 			'key' : key
 		}).run(conn, return_changes = True);
 
-	return jsonify(result['changes'][0]['new_val'])
+	return 'success'
 
 
 @application.route('/api/postImage', methods=['POST'])
 @login_required
 def api_post_image():
-	jsonData = request.json
-
-	post = r.table(TABLE_POSTS).insert({
+	data = request.json
+	r.table(TABLE_POSTS).insert({
 		'username' : current_user.username,
-		'sortrank' : jsonData['sortrank'],
-		'type' : int(jsonData['type']),
-		'key' : jsonData['key'],
-		'created' : r.now()}).run(conn, return_changes = True)
+		'sortrank' : data['sortrank'],
+		'type' : int(data['type']),
+		'key' : data['key'],
+		'created' : r.now()
+	}).run(conn, return_changes = True)
 
-	result = post['changes'][0]['new_val']
-	result['template'] = jsonData['template']
-
-	return jsonify(result)
+	return 'success'
 
 
 @application.route('/api/postrank', methods=['POST'])
@@ -268,7 +265,7 @@ def api_post_rank():
 			'sortrank' : post['sortrank']
 		}).run(conn);
 
-	return jsonify("")
+	return 'success'
 
 
 @application.route('/api/settings', methods=['PUT'])
