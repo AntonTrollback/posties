@@ -51,9 +51,7 @@ postiesApp.controller('PageIndexCtrl', function(
 		}
 
 		// Hide add content buttons
-		$scope.$apply(function() {
-			$scope.showPostTypes = false;
-		});
+		$scope.showPostTypes = false;
 
 		// Setup post
 		var jsonPost = {
@@ -79,6 +77,7 @@ postiesApp.controller('PageIndexCtrl', function(
 				$scope.$apply(function() {
 					jsonPost.key = blob.url;
 					jsonPost.isUploaded = true;
+					$event.target.value = "";
 				});
 			},
 			function(FPError) {
@@ -370,18 +369,17 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 		}
 	};
 
-	$scope.savePostImageX = function($event, $files) {
-		console.log($event)
-
+	$scope.savePostImage = function($event, $files) {
+		// Validate image
 		if (!$files[0].type.match(/image.*/)) {
 			alert("Not sure that's an image")
 			return;
 		}
 
-		$scope.$apply(function() {
-			$scope.showPostTypes = false;
-		});
+		// Hide add content buttons
+		$scope.showPostTypes = false;
 
+		// Setup post
 		var jsonPost = {
 			type: 2,
 			sortrank: $scope.posts.length,
@@ -390,54 +388,40 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 			uploadProgress: 0
 		};
 
-		$scope.posts.push(jsonPost);
-
 		// Upload to filepicker
-		console.log('lets do this')
 		filepicker.store(
 			$event.target,
 			{
-				mimetype: 'image/*',
+				mimetypes: ['image/*'],
 				location: 'S3',
 				path: '/images/',
 				access: 'public',
 			},
 			function(blob){
-				console.log("Store successful:");
-				console.log(blob)
-
-				// Fetch converted image
-				filepicker.convert(
-					blob,
-					{
-						width: 740,
-						fit: 'max',
-						quality: 90,
-						rotate: 'exif'
-					}, {
-						mimetype: 'image/*',
-						location: 'S3',
-						path: '/images/',
-						access: 'public',
-						cache: true,
-					},
-					function(convertedBlob){
-						jsonPost.key = convertedBlob.url;
-						jsonPost.isUploaded = true;
-					},
-					$scope.imageError,
-					function(progress) {
-						console.log('Coverting:' + progress + '%');
-						jsonPost.uploadProgress = 'converting';
-					}
-				);
-			},
-			$scope.imageError,
-			function(progress) {
-				console.log('Uploading:' + progress + '%')
-
 				$scope.$apply(function() {
-					jsonPost.uploadProgress = progress;
+					jsonPost.key = blob.url;
+					jsonPost.isUploaded = true;
+				});
+
+				// Save to DB
+				$http({
+					url: '/api/postImage',
+					method: 'put',
+					data: jsonPost,
+					headers: config.headerJSON
+				}).then(function(response) {
+					console.log(response);
+				}, function(response) {
+					console.log(response);
+				});
+			},
+			function(FPError) {
+				console.log(FPError.toString());
+			},
+			function(progress) {
+				console.log('Uploading:' + progress + '%');
+				$scope.$apply(function() {
+					jsonPost.uploadProgress = progress + '%';
 				});
 			}
 		);
