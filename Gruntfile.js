@@ -50,10 +50,10 @@ module.exports = function(grunt) {
           'bower_components/svg4everybody/svg4everybody.js',
 
           'static/js/util.js',
-          'static/js/directives.js',
           'static/js/services.js',
           'static/js/filters.js',
-          'static/js/controllers.js'
+          'static/js/controllers.js',
+          'static/js/directives.js'
         ],
         dest: 'static/build/posties.js',
       },

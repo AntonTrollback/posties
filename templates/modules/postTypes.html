@@ -17,7 +17,7 @@
     <div class="button-group-break"></div>
 
     <label class="button is-vertical" for="uploadImage" analytics-on="click" analytics-event="Add" analytics-category="Content boxes" analytics-label="Image">
-      <input class="hidden" id="uploadImage" type="file" accept="image/*" capture="camera" name="image" ng-file-select="savePostImage($event, $files)">
+      <input class="hidden" id="uploadImage" type="file" accept="image/*" capture="camera" name="image" file-change="savePostImage($event, $files)">
       <svg role="presentation"><use xlink:href="#content-image"></use></svg> Image
     </label>
 
