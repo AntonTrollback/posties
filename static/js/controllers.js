@@ -276,6 +276,10 @@ postiesApp.controller('EditorCtrl', function(
 	 */
 
 	$scope.setupImage = function(post, input, file) {
+		if (!file) {
+			return;
+		}
+
 		post.isUploaded = false;
 		post.uploadProgress = 0;
 		$scope.posts.push(post);
