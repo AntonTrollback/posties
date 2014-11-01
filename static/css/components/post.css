@@ -139,8 +139,6 @@
 
 .post-content-loading {
   font-size: 18px;
-  border: solid var(--color-element-dark);
-  border-width: 1px 0;
   font-weight: bold;
   overflow: hidden;
   position: relative;
