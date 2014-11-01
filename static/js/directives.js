@@ -101,6 +101,8 @@ angular.module('angular-medium-editor', []).directive('mediumEditor', function()
         ctrl.editor = new MediumEditor(iElement, opts);
       });
 
+      var isContentSaved = false;
+
       var onChange = function() {
         scope.$apply(function() {
           ctrl.$setViewValue(iElement.html());
@@ -108,7 +110,8 @@ angular.module('angular-medium-editor', []).directive('mediumEditor', function()
       };
 
       // view -> model
-      iElement.on('blur', onChange);
+
+      //iElement.on('blur', onChange);
       iElement.on('input', onChange);
 
       // model -> view

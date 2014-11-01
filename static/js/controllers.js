@@ -378,30 +378,32 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 	};
 
 	$scope.savePost = function($event, post) {
-		var postTextContent = post.content;
+		setTimeout(function() {
+			var postTextContent = post.content;
 
-		postTextContent = Autolinker.link(postTextContent, {
-			truncate: false,
-			stripPrefix: true
-		});
-
-		if (postTextContent.length) {
-			var jsonPost = {
-				content: postTextContent,
-				id: post.id
-			};
-
-			$http({
-				url: '/api/postText',
-				method: 'put',
-				data: jsonPost,
-				headers: config.headerJSON
-			}).then(function(response) {
-				$scope.flash.showMessage('saved...');
-			}, function(response) {
-				console.log(response);
+			postTextContent = Autolinker.link(postTextContent, {
+				truncate: false,
+				stripPrefix: true
 			});
-		}
+
+			if (postTextContent.length) {
+				var jsonPost = {
+					content: postTextContent,
+					id: post.id
+				};
+
+				$http({
+					url: '/api/postText',
+					method: 'put',
+					data: jsonPost,
+					headers: config.headerJSON
+				}).then(function(response) {
+					$scope.flash.showMessage('saved...');
+				}, function(response) {
+					console.log(response);
+				});
+			}
+		}, 250);
 	};
 
 	$scope.savePostImage = function($files) {
