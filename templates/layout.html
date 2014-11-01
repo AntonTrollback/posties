@@ -14,20 +14,22 @@
   <body class="site">
     {% include 'modules/header.html' %}
 
-    <div class="site-container" ng-controller="EditorCtrl">
-      {% if user_owns_page %}
-        {% include 'modules/welcome.html' %}
-      {% endif %}
+    <div class="site-container">
+      <div ng-controller="EditorCtrl">
+        {% if user_owns_page %}
+          {% include 'modules/welcome.html' %}
+        {% endif %}
 
-      <ul id="posts" ng-style="{ 'color': userSettings.posttextcolor }">
-        <li ng-repeat="post in posts" data-id="[[post.id]]" data-rank="[[post.sortrank]]" class="post">
-          <ng-include src="post.template"></ng-include>
-        </li>
-      </ul>
+        <ul id="posts" ng-style="{ 'color': userSettings.posttextcolor }">
+          <li ng-repeat="post in posts" data-id="[[post.id]]" data-rank="[[post.sortrank]]" class="post">
+            <ng-include src="post.template"></ng-include>
+          </li>
+        </ul>
 
-      {% if is_start_page or user_owns_page %}
-        {% include 'modules/postTypes.html' %}
-      {% endif %}
+        {% if is_start_page or user_owns_page %}
+          {% include 'modules/postTypes.html' %}
+        {% endif %}
+      </div>
 
       {% if is_start_page %}
         {% include 'modules/signup.html' %}

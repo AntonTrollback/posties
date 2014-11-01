@@ -27,10 +27,8 @@ postiesApp.controller('IndexCtrl', function(
 	 * Create user
 	 */
 
-	$scope.validateUserForm = function($event) {
+	$scope.validateUserForm = function() {
 		// Reset error messages
-		console.log($event)
-		console.log($scope.formCreateUser)
 		var errors = [];
 		$scope.formCreateUser.username.error = "";
 		$scope.formCreateUser.email.error = "";
@@ -79,6 +77,7 @@ postiesApp.controller('IndexCtrl', function(
 	};
 
 	$scope.checkUsername = function(callback) {
+		return;
 		$http({
 			url: '/api/users',
 			method: 'get',
@@ -94,18 +93,21 @@ postiesApp.controller('IndexCtrl', function(
 		$scope.formCreateUser.loading = true;
 		$scope.formCreateUser.loadingText = 'Loading…';
 
+		console.log($scope.posts)
+
 		var data = {
 			email: $scope.user.email.toLowerCase(),
 			username: $scope.user.username,
 			password: $scope.user.password,
-			settings: $scope.userSettings
+			settings: $scope.userSettings,
+			posts: []
 		};
 
 		data.settings.username = $scope.user.username;
 
 		// Remove invalid video posts and not yet uploaded images
 		for (var i in $scope.posts) {
-			if (($scope.posts[i].type === 3 && !$scope.posts[i].isValidVideo)
+			if (($scope.posts[i].type === 3 && !$scope.posts[i].isValidVideo) ||
 				  ($scope.posts[i].type === 2 && !$scope.posts[i].isUploaded)) {
 				continue;
 			} else {
@@ -116,6 +118,8 @@ postiesApp.controller('IndexCtrl', function(
 				delete post['uploadProgress'];
 				delete post['helpText'];
 
+				console.log(post)
+				console.log(data.posts)
 				data.posts.push(post);
 			}
 		}
@@ -210,7 +214,7 @@ postiesApp.controller('EditorCtrl', function(
 	$scope, $http, $timeout, $filter, $analytics, config, FlashService) {
 
 	var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
-	var isAuthenticated = USER_DATA.is_authenticated;
+	var isAuthenticated = USER_DATA.user.is_authenticated;
 
 	/**
 	 * Add posts
