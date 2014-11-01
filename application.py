@@ -89,7 +89,6 @@ def get_posts_by_username(username = None):
 	return render_template(
 		'layout.html',
 		user_owns_page = user_owns_page,
-		username = username,
 		user_data = user,
 		filepicker_key = CONFIG["filepicker"]["key"],
 		angular_controller = "UserCtrl",
