@@ -1,7 +1,21 @@
 <script type="text/ng-template" id="postText.html">
   <div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
-    <div class="post-content-pre" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
-      <div ng-bind-html="post.content"></div>
-    </div>
+    {% if is_start_page or user_owns_page %}
+      <form class="post-content-pre" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
+        <ng-include src="'postOptions.html'"></ng-include>
+
+        <div ng-model="post.content"
+             class="post-editor"
+             medium-editor
+             options='{"buttonLabels": {"bold": "<svg role=\"img\"><use xlink:href=\"#format-bold\"></use></svg>", "italic": "<svg role=\"img\"><use xlink:href=\"#format-italic\"></use></svg>", "anchor": "<svg role=\"img\"><use xlink:href=\"#format-link\"></use></svg>"}, "placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
+             ng-blur="updateTextBasedPost($event, post)"></div>
+      </form>
+    {% else %}
+      <div class="post-content-pre" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
+        <div ng-bind-html="post.content"></div>
+      </div>
+    {% endif %}
   </div>
 </script>
+
+

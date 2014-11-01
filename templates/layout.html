@@ -36,22 +36,21 @@
       {% endif %}
     </div>
 
+    {% include 'modules/jsTemplates/postOptions.html' %}
+    {% include 'modules/jsTemplates/postText.html' %}
+    {% include 'modules/jsTemplates/postHeadline.html' %}
+    {% include 'modules/jsTemplates/postImage.html' %}
+    {% include 'modules/jsTemplates/postVideo.html' %}
     {% if is_start_page or user_owns_page %}
-      {% include 'modules/jsTemplates/postTextAuthenticated.html' %}
-      {% include 'modules/jsTemplates/postHeadlineAuthenticated.html' %}
-      {% include 'modules/jsTemplates/postImageAuthenticated.html' %}
-      {% include 'modules/jsTemplates/postVideoAuthenticated.html' %}
-    {% else %}
-      {% include 'modules/jsTemplates/postText.html' %}
-      {% include 'modules/jsTemplates/postHeadline.html' %}
-      {% include 'modules/jsTemplates/postImage.html' %}
-      {% include 'modules/jsTemplates/postVideo.html' %}
+      {% include 'modules/jsTemplates/postImageLoading.html' %}
+      {% include 'modules/jsTemplates/postVideoInput.html' %}
     {% endif %}
 
     {% include 'modules/svgSprite.html' %}
 
     <script>
       var FONTS = [{% for font in fonts %}'{{font}}'{% if not loop.last %}, {% endif %}{% endfor %}];
+
       var USER_DATA = {% if user_data %}{{ user_data|tojson|safe }}{% else %}false{% endif %};
 
       // Trigger svg redraw (safari issue)
