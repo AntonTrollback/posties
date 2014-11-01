@@ -27,5 +27,8 @@
     "secret": "z03pyrmzCzpzG9Hne/CtHEeUbdVZ2cx+DUYu8H4H",
     "bucket": "posties-images",
     "region": "eu-west-1"
+  },
+  "filepicker": {
+    "key": "AB0n3LvCeQhusW_h15bE5z"
   }
 }

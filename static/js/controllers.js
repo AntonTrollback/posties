@@ -1,129 +1,44 @@
-postiesApp.controller('PageIndexCtrl', function(
-	$scope, $http, $timeout, $sanitize, $analytics, config,
-	SettingsService, AuthService, FlashService, Fonts) {
+/**
+ * Index page controller
+ */
 
-	$scope.posts = [];
-	$scope.userHasUploadedImage = false;
-	var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
+postiesApp.controller('IndexCtrl', function(
+	$scope, $http, $timeout, $analytics, config,
+	SettingsService, AuthService, FlashService) {
 
 	$scope.settingsService = SettingsService;
-	$scope.flash = FlashService.getFlash();
-	$scope.fonts = Fonts.getFonts();
+	$scope.flashService = FlashService;
+	$scope.authService = AuthService;
 
-	$scope.userSettings = $scope.settingsService.getSettings();
+	// Setup default user settings and post
+	$scope.userSettings = $scope.settingsService.getDefault();
+	$scope.posts = [{
+		id: 0,
+		type: 0,
+		sortrank: 0,
+		content: "<p>Hello</p><p>I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>",
+		template: 'postText.html'
+	}];
 
-	// Initial font load
-	$scope.fonts.load([
-		$scope.userSettings.typefaceparagraph,
-		$scope.userSettings.typefaceheadline
-	]);
+	// Focus default post
+	// $scope.focusPostEditor($scope.posts[0]);
 
-	$scope.addPost = function($event) {
-		$analytics.eventTrack('Add', {
-			category: 'Content boxes',
-			label: $event.target.getAttribute('data-analytics-label')
-		});
-
-		var post = {
-			id: Math.round(Math.random() * 1000),
-			sortrank: $scope.posts.length,
-			content: $event.target.getAttribute('data-content'),
-			type: parseInt($event.target.getAttribute('data-type')),
-			template: $event.target.getAttribute('data-template'),
-			helpText: $event.target.getAttribute('data-helptext')
-		};
-
-		$scope.posts.push(post);
-		if (!iOS) {
-			$timeout(function() {
-				$('.post:last-child .post-editor').focus();
-			}, 100);
-		}
-
-		$scope.showPostTypes = false;
-	};
-
-	$scope.savePostImage = function($event, $files) {
-		// Validate image
-		if (!$files[0].type.match(/image.*/)) {
-			alert("Not sure that's an image")
-			return;
-		}
-
-		// Hide add content buttons
-		$scope.showPostTypes = false;
-
-		// Setup post
-		var jsonPost = {
-			type: 2,
-			sortrank: $scope.posts.length,
-			isUploaded: false,
-			template: 'postImage.html',
-			uploadProgress: 0
-		};
-
-		$scope.posts.push(jsonPost);
-
-		// Upload to filepicker
-		filepicker.store(
-			$event.target,
-			{
-				mimetypes: ['image/*'],
-				location: 'S3',
-				path: '/images/',
-				access: 'public',
-			},
-			function(blob){
-				$scope.$apply(function() {
-					jsonPost.key = blob.url;
-					jsonPost.isUploaded = true;
-					$event.target.value = "";
-				});
-			},
-			function(FPError) {
-				console.log(FPError.toString());
-			},
-			function(progress) {
-				console.log('Uploading:' + progress + '%');
-				$scope.$apply(function() {
-					jsonPost.uploadProgress = progress + '%';
-				});
-			}
-		);
-	};
-
-	$scope.savePostVideo = function($event, post) {
-		var clipboardData = $event.originalEvent.clipboardData.getData('text/plain');
-		var videoURL = posties.util.getYouTubeVideoID($sanitize(clipboardData));
-
-		if (videoURL) {
-			post.key = videoURL;
-			post.isValidVideo = true;
-			$scope.flash.showMessage('saved...');
-		} else {
-			$scope.flash.showMessage('sorry that wasn\'t a valid YouTube address...');
-			return;
-		}
-	};
-
-	$scope.movePost = function(currentIndex, newIndex) {
-		posties.util.swapItems($scope.posts, currentIndex, newIndex);
-
-		for (i = 0; i < $scope.posts.length; i++) {
-			$scope.posts[i].sortrank = i;
-		}
-	};
-
-	$scope.deletePost = function(currentIndex, post) {
-		$scope.posts.splice(currentIndex, 1);
-	};
+	/**
+	 * Create user
+	 */
 
 	$scope.validateUserForm = function($event) {
+		// Reset error messages
+		console.log($event)
+		console.log($scope.formCreateUser)
+		var errors = [];
 		$scope.formCreateUser.username.error = "";
 		$scope.formCreateUser.email.error = "";
 		$scope.formCreateUser.password.error = "";
 
+		// Validate email
 		if ($scope.formCreateUser.email.$invalid) {
+			errors.push('email');
 			if ($scope.formCreateUser.email.$error.required) {
 				$scope.formCreateUser.email.error = "You're missing an email address";
 			} else {
@@ -131,176 +46,171 @@ postiesApp.controller('PageIndexCtrl', function(
 			}
 		}
 
+		// Validate password
 		if ($scope.formCreateUser.password.$invalid) {
+			errors.push('password');
 			$scope.formCreateUser.password.error = "Don't forget the password";
 		}
 
+		// Validate username
 		if ($scope.formCreateUser.username.$invalid) {
+			errors.push('username');
 			if ($scope.formCreateUser.username.$error.pattern) {
 				$scope.formCreateUser.username.error = "Sorry, no spaces or weird characters";
 			} else {
 				$scope.formCreateUser.username.error = "Don't forget the username";
 			}
 		} else {
-			$scope.checkUsername();
+			// Check if already used
+			$scope.checkUsername(function(response) {
+				if (typeof response.data.username !== 'undefined') {
+					errors.push('username');
+					$scope.formCreateUser.username.error = "Sorry, that website address is already taken";
+				}
+			});
+		}
+
+		if (errors.length || $scope.formCreateUser.$invalid) {
+			console.log('Form is invalid')
+			return;
+		} else {
+			$scope.submitCreateUser();
 		}
 	};
 
-	$scope.checkUsername = function() {
+	$scope.checkUsername = function(callback) {
 		$http({
 			url: '/api/users',
 			method: 'get',
 			params: {
 				username: $scope.user.username
 			}
-		}).then(function(response) {
-			if (typeof response.data.username === 'undefined') {
-				$scope.submitCreateUser();
-			} else {
-				$scope.formCreateUser.username.error = "Sorry, that website address is already taken";
-			}
-		}, function(response) {
+		}).then(callback, function(response) {
 			console.log(response);
 		});
 	};
 
 	$scope.submitCreateUser = function() {
-		if ($scope.formCreateUser.$invalid) {
-			console.log("form is invalid");
-			return;
-		}
-
 		$scope.formCreateUser.loading = true;
 		$scope.formCreateUser.loadingText = 'Loading…';
-		var posts = [];
 
-		// Remove empty video posts
-		for (var i in $scope.posts) {
-			if ($scope.posts[i].type == 3 && !$scope.posts[i].key) {
-				console.log('not a valid video');
-			} else {
-				posts.push($scope.posts[i]);
-			}
-		}
-
-		$scope.posts = posts;
-
-		var jsonPost = {
+		var data = {
 			email: $scope.user.email.toLowerCase(),
 			username: $scope.user.username,
 			password: $scope.user.password,
-			posts: $scope.posts,
 			settings: $scope.userSettings
 		};
 
-		jsonPost.settings.username = $scope.user.username;
+		data.settings.username = $scope.user.username;
+
+		// Remove invalid video posts and not yet uploaded images
+		for (var i in $scope.posts) {
+			if (($scope.posts[i].type === 3 && !$scope.posts[i].isValidVideo)
+				  ($scope.posts[i].type === 2 && !$scope.posts[i].isUploaded)) {
+				continue;
+			} else {
+				// Remove unnecessary data
+				var post = angular.copy($scope.posts[i]);
+				delete post['template'];
+				delete post['isUploaded'];
+				delete post['uploadProgress'];
+				delete post['helpText'];
+
+				data.posts.push(post);
+			}
+		}
 
 		$http({
 			url: '/api/users',
 			method: 'post',
-			data: jsonPost,
+			data: data,
 			headers: config.headerJSON
 		}).then(function(response) {
 			localStorage.setItem(config.keySettings + 'Welcome', true);
 			window.location = "/by/" + $scope.user.username.toLowerCase();
 		});
 	};
-
-	$scope.submitLogin = function() {
-		$('.popover-form .button').attr('disabled', true).text('Loading…');
-		var jsonPost = {
-			'username': $scope.login.username,
-			'password': $scope.login.password
-		};
-
-		AuthService.login(jsonPost).then(function(response) {
-			if (typeof response.data.username !== 'undefined') {
-				window.location = "/by/" + response.data.username;
-			} else {
-				$scope.flash.showMessage("Your password is incorrect");
-				$('.popover-form .button').attr('disabled', false).text('OK');
-			}
-		});
-	};
-
-	// Init
-	(function() {
-		var post = {
-			id: 0,
-			sortrank: 0,
-			content: "<p>Hello</p><p>I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>",
-			type: 0,
-			template: 'postText.html'
-		};
-
-		$scope.posts.push(post);
-
-		if (!iOS) {
-			$timeout(function() {
-				$('.post:last-child .post-editor').focus();
-			}, 100);
-		}
-	})();
 });
 
+/**
+ * User page controller
+ * -----------------------------------------------------------------------------
+ */
 
-// -----------------------------------------------------------------------------
+postiesApp.controller('UserCtrl', function(
+	$scope, $http, $timeout, $filter, $analytics, config,
+	FontService, AuthService, FlashService, SettingsService) {
 
-
-postiesApp.controller('PagePostsByUserCtrl', function(
-	$scope, $http, $timeout, $sanitize, $filter, $analytics, config,
-	Fonts, AuthService, UserService, FlashService, SettingsService) {
-
+	$scope.flashService = FlashService;
+	$scope.fontService = FontService;
 	$scope.settingsService = SettingsService;
-	var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
+	$scope.authService = AuthService;
 
 	$scope.posts = [];
 
-	$scope.flash = FlashService.getFlash();
-	$scope.fonts = Fonts.getFonts();
-
-	// Display welcome message
+	// First visit
 	if (localStorage.getItem(config.keySettings + 'Welcome')) {
 		$analytics.eventTrack('Success', {  category: 'Sign up' });
 		$('.welcome').show();
 		localStorage.removeItem(config.keySettings + 'Welcome');
 	}
 
-	var urlPathName = location.pathname;
-	var username = urlPathName.substr(urlPathName.lastIndexOf('/') + 1, urlPathName.length);
+	// Setup user data
+	var user = USER_DATA;
+	$scope.userSettings = user.settings;
+	$scope.user = {
+		'username': user.username,
+		'isAuthenticated': user.is_authenticated
+	};
 
-	// Fetch user posts
-	UserService.getUserWithPosts(username).then(function(response) {
-		var user = response.data;
-		$scope.userSettings = user.settings;
+	// Load fonts used on website
+	$scope.fontService.load([user.settings.typefaceparagraph, user.settings.typefaceheadline]);
 
-		// Load fonts
-		$scope.fonts.load([user.settings.typefaceparagraph, user.settings.typefaceheadline]);
+	// Render posts
+	for (i = 0; i < user.posts.length; i++) {
+		var post = user.posts[i];
 
-		$scope.user = {
-			'username': user.username,
-			'isAuthenticated': user.is_authenticated
-		};
-
-		for (i = 0; i < user.posts.length; i++) {
-			var post = user.posts[i];
-
-			if (post.type === 0) {
+		switch (post.type) {
+			case 0:
 				post.template = 'postText.html';
-			} else if (post.type == 1) {
+				break;
+			case 1:
 				post.template = 'postHeadline.html';
-			} else if (post.type == 2) {
-				post.template = 'postImage.html';
-				post.isUploaded = true;
-				post.key = post.key;
-			} else if (post.type == 3) {
+				break;
+			case 2:
+			  post.template = 'postImage.html';
+			  post.isUploaded = true;
+				break;
+			case 3:
 				post.template = 'postVideo.html';
 				post.isValidVideo = true;
-			}
-
-			$scope.posts.push(post);
+				break;
 		}
-	});
+		$scope.posts.push(post);
+	}
+});
+
+
+/**
+ * Error page controller
+ * -----------------------------------------------------------------------------
+ */
+
+postiesApp.controller('PageErrorCtrl', function() {
+
+});
+
+
+/**
+ * Editor controller
+ * -----------------------------------------------------------------------------
+ */
+
+postiesApp.controller('EditorCtrl', function(
+	$scope, $http, $timeout, $filter, $analytics, config, FlashService) {
+
+	var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
+	var isAuthenticated = USER_DATA.is_authenticated;
 
 	/**
 	 * Add posts
@@ -350,7 +260,10 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 		$scope.posts.push(post);
 
 		// Send to backend
-		$scope.save($scope.posts[post.sortrank], 'postText');
+		$scope.send($scope.posts[post.sortrank], 'postText', function(response) {
+			$scope.posts[post.sortrank].id = response.data;
+		});
+
 		$scope.focusPostEditor($scope.posts[post.sortrank]);
 	}
 
@@ -382,7 +295,9 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 				post.isUploaded = true;
 			});
 
-			$scope.save($scope.posts[post.sortrank], 'postImage');
+			$scope.send($scope.posts[post.sortrank], 'postImage', function(response) {
+				$scope.posts[post.sortrank].id = response.data;
+			});
 		};
 
 		var storeError = function(FPError) {
@@ -395,7 +310,7 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 			});
 		};
 
-		// Upload to filepicker
+		// Upload image
 		filepicker.store(input, storeOptions, storeSuccess, storeError, storeProgress);
 	};
 
@@ -421,43 +336,64 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 
 			if (!videoSrc) {
 				$scope.$apply(function() {
-					$scope.flash.showMessage("Sorry, doesn't look like a Youtube link");
+					$scope.flashService.showMessage("Sorry, doesn't look like a Youtube link");
 				});
 				return;
 			}
 
 			$scope.$apply(function() {
 				post.key = videoSrc;
-				$scope.save($scope.posts[post.sortrank], 'postVideo');
+
+				$scope.send($scope.posts[post.sortrank], 'postVideo', function(response) {
+					$scope.posts[post.sortrank].id = response.data;
+				});
 			});
 		});
 	};
 
 	/**
-	 * Send to backend
+	 * Move post
 	 */
 
-	$scope.save = function(data, endpoint) {
-		// Remove unnecessary data
-		var data = angular.copy(data);
-		delete data['template'];
-		delete data['isUploaded'];
-		delete data['uploadProgress'];
-		delete data['helpText'];
+	$scope.movePost = function(currentIndex, newIndex) {
+		posties.util.swapItems($scope.posts, currentIndex, newIndex);
+		var data = [];
 
-		console.log('Saving: ', data);
+		for (i = 0; i < $scope.posts.length; i++) {
+			var post = $scope.posts[i];
+			if (post.id) { // the posts save event might not have returned yet
+				data.push({id: post.id, sortrank: i});
+			}
+		}
 
-		$http({
-			url: '/api/' + endpoint,
-			method: 'post',
-			data: data,
-			headers: config.headerJSON
-		}).then(function(response) {
-			console.log(response);
-		}, function(response) {
-			console.log(response);
-		});
-	}
+		$scope.send(data, 'postrank');
+	};
+
+	/**
+	 * Delete post
+	 */
+
+	$scope.deletePost = function(currentIndex, post) {
+		$scope.posts.splice(currentIndex, 1);
+
+		// The posts save event might not have returned yet.
+		// Todo: The video type could be unsaved (not yet pasted), this causes
+		// a bug: "un-pasted" video posts will not save the updated position
+		// when moving up and down
+		if (!post.id) {
+			return;
+		}
+
+		$scope.send({ id: post.id }, 'posts', false, 'delete');
+	};
+
+	/**
+	 * Update posts
+	 */
+
+	$scope.updateTextBasedPost = function($event, post) {
+		$scope.send({ id: post.id, content: post.content }, 'postText', false, 'put');
+	};
 
 	/**
 	 * Focus post editor
@@ -471,51 +407,39 @@ postiesApp.controller('PagePostsByUserCtrl', function(
 		}
 	}
 
-	$scope.movePost = function(currentIndex, newIndex) {
-		posties.util.swapItems($scope.posts, currentIndex, newIndex);
-		var data = [];
+	/**
+	 * Send to backend
+	 */
 
-		for (i = 0; i < $scope.posts.length; i++) {
-			var post = $scope.posts[i];
-			data.push({id: post.id, sortrank: i});
+	$scope.send = function(data, endpoint, callback, method) {
+		if (!isAuthenticated) {
+			return;
 		}
 
-		$scope.save(data, 'postrank');
-	};
+		// Remove unnecessary data
+		var data = angular.copy(data);
+		delete data['template'];
+		delete data['isUploaded'];
+		delete data['uploadProgress'];
+		delete data['helpText'];
 
-	$scope.deletePost = function(currentIndex, post) {
+		if (!method) {
+			method = 'post';
+		}
+
+		console.log("Send '" + method + "' to 'api/" + endpoint + "' with:", data);
+
 		$http({
-			url: '/api/posts',
-			method: 'delete',
-			data: post,
+			url: '/api/' + endpoint,
+			method: method,
+			data: data,
 			headers: config.headerJSON
 		}).then(function(response) {
-			$scope.posts.splice(currentIndex, 1);
+			if (callback) {
+				callback(response);
+			}
 		}, function(response) {
 			console.log(response);
 		});
-	};
-
-	$scope.submitLogin = function() {
-		var jsonPost = {
-			'username': USERNAME,
-			'password': $scope.login.password
-		};
-
-		AuthService.login(jsonPost).then(function(response) {
-			if (typeof response.data.username !== 'undefined') {
-				window.location = "/by/" + response.data.username;
-			} else {
-				$scope.flash.showMessage("Your password is incorrect");
-			}
-		});
-	};
-});
-
-
-// -----------------------------------------------------------------------------
-
-
-postiesApp.controller('PageErrorCtrl', function() {
-
+	}
 });

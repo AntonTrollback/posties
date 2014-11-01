@@ -52,9 +52,9 @@ module.exports = function(grunt) {
           'bower_components/angular-images-loaded/angular-images-loaded.js',
           'static/js/util.js',
           'static/js/services.js',
+          'static/js/directives.js',
           'static/js/filters.js',
-          'static/js/controllers.js',
-          'static/js/directives.js'
+          'static/js/controllers.js'
         ],
         dest: 'static/build/posties.js',
       },
