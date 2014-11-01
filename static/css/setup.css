@@ -38,7 +38,6 @@
 @import "normalize.css";
 @import "./static/css/base.css";
 @import "./static/css/main.css";
-@import "./static/css/devices.css";
 
 @import "./static/css/components/site.css";
 @import "./static/css/components/header.css";

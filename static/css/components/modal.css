@@ -34,19 +34,6 @@
   top: 0;
   margin-bottom: 100px;
 }
-.modal.createUser .togglePasswordMask {
-  width: 26px;
-  height: 24px;
-  background: url('../img/iconShowPassword.png') no-repeat 100% 0px;
-  position: absolute;
-  right: 30px;
-  top: 6px;
-}
-.modal.createUser .togglePasswordMask.visible {
-  width: 26px;
-  height: 24px;
-  background: url('../img/iconHidePassword.png') no-repeat 100% 6px;
-}
 .modal.updateSettings {
   width: 200px;
   left: auto;

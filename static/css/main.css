@@ -1,5 +1,4 @@
 #logo {
-  background: url('../img/logo.png') no-repeat 0 0;
   width: 33px;
   height: 35px;
   margin-left: 1rem;
@@ -99,26 +98,6 @@
   font-size: 1.2rem;
   line-height: 1.7rem;
   margin-right: -14px;
-}
-.button.addPostText {
-  background-image: url('../img/iconAddText.png');
-  background-repeat: no-repeat;
-  background-position: center 19px;
-}
-.button.addPostHeadline {
-  background-image: url('../img/iconAddHeadline.png');
-  background-repeat: no-repeat;
-  background-position: center 17px;
-}
-.button.addPostVideo {
-  background-image: url('../img/iconAddVideo.png');
-  background-repeat: no-repeat;
-  background-position: center 14px;
-}
-.button.addPostImage {
-  background-image: url('../img/iconAddImage.png');
-  background-repeat: no-repeat;
-  background-position: center 14px;
 }
 .postTypes .item {
   display: inline-block;

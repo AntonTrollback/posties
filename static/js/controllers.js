@@ -214,7 +214,7 @@ postiesApp.controller('EditorCtrl', function(
 	$scope, $http, $timeout, $filter, $analytics, config, FlashService) {
 
 	var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
-	var isAuthenticated = USER_DATA.user.is_authenticated;
+	var isAuthenticated = USER_DATA ? USER_DATA.user.is_authenticated : false;
 
 	/**
 	 * Add posts
@@ -281,6 +281,8 @@ postiesApp.controller('EditorCtrl', function(
 		}
 
 		post.isUploaded = false;
+		post.template = 'postImageLoading.html';
+
 		post.uploadProgress = 0;
 		$scope.posts.push(post);
 
@@ -301,6 +303,7 @@ postiesApp.controller('EditorCtrl', function(
 			$scope.$apply(function() {
 				post.key = blob.url;
 				post.isUploaded = true;
+				post.template = 'postImage.html';
 			});
 
 			$scope.send($scope.posts[post.sortrank], 'postImage', function(response) {
@@ -328,6 +331,7 @@ postiesApp.controller('EditorCtrl', function(
 
 	$scope.setupVideo = function(post) {
 		post.helpText = 'Paste your YouTube link here';
+		post.template = 'postVideoInput.html';
 		$scope.posts.push(post);
 		$scope.focusPostEditor($scope.posts[post.sortrank]);
 	}
@@ -351,6 +355,7 @@ postiesApp.controller('EditorCtrl', function(
 
 			$scope.$apply(function() {
 				post.key = videoSrc;
+				post.template = 'postVideo.html';
 
 				$scope.send($scope.posts[post.sortrank], 'postVideo', function(response) {
 					$scope.posts[post.sortrank].id = response.data;
