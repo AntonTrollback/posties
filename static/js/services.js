@@ -24,8 +24,10 @@ postiesApp.service('SettingsService', function($http, config, FontService) {
 	this.isOpen = false;
 
 	this.submitUpdate = function(userSettings) {
-		if (!USER_DATA.is_authenticated) {
-			return;
+		if (USER_DATA) {
+			if (!USER_DATA.user.is_authenticated) {
+				return;
+			};
 		}
 
 		if (!angular.equals(this.currentSettings, userSettings)) {
@@ -84,7 +86,7 @@ postiesApp.service('SettingsService', function($http, config, FontService) {
 			showboxes: true,
 			typefaceheadline: "Akkurat",
 			typefaceparagraph: "Akkurat"
-		};
+		}
 	};
 
 	this.getBackgroundPalette = function() {

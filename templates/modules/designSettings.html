@@ -62,7 +62,7 @@
       <!-- Reset and randomize -->
 
       <div class="popover-body">
-        <button class="button" ng-click="userSettings = settingsService.getDefaultSettings()"><span analytics-on="click" analytics-event="Reset" analytics-category="Website design settings">Reset</span></button>
+        <button class="button" ng-click="userSettings = settingsService.getDefault()"><span analytics-on="click" analytics-event="Reset" analytics-category="Website design settings">Reset</span></button>
         <span style="margin-left: 0.5em;">or <a ng-click="userSettings = settingsService.getRandom()"><span analytics-on="click" analytics-event="Randomize" analytics-category="Website design settings">randomize</span></a>!</span>
         <button id="saveUserSettings" class="button" style="display: none;">Save</button>
       </div>
