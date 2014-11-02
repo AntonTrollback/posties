@@ -6,7 +6,7 @@
         <div ng-model="post.content"
              class="post-editor"
              medium-editor
-             options='{"buttonLabels": {"bold": "<svg role=\"img\"><use xlink:href=\"#format-bold\"></use></svg>", "italic": "<svg role=\"img\"><use xlink:href=\"#format-italic\"></use></svg>", "anchor": "<svg role=\"img\"><use xlink:href=\"#format-link\"></use></svg>"}, "placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
+             options='{"buttonLabels": {"bold": "<svg role=\"img\"><use xlink:href=\"#format-bold\"></use></svg>", "italic": "<svg role=\"img\"><use xlink:href=\"#format-italic\"></use></svg>", "anchor": "<svg role=\"img\"><use xlink:href=\"#format-link\"></use></svg>", "justifyCenter": "<svg role=\"img\"><use xlink:href=\"#format-center\"></use></svg>"}, "placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
              ng-blur="updateTextBasedPost($event, post)"></div>
       </form>
     {% else %}

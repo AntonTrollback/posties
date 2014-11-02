@@ -405,7 +405,14 @@ postiesApp.controller('EditorCtrl', function(
 	 */
 
 	$scope.updateTextBasedPost = function($event, post) {
-		$scope.send({ id: post.id, content: post.content }, 'postText', false, 'put');
+		setTimeout(function() {
+			var content = Autolinker.link(post.content, {
+				truncate: false,
+				stripPrefix: true
+			});
+
+			$scope.send({ id: post.id, content: content }, 'postText', false, 'put');
+		}, 250);
 	};
 
 	/**
