@@ -6,8 +6,20 @@
         <div ng-model="post.content"
              class="post-editor"
              medium-editor
-             options='{"buttonLabels": {"bold": "<svg role=\"img\"><use xlink:href=\"#format-bold\"></use></svg>", "italic": "<svg role=\"img\"><use xlink:href=\"#format-italic\"></use></svg>", "anchor": "<svg role=\"img\"><use xlink:href=\"#format-link\"></use></svg>", "justifyCenter": "<svg role=\"img\"><use xlink:href=\"#format-center\"></use></svg>"}, "placeholder": "", "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
-             ng-blur="updateTextBasedPost($event, post)"></div>
+             ng-blur="updateTextBasedPost($event, post)"
+             options='{
+              "placeholder": "",
+              "forcePlainText": true,
+              "checkLinkFormat": true,
+              "cleanPastedHTML": false,
+              "buttonLabels": {
+                "bold": "<svg role=\"img\"><use xlink:href=\"#format-bold\"></use></svg>",
+                "italic": "<svg role=\"img\"><use xlink:href=\"#format-italic\"></use></svg>",
+                "anchor": "<svg role=\"img\"><use xlink:href=\"#format-link\"></use></svg>",
+                "justifyLeft": "<svg role=\"img\"><use xlink:href=\"#format-left\"></use></svg>",
+                "justifyCenter": "<svg role=\"img\"><use xlink:href=\"#format-center\"></use></svg>"
+              },
+              "buttons": ["bold", "italic", "anchor", "justifyLeft", "justifyCenter"]}'></div>
       </form>
     {% else %}
       <div class="post-content-pre is-larger" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }">
