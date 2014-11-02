@@ -11,7 +11,9 @@ postiesApp.controller('IndexCtrl', function(
 	$scope.authService = AuthService;
 
 	// Setup default user settings and post
+	$scope.user = {'username': false, 'isAuthenticated': false};
 	$scope.userSettings = $scope.settingsService.getDefault();
+
 	$scope.posts = [{
 		id: 0,
 		type: 0,
@@ -19,9 +21,6 @@ postiesApp.controller('IndexCtrl', function(
 		content: "<p>Hello</p><p>I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>",
 		template: 'postText.html'
 	}];
-
-	// Focus default post
-	// $scope.focusPostEditor($scope.posts[0]);
 
 	/**
 	 * Create user
@@ -212,9 +211,7 @@ postiesApp.controller('PageErrorCtrl', function() {
 
 postiesApp.controller('EditorCtrl', function(
 	$scope, $http, $timeout, $filter, $analytics, config, FlashService) {
-
 	var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
-	var isAuthenticated = USER_DATA ? USER_DATA.user.is_authenticated : false;
 
 	/**
 	 * Add posts
@@ -268,7 +265,7 @@ postiesApp.controller('EditorCtrl', function(
 			$scope.posts[post.sortrank].id = response.data;
 		});
 
-		$scope.focusPostEditor($scope.posts[post.sortrank]);
+		$scope.focusPostEditor(post.sortrank);
 	}
 
 	/**
@@ -333,7 +330,7 @@ postiesApp.controller('EditorCtrl', function(
 		post.helpText = 'Paste your YouTube link here';
 		post.template = 'postVideoInput.html';
 		$scope.posts.push(post);
-		$scope.focusPostEditor($scope.posts[post.sortrank]);
+		$scope.focusPostEditor(post.sortrank);
 	}
 
 	/**
@@ -419,10 +416,10 @@ postiesApp.controller('EditorCtrl', function(
 	 * Focus post editor
 	 */
 
-	$scope.focusPostEditor = function(post) {
+	$scope.focusPostEditor = function(postIndex) {
 		if (!iOS) {
 			$timeout(function() {
-				$('.post').eq(post.sortrank).find('.post-editor').focus();
+				$('.post').eq(postIndex).find('.post-editor').focus();
 			}, 10);
 		}
 	}
@@ -432,7 +429,7 @@ postiesApp.controller('EditorCtrl', function(
 	 */
 
 	$scope.send = function(data, endpoint, callback, method) {
-		if (!isAuthenticated) {
+		if (!$scope.user.isAuthenticated) {
 			return;
 		}
 
@@ -462,4 +459,7 @@ postiesApp.controller('EditorCtrl', function(
 			console.log(response);
 		});
 	}
+
+	// Focus first post
+	$scope.focusPostEditor(0);
 });
