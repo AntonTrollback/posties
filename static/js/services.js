@@ -24,8 +24,8 @@ postiesApp.service('SettingsService', function($http, config, FontService) {
 	this.isOpen = false;
 
 	this.submitUpdate = function(userSettings) {
-		if (USER_DATA) {
-			if (!USER_DATA.user.is_authenticated) {
+		if (WEBSITE_DATA) {
+			if (!WEBSITE_DATA.user.is_authenticated) {
 				return;
 			};
 		}

@@ -51,7 +51,7 @@
     <script>
       var FONTS = [{% for font in fonts %}'{{font}}'{% if not loop.last %}, {% endif %}{% endfor %}];
 
-      var USER_DATA = {% if user_data %}{{ user_data|tojson|safe }}{% else %}false{% endif %};
+      var WEBSITE_DATA = {% if website_data %}{{ website_data|tojson|safe }}{% else %}false{% endif %};
 
       // Trigger svg redraw (safari issue)
       document.addEventListener('DOMContentLoaded', function(){

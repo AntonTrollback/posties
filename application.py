@@ -89,7 +89,7 @@ def get_posts_by_username(username = None):
 	return render_template(
 		'layout.html',
 		user_owns_page = user_owns_page,
-		user_data = user,
+		website_data = user,
 		filepicker_key = CONFIG["filepicker"]["key"],
 		angular_controller = "UserCtrl",
 		fonts = WHITELIST_TYPEFACES
@@ -134,7 +134,7 @@ def api_get_user():
 			}).run(conn))
 
 	if not len(users):
-		return jsonify({})
+		return 'no match'
 	else:
 		user = users[0]
 

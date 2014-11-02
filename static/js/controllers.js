@@ -10,8 +10,12 @@ postiesApp.controller('IndexCtrl', function(
 	$scope.flashService = FlashService;
 	$scope.authService = AuthService;
 
-	// Setup default user settings and post
-	$scope.user = {'username': false, 'isAuthenticated': false};
+	// Setup default user stuff and post
+	$scope.user = {
+		username: false,
+		isAuthenticated: false
+	};
+
 	$scope.userSettings = $scope.settingsService.getDefault();
 
 	$scope.posts = [{
@@ -60,23 +64,24 @@ postiesApp.controller('IndexCtrl', function(
 		} else {
 			// Check if already used
 			$scope.checkUsername(function(response) {
-				if (typeof response.data.username !== 'undefined') {
+				console.log(response)
+				if (response.data !== 'no match') {
 					errors.push('username');
 					$scope.formCreateUser.username.error = "Sorry, that website address is already taken";
 				}
-			});
-		}
 
-		if (errors.length || $scope.formCreateUser.$invalid) {
-			console.log('Form is invalid')
-			return;
-		} else {
-			$scope.submitCreateUser();
+				// Try submit
+				if (errors.length || $scope.formCreateUser.$invalid) {
+					console.log('Form is invalid')
+					return;
+				} else {
+					$scope.submitCreateUser();
+				}
+			});
 		}
 	};
 
 	$scope.checkUsername = function(callback) {
-		return;
 		$http({
 			url: '/api/users',
 			method: 'get',
@@ -91,8 +96,6 @@ postiesApp.controller('IndexCtrl', function(
 	$scope.submitCreateUser = function() {
 		$scope.formCreateUser.loading = true;
 		$scope.formCreateUser.loadingText = 'Loading…';
-
-		console.log($scope.posts)
 
 		var data = {
 			email: $scope.user.email.toLowerCase(),
@@ -116,9 +119,6 @@ postiesApp.controller('IndexCtrl', function(
 				delete post['isUploaded'];
 				delete post['uploadProgress'];
 				delete post['helpText'];
-
-				console.log(post)
-				console.log(data.posts)
 				data.posts.push(post);
 			}
 		}
@@ -158,20 +158,22 @@ postiesApp.controller('UserCtrl', function(
 		localStorage.removeItem(config.keySettings + 'Welcome');
 	}
 
-	// Setup user data
-	var user = USER_DATA;
-	$scope.userSettings = user.settings;
+	// Get design and user data
+	var websiteData = WEBSITE_DATA;
+
 	$scope.user = {
-		'username': user.username,
-		'isAuthenticated': user.is_authenticated
+		username: websiteData.user.username,
+		isAuthenticated: websiteData.user.is_authenticated,
 	};
 
+	$scope.userSettings = websiteData.settings;
+
 	// Load fonts used on website
-	$scope.fontService.load([user.settings.typefaceparagraph, user.settings.typefaceheadline]);
+	$scope.fontService.load([websiteData.settings.typefaceparagraph, websiteData.settings.typefaceheadline]);
 
 	// Render posts
-	for (i = 0; i < user.posts.length; i++) {
-		var post = user.posts[i];
+	for (i = 0; i < websiteData.posts.length; i++) {
+		var post = websiteData.posts[i];
 
 		switch (post.type) {
 			case 0:
