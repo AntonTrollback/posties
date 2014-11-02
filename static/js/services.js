@@ -115,15 +115,15 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
 		$('.popover-form .button').attr('disabled', true).text('Loading…');
 
 		var data = {
-			'username': $scope.login.username,
-			'password': $scope.login.password
+			'username': $('[name=username]').val(),
+			'password': $('[name=password]').val()
 		};
 
 		this.login(data).then(function(response) {
 			if (typeof response.data.username !== 'undefined') {
 				window.location = "/by/" + response.data.username;
 			} else {
-				FlashService.showMessage("Your password is incorrect");
+				FlashService.showMessage("Nope. Password seem to be incorrect");
 				$('.popover-form .button').attr('disabled', false).text('OK');
 			}
 		});
