@@ -18,7 +18,7 @@ postiesApp.controller('IndexCtrl', function(
 		id: 0,
 		type: 0,
 		sortrank: 0,
-		content: "<p>Hello</p><p>I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>",
+		content: "<p>Hello</p><p class=\"focus\">I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>",
 		template: 'postText.html'
 	}];
 
@@ -419,7 +419,13 @@ postiesApp.controller('EditorCtrl', function(
 	$scope.focusPostEditor = function(postIndex) {
 		if (!iOS) {
 			$timeout(function() {
-				$('.post').eq(postIndex).find('.post-editor').focus();
+				var $el = $('.post').eq(postIndex).find('.post-editor');
+				var $focusEl = $el.find('.focus');
+				$el.focus();
+
+				if ($focusEl.length) {
+					window.getSelection().collapse($focusEl.get(0), 1);
+				}
 			}, 10);
 		}
 	}
