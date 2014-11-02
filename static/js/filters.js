@@ -16,6 +16,6 @@ postiesApp.filter('getById', function () {
 
 postiesApp.filter('safeYoutubeUrl', ['$sce', function($sce) {
   return function(sourceId) {
-    return $sce.trustAsResourceUrl('//www.youtube.com/embed/' + sourceId);
+    return $sce.trustAsResourceUrl('//www.youtube.com/embed/' + sourceId + '?modestbranding=1&amp;showinfo=0&amp;showsearch=0&amp;rel=0');
   };
 }]);

@@ -58,7 +58,8 @@ def index():
 		return render_template(
 			'layout.html',
 			is_start_page = True,
-			angular_controller = "PageIndexCtrl",
+			angular_controller = "IndexCtrl",
+			filepicker_key = CONFIG["filepicker"]["key"],
 			fonts = WHITELIST_TYPEFACES
 		)
 
@@ -67,15 +68,32 @@ def index():
 def get_posts_by_username(username = None):
 	user_owns_page = False
 
-	if current_user and current_user.is_authenticated():
-		user_owns_page = username == current_user.username
+	users = list(r.table(TABLE_USERS).filter({ 'username' : username }).
+		eq_join('username', r.table(TABLE_USERS_SETTINGS), index='username').merge(
+		lambda user: {
+			'posts': r.table(TABLE_POSTS).get_all(username, index='username').order_by(r.asc('sortrank')).coerce_to('array')
+		}).run(conn))
 
-	return render_template('layout.html',
-			user_owns_page = user_owns_page,
-			username = username,
-			angular_controller = "PagePostsByUserCtrl",
-			fonts = WHITELIST_TYPEFACES
-		)
+	if not len(users):
+		user = ''
+	else:
+		user = users[0]
+		user['settings'] = user.pop('right')
+		user['user'] = user.pop('left')
+		user['user']['is_authenticated'] = current_user.is_authenticated()
+		user.pop('password', None)
+
+	if current_user and current_user.is_authenticated():
+		user_owns_page = (username == current_user.username)
+
+	return render_template(
+		'layout.html',
+		user_owns_page = user_owns_page,
+		user_data = user,
+		filepicker_key = CONFIG["filepicker"]["key"],
+		angular_controller = "UserCtrl",
+		fonts = WHITELIST_TYPEFACES
+	)
 
 	abort(404)
 
@@ -112,8 +130,8 @@ def api_get_user():
 	users = list(r.table(TABLE_USERS).filter({ 'username' : username }).
 		eq_join('username', r.table(TABLE_USERS_SETTINGS), index='username').merge(
 		lambda user: {
-    		'posts': r.table(TABLE_POSTS).get_all(username, index='username').order_by(r.asc('sortrank')).coerce_to('array')
-    	}).run(conn))
+				'posts': r.table(TABLE_POSTS).get_all(username, index='username').order_by(r.asc('sortrank')).coerce_to('array')
+			}).run(conn))
 
 	if not len(users):
 		return jsonify({})
@@ -126,7 +144,6 @@ def api_get_user():
 	user.pop('password', None)
 
 	return jsonify(user)
-
 
 @application.route('/api/users', methods=['POST'])
 def api_create_user():
@@ -170,19 +187,8 @@ def api_create_user():
 
 				result['posts'].append(post['changes'][0]['new_val'])
 
-			# Create all posts that are images
-			elif post['type'] == 2:
-				post = r.table(TABLE_POSTS).insert({
-					'username' : username,
-					'sortrank' : post['sortrank'],
-					'type' : post['type'],
-					'key' : generate_safe_filename(username, post['file']['name']),
-					'created' : r.now()}).run(conn, return_changes = True)
-
-				result['posts'].append(post['changes'][0]['new_val'])
-
-			# Create all posts that are YouTube videos
-			elif post['type'] == 3:
+			# Create all posts that are images or video
+			else:
 				post = r.table(TABLE_POSTS).insert({
 					'username' : username,
 					'sortrank' : post['sortrank'],
@@ -212,22 +218,25 @@ def api_create_user():
 @application.route('/api/postText', methods=['POST', 'PUT'])
 @login_required
 def api_post_text():
-	jsonData = request.json
-	content = jsonData['content']
+	data = request.json
 
 	if request.method == 'POST':
 		result = r.table(TABLE_POSTS).insert({
-			'content' : content,
+			'content' : data['content'],
 			'username' : current_user.username,
-			'sortrank' : jsonData['sortrank'],
-			'type' : int(jsonData['type']),
-			'created' : r.now()}).run(conn, return_changes = True)
+			'sortrank' : data['sortrank'],
+			'type' : int(data['type']),
+			'created' : r.now()
+		}).run(conn, return_changes = True)
+
+		return result['changes'][0]['new_val']['id']
+
 	elif request.method == 'PUT':
-		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
-			'content' : content
+		r.table(TABLE_POSTS).get(data['id']).update({
+			'content' : data['content']
 		}).run(conn, return_changes = True);
 
-	return jsonify(result['changes'][0]['new_val'])
+	return 'success'
 
 
 @application.route('/api/postVideo', methods=['POST', 'PUT'])
@@ -243,30 +252,30 @@ def api_post_video():
 			'sortrank' : jsonData['sortrank'],
 			'type' : int(jsonData['type']),
 			'created' : r.now()}).run(conn, return_changes = True)
+
+		return result['changes'][0]['new_val']['id']
+
 	elif request.method == 'PUT':
-		result = r.table(TABLE_POSTS).get(jsonData['id']).update({
+		r.table(TABLE_POSTS).get(jsonData['id']).update({
 			'key' : key
 		}).run(conn, return_changes = True);
 
-	return jsonify(result['changes'][0]['new_val'])
+	return 'success'
 
 
 @application.route('/api/postImage', methods=['POST'])
 @login_required
 def api_post_image():
-	jsonData = request.json
-
-	post = r.table(TABLE_POSTS).insert({
+	data = request.json
+	result = r.table(TABLE_POSTS).insert({
 		'username' : current_user.username,
-		'sortrank' : jsonData['sortrank'],
-		'type' : int(jsonData['type']),
-		'key' : jsonData['filename'],
-		'created' : r.now()}).run(conn, return_changes = True)
+		'sortrank' : data['sortrank'],
+		'type' : int(data['type']),
+		'key' : data['key'],
+		'created' : r.now()
+	}).run(conn, return_changes = True)
 
-	result = post['changes'][0]['new_val']
-	result['template'] = jsonData['template']
-
-	return jsonify(result)
+	return result['changes'][0]['new_val']['id']
 
 
 @application.route('/api/postrank', methods=['POST'])
@@ -279,7 +288,7 @@ def api_post_rank():
 			'sortrank' : post['sortrank']
 		}).run(conn);
 
-	return jsonify("")
+	return 'success'
 
 
 @application.route('/api/settings', methods=['PUT'])
@@ -326,49 +335,14 @@ def api_get_settings():
 @application.route('/api/posts', methods=['DELETE'])
 @login_required
 def api_delete_post():
-	jsonData = request.json
-	id = jsonData['id']
-
+	id = request.json['id']
 	post_to_delete = r.table(TABLE_POSTS).get(id).run(conn);
 
 	if post_to_delete['username'] == current_user.username:
 		post_to_delete = r.table(TABLE_POSTS).get(id).delete().run(conn)
-		return json.dumps(post_to_delete)
+		return 'success'
 	else:
 		abort(401)
-
-
-@application.route('/api/sign_upload_url', methods=['GET'])
-def sign_s3():
-	# Collect information on the file from the GET parameters of the request:
-	object_name = urllib.quote_plus(request.args.get('s3_object_name'))
-	mime_type = request.args.get('s3_object_type')
-
-	# Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
-	expires = int(time.time() + 100)
-	amz_headers = "x-amz-acl:public-read"
-
-	# Generate the PUT request that JavaScript will use:
-	put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, AWS_S3_BUCKET, object_name)
-
-	# Generate the signature with which the request can be signed:
-	signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
-
-	# Remove surrounding whitespace and quote special characters:
-	# Escape the signature twice, other wise Amazon might throw errors
-	signature = urllib.quote_plus(signature.strip())
-	signature = urllib.quote_plus(signature.strip())
-
-	# Build the URL of the file in anticipation of its imminent upload:
-	url = 'https://%s.s3.amazonaws.com/%s' % (AWS_S3_BUCKET, object_name)
-
-	content = json.dumps({
-		'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
-		'url': url
-	})
-
-	# Return the signed request and the anticipated URL back to the browser in JSON format:
-	return Response(content, mimetype='text/plain; charset=x-user-defined')
 
 
 # Status code handlers and error pages
@@ -389,15 +363,6 @@ def unauthorized(error):
 
 def date_handler(obj):
 	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
-
-def generate_safe_filename(username, filename):
-	fileExtension = '.'
-	try:
-		fileExtension = fileExtension + os.path.splitext(filename)[1][1:].strip()
-	except Error:
-		fileExtension = ''
-	filename = secure_filename(filename)
-	return username + ''.join(random.choice(string.digits) for i in range(6)) + fileExtension
 
 @application.context_processor
 def utility_processor():

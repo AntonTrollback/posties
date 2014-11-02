@@ -4,10 +4,10 @@
     <div class="panel is-active" id="panelPrimaryNavigation">
       {% if is_start_page %}
         <div class="popover-body">
-          <form class="popover-form" name="formLogin" method="post" ng-submit="submitLogin()">
+          <form class="popover-form" name="formLogin" method="post" ng-submit="authService.submitLogin()">
             <span class="popover-form-title">Sign in</span>
-            <input type="text" name="username" ng-model="login.username" placeholder="Website address" required autocapitalize="off" autocorrect="off">
-            <input type="password" name="password" ng-model="login.password" placeholder="Password" required autocapitalize="off" autocorrect="off">
+            <input type="text" name="username" placeholder="Website address" required autocapitalize="off" autocorrect="off">
+            <input type="password" name="password" placeholder="Password" required autocapitalize="off" autocorrect="off">
             <button class="button is-full">OK</button>
             <a class="popover-form-link">Forgot password?</a>
           </form>
@@ -28,7 +28,7 @@
           <p class="popover-intro">This website is created with <a href="http://posti.es">Posti.es</a> – a free service so simple, even your parents can use it</p>
           <a class="button popover-intro-button" href="/">Create a website</a>
         </div>
-        <a class="panel-item is-underlined is-first" data-go-to-panel="panelLogin">
+        <a class="panel-item is-first" data-go-to-panel="panelLogin">
           <span class="panel-item-text is-padded">Edit this website</span>
           <div class="panel-item-icon"><svg role="presentation"><use xlink:href="#arrow-right"></use></svg></div>
         </a>
@@ -48,10 +48,10 @@
         </div>
 
         <div class="popover-body">
-          <form class="popover-form" name="formLogin" method="post" ng-submit="submitLogin()">
+          <form class="popover-form" name="formLogin" method="post" ng-submit="authService.submitLogin()">
             <span class="popover-form-title">Edit this website</span>
-            <script>var USERNAME = "{{username}}"</script>
-            <input type="password" name="password" ng-model="login.password" placeholder="Password" required autocapitalize="off" autocorrect="off">
+            <input type="hidden" name="username" value="{{user_data.user.username}}">
+            <input type="password" name="password" placeholder="Password" required autocapitalize="off" autocorrect="off">
             <button class="button is-full">OK</button>
             <a class="popover-form-link">Forgot password?</a>
           </form>

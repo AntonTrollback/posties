@@ -1,7 +1,10 @@
 <script type="text/ng-template" id="postImage.html">
   <div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
     <div class="post-content-block">
-      <img ng-src="[[post.key]]">
+      {% if is_start_page or user_owns_page %}
+        <ng-include src="'postOptions.html'"></ng-include>
+      {% endif %}
+      <img ng-src="[[post.key]]/convert?cache=true&w=740&fit=max&rotate=exif&compress=true&quality=100">
     </div>
   </div>
 </script>

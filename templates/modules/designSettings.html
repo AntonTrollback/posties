@@ -1,8 +1,8 @@
-<div id="closeOverlays" ng-show="settingsService.isOpen" ng-click="settingsService.submitUpdateSettingsAndClose(userSettings)"></div>
+<div id="closeOverlays" ng-show="settingsService.isOpen" ng-click="settingsService.submitUpdateAndClose(userSettings)"></div>
 
 <div class="popover is-customize updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
   <div class="popover-arrow"><svg role="presentation"><use xlink:href="#popover-arrow"></use></svg></div>
-  <form class="panels" id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdateSettings(userSettings)" novalidate>
+  <form class="panels" id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdate(userSettings)" novalidate>
     <div class="panel is-active" id="panelPrimarySettings">
 
       <!-- Links to font panels -->
@@ -63,7 +63,7 @@
 
       <div class="popover-body">
         <button class="button" ng-click="userSettings = settingsService.getDefaultSettings()"><span analytics-on="click" analytics-event="Reset" analytics-category="Website design settings">Reset</span></button>
-        <span style="margin-left: 0.5em;">or <a ng-click="userSettings = settingsService.getRandomSettings()"><span analytics-on="click" analytics-event="Randomize" analytics-category="Website design settings">randomize</span></a>!</span>
+        <span style="margin-left: 0.5em;">or <a ng-click="userSettings = settingsService.getRandom()"><span analytics-on="click" analytics-event="Randomize" analytics-category="Website design settings">randomize</span></a>!</span>
         <button id="saveUserSettings" class="button" style="display: none;">Save</button>
       </div>
     </div>
@@ -71,7 +71,7 @@
 
     <div class="panel" id="panelTextFont">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>
@@ -88,7 +88,7 @@
 
     <div class="panel" id="panelHeadlineFont">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>
@@ -105,7 +105,7 @@
 
     <div class="panel" id="panelBoxColor">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>
@@ -120,7 +120,7 @@
 
     <div class="panel" id="panelTextColor">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>
@@ -135,7 +135,7 @@
 
     <div class="panel" id="panelBackground">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdateSettings(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>

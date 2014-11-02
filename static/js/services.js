@@ -1,4 +1,4 @@
-var dependencies = ['ngSanitize', 'angularFileUpload', 'angular-medium-editor', 'angulartics', 'angulartics.google.analytics'];
+var dependencies = ['ngSanitize', 'angular-medium-editor', 'angulartics', 'angulartics.google.analytics'];
 
 var postiesApp = angular.module('posties', dependencies, function($interpolateProvider) {
 	$interpolateProvider.startSymbol('[[');
@@ -17,64 +17,43 @@ postiesApp.constant('config', {
 });
 
 
-postiesApp.service('SettingsService', function($http, config, Fonts) {
-	var fonts = Fonts.getFonts();
-	this.isOpen = false;
-
+postiesApp.service('SettingsService', function($http, config, FontService) {
 	// We hold the most recent settings object from the DB, so that we can check
 	// incoming objects for equality - determining if a DB update is needed
 	this.currentSettings = {};
+	this.isOpen = false;
 
-	this.getSettings = function() {
-		if (AUTHENTICATED) {
+	this.submitUpdate = function(userSettings) {
+		if (!USER_DATA.is_authenticated) {
+			return;
+		}
+
+		if (!angular.equals(this.currentSettings, userSettings)) {
+			// Make a deep copy of the settings object, otherwise the equality check will always pass
+			this.currentSettings = jQuery.extend(true, {}, userSettings);
+
 			var promise = $http({
 				url: '/api/settings',
-				method: 'get',
+				method: 'put',
+				data: userSettings,
 				headers: config.headerJSON
 			}).then(function(response) {
-				this.currentSettings = response.data;
 				return this.currentSettings;
 			}, function(response) {
 				console.log(response);
 			});
 
 			return promise;
-		} else {
-			return this.getDefaultSettings();
 		}
 	};
 
-	this.submitUpdateSettings = function(userSettings) {
-		if (AUTHENTICATED) {
-			if (!angular.equals(this.currentSettings, userSettings)) {
-
-				// Make a deep copy of the settings object, otherwise the equality check will always pass
-				this.currentSettings = jQuery.extend(true, {}, userSettings);
-
-				var promise = $http({
-					url: '/api/settings',
-					method: 'put',
-					data: userSettings,
-					headers: config.headerJSON
-				}).then(function(response) {
-
-					return this.currentSettings;
-				}, function(response) {
-					console.log(response);
-				});
-
-				return promise;
-			}
-		}
-	};
-
-	this.submitUpdateSettingsAndClose = function(userSettings) {
-		this.submitUpdateSettings(userSettings);
+	this.submitUpdateAndClose = function(userSettings) {
+		this.submitUpdate(userSettings);
 		this.close();
 	};
 
 	this.open = function() {
-		fonts.loadAll();
+		FontService.loadAll();
 		this.isOpen = true;
 	};
 
@@ -82,7 +61,7 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 		this.isOpen = false;
 	};
 
-	this.getRandomSettings = function() {
+	this.getRandom = function() {
 		return {
 			created: new Date(),
 			id: 0,
@@ -95,7 +74,7 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 		};
 	};
 
-	this.getDefaultSettings = function($event) {
+	this.getDefault = function($event) {
 		return {
 			created: new Date(),
 			id: 0,
@@ -123,39 +102,38 @@ postiesApp.service('SettingsService', function($http, config, Fonts) {
 	}
 
 	function getRandomTypeface() {
-		return fonts.fontList[Math.floor(Math.random() * fonts.fontList.length)];
+		return FontService.fontList[Math.floor(Math.random() * FontService.fontList.length)];
 	}
+
+	return this;
 });
 
-
-
-postiesApp.service('UserService', function($http, config) {
-	this.getUserWithPosts = function(username) {
-		var promise = $http({
-			url: '/api/users',
-			method: 'get',
-			params: {
-				'username': username.toLowerCase()
-			},
-			headers: config.headerJSON
-		}).then(function(response) {
-			return response;
-		}, function(response) {
-			console.log(response);
-		});
-
-		return promise;
-	};
-});
-
-postiesApp.service('AuthService', function($http, config) {
+postiesApp.service('AuthService', function($http, config, FlashService) {
 	this.user = false;
 
-	this.login = function(jsonPost) {
+	this.submitLogin = function() {
+		$('.popover-form .button').attr('disabled', true).text('Loading…');
+
+		var data = {
+			'username': $('[name=username]').val(),
+			'password': $('[name=password]').val()
+		};
+
+		this.login(data).then(function(response) {
+			if (typeof response.data.username !== 'undefined') {
+				window.location = "/by/" + response.data.username;
+			} else {
+				FlashService.showMessage("Nope. Password seem to be incorrect");
+				$('.popover-form .button').attr('disabled', false).text('OK');
+			}
+		});
+	};
+
+	this.login = function(data) {
 		return $http({
 			url: '/login',
 			method: 'post',
-			data: jsonPost,
+			data: data,
 			headers: config.headerJSON
 		}).then(function(response) {
 			return response;
@@ -164,65 +142,53 @@ postiesApp.service('AuthService', function($http, config) {
 		});
 	};
 
-	this.isLoggedIn = function() {
-		return this.user !== false;
-	};
-
-	this.currentUserInSession = function() {
-
-	};
+	return this;
 });
 
 postiesApp.service('FlashService', function($timeout) {
-	var flash = {
-		message: undefined,
-		element: $('#flash')
-	};
+	this.message = undefined;
+	this.element = $('#flash');
 
-	flash.showMessage = function(message) {
-		flash.message = message;
-		flash.element.fadeIn(function() {
+	this.showMessage = function(message) {
+		this.message = message;
+		this.element.fadeIn(function() {
 			$(this).delay(1000).fadeOut();
 		});
 	};
 
-	flash.showPermanentMessage = function(message) {
-		flash.message = message;
-		flash.element.fadeIn();
+	this.showPermanentMessage = function(message) {
+		this.message = message;
+		this.element.fadeIn();
 	};
 
-	flash.hide = function() {
-		flash.element.fadeOut();
+	this.hide = function() {
+		this.element.fadeOut();
 	};
 
-	flash.hideWelcome = function() {
+	this.hideWelcome = function() {
 		$('.welcome').hide();
 	};
 
-	this.getFlash = function() {
-		return flash;
-	};
+	return this;
 });
 
-postiesApp.service('Fonts', function($http, config) {
-	var fonts = {
-		fontList: FONTS,
-		fontListLoaded: false
-	};
+postiesApp.service('FontService', function($http, config) {
+	this.fontList = FONTS;
+	this.fontListLoaded = false;
 
 	// Required by the typekit font loader
 	WebFontConfig = {};
 
-	fonts.loadAll = function() {
-		if (fonts.fontListLoaded) {
+	this.loadAll = function() {
+		if (this.fontListLoaded) {
 			return;
 		}
 
-		fonts.load(fonts.fontList);
-		fonts.fontListLoaded = true;
+		this.load(this.fontList);
+		this.fontListLoaded = true;
 	};
 
-	fonts.load = function(fonts) {
+	this.load = function(fonts) {
 		var cleanFonts = [];
 
 		// Remove Akkurat, should already be loaded
@@ -252,7 +218,5 @@ postiesApp.service('Fonts', function($http, config) {
 		}
 	};
 
-	this.getFonts = function() {
-		return fonts;
-	};
+	return this;
 });

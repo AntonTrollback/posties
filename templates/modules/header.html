@@ -15,7 +15,7 @@
   {% endif %}
 
   {% if user_owns_page %}
-    <span class="header-action is-link">{{username}}</span>
+    <span class="header-action is-link">{{user_data.user.username}}</span>
   {% endif %}
 </div>
 
@@ -26,6 +26,6 @@
 {% endif %}
 
 <div id="flash">
-  <a class="close" ng-click="flash.hide()">×</a>
-  <pre>[[flash.message]]</pre>
+  <a class="close" ng-click="flashService.hide()">×</a>
+  <pre>[[flashService.message]]</pre>
 </div>

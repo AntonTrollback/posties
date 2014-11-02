@@ -38,6 +38,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: [
+          'bower_components/svg4everybody/svg4everybody.js',
           'bower_components/jquery/dist/jquery.js',
           'bower_components/angular/angular.js',
           'bower_components/angular-sanitize/angular-sanitize.js',
@@ -45,17 +46,13 @@ module.exports = function(grunt) {
           'bower_components/angulartics/src/angulartics.js',
           'bower_components/angulartics/src/angulartics-ga.js',
           'bower_components/jquery-minicolors/jquery.minicolors.js',
-          'bower_components/ng-file-upload/angular-file-upload.js',
           'bower_components/Autolinker.js/dist/Autolinker.js',
           'bower_components/medium-editor/dist/js/medium-editor.js',
-          'bower_components/blueimp-load-image/js/load-image.all.min.js',
-          'bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js',
-          'bower_components/svg4everybody/svg4everybody.js',
-
-          'static/js/s3upload.js',
+          'bower_components/imagesloaded/imagesloaded.pkgd.js',
+          'bower_components/angular-images-loaded/angular-images-loaded.js',
           'static/js/util.js',
-          'static/js/directives.js',
           'static/js/services.js',
+          'static/js/directives.js',
           'static/js/filters.js',
           'static/js/controllers.js'
         ],

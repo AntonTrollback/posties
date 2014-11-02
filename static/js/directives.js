@@ -1,5 +1,6 @@
 // Todo: create directives
 $(function() {
+
   // Navigate panels
   $('.panels').each(function() {
     var $this = $(this);
@@ -125,5 +126,23 @@ angular.module('angular-medium-editor', []).directive('mediumEditor', function()
 
     }
   };
-
 });
+
+
+angular.module('posties').directive('fileChange', ['$parse', function($parse) {
+    var prevImage = false;
+    return {
+      restrict: 'A',
+      link: function ($scope, element, attrs) {
+        var attrHandler = $parse(attrs['fileChange']);
+
+        var handler = function (e) {
+          $scope.$apply(function () {
+            attrHandler($scope, { $event: e, $files: e.target.files });
+          });
+        };
+
+        element[0].addEventListener('change', handler, false);
+      }
+    };
+  }]);
