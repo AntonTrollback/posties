@@ -160,6 +160,10 @@
   cursor: default;
 }
 
+/**
+ * Tweak for unboxed posts
+ */
+
 .post-inner.is-unboxed .post-content-pre {
   padding: 13px 10px;
 }
@@ -190,7 +194,7 @@
   padding: 20px 10px;
 }
 
-.post-inner.is-unboxed .post-content-loading strong {
+.post-inner.is-unboxed .post-content-loading span {
   right: 10px;
 }
 
@@ -221,7 +225,7 @@
     padding: 28px 32px;
   }
 
-  .post-content-loading strong {
+  .post-content-loading span {
     right: 32px;
   }
 
