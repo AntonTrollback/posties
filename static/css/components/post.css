@@ -1,8 +1,4 @@
 .post {
-
-}
-
-.post {
   position: relative;
   box-sizing: border-box;
   margin: 5px 0;
@@ -145,6 +141,14 @@
   padding: 20px;
 }
 
+/* Hidden but leave it in the flow to be sure it's loaded */
+.post-loading-image {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  opacity: 0;
+}
+
 .post-content-loading span {
   position: absolute;
   right: 20px;
@@ -189,7 +193,6 @@
 .post-inner.is-unboxed .post-content-loading strong {
   right: 10px;
 }
-
 
 @media (--md-viewport) {
   .post-content-pre {

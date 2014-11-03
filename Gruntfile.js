@@ -49,7 +49,6 @@ module.exports = function(grunt) {
           'bower_components/Autolinker.js/dist/Autolinker.js',
           'bower_components/medium-editor/dist/js/medium-editor.js',
           'bower_components/imagesloaded/imagesloaded.pkgd.js',
-          'bower_components/angular-images-loaded/angular-images-loaded.js',
           'static/js/util.js',
           'static/js/services.js',
           'static/js/directives.js',

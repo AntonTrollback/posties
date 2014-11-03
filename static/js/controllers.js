@@ -64,7 +64,6 @@ postiesApp.controller('IndexCtrl', function(
 		} else {
 			// Check if already used
 			$scope.checkUsername(function(response) {
-				console.log(response)
 				if (response.data !== 'no match') {
 					errors.push('username');
 					$scope.formCreateUser.username.error = "Sorry, that website address is already taken";
@@ -110,7 +109,7 @@ postiesApp.controller('IndexCtrl', function(
 		// Remove invalid video posts and not yet uploaded images
 		for (var i in $scope.posts) {
 			if (($scope.posts[i].type === 3 && !$scope.posts[i].isValidVideo) ||
-				  ($scope.posts[i].type === 2 && !$scope.posts[i].isUploaded)) {
+					($scope.posts[i].type === 2 && !$scope.posts[i].isUploaded)) {
 				continue;
 			} else {
 				// Remove unnecessary data
@@ -183,8 +182,8 @@ postiesApp.controller('UserCtrl', function(
 				post.template = 'postHeadline.html';
 				break;
 			case 2:
-			  post.template = 'postImage.html';
-			  post.isUploaded = true;
+				post.template = 'postImage.html';
+				post.isUploaded = true;
 				break;
 			case 3:
 				post.template = 'postVideo.html';
@@ -245,7 +244,7 @@ postiesApp.controller('EditorCtrl', function(
 				$scope.setupTextBasedPost(post);
 				break;
 			case 2:
-			  // Note: image is already selected
+				// Note: image is already selected
 				$scope.setupImage(post, $event.target, $data[0]);
 				break;
 			case 3:
@@ -280,7 +279,7 @@ postiesApp.controller('EditorCtrl', function(
 		}
 
 		post.isUploaded = false;
-		post.template = 'postImageLoading.html';
+		post.template = 'postImageUploading.html';
 
 		post.uploadProgress = 0;
 		$scope.posts.push(post);
@@ -302,7 +301,9 @@ postiesApp.controller('EditorCtrl', function(
 			$scope.$apply(function() {
 				post.key = blob.url;
 				post.isUploaded = true;
-				post.template = 'postImage.html';
+
+				// Change to loading from uploading
+				post.template = 'postImageLoading.html';
 			});
 
 			$scope.send($scope.posts[post.sortrank], 'postImage', function(response) {
@@ -316,12 +317,30 @@ postiesApp.controller('EditorCtrl', function(
 
 		var storeProgress = function(progress) {
 			$scope.$apply(function() {
-				post.uploadProgress = progress + '%';
+				if (progress < 95) {
+					post.uploadProgress = progress + '%';
+					return;
+				}
+
+				// Always stuck at 95% for a while. Let's make it look a bit better
+				if (progress = 95) {
+					$timeout(function() { post.uploadProgress = '98%'; }, 300);
+					$timeout(function() { post.uploadProgress = '100%'; }, 600);
+					$timeout(function() { post.uploadProgress = 'Loading'; }, 900);
+				}
 			});
 		};
 
 		// Upload image
 		filepicker.store(input, storeOptions, storeSuccess, storeError, storeProgress);
+	};
+
+	/**
+	 * Image loaded (and converted) event
+	 */
+
+	$scope.imageLoaded = function(post) {
+		post.template = 'postImage.html';
 	};
 
 	/**
@@ -333,7 +352,7 @@ postiesApp.controller('EditorCtrl', function(
 		post.template = 'postVideoInput.html';
 		$scope.posts.push(post);
 		$scope.focusPostEditor(post.sortrank);
-	}
+	};
 
 	/**
 	 * Validate video (and send to backend)
@@ -425,6 +444,7 @@ postiesApp.controller('EditorCtrl', function(
 				var $focusEl = $el.find('.focus');
 				$el.focus();
 
+				// Find options span.focus element and move carret to that position
 				if ($focusEl.length) {
 					window.getSelection().collapse($focusEl.get(0), 1);
 				}

@@ -42,6 +42,7 @@
     {% include 'modules/jsTemplates/postImage.html' %}
     {% include 'modules/jsTemplates/postVideo.html' %}
     {% if is_start_page or user_owns_page %}
+      {% include 'modules/jsTemplates/postImageUploading.html' %}
       {% include 'modules/jsTemplates/postImageLoading.html' %}
       {% include 'modules/jsTemplates/postVideoInput.html' %}
     {% endif %}
