@@ -82,7 +82,7 @@ def get_posts_by_username(username = None):
 		user['settings'] = user.pop('right')
 		user['user'] = user.pop('left')
 		user['user']['is_authenticated'] = current_user.is_authenticated()
-		user.pop('password', None)
+		user['user'].pop('password', None)
 
 	if current_user and current_user.is_authenticated():
 		user_owns_page = (username == current_user.username)
@@ -142,7 +142,7 @@ def api_get_user():
 	user['settings'] = user.pop('right')
 	user['user'] = user.pop('left')
 	user['user']['is_authenticated'] = current_user.is_authenticated()
-	user.pop('password', None)
+	user['user'].pop('password', None)
 
 	return jsonify(user)
 
