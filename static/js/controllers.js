@@ -140,7 +140,7 @@ postiesApp.controller('IndexCtrl', function(
  */
 
 postiesApp.controller('UserCtrl', function(
-	$scope, $http, $timeout, $filter, $analytics, config,
+	$scope, $http, $timeout, $filter, $analytics, $sce, config,
 	FontService, AuthService, FlashService, SettingsService) {
 
 	$scope.flashService = FlashService;
@@ -176,9 +176,11 @@ postiesApp.controller('UserCtrl', function(
 
 		switch (post.type) {
 			case 0:
+			  post.html = $sce.trustAsHtml(post.content);
 				post.template = 'postText.html';
 				break;
 			case 1:
+				post.html = $sce.trustAsHtml(post.content);
 				post.template = 'postHeadline.html';
 				break;
 			case 2:

@@ -23,7 +23,7 @@
       </form>
     {% else %}
       <div class="post-content-pre" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
-        <div ng-bind-html="post.content"></div>
+        <div ng-bind-html="post.html"></div>
       </div>
     {% endif %}
   </div>
