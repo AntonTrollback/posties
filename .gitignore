@@ -1,1 +1,13 @@
-node_modules
+# Environment files
+npm-debug.log
+
+# Libs
+node_modules/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
