@@ -1,4 +1,5 @@
-# Environment files
+.env
+
 npm-debug.log
 
 # Libs
