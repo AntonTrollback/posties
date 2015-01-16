@@ -43,7 +43,7 @@ app.listen(app.get('port'), function() {
 
 app.get('/', function(req, res) {
   res.render('layout', {
-    production: env.get('port') === 'production',
+    production: env.get('env') === 'production',
     title: 'Posti.es',
     description: 'Posti.es description ...',
     content: 'hello world'
