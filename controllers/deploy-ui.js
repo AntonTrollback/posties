@@ -1,12 +1,15 @@
+var _ = require('lodash');
 var fs = require('fs');
 var mime = require('mime');
+var zlib = require('zlib');
 var aws = require('aws-sdk');
 var Habitat = require('habitat');
 
-var srcDir = __dirname + '/../dist/';
-var targetDir = 'assets/';
+var distDir = __dirname + '/../dist/';
+var s3dir = 'assets/';
 
-// Get aws keys and bucket info from .env file
+// Setup aws with keys and bucket info from .env file
+
 Habitat.load();
 var env = new Habitat();
 
@@ -19,40 +22,70 @@ aws.config.update({
 // Version 4 is needed for region eu-central-1 (Frankfurt)
 var s3 = new aws.S3({signatureVersion: 'v4'});
 
-// Upload files
-getFileList(srcDir).forEach(function(fileName) {
-  uploadFile(fileName);
+// Get list of files to upload
+
+var fileList = getFileList(distDir);
+
+// Gzip
+
+var gzipTargets = ['js', 'css', 'html', 'json', 'svg', 'ico', 'eot', 'otf', 'ttf'];
+var gzipped = [];
+
+fileList.forEach(function(name) {
+  var extension = name.split('.').pop();
+
+  if (_.indexOf(gzipTargets, extension) > -1) {
+    var input = fs.readFileSync(distDir + name, 'utf8');
+
+    zlib.gzip(input, function(error, result) {
+      fs.writeFileSync(distDir + name, result);
+      gzipped.push(name);
+      return;
+    });
+  }
 });
 
-function uploadFile (fileName) {
+// Upload
+
+fileList.forEach(function(file) {
+  upload(file);
+});
+
+function upload (name) {
   var options = {
     ACL: 'public-read',
     Bucket: env.get('bucket'),
-    Key: targetDir + fileName,
-    Body: fs.readFileSync(srcDir + fileName),
-    ContentType: mime.lookup(srcDir + fileName),
+    Key: s3dir + name,
+    Body: fs.readFileSync(distDir + name),
+    ContentType: mime.lookup(distDir + name),
     CacheControl: 'public, max-age=31377926' // a year
   };
 
+  if (_.indexOf(gzipped, name) > -1) {
+    options['ContentEncoding'] = 'gzip';
+  }
+
   s3.putObject(options, function(error, response) {
     if (error) {
-      console.log('Failed to upload ' + fileName + ' to ' + targetDir);
+      console.log('Failed to upload ' + name + ' to ' + s3dir);
       console.log(error);
     } else {
-      console.log('Uploaded ' + fileName + ' to ' + targetDir);
+      console.log('Uploaded ' + name + ' to ' + s3dir);
     }
   });
 }
 
 function getFileList(path) {
   var fileInfo;
-  var filesFound;
   var fileList = [];
-  filesFound = fs.readdirSync(path);
+  var filesFound = fs.readdirSync(path);
 
   for (var i = 0; i < filesFound.length; i++) {
     fileInfo = fs.lstatSync(path + filesFound[i]);
-    if (fileInfo.isFile()) fileList.push(filesFound[i]);
+
+    if (fileInfo.isFile()) {
+      fileList.push(filesFound[i]);
+    }
   }
 
   return fileList;
