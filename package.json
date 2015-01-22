@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "deploy": "REV=\"$(date +%s)\"; git push heroku master; node controllers/deploy.js $REV; heroku config:set REVISION=$REV"
+    "deploy": "REV=\"$(date +%s)\"; git push heroku master; node controllers/compile.js; node controllers/deploy.js $REV; heroku config:set REVISION=$REV"
   },
   "dependencies": {
     "compression": "^1.3.0",
