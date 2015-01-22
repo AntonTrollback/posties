@@ -21,7 +21,7 @@ var s3 = new aws.S3({signatureVersion: 'v4'});
 // Upload
 
 var distDir = __dirname + '/../dist/';
-var s3dir = 'assets/' + revision;
+var s3dir = 'assets/' + revision + '/';
 var fileList = getFileList(distDir);
 
 console.log('Uploading to ' + env.get('bucket') + '/' + s3dir)

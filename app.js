@@ -37,7 +37,7 @@ app.listen(app.get('port'), function() {
 app.get('/', function(req, res) {
   res.render('layout', {
     production: production,
-    productionAssetUrl: '//s3.eu-central-1.amazonaws.com/posties-master/assets/' + revision,
+    productionAssetUrl: '//s3.eu-central-1.amazonaws.com/posties-master/assets/' + revision + '/',
     title: 'Posti.es',
     description: 'Posti.es description ...',
     content: 'hello world'
