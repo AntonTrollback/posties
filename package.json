@@ -2,10 +2,11 @@
   "name": "posties",
   "version": "1.0.0",
   "description": "Posti.es",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node controllers/compile-ui.js; node index.js",
-    "deploy": "node controllers/compile-ui.js compress; node controllers/deploy-ui.js; git push heroku master"
+    "start": "node app.js",
+    "deploy": "git push heroku master; node controllers/deploy.js",
+    "postinstall": "if [ $npm_config_heroku ]; then heroku config:set REVISION=lol; fi"
   },
   "dependencies": {
     "aws-sdk": "^2.1.6",
@@ -15,6 +16,7 @@
     "habitat": "^3.1.2",
     "lodash": "^2.4.1",
     "mime": "^1.2.11",
+    "mincer": "^1.2.2",
     "mustache-express": "^1.2.1",
     "pg": "^4.1.0",
     "s3-upload": "0.0.1"
