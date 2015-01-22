@@ -34,37 +34,49 @@ var gzipped = [];
 fileList.forEach(function(name) {
   var extension = name.split('.').pop();
 
-  if (_.indexOf(gzipTargets, extension) > -1) {
-    var input = fs.readFileSync(distDir + name, 'utf8');
-
-    zlib.gzip(input, function(error, result) {
-      fs.writeFileSync(distDir + name, result);
-      gzipped.push(name);
-      return;
-    });
+  if (_.indexOf(gzipTargets, extension) === -1) {
+    return;
   }
+
+  gzipped.push(name);
+
+  var content = fs.readFileSync(distDir + name);
+
+  zlib.gzip(content, function(err, compressed) {
+    fs.writeFileSync(distDir + name + '.gz', compressed);
+    fs.unlinkSync(distDir + name);
+    fs.renameSync(distDir + name + '.gz', distDir + name);
+  });
+
+  gzipped.push(name);
 });
 
 // Upload
 
-fileList.forEach(function(file) {
-  upload(file);
+fileList.forEach(function (file) {
+  prepair(file);
 });
 
-function upload (name) {
-  var options = {
-    ACL: 'public-read',
-    Bucket: env.get('bucket'),
-    Key: s3dir + name,
-    Body: fs.readFileSync(distDir + name),
-    ContentType: mime.lookup(distDir + name),
-    CacheControl: 'public, max-age=31377926' // a year
-  };
+function prepair (name) {
+  fs.readFile(distDir + name, "utf8", function (err, data) {
+    var options = {
+      ACL: 'public-read',
+      Bucket: env.get('bucket'),
+      Key: s3dir + name,
+      Body: data,
+      ContentType: mime.lookup(distDir + name),
+      CacheControl: 'public, max-age=31377926' // a year
+    };
 
-  if (_.indexOf(gzipped, name) > -1) {
-    options['ContentEncoding'] = 'gzip';
-  }
+    if (_.indexOf(gzipped, name) > -1) {
+      options['ContentEncoding'] = 'gzip';
+    }
 
+    upload(options, name)
+  });
+}
+
+function upload (options, name) {
   s3.putObject(options, function(error, response) {
     if (error) {
       console.log('Failed to upload ' + name + ' to ' + s3dir);
