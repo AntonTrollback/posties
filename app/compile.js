@@ -1,7 +1,7 @@
 var fs = require('fs');
 var cssnext = require('cssnext');
-var distDir = __dirname + '/../dist';
 
+var distDir = __dirname + '/../dist';
 var compress = process.argv[2] === 'compress';
 
 // Empty dist folder
@@ -11,7 +11,7 @@ fs.mkdirSync(distDir);
 
 // Compile CSS
 
-var CSSinput = fs.readFileSync(__dirname + '/../ui/css/index.css', 'utf8');
+var CSSinput = fs.readFileSync(__dirname + '/../src/css/index.css', 'utf8');
 var CSSoutput = cssnext(CSSinput, {compress: compress});
 fs.writeFileSync(distDir + '/index.css', CSSoutput);
 

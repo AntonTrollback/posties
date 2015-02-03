@@ -11,8 +11,10 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "start": "node app.js",
-    "deploy": "REV=\"$(date +%s)\"; git push heroku master; node controllers/compile.js; node controllers/deploy.js $REV; heroku config:set REVISION=$REV"
+    "setup": "npm install",
+    "start": "node app/compile.js; node app.js",
+    "compile": "node app/compile.js",
+    "deploy": "REV=\"$(date +%s)\"; git push heroku master; node app/compile.js; node app/deploy.js $REV; heroku config:set REVISION=$REV"
   },
   "dependencies": {
     "body-parser": "^1.10.2",
@@ -21,9 +23,10 @@
     "express-session": "^1.10.1",
     "habitat": "^3.1.2",
     "lodash": "^2.4.1",
+    "method-override": "^2.3.1",
     "mime": "^1.2.11",
     "mustache-express": "^1.2.1",
-    "pg": "^4.1.0"
+    "pg": "^4.2.0"
   },
   "devDependencies": {
     "aws-sdk": "^2.1.7",
