@@ -39,14 +39,17 @@ app.use(session({
 }));
 
 // App settings
-var s = {};
-s.databaseUrl = env.get('databaseUrl');
-s.production = env.get('env') === 'production';
-s.revision = env.get('revision');
-s.assetUrl = s.production ? '//s3.eu-central-1.amazonaws.com/posties-master/assets/' + s.revision + '/' : '/';
-s.analyticsCode = s.production ? 'UA-50858987-1' : false;
+var production = env.get('env') === 'production';
+var revision = env.get('revision');
+var settings = {
+  databaseUrl: env.get('databaseUrl'),
+  production: production,
+  revision: revision,
+  assetUrl: production ? '//s3.eu-central-1.amazonaws.com/posties-master/assets/' + revision + '/' : '/',
+  analyticsCode: production ? 'UA-50858987-1' : false
+};
 
-require(__dirname + '/app/routes.js')(app, s);
+require(__dirname + '/app/routes.js')(app, settings);
 
 // Start app
 app.listen(app.get('port'), function() {
