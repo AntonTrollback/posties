@@ -14,7 +14,7 @@
     "setup": "npm install",
     "start": "node app/compile.js; node app.js",
     "compile": "node app/compile.js",
-    "deploy": "REV=\"$(date +%s)\"; git push heroku master; node app/compile.js; node app/deploy.js $REV; heroku config:set REVISION=$REV",
+    "deploy": "REV=\"$(date +%s)\"; git push heroku master; node app/compile.js compress; node app/deploy.js $REV; heroku config:set REVISION=$REV",
     "minor-deploy": "git push heroku master;"
   },
   "dependencies": {
