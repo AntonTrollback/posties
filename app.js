@@ -38,11 +38,9 @@ app.use(session({
   saveUninitialized: true
 }));
 
-console.log(env.DATABASE_URL)
-
 // App settings
 var s = {};
-s.databaseUrl = "postgres://admin:at@localhost/posties";
+s.databaseUrl = env.get('databaseUrl');
 s.production = env.get('env') === 'production';
 s.revision = env.get('revision');
 s.assetUrl = s.production ? '//s3.eu-central-1.amazonaws.com/posties-master/assets/' + s.revision + '/' : '/';

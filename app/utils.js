@@ -21,7 +21,8 @@ module.exports = function(app, settings) {
       analyticsCode: settings.analyticsCode,
       title: 'Posti.es',
       description: 'Posti.es description ...',
-      content: 'hello world'
+      content: 'hello world',
+      databaseUrl: settings.databaseUrl
     }
 
     res.render('layout', _.assign(data, options));
