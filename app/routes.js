@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 module.exports = function(app, settings) {
 
   var utils = require(__dirname + '/../app/utils.js')(app, settings);
@@ -7,36 +9,43 @@ module.exports = function(app, settings) {
 
   app.get('/', function(req, res) {
     utils.renderPage(res, {
-      content: 'Index'
+      index: true,
+      inEditMode: true,
+      title: 'Posti.es',
+      description: 'The posties description ...'
     });
   });
 
-  // User edit page
+  // Dump database
 
-  app.get('/edit', utils.checkAuth, function (req, res) {
-    utils.renderPage(res, {
-      title: req.session.website_name,
-      content: 'Edit page: ' + req.session.website_name
-    });
-  });
+  app.get('/database', function(req, res) {
+    database.dumpDatabase(function(error, data) {
+      if (error) { utils.renderErrorPage(res, error); return; }
 
-  app.post('/create_user', function (req, res) {
-    var email = req.body.email;
-    var password = req.body.password;
-
-    if (email && password) {
-      database.createUser(user, function(error, data) {
-        if (error) {
-          console.log(error);
-          res.send('Uups, DB problem');
-          return;
-        } else {
-          res.send('Success! User created');
-        }
+      utils.renderPage(res, {
+        title: 'Database dump',
+        dump: JSON.stringify(data)
       });
-    } else {
-      res.send('Bad input');
+    });
+  });
+
+  // Sign up
+
+  app.post('/signup', function (req, res) {
+    var user = {
+      email: req.body.email,
+      password: req.body.password
     }
+
+    if (!utils.validUserSignupData(user)) {
+      res.send('Bad input');
+      return;
+    }
+
+    database.createUser(user, function(error, data) {
+      if (error) { utils.sendEndpointError(res, error); return; }
+      res.send(data);
+    });
   });
 
   // Sign in

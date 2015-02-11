@@ -6,17 +6,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{{{assetUrl}}}index.css">
 
-{{content}}
-
-{{#production}}
-<br> running in production
-{{/production}}
-
+{{^activeUser}}
 <form action="/signin" method="post">
   <input name="email" type="text">
   <input name="password" type="text">
-  <button>Signin</button>
+  <button>Sign in</button>
 </form>
+
+<form action="/signup" method="post">
+  <input name="email" type="text">
+  <input name="password" type="text">
+  <button>sign up</button>
+</form>
+{{/activeUser}}
+
+{{#activeUser}}
+<hr>
+<a href="/signout">Signout</a>
+{{/activeUser}}
+
+{{#index}}
+  √ Intro texts
+{{/index}}
+
+{{#inEditMode}}
+  √ Design settings
+  √ Edit posts
+{{/inEditMode}}
+
+{{#dump}}
+{{{dump}}}
+{{/dump}}
+
+{{#serverError}}
+<h1>Woops. 505 error</h1>
+{{/serverError}}
+
 
 {{> symbols}}
 

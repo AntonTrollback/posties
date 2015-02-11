@@ -1,31 +1,35 @@
 var pg = require('pg');
+var query = require('pg-query');
 
 module.exports = function(app, settings) {
   var database = {};
-  var connectionStr = settings.databaseUrl;
+  query.connectionParameters = settings.databaseUrl;
 
-  var queries = {
-    createUser: 'insert into users(document) values($1) returning *'
+  /*
+  var createUsersQuery = 'CREATE TABLE IF NOT EXISTS users(id text, email text, password text, created timestamptz)';
+  query(createUsersQuery, function(error, rows, result) {
+    console.log(error, rows, result);
+  });
+  */
+
+  // Dump database
+
+  database.dumpDatabase = function(callback) {
+    query('select * from users', function(error, rows, result) {
+      callback(error, rows);
+    });
   }
 
+  // Create user
+
   database.createUser = function(user, callback) {
-    pg.connect(connectionStr, function(err, client, done) {
-      if (err) {
-        callback('Could not get a client from pool: ' + JSON.stringify(err));
-        return false;
-      }
+    var data = [
+      user.email,
+      user.password
+    ];
 
-      client.query( {name: 'create_user', text: queries.createUser, values: [JSON.stringify(user)]}, function(err, result) {
-        if (err) {
-          done();
-          callback('Could not insert user into database: ' + JSON.stringify(err));
-          return false;
-        }
-
-        done();
-        callback(null, result.rows[0].document);
-        return;
-      });
+    query('insert into users(email, password) values($1, $2) returning *', data, function(error, rows, result) {
+      callback(error, rows.email);
     });
   }
 

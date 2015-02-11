@@ -1,8 +1,15 @@
 body {
-  width: calc(1000px - 200px);
+  width: 800px;
   margin: 100px auto;
-  font-size: 40px;
+  font-size: 16px;
   text-align: center;
-  font-family: futura;
-  color: orange;
+  color: #555;
+  font-family: Monaco, monospace;
+  line-height: 1.5;
+}
+
+form {
+  margin: 1em 0;
+  padding: 1em;
+  outline: 1px dotted;
 }

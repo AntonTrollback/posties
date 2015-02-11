@@ -13,19 +13,41 @@ module.exports = function(app, settings) {
     }
   }
 
+  utils.validUserSignupData = function(user) {
+    if (!_.isString(user.email)) { return false; }
+    if (!_.isString(user.password)) { return false; }
+    if (user.email.length < 1) { return false; }
+    if (user.password.length < 1) { return false; }
+
+    return true;
+  }
+
   // Render page
 
   utils.renderPage = function(res, options) {
     var data = {
       assetUrl: settings.assetUrl,
       analyticsCode: settings.analyticsCode,
-      title: 'Posti.es',
-      description: 'Posti.es description ...',
-      content: 'hello world',
-      databaseUrl: settings.databaseUrl
     }
 
     res.render('layout', _.assign(data, options));
+  }
+
+  // Render error page
+
+  utils.renderErrorPage = function(res, error) {
+    console.error(error);
+
+    utils.renderPage({
+      title: 'Posti.es',
+      serverError: true
+    });
+  }
+
+  utils.sendEndpointError = function(res, error) {
+    console.error(error);
+
+    res.send('database error');
   }
 
   return utils;

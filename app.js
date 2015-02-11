@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Parse application/json
 app.use(bodyParser.json());
 // Parse application/vnd.api+json as json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 // Override with the X-HTTP-Method-Override header in the request
 app.use(methodOverride('X-HTTP-Method-Override'));
 // Enable resource compression
