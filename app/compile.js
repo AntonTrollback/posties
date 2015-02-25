@@ -15,7 +15,7 @@ var CSSinput = fs.readFileSync(__dirname + '/../src/css/index.css', 'utf8');
 var CSSoutput = cssnext(CSSinput, {compress: compress});
 fs.writeFileSync(distDir + '/index.css', CSSoutput);
 
-console.log('√ CSS');
+//console.log('√ CSS');
 
 // Compile JS
 // console.log('√ JS');
@@ -24,7 +24,7 @@ console.log('√ CSS');
 // console.log('√ Copy files');
 
 if (compress) {
-  console.log('√ Compress');
+  //console.log('√ Compress');
 }
 
 // Helper

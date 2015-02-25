@@ -6,17 +6,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{{{assetUrl}}}index.css">
 
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+  $(function() {
+    $('form').on('click', 'button', function(e) {
+      var $form = $(this).closest('form');
+
+      $.ajax({
+        url: $form.attr('action'),
+        type: 'post',
+        dataType: 'json',
+        data: $form.serialize(),
+        success: function(data) {
+          console.log(data);
+        },
+        error: function(data) {
+          console.log('Got error');
+        }
+      });
+
+      e.preventDefault();
+    });
+  });
+</script>
+
+
+
 {{^activeUser}}
-<form action="/signin" method="post">
+<form id="signin" action="/api/user/signin" method="post">
   <input name="email" type="text">
-  <input name="password" type="text">
-  <button>Sign in</button>
+  <input name="password" type="password">
+  <button type="submit">Sign in</button>
 </form>
 
-<form action="/signup" method="post">
+<form id="signup" action="/api/user/signup" method="post">
   <input name="email" type="text">
-  <input name="password" type="text">
-  <button>sign up</button>
+  <input name="password" type="password">
+  <button type="submit">sign up</button>
+</form>
+
+<form id="check" action="/api/user/available" method="post">
+  <input name="email" type="text">
+  <button type="submit">check availability</button>
 </form>
 {{/activeUser}}
 
@@ -39,9 +72,12 @@
 {{/dump}}
 
 {{#serverError}}
-<h1>Woops. 505 error</h1>
+<h1>Damn it. 505 server error</h1>
 {{/serverError}}
 
+{{#notFound}}
+<h1>Woops. 404 not found</h1>
+{{/notFound}}
 
 {{> symbols}}
 

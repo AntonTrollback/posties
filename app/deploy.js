@@ -2,7 +2,6 @@ var fs = require('fs');
 var mime = require('mime');
 var aws = require('aws-sdk');
 var Habitat = require('habitat');
-
 var revision = process.argv[2];
 
 // Setup s3
