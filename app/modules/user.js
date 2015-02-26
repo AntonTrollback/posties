@@ -2,103 +2,126 @@ var _ = require('lodash');
 var pg = require('pg');
 var app = require('./../../app');
 var query = require('pg-query');
-var user = {};
+var validator = require('validator');
+var mod = {};
+
+/**
+ * Get user from database
+ */
 
 query.connectionParameters = app.get('databaseUrl');
 
-user.get = function(id) {
+mod.getById = function(id, callback) {
   query.first('SELECT * FROM "users" WHERE id = $1', id, callback);
 }
 
-user.getByEmail = function(email, callback) {
-  query('SELECT * FROM "users" WHERE email = $1', [email], function(error, rows, result) {
-    callback(error, _.isUndefined(rows[0]) ? null : rows[0]);
+mod.getByEmail = function(email, callback) {
+  query.first('SELECT * FROM "users" WHERE email = $1', email, callback);
+}
+
+/**
+ * Validate user input
+ */
+
+mod.isValidEmail = function(email) {
+  return validator.isEmail(email);
+}
+
+mod.isValidPassword = function(password) {
+  return validator.isLength(password, 2, 150);
+}
+
+mod.isValidUser = function(user) {
+  return mod.isValidEmail(user.email) && mod.isValidPassword(user.password);
+}
+
+/**
+ * Check email availability
+ */
+
+mod.emailAvailability = function(email, callback) {
+  mod.getByEmail(email, function(error, row) {
+    callback(error, !row);
   });
 }
 
-user.create = function(post, callback) {
-  if (!user.isValid(post)) {
+/**
+ * Check if signedin
+ */
+
+mod.isSignedin = function(req) {
+  return _.isUndefined(req.session) ? false : req.session.user_id;
+}
+
+/**
+ * Create user
+ */
+
+mod.tryCreate = function(req, user, callback) {
+  if (!mod.isValidUser(user)) {
+    // error, valid, id
     callback(null, false, null);
     return;
   }
 
-  user.isAvailableEmail(post.email, function(error, available) {
+  mod.emailAvailability(user.email, function(error, available) {
     if (error || !available) {
-      callback(error, true, available);
+      callback(error, false, null);
       return;
     }
 
-    var data = [
-      post.email,
-      post.password,
-      new Date()
-    ];
-
-    var sql = 'INSERT INTO users(email, password, created) values($1, $2, $3) RETURNING *';
-
-    query(sql, data, function(error, rows, result) {
-      callback(error, true, _.isUndefined(rows[0].id) ? null : rows[0].id);
-    });
+    mod.create(req, user, callback);
   });
 }
 
-user.isValidEmail = function(email) {
-  if (!_.isString(email)) { return false; }
-  if (email.length < 1 || email.length > 150) { return false; }
-  return true;
+mod.create = function(req, user, callback) {
+  var sql = 'INSERT INTO users(email, password, created) values($1, $2, $3) RETURNING *';
+  var data = [user.email, user.password, new Date()]
+
+  query(sql, data, function(error, rows) {
+    var id = _.isUndefined(rows[0].id) ? null : rows[0].id;
+
+    mod.signin(req, id);
+    callback(error, true, id);
+  });
 }
 
-user.isValidPassword = function(password) {
-  if (!_.isString(password)) { return false; }
-  if (password.length < 1 || password.length > 150) { return false; }
-  return true;
-}
+/**
+ * Signin user
+ */
 
-user.isValid = function(data) {
-  if (user.isValidEmail(data.email) && user.isValidPassword(data.password)) {
-    return true;
+mod.trySignin = function(req, user, callback) {
+  if (!mod.isValidUser(user)) {
+    callback(null, null);
+    return;
   }
 
-  return false;
+  if (mod.isSignedin(req)) {
+    mod.signout(req);
+  }
+
+  mod.getByEmail(user.email, function(error, row) {
+    if (error || !row || (row.password !== user.password)) {
+      callback(error, true, null);
+      return;
+    }
+
+    mod.signin(req, row.id);
+    callback(null, row.id);
+  });
 }
 
-user.delete = function(id) {
-
+mod.signin = function(req, id) {
+  // Create session
+  req.session.user_id = id;
 }
 
-user.authIsOwner = function(session, siteName) {
+/**
+ * Signout user
+ */
 
-}
-
-user.signin = function(email, password) {
-
-}
-
-user.signout = function(req) {
+mod.signout = function(req) {
   delete req.session.user_id;
 }
 
-user.isAvailableEmail = function(email, callback) {
-  return user.getByEmail(email, function(error, rows, result) {
-    var available = true;
-
-    if (rows) {
-      available = false;
-    }
-
-    if (_.isFunction(callback)) {
-      callback(error, available);
-      console.log('callback')
-      return;
-    }
-
-    console.log(available)
-    return available;
-  });
-}
-
-user.changePassword = function(id, oldPass, newPass) {
-
-}
-
-module.exports = user;
+module.exports = mod;

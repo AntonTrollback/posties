@@ -20,7 +20,11 @@
         dataType: 'json',
         data: $form.serialize(),
         success: function(data) {
-          console.log(data);
+          console.log(data)
+
+          if (($form.is('#signin')) && data.id) {
+            location.href = '/';
+          }
         },
         error: function(data) {
           console.log('Got error');
@@ -35,19 +39,19 @@
 
 
 {{^activeUser}}
-<form id="signin" action="/api/user/signin" method="post">
+<form id="signin" action="/api/signin" method="post">
   <input name="email" type="text">
   <input name="password" type="password">
   <button type="submit">Sign in</button>
 </form>
 
-<form id="signup" action="/api/user/signup" method="post">
+<form id="signup" action="/api/signup" method="post">
   <input name="email" type="text">
   <input name="password" type="password">
   <button type="submit">sign up</button>
 </form>
 
-<form id="check" action="/api/user/available" method="post">
+<form id="check" action="/api/available-email" method="post">
   <input name="email" type="text">
   <button type="submit">check availability</button>
 </form>

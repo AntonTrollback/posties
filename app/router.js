@@ -5,24 +5,32 @@ var user = require('./modules/user');
 var site = require('./modules/site');
 var part = require('./modules/part');
 
-function renderPage (res, options) {
+/**
+ * Response helpers
+ */
+
+var isSignedin;
+
+function renderPage (req, res, options) {
   var data = {
     assetUrl: app.get('assetUrl'),
     analyticsCode: app.get('analyticsCode'),
+    activeUser: isSignedin
   }
+
   res.render('layout', _.assign(data, options));
 }
 
-function render404Page (res) {
-  renderPage(res, {
+function render404Page (req, res) {
+  renderPage(req, res, {
     title: '404 - Posti.es',
     notFound: true
   });
 }
 
-function renderErrorPage (error, res) {
+function renderErrorPage (error, req, res) {
   console.error(error);
-  renderPage(res, {
+  renderPage(req, res, {
     title: 'Posti.es',
     serverError: true
   });
@@ -33,16 +41,28 @@ function sendEndpointError (error, res) {
   res.send({error: 'Internal error'});
 }
 
+/**
+ * Logging
+ */
+
 router.use(function(req, res, next) {
-  console.log('--------------------------------------------------------');
-  console.log(req.method, req.url);
+  isSignedin = user.isSignedin(req);
   next();
 });
 
-// Start page
+router.use(function(req, res, next) {
+  var log = req.method + ' ' + req.url + (isSignedin ? ' (active user) ' : ' ');
+  while (log.length <= 56) { log += '='; }
+  console.log('\n==== ' + log);
+  next();
+});
+
+/**
+ * Startpage
+ */
 
 router.get('/', function(req, res) {
-  renderPage(res, {
+  renderPage(req, res, {
     index: true,
     inEditMode: true,
     title: 'Posti.es',
@@ -50,14 +70,88 @@ router.get('/', function(req, res) {
   });
 });
 
-// Sign out
+/**
+ * Signout
+ */
 
 router.get('/signout', function (req, res) {
   user.signout(req);
   res.redirect('/');
 });
 
-// Setup database
+// ------------------------------------------------------------------------ //
+
+/**
+ * API signup
+ */
+
+router.post('/api/signup', function (req, res) {
+  var input = {
+    email: req.body.email,
+    password: req.body.password
+  }
+
+  user.tryCreate(req, input, function(error, valid, id) {
+    if (error) { sendEndpointError(error, res); return; }
+    if (valid && id) {
+      res.send({valid: valid, id: id});
+      return;
+    }
+
+    res.send({valid: false, id: null});
+  });
+});
+
+/**
+ * API signin
+ */
+
+router.post('/api/signin', function (req, res) {
+  var post = {
+    email: req.body.email,
+    password: req.body.password
+  }
+
+  user.trySignin(req, post, function(error, id) {
+    if (error) { sendEndpointError(error, res); return; }
+    if (id) {
+      res.send({id: id});
+      return;
+    }
+
+    res.send({id: null});
+  });
+});
+
+/**
+ * API email availability test
+ */
+
+router.post('/api/available-email', function (req, res) {
+  var email = req.body.email;
+  var resp = {
+    valid: true,
+    available: null
+  }
+
+  if (!user.isValidEmail(email)) {
+    resp.valid = false;
+    res.send(resp);
+    return;
+  }
+
+  user.emailAvailability(email, function(error, status) {
+    if (error) { return sendEndpointError(error, res); }
+    resp.available = status;
+    res.send(resp);
+  });
+});
+
+// ------------------------------------------------------------------------ //
+
+/**
+ * Database setup
+ */
 
 router.get('/database', function(req, res) {
   var query = require('pg-query');
@@ -69,67 +163,23 @@ router.get('/database', function(req, res) {
   var table = 'users';
 
   query('SELECT * FROM ' + table, function(error, rows, results) {
-    if (error) { renderErrorPage(error, res); return; }
-    renderPage(res, {
+    if (error) { renderErrorPage(error, req, res); return; }
+    renderPage(req, res, {
       title: 'Database dump',
       dump: JSON.stringify(rows)
     });
   });
 });
 
-// ------------------------------------------------------------------------ //
-
-// API - Sign up
-
-router.post('/api/user/signup', function (req, res) {
-  var post = {
-    email: req.body.email,
-    password: req.body.password
-  }
-
-  user.create(post, function(error, valid, id) {
-    if (error) { return sendEndpointError(error, res); }
-    if (!valid) { return res.send({valid: false}); }
-    if (!id) { return res.send({available: false}); }
-
-    res.send({id: id});
-  });
-});
-
-// API - Sign in
-
-router.post('/api/user/signin', function (req, res) {
-  user.signin(req.body.email, req.body.password, function(valid, error, data) {
-    if (error) { return sendEndpointError(error, res); }
-    if (!valid) { return res.send('bad input'); }
-
-    res.send({id: id});
-  });
-});
-
-// API - Check email availability
-
-router.post('/api/user/available', function (req, res) {
-  if (!user.isValidEmail(req.body.email)) {
-    res.send({valid: false});
-    return;
-  }
-
-  user.isAvailableEmail(req.body.email, function(error, status) {
-    if (error) { return sendEndpointError(error, res); }
-    res.send({available: status});
-  });
-});
-
-// ------------------------------------------------------------------------ //
-
-// 404
+/**
+ * 404 responses
+ */
 
 router.use(function (req, res, next) {
   res.status(404);
 
   if (req.accepts('html')) {
-    render404Page(res);
+    render404Page(req, res);
     return;
   }
 
