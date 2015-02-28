@@ -23,7 +23,7 @@
           console.log(data)
 
           if (($form.is('#signin')) && data.id) {
-            location.href = '/';
+            location.reload();
           }
         },
         error: function(data) {
@@ -36,40 +36,35 @@
   });
 </script>
 
-
-
 {{^activeUser}}
 <form id="signin" action="/api/signin" method="post">
-  <input name="email" type="text">
-  <input name="password" type="password">
+  <input name="email" type="text" placeholder="Email">
+  <input name="password" type="password" placeholder="Password">
   <button type="submit">Sign in</button>
-</form>
-
-<form id="signup" action="/api/signup" method="post">
-  <input name="email" type="text">
-  <input name="password" type="password">
-  <button type="submit">sign up</button>
-</form>
-
-<form id="check" action="/api/available-email" method="post">
-  <input name="email" type="text">
-  <button type="submit">check availability</button>
 </form>
 {{/activeUser}}
 
 {{#activeUser}}
-<hr>
 <a href="/signout">Signout</a>
 {{/activeUser}}
 
 {{#index}}
   √ Intro texts
+
+  {{^activeUser}}
+    <form id="signup" action="/api/publish-with-user" method="post">
+    <input name="name" type="text" placeholder="Site name">
+    <input name="email" type="text" placeholder="Email">
+    <input name="password" type="password" placeholder="Password">
+
+    <button type="submit">Publish page</button>
+  </form>
+  {{/activeUser}}
 {{/index}}
 
-{{#inEditMode}}
-  √ Design settings
-  √ Edit posts
-{{/inEditMode}}
+{{#editMode}}
+  √ Edit mode
+{{/editMode}}
 
 {{#dump}}
 {{{dump}}}

@@ -24,6 +24,7 @@ user.getByEmail = function(email, callback) {
  */
 
 user.isValidEmail = function(email) {
+  var email = validator.normalizeEmail(email);
   return validator.isEmail(email);
 }
 
@@ -31,8 +32,8 @@ user.isValidPassword = function(password) {
   return validator.isLength(password, 2, 150);
 }
 
-user.isValidUser = function(data) {
-  return user.isValidEmail(data.email) && user.isValidPassword(data.password);
+user.isValid = function(userObj) {
+  return user.isValidEmail(userObj.email) && user.isValidPassword(userObj.password);
 }
 
 /**
@@ -46,7 +47,7 @@ user.emailAvailability = function(email, callback) {
 }
 
 /**
- * Check if signedin
+ * Check if signed in
  */
 
 user.isSignedin = function(req) {
@@ -54,32 +55,41 @@ user.isSignedin = function(req) {
 }
 
 /**
+ * Check if signed in site owner
+ */
+
+user.isSignedinUserSiteOwner = function(req, siteOwnerId) {
+  console.log(req.session.user_id)
+  console.log(siteOwnerId)
+  return req.session.user_id === siteOwnerId;
+}
+
+/**
  * Create user
  */
 
-user.tryCreate = function(req, data, callback) {
-  if (!user.isValidUser(data)) {
+user.tryCreate = function(req, userObj, callback) {
+  if (!user.isValid(userObj)) {
     // error, valid, id
-    callback(null, false, null);
-    return;
+    return callback(null, false, null);
   }
 
-  user.emailAvailability(data.email, function(error, available) {
+  user.emailAvailability(userObj.email, function(error, available) {
     if (error || !available) {
-      callback(error, false, null);
-      return;
+      return callback(error, false, null);
     }
 
-    user.create(req, data, callback);
+    user.create(req, userObj, callback);
   });
 }
 
-user.create = function(req, data, callback) {
+user.create = function(req, userObj, callback) {
   var sql = 'INSERT INTO users(email, password, created) values($1, $2, $3) RETURNING *';
-  var data = [data.email, data.password, new Date()]
+  var email = validator.normalizeEmail(userObj.email);
+  var data = [email, userObj.password, new Date()]
 
   query(sql, data, function(error, rows) {
-    var id = _.isUndefined(rows[0].id) ? null : rows[0].id;
+    var id = _.isUndefined(rows) ? null : rows[0].id;
 
     user.signin(req, id);
     callback(error, true, id);
@@ -90,20 +100,18 @@ user.create = function(req, data, callback) {
  * Signin user
  */
 
-user.trySignin = function(req, data, callback) {
-  if (!user.isValidUser(data)) {
-    callback(null, null);
-    return;
+user.trySignin = function(req, userObj, callback) {
+  if (!user.isValid(userObj)) {
+    return callback(null, null);
   }
 
   if (user.isSignedin(req)) {
     user.signout(req);
   }
 
-  user.getByEmail(data.email, function(error, row) {
-    if (error || !row || (row.password !== data.password)) {
-      callback(error, true, null);
-      return;
+  user.getByEmail(userObj.email, function(error, row) {
+    if (error || !row || (row.password !== userObj.password)) {
+      return callback(error, null);
     }
 
     user.signin(req, row.id);

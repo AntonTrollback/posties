@@ -1,5 +1,6 @@
 .env
 dist
+old-data
 
 npm-debug.log
 
