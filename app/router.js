@@ -7,23 +7,31 @@ var part = require('./modules/part');
 
 //
 // Todo:
-// Move validation stuff from modules to its own module
-// Move logoc in here to, for example, "tryEmailAvailable" in our modules
+// - Move logoc in here to, for example, "tryEmailAvailable" in our modules
+// - Check auth for API calls
+// - forgott password
+//
+// Allow publish without register, for signed in users
+// - get signed in users email
+// - get user email
+// - get user email
+//
+// List the sites that a signed in users owns, on the startpage
 //
 
 /**
  * Prepair requests
  */
 
-var isSignedin;
+var isActive;
 
 router.use(function(req, res, next) {
-  isSignedin = user.isSignedin(req);
+  isActive = user.isActive(req);
   return next();
 });
 
 router.use(function(req, res, next) {
-  var suffix = isSignedin ? ' (active user)' : ' '
+  var suffix = isActive ? ' (active user)' : ' '
   var log = req.method + ' ' + req.url + suffix;
   while (log.length <= 56) { log += '='; }
   console.log('\n==== ' + log);
@@ -34,34 +42,36 @@ router.use(function(req, res, next) {
  * Render helpers
  */
 
-function renderPage (res, options) {
-  var data = {
+function render (res, options) {
+  res.render('layout', _.assign({
     assetUrl: app.get('assetUrl'),
     analyticsCode: app.get('analyticsCode'),
-    activeUser: isSignedin
-  }
-
-  res.render('layout', _.assign(data, options));
+    activeUser: isActive
+  }, options));
 }
 
-function render404Page (res) {
-  renderPage(res, {
+function render404 (res) {
+  render(res, {
     title: '404 - Posti.es',
     notFound: true
   });
 }
 
-function render505Page (error, res) {
-  console.error(error);
-  renderPage(res, {
+function render505 (error, res) {
+  console.trace(error);
+  render(res, {
     title: 'Posti.es',
     serverError: true
   });
 }
 
-function sendEndpointError (error, res) {
-  console.error(error);
-  res.send({error: 'Internal error'});
+function send (res, data) {
+  res.send(data);
+}
+
+function sendError (error, res) {
+  console.trace(error);
+  send(res, {error: 'Internal error'});
 }
 
 /**
@@ -90,7 +100,7 @@ app.get('/*', function (req, res, next){
  */
 
 router.get('/', function(req, res) {
-  renderPage(res, {
+  render(res, {
     index: true,
     editMode: true,
     title: 'Posti.es',
@@ -114,43 +124,28 @@ router.get('/signout', function (req, res) {
 router.get('/by/:name', function(req, res) {
   var name = req.params.name;
 
-  site.getByName(name, function(error, row) {
-    if (error) {
-      render505Page(error, res);
-    }
+  site.getComplete(name, function (error, siteData) {
+    if (error) { return render505(error, res); }
+    if (!siteData) { return render404(res); }
 
-    if (!row) {
-      render404Page(res);
-    }
-
-    renderPage(res, {
+    render(res, {
       title: name + ' · Posti.es',
-      editMode: isSignedin ? user.isSignedinUserSiteOwner(req, row.owner_id) : false,
-      siteId: row.id
-      // parts: part.getAllBySiteId(row.id)
+      userSite: siteData,
+      editMode: user.isActiveOwner(req, siteData.user_id)
     });
-  });
+  })
 });
 
 // ------------------------------------------------------------------------ //
 
 /**
- * API - register
+ * API - sign in
  */
 
-router.post('/api/register', function (req, res) {
-  var input = {
-    email: req.body.email,
-    password: req.body.password
-  }
-
-  user.tryCreate(req, input, function(error, valid, id) {
-    if (error) { return sendEndpointError(error, res); }
-    if (valid && id) {
-      return res.send({valid: valid, id: id});
-    }
-
-    res.send({valid: false, id: null});
+router.post('/api/signin', function (req, res) {
+  user.trySignin(req, req.body, false, function(error, id) {
+    if (error) { return sendError(error, res); }
+    send(res, {id: id});
   });
 });
 
@@ -158,20 +153,9 @@ router.post('/api/register', function (req, res) {
  * API - sign in
  */
 
-router.post('/api/signin', function (req, res) {
-  var post = {
-    email: req.body.email,
-    password: req.body.password
-  }
-
-  user.trySignin(req, post, function(error, id) {
-    if (error) { return sendEndpointError(error, res); }
-    if (id) {
-      return res.send({id: id});
-    }
-
-    res.send({id: null});
-  });
+router.get('/api/signout', function (req, res) {
+  user.signout(req);
+  send(res, {signout: true});
 });
 
 /**
@@ -179,21 +163,9 @@ router.post('/api/signin', function (req, res) {
  */
 
 router.post('/api/available-email', function (req, res) {
-  var email = req.body.email;
-  var result = {
-    valid: true,
-    available: null
-  }
-
-  if (!user.isValidEmail(email)) {
-    result.valid = false;
-    return res.send(result);
-  }
-
-  user.emailAvailability(email, function(error, status) {
-    if (error) { return sendEndpointError(error, res); }
-    result.available = status;
-    res.send(result);
+  user.isValidAndAvailable(req.body.email, function (error, valid, available) {
+    if (error) { return sendError(error, res); }
+    res.send({valid: valid, available: available});
   });
 });
 
@@ -201,77 +173,10 @@ router.post('/api/available-email', function (req, res) {
  * API - register and publish
  */
 
-function handleSiteCreate (error, ownerId, input, result, res) {
-  if (error) { return sendEndpointError(error, res); }
-
-  // Make sure user was created or signed in
-  if (ownerId) {
-    input.site.ownerId = ownerId;
-  } else {
-    return res.send(result);
-  }
-
-  // Publish. Done
-  site.create(input.site, function(error, name) {
-    if (error) { return sendEndpointError(error, res); }
-    if (name) { result.name = name; }
-    // Todo: create parts here, need site id (but not needed in result)
-    res.send(result);
-  });
-}
-
 router.post('/api/publish-with-user', function (req, res) {
-  var input = {
-    user: {
-      email: req.body.email,
-      password: req.body.password
-    },
-    site: {
-      ownerId: null,
-      name: req.body.name,
-      options: {}
-      // Todo: add parts here
-    }
-  }
-
-  var result = {
-    validUser: user.isValid(input.user),
-    validSite: site.isValidName(input.site.name),
-    availableEmail: null,
-    availableName: null,
-    name: null
-  }
-
-  // Cancle if input is invalid
-  if (!result.validUser || !result.validSite) {
-    return res.send(result);
-  }
-
-  // Check if email is available
-  user.emailAvailability(input.user.email, function(error, availableEmail) {
-    if (error) { return sendEndpointError(error, res); }
-    result.availableEmail = availableEmail;
-
-    // Check if site name is available
-    site.nameAvailability(input.site.name, function(error, availableName) {
-      if (error) { return sendEndpointError(error, res); }
-      result.availableName = availableName;
-
-      // Cancle if site name isn't available
-      if (!availableName) {
-        return res.send(result);
-      }
-      // Signin or Signup
-      if (availableEmail) {
-        user.create(req, input.user, function(error, valid, ownerId) {
-          handleSiteCreate(error, ownerId, input, result, res);
-        });
-      } else {
-        user.trySignin(req, input.user, function(error, ownerId) {
-          handleSiteCreate(error, ownerId, input, result, res);
-        });
-      }
-    });
+  user.createWithSiteAndParts(req, req.body, function (error, result) {
+    if (error) { return sendError(error, res); }
+    res.send(result);
   });
 });
 
@@ -280,18 +185,14 @@ router.post('/api/publish-with-user', function (req, res) {
  */
 
 router.post('/api/add-part', function (req, res) {
-  var input = {
-    siteId: req.body.siteId,
-    rank: req.body.rank,
-    type: req.body.type,
-    content: req.body.content
-  }
-
-  part.create(input, function(error, id) {
-    if (error) { return sendEndpointError(error, res); }
-    res.send({id: id});
+  part.create(req.body, function(error, id) {
+    if (error) { return sendError(error, res); }
+    send(res, {id: id});
   });
 });
+
+
+
 
 // ------------------------------------------------------------------------ //
 
@@ -304,10 +205,10 @@ router.get('/database', function(req, res) {
   query.connectionParameters = app.get('databaseUrl');
 
   query('CREATE TABLE IF NOT EXISTS users(id serial primary key, email text, password text, created timestamptz)');
-  query('CREATE TABLE IF NOT EXISTS sites(id serial primary key, owner_id serial, name text, options jsonb, updated timestamptz, created timestamptz)');
+  query('CREATE TABLE IF NOT EXISTS sites(id serial primary key, user_id serial, name text, options jsonb, updated timestamptz, created timestamptz)');
   query('CREATE TABLE IF NOT EXISTS parts(id serial primary key, site_id serial, type smallint, rank integer, content jsonb, created timestamptz)');
 
-  renderPage(res, {
+  render(res, {
     title: 'Database setup'
   });
 });
@@ -317,9 +218,9 @@ router.get('/database/:table', function(req, res) {
   query.connectionParameters = app.get('databaseUrl');
 
   query('SELECT * FROM ' + req.params.table, function(error, rows, results) {
-    if (error) { render505Page(error, res); return; }
+    if (error) { render505(error, res); return; }
 
-    renderPage(res, {
+    render(res, {
       title: 'Database dump',
       dump: JSON.stringify(rows)
     });
@@ -334,11 +235,9 @@ router.use(function (req, res, next) {
   res.status(404);
 
   if (req.accepts('html')) {
-    return render404Page(res);
-  }
-
-  if (req.accepts('json')) {
-    return res.send({error: 'Not found'});
+    return render404(res);
+  } else if (req.accepts('json')) {
+    return send(res, {error: 'Not found'});
   }
 
   res.type('txt').send('Not found');
