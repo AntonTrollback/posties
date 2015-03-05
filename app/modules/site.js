@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var pg = require('pg');
 var app = require('./../../app');
 var query = require('pg-query');
 var validator = require('validator');
@@ -66,7 +65,7 @@ site.tryCreate = function(siteObj, callback) {
 site.create = function(siteObj, callback) {
   var sql = 'INSERT INTO sites(owner_id, name, options, updated, created) values($1, $2, $3, $4, $5) RETURNING *';
   var date = new Date();
-  var data = [siteObj.ownerId, siteObj.name, siteObj.options, date, date]
+  var data = [siteObj.ownerId, siteObj.name, siteObj.options, date, date];
 
   query(sql, data, function(error, rows) {
     var name = _.isUndefined(rows) ? null : rows[0].name;

@@ -5,6 +5,12 @@ var user = require('./modules/user');
 var site = require('./modules/site');
 var part = require('./modules/part');
 
+//
+// Todo:
+// Move validation stuff from modules to its own module
+// Move logoc in here to, for example, "tryEmailAvailable" in our modules
+//
+
 /**
  * Prepair requests
  */
@@ -101,6 +107,31 @@ router.get('/signout', function (req, res) {
   res.redirect('/');
 });
 
+/**
+ * Sites
+ */
+
+router.get('/by/:name', function(req, res) {
+  var name = req.params.name;
+
+  site.getByName(name, function(error, row) {
+    if (error) {
+      render505Page(error, res);
+    }
+
+    if (!row) {
+      render404Page(res);
+    }
+
+    renderPage(res, {
+      title: name + ' · Posti.es',
+      editMode: isSignedin ? user.isSignedinUserSiteOwner(req, row.owner_id) : false,
+      siteId: row.id
+      // parts: part.getAllBySiteId(row.id)
+    });
+  });
+});
+
 // ------------------------------------------------------------------------ //
 
 /**
@@ -184,6 +215,7 @@ function handleSiteCreate (error, ownerId, input, result, res) {
   site.create(input.site, function(error, name) {
     if (error) { return sendEndpointError(error, res); }
     if (name) { result.name = name; }
+    // Todo: create parts here, need site id (but not needed in result)
     res.send(result);
   });
 }
@@ -198,6 +230,7 @@ router.post('/api/publish-with-user', function (req, res) {
       ownerId: null,
       name: req.body.name,
       options: {}
+      // Todo: add parts here
     }
   }
 
@@ -243,28 +276,20 @@ router.post('/api/publish-with-user', function (req, res) {
 });
 
 /**
- * Sites
+ * Add part
  */
 
-router.get('/by/:name', function(req, res) {
-  var name = req.params.name;
+router.post('/api/add-part', function (req, res) {
+  var input = {
+    siteId: req.body.siteId,
+    rank: req.body.rank,
+    type: req.body.type,
+    content: req.body.content
+  }
 
-  site.getByName(name, function(error, row) {
-    if (error) {
-      render505Page(error, res);
-    }
-
-    if (!row) {
-      render404Page(res);
-    }
-
-    console.log(row)
-
-    renderPage(res, {
-      title: name + ' · Posti.es',
-      editMode: isSignedin ? user.isSignedinUserSiteOwner(req, row.owner_id) : false
-      //parts: part.getBySiteId(row.id)
-    });
+  part.create(input, function(error, id) {
+    if (error) { return sendEndpointError(error, res); }
+    res.send({id: id});
   });
 });
 

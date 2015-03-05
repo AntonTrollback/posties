@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var pg = require('pg');
 var app = require('./../../app');
 var query = require('pg-query');
 var validator = require('validator');
@@ -59,8 +58,6 @@ user.isSignedin = function(req) {
  */
 
 user.isSignedinUserSiteOwner = function(req, siteOwnerId) {
-  console.log(req.session.user_id)
-  console.log(siteOwnerId)
   return req.session.user_id === siteOwnerId;
 }
 
