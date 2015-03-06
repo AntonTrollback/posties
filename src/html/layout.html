@@ -93,14 +93,14 @@
 {{#userSite}}
 {{#parts}}
 <p>
-  item type: {{{type}}}
+  item type: {{{rank}}}
   {{#editMode}} EDIT {{/editMode}}
 </p>
 {{/parts}}
 
 {{#editMode}}
 <form id="addPart" action="/api/add-part" method="post">
-  <input name="siteId" type="text" placeholder="SiteId" value="{{siteId}}">
+  <input name="siteId" type="text" placeholder="SiteId" value="{{id}}">
   <input name="type" type="text" placeholder="Type" value="1">
   <input name="rank" type="number" placeholder="Rank" value="0">
   <input name="content" type="text" placeholder="Content" value='{"text": "lorem ipsum"}'>

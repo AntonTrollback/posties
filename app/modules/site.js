@@ -29,7 +29,7 @@ site.getComplete = function(name, callback) {
     if (error || !siteData) { return callback(error, siteData); }
 
     // Get all the parts
-    part.getAll(siteData.id, function(error, parts) {
+    part.getAllComplete(siteData.id, function(error, parts) {
       if (error) { return callback(error, parts); }
 
       siteData.parts = parts;

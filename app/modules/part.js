@@ -35,9 +35,9 @@ part.getAllComplete = function(siteId, callback) {
       fixed.push(part.setType(partData));
     });
     // Sort
-    fixed = _.pluck(_.sortBy(fixed, 'rank'), 'rank');
+    fixed = _.sortBy(fixed, 'rank');
 
-    return callback(error, parts);
+    return callback(error, fixed);
   });
 }
 
