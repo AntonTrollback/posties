@@ -30,8 +30,11 @@ part.getAllComplete = function(siteId, callback) {
 
     var fixed = [];
 
-    // Set types
     _(parts).forEach(function(partData) {
+      // Make data available
+      partData.contentString = JSON.stringify(partData.content);
+
+      // Set types
       fixed.push(part.setType(partData));
     });
     // Sort
@@ -102,8 +105,19 @@ part.createAll = function(parts, siteId, callback) {
  * Update part content
  */
 
-part.setContent = function(partData, callback) {
+part.setContent = function(input, callback) {
+  validator.normalizeJSON(input.content, function(error, json) {
+    if (error) { return callback(error, null); }
+    input.content = json;
+  });
 
+  var sql = 'UPDATE parts SET content = ($1) WHERE id = ($2) RETURNING *';
+  var data = [input.content, input.id];
+
+  query(sql, data, function(error, rows) {
+    var id = _.isUndefined(rows) ? null : rows[0].id;
+    callback(error, id);
+  });
 }
 
 /**
@@ -111,7 +125,6 @@ part.setContent = function(partData, callback) {
  */
 
 part.setRank = function(partData, callback) {
-
 }
 
 module.exports = part;

@@ -92,10 +92,16 @@
 
 {{#userSite}}
 {{#parts}}
-<p>
-  item type: {{{rank}}}
-  {{#editMode}} EDIT {{/editMode}}
-</p>
+  <form id="addPart" action="/api/update-part" method="post" style="outline: 0">
+    <p>item type: {{{rank}}}</p>
+    {{#editMode}}
+    <input name="id" type="text" placeholder="id" value="{{id}}">
+    <input name="content" type="text" placeholder="Content" value='{{{contentString}}}'>
+    <button type="submit">Edit</button>
+    {{/editMode}}
+  </form>
+
+<hr>
 {{/parts}}
 
 {{#editMode}}

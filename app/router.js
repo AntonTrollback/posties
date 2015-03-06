@@ -191,6 +191,17 @@ router.post('/api/add-part', function (req, res) {
   });
 });
 
+/**
+ * Update part
+ */
+
+router.post('/api/update-part', function (req, res) {
+  part.setContent(req.body, function(error, id) {
+    if (error) { return sendError(error, res); }
+    send(res, {id: id});
+  });
+});
+
 
 
 
