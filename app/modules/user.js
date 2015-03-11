@@ -138,7 +138,6 @@ function handleSiteCreation(error, input, result, userId, callback) {
   input.site.userId = userId;
 
   site.create(input.site, input.parts, function(error, id, name) {
-    console.log(id, name)
     result.name = name;
     callback(error, result);
   });

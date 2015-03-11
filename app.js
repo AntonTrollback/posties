@@ -5,6 +5,7 @@ var mustacheExpress = require('mustache-express');
 var favicon = require('serve-favicon');
 var compression = require('compression');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var methodOverride = require('method-override');
 
 Habitat.load();
@@ -24,6 +25,7 @@ app.use(favicon('./favicon.ico'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
+app.use(cookieParser());
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 app.use(compression());

@@ -5,25 +5,11 @@ var user = require('./modules/user');
 var site = require('./modules/site');
 var part = require('./modules/part');
 
-//
-// Todo:
-// - Move logoc in here to, for example, "tryEmailAvailable" in our modules
-// - Check auth for API calls
-// - forgott password
-//
-// Allow publish without register, for signed in users
-// - get signed in users email
-// - get user email
-// - get user email
-//
-// List the sites that a signed in users owns, on the startpage
-//
-
 /**
  * Prepair requests
  */
 
-var isActive;
+var isActive; // Logged in
 
 router.use(function(req, res, next) {
   isActive = user.isActive(req);
@@ -136,7 +122,7 @@ router.get('/by/:name', function(req, res) {
   })
 });
 
-// ------------------------------------------------------------------------ //
+/* -------------------------------------------------------------------------- */
 
 /**
  * API - sign in
@@ -150,7 +136,7 @@ router.post('/api/signin', function (req, res) {
 });
 
 /**
- * API - sign in
+ * API - sign out
  */
 
 router.get('/api/signout', function (req, res) {
@@ -202,10 +188,7 @@ router.post('/api/update-part', function (req, res) {
   });
 });
 
-
-
-
-// ------------------------------------------------------------------------ //
+/* -------------------------------------------------------------------------- */
 
 /**
  * Database setup

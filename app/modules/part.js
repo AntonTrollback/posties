@@ -124,7 +124,24 @@ part.setContent = function(input, callback) {
  * Update part rank order
  */
 
-part.setRank = function(partData, callback) {
+part.setRank = function(inputArray, callback) {
+  var count = 0;
+  _(inputArray).forEach(function(item) {
+    var sql = 'UPDATE parts SET rank = ($1) WHERE id = ($2) RETURNING *';
+
+    query(sql, [rank, id], function(error, rows) {
+      if (error) {
+        callback(error, false);
+        return false; // break early
+      }
+
+      count++;
+
+      if (count === inputArray.length) {
+        callback(error, true);
+      }
+    });
+  });
 }
 
 module.exports = part;
