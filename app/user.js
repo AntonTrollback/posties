@@ -1,6 +1,6 @@
 var _ = require('lodash');
-var app = require('./../../app');
 var query = require('pg-query');
+var app = require('./../app');
 var validator = require('./validator');
 var site = require('./site');
 var user = {};
