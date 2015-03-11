@@ -1,0 +1,14 @@
+.block {
+  margin: var(--spacing) 0;
+  position: relative;
+}
+
+.block.is-padded {
+  padding: 0 10px;
+}
+
+@media (--md-viewport) {
+  .block.is-padded {
+    padding: 0 32px;
+  }
+}

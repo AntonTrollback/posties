@@ -1,0 +1,13 @@
+<script type="text/ng-template" id="postVideoInput.html">
+  <div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
+    <div class="post-content-pre is-input" ng-show="!post.key" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
+      <ng-include src="'postOptions.html'"></ng-include>
+
+      <div ng-model="test"
+          class="post-editor"
+          medium-editor
+          options='{"placeholder": "[[post.helpText]]", "disableToolbar": true, "disableReturn": true, "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
+          ng-paste="validateVideo($event.originalEvent, post)"></div>
+    </div>
+  </div>
+</script>

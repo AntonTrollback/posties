@@ -1,0 +1,32 @@
+<div class="header">
+
+  <button class="header-action" ng-class="showNavigation ? 'is-active' : ''" ng-click="showNavigation = !showNavigation">
+    <span analytics-on="click" analytics-event="Toggle view" analytics-category="Account settings">
+      <svg role="presentation"><use xlink:href="#logo"></use></svg>
+    </span>
+  </button>
+
+  {{#editMode}}
+    <button class="header-action" ng-class="settingsService.isOpen ? 'is-active' : ''" ng-click="settingsService.open(); showNavigation = false">
+      <span analytics-on="click" analytics-event="Show view" analytics-category="Website design settings">
+        <svg role="presentation"><use xlink:href="#sliders"></use></svg>
+      </span>
+    </button>
+  {{/editMode}}
+
+  {{#userSite}}
+    {{#editMode}}
+      <span class="header-action is-link">{{{siteName}}}</span>
+    {{/editMode}}
+  {{/userSite}}
+</div>
+
+{{>accountSettings}}
+
+{{#editMode}}
+{{/editMode}}
+
+<div id="flash">
+  <a class="close" ng-click="flashService.hide()">×</a>
+  <pre>[[flashService.message]]</pre>
+</div>

@@ -1,16 +1,57 @@
-body {
-  max-width: 800px;
-  margin: 100px auto;
-  padding: 0 30px;
-  font-size: 16px;
-  text-align: center;
-  color: #555;
-  font-family: Monaco, monospace;
-  line-height: 1.5;
+/**
+ * Global variables
+ */
+
+:root {
+  --color-text-light: #888;
+  --color-text: #848483;
+  --color-text-dark: #525252;
+  --color-text-darker: #141414;
+  --color-element-light: #cacaca;
+  --color-element-dark: #b2b2b2;
+  --color-divider: #e8e9e9;
+  --color-postit: #f7f5c7;
+  --color-postit-highlight: #fcf9af;
+  --spacing: 18px;
+  --base-font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-form {
-  margin: 1em 0;
-  padding: 1em;
-  outline: 1px dotted;
-}
+/**
+ * Custom media queries
+ */
+
+@custom-media --xs-viewport (min-width: 320px);
+@custom-media --sm-viewport (min-width: 480px);
+@custom-media --md-viewport (min-width: 568px);
+@custom-media --lg-viewport (min-width: 768px);
+@custom-media --xl-viewport (min-width: 1024px);
+@custom-media --xxl-viewport (min-width: 1237px);
+
+@custom-media --high-resolution print, (-o-min-device-pixel-ratio: 5/4),
+  (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi);
+
+/**
+ * Imports
+ */
+
+@import "font.css";
+@import "normalize.css";
+@import "base.css";
+@import "main.css";
+
+@import "components/site.css";
+@import "components/header.css";
+@import "components/colorpicker.css";
+@import "components/button.css";
+@import "components/toggle.css";
+@import "components/palette.css";
+@import "components/block.css";
+@import "components/post.css";
+@import "components/panel.css";
+@import "components/modal.css";
+@import "components/popover.css";
+@import "components/editor.css";
+@import "components/form.css";
+@import "components/flash.css";
+
+@import "components/utils.css";

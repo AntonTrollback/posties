@@ -6,6 +6,7 @@ npm-debug.log
 
 # Libs
 node_modules/
+bower_components/
 
 # OS generated files
 .DS_Store

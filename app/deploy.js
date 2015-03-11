@@ -4,8 +4,6 @@ var aws = require('aws-sdk');
 var Habitat = require('habitat');
 var revision = process.argv[2];
 
-// Setup s3
-
 Habitat.load();
 var env = new Habitat();
 
@@ -16,9 +14,6 @@ aws.config.update({
 });
 
 var s3 = new aws.S3({signatureVersion: 'v4'});
-
-// Upload
-
 var distDir = __dirname + '/../dist/';
 var s3dir = 'assets/' + revision + '/';
 var fileList = getFileList(distDir);
@@ -48,8 +43,6 @@ function upload (name) {
     }
   });
 }
-
-// Helper
 
 function getFileList(path) {
   var fileInfo;

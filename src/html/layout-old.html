@@ -3,10 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>{{title}}</title>
-    {{#description}}<meta name="description" content="{{description}}">{{/description}}
+    <title>Posti.es</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="Posti.es, instant one page website creator">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{{assetUrl}}}posties.css">
+    <link rel="shortcut icon" href="{{ asset_url_for('favicon', 'ico', false) }}" type="image/png">
+    <link rel="shortcut icon" type="image/png" href="{{ asset_url_for('favicon', 'ico', false) }}">
+    <link rel="stylesheet" href="{{ asset_url_for('posties', 'css') }}">
   </head>
   <body class="site">
     <!-- Hello world -->
@@ -16,6 +19,7 @@
       <div ng-controller="EditorCtrl">
         {{#userSite}}
           {{#editMode}}
+            {{>welcome}}
           {{/editMode}}
         {{/userSite}}
 
@@ -26,10 +30,12 @@
         </ul>
 
         {{#editMode}}
+          {{>postTypes}}
         {{/editMode}}
       </div>
 
       {{#index}}
+        {{>signup}}
       {{/index}}
     </div>
 
@@ -44,14 +50,12 @@
       {{>jsTemplates/postVideoInput}}
     {{/editMode}}
 
-    {{>symbols}}
-
-    <script src="{{{assetUrl}}}posties.js"></script>
+    {{>svgSprite}}
 
     <script>
       var FONTS = [{{#fonts}}'{{{.}}}',{{/fonts}}];
-      {{#websiteData}}var SITE_DATA = {{{websiteData}}};{{/websiteData}}
-      {{^websiteData}}var SITE_DATA = false;{{/websiteData}}
+      {{#websiteData}}var WEBSITE_DATA = {{{websiteData}}}; {{/websiteData}}
+      {{^websiteData}}var WEBSITE_DATA = false;{{/websiteData}}
 
       // Trigger svg redraw (safari issue)
       document.addEventListener('DOMContentLoaded', function(){
@@ -62,16 +66,22 @@
         });
       });
 
-      {{#analyticsCode}}
       // Google analytics
-      /* (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', '{{{analyticsCode}}}', 'auto');
-      ga('require', 'displayfeatures');
-      ga('send', 'pageview'); */
-      {{/analyticsCode}}
+      {% if config.in_production %}
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-50858987-1', 'auto');
+        ga('require', 'displayfeatures');
+      {% endif %}
     </script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+    <script src="{{ asset_url_for('posties', 'js') }}"></script>
+    {% if is_start_page or user_owns_page %}
+    <script src="//api.filepicker.io/v1/filepicker.js"></script>
+    <script>filepicker.setKey('{{filepicker_key}}');</script>
+    {% endif %}
   </body>
 </html>

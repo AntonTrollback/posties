@@ -1,9 +1,9 @@
 var _ = require('lodash');
 var router = require('express').Router();
 var app = require('./../app');
-var user = require('./modules/user');
-var site = require('./modules/site');
-var part = require('./modules/part');
+var user = require('./user');
+var site = require('./site');
+var part = require('./part');
 
 /**
  * Prepair requests
@@ -90,7 +90,7 @@ router.get('/', function(req, res) {
     index: true,
     editMode: true,
     title: 'Posti.es',
-    description: 'The posties description ...'
+    description: 'Posti.es, instant one page website creator'
   });
 });
 

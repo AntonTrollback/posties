@@ -1,0 +1,28 @@
+<div class="block is-padded">
+  <button class="button is-large is-full" ng-click="showPostTypes = !showPostTypes" ng-show="!showPostTypes">
+    <span analytics-on="click" analytics-event="Show" analytics-category="Content boxes">
+      <svg role="presentation"><use xlink:href="#plus"></use></svg> Add content
+    </span>
+  </button>
+
+  <div class="button-group" ng-show="showPostTypes" ng-cloak>
+    <button class="button is-vertical" ng-click="addPost($event)" data-type="0" data-template="postText.html" data-analytics-label="Body text">
+      <svg role="presentation"><use xlink:href="#content-text"></use></svg> Body text
+    </button>
+
+    <button class="button is-vertical" ng-click="addPost($event)" data-type="1" data-template="postHeadline.html" data-analytics-label="Headline">
+      <svg role="presentation"><use xlink:href="#content-headline"></use></svg> Headline
+    </button>
+
+    <div class="button-group-break"></div>
+
+    <label class="button is-vertical" for="image-input" analytics-on="click" analytics-event="Add" analytics-category="Content boxes" analytics-label="Image">
+      <input class="hidden" id="image-input" type="file" accept="image/*" capture="camera" name="image" file-change="addPost($event, $files)" data-type="2" data-template="postImage.html">
+      <svg role="presentation"><use xlink:href="#content-image"></use></svg> Image
+    </label>
+
+    <button class="button is-vertical" ng-click="addPost($event)" data-type="3" data-template="postVideo.html" data-analytics-label="Video">
+      <svg role="presentation"><use xlink:href="#content-video"></use></svg> Video
+    </button>
+  </div>
+</div>

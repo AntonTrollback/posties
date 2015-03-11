@@ -1,0 +1,160 @@
+.panel {
+  display: none;
+  overflow: hidden;
+  width: 100%;
+}
+
+.panel.is-active {
+  display: block;
+}
+
+/**
+ * Navigation items
+ */
+
+.panel-item {
+  position: relative;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 3em;
+  padding: 0 0 0 1.2em;
+  border: solid var(--color-divider);
+  border-width: 0 0 1px;
+  font: inherit;
+  color: var(--color-text-light);
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.panel-item.is-first {
+  border-top-width: 1px;
+}
+
+.panel-item.is-underlined {
+  text-decoration: underline;
+}
+
+/* States */
+
+.panel-item:hover,
+.panel-item:focus,
+.panel-item:active {
+  color: var(--color-text-dark);
+  text-decoration: none;
+}
+
+.panel-item:hover.is-underlined,
+.panel-item:focus.is-underlined,
+.panel-item:active.is-underlined {
+  text-decoration: underline;
+}
+
+.panel-item.is-active {
+  background: #f2f2f2;
+}
+
+.panel-item.is-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.panel-item.is-disabled .panel-item-icon,
+.panel-item.is-disabled .panel-item-preview {
+  display: none;
+}
+
+.panel-item.is-disabled .panel-item-text {
+  opacity: 0.3;
+}
+
+/**
+ * Icon with white gradient background
+ */
+
+.panel-item-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  width: 40px;
+  height: 100%;
+  color: var(--color-element-light);
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgb(255,255,255) 40%);
+}
+
+.panel-item-icon svg {
+  position: absolute;
+  right: 0.85em;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  width: 17px;
+}
+
+.panel-item:hover .panel-item-icon:not(.is-static),
+.panel-item:focus .panel-item-icon:not(.is-static),
+.panel-item:active .panel-item-icon:not(.is-static) {
+  color: var(--color-element-dark);
+  text-decoration: none;
+}
+
+/* Remove the white background */
+
+.panel-item-icon.is-transparent {
+  background: none;
+}
+
+/**
+ * Navigation item content
+ */
+
+/* Vertically centered text */
+
+.panel-item-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-right: 1.2em;
+  text-decoration: inherit;
+}
+
+.panel-item-text.is-larger {
+  font-size: 125%;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+.panel-item-text.is-padded {
+  padding-left: 11px;
+}
+
+/* Result/preview area */
+
+.panel-item-preview {
+  box-sizing: border-box;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+}
+
+/**
+ * Helpers
+ */
+
+.panel-item-hidden {
+  display: none;
+}
+
+.panel-item-toggle {
+  margin: 0.53em 0.85em;
+  float: right;
+}

@@ -1,0 +1,158 @@
+#logo {
+  width: 33px;
+  height: 35px;
+  margin-left: 1rem;
+  text-decoration: none;
+  user-select: none;
+}
+.username {
+  padding-top: 6px;
+  text-decoration: none;
+}
+
+.editorial h2,
+.editorial h3,
+.editorial p {
+  background: #ddd;
+  padding: 1rem;
+}
+
+.editorial fieldset input[type="text"],
+.editorial fieldset input[type="email"],
+.editorial fieldset input[type="password"] {
+  display: block;
+}
+
+
+/*** GLOBAL FORMS ***/
+.formGroup {
+  margin-bottom: 1rem;
+  border: 0;
+  padding: 0;
+}
+.formGroup select,
+.formGroup input[type="text"],
+.formGroup input[type="email"],
+.formGroup input[type="password"] {
+  font-size: 1.5rem;
+  padding: 8px;
+  font: inherit;
+}
+.formGroup input[type="text"],
+.formGroup input[type="email"],
+.formGroup input[type="password"] {
+  border: none;
+  border-bottom: 1px solid #ddd;
+  font-style: italic;
+  font-weight: lighter;
+}
+.formGroup:last-child {
+  margin-top: 3rem;
+}
+.formGroup label + select {
+  display: block;
+  border: 1px solid #ddd;
+  color: #666;
+  outline: none;
+  font-size: 1.4rem;
+  border-radius: 0;
+  background: #fff;
+  padding: 10px 4px;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+}
+.formGroup input[type="checkbox"] + span {
+  height: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+  width: 24px;
+  display: block;
+  padding: 10px;
+  margin-top: .3rem;
+  font-size: 2rem;
+  text-align: center;
+  text-indent: -99999px;
+}
+.formGroup input[type="checkbox"]:checked + span {
+  text-indent: 0;
+}
+
+.postTypes {
+  color: #8a8a8a;
+  margin: 0;
+  text-align: center;
+  margin: 0 -15px;
+}
+.postTypes li {
+  display: inline-block;
+  margin-right: 2rem;
+}
+.postTypes button,
+.button.addPostImage {
+  padding: 0;
+  width: 90px;
+  padding-top: 49px;
+  padding-bottom: 10px;
+  display: inline-block;
+  font-size: 1.2rem;
+  line-height: 1.7rem;
+  margin-right: -14px;
+}
+.postTypes .item {
+  display: inline-block;
+  padding: 0 5em;
+}
+
+/*** GLOBAL CLASSES ***/
+header div.menu {
+  position: absolute;
+  right: 0;
+  top: 48px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 2px 1px #888;
+  z-index: 100;
+  padding: .4rem 12px;
+}
+header div.menu li {
+  padding: .4rem 0;
+}
+header div.menu a {
+  text-decoration: none;
+}
+#closeOverlays {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgba(0, 0, 0, 0);
+  top: 0;
+  left: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+  z-index: 5;
+}
+
+/*** ICONS ***/
+p.close {
+  position: relative;
+  margin: 0;
+}
+p.close a {
+  cursor: pointer;
+  float: right;
+  position: absolute;
+  top: -26px;
+  right: -30px;
+  padding: 4px 8px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.close,
+p.close a {
+  font-size: 3rem;
+}
+
+/*** HACKS ***/
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+}

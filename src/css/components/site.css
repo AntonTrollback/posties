@@ -1,0 +1,28 @@
+/**
+ * Primary site layout
+ */
+
+.site {
+  position: relative;
+}
+
+.site-container {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
+  padding: 60px 8px 70px;
+  min-width: 270px;
+  max-width: 568px;
+}
+
+@media (--md-viewport) {
+  .site-container {
+    padding-top: 75px;
+  }
+}
+
+@media (--lg-viewport) {
+  .site-container {
+    max-width: 750px;
+  }
+}

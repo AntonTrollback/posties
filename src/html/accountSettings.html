@@ -1,0 +1,66 @@
+<nav class="popover is-nav" ng-show="showNavigation" ng-cloak>
+  <div class="popover-arrow"><svg role="presentation"><use xlink:href="#popover-arrow"></use></svg></div>
+  <div class="panels">
+    <div class="panel is-active" id="panelPrimaryNavigation">
+      {{#index}}
+        <div class="popover-body">
+          <form class="popover-form" name="formLogin" method="post" ng-submit="authService.submitLogin()">
+            <span class="popover-form-title">Sign in</span>
+            <input type="text" name="username" placeholder="Website address" required autocapitalize="off" autocorrect="off">
+            <input type="password" name="password" placeholder="Password" required autocapitalize="off" autocorrect="off">
+            <button class="button is-full">OK</button>
+            <a class="popover-form-link">Forgot password?</a>
+          </form>
+        </div>
+      {{/index}}
+
+      {{#userSite}}
+        {{#editMode}}
+          <div class="popover-body">
+            <p class="popover-intro">You are currenty editing <strong>{{current_user.username}}</strong></p>
+          </div>
+          <a class="panel-item is-first is-underlined" href="/logout">
+            <span class="panel-item-text is-padded">Sign out</span>
+          </a>
+        {{/editMode}}
+
+        {{^editMode}}
+          <div class="popover-body">
+            <p class="popover-intro">This website is created with <a href="http://posti.es">Posti.es</a> – a free service so simple, even your parents can use it</p>
+            <a class="button popover-intro-button" href="/">Create a website</a>
+          </div>
+          <a class="panel-item is-first" data-go-to-panel="panelLogin">
+            <span class="panel-item-text is-padded">Edit this website</span>
+            <div class="panel-item-icon"><svg role="presentation"><use xlink:href="#arrow-right"></use></svg></div>
+          </a>
+        {{/editMode}}
+      {{/userSite}}
+
+      <a href="http://posti.es/by/posties" {{^userSite}}target="_blank"{{/userSite}} class="panel-item is-underlined {{#index}}is-first{{/index}}">
+        <span class="panel-item-text is-padded">About Posti.es</span>
+      </a>
+    </div>
+
+    {{#userSite}}
+      {{^editMode}}
+        <div class="panel" id="panelLogin">
+          <div class="popover-header">
+            <button class="button" data-go-to-panel="panelPrimaryNavigation">
+              <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Back
+            </button>
+          </div>
+
+          <div class="popover-body">
+            <form class="popover-form" name="formLogin" method="post" ng-submit="authService.submitLogin()">
+              <span class="popover-form-title">Edit this website</span>
+              <input type="hidden" name="username" value="{{website_data.user.username}}">
+              <input type="password" name="password" placeholder="Password" required autocapitalize="off" autocorrect="off">
+              <button class="button is-full">OK</button>
+              <a class="popover-form-link">Forgot password?</a>
+            </form>
+          </div>
+        </div>
+      {{/editMode}}
+    {{/userSite}}
+  </div>
+</nav>

@@ -1,0 +1,150 @@
+:root {
+  --popover-header-height: 55px;
+  --popover-header-height-lg: 58px;
+}
+
+.popover {
+  position: absolute;
+  z-index: 10;
+  background: #fff;
+  box-shadow: 2px 2px 30px rgba(0, 0, 0, .2);
+  color: var(--color-text-light);
+  font-size: 13px;
+  user-select: none;
+  width: 90%;
+  max-width: 17em;
+}
+
+@media (--md-viewport) {
+  .popover {
+    font-size: 15px;
+  }
+}
+
+@media (--xl-viewport) {
+  .popover {
+    position: fixed;
+  }
+}
+
+.popover-arrow {
+  content: "";
+  position: absolute;
+  top: -12px;
+  width: 29px;
+  height: 14px;
+  right: calc(50% - 14px);
+  color: #fff;
+}
+
+.popover-header {
+  box-sizing: border-box;
+  position: relative;
+  padding: 0.7em 1.2em;
+  cursor: default;
+  border-bottom: 1px solid var(--color-divider);
+  height: var(--popover-header-height);
+}
+
+@media (--md-viewport) {
+  .popover-header {
+    height: var(--popover-header-height-lg);
+  }
+}
+
+.popover-body {
+  box-sizing: border-box;
+  position: relative;
+  padding: 1em 1.2em;
+  cursor: default;
+}
+
+.popover-scroll {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.popover-intro {
+  font-size: 17px;
+  margin: 0 0 12px;
+  padding: 10px 11px;
+}
+
+.popover-intro span {
+  margin-right: 15px;
+}
+
+.popover-intro-button {
+  margin-left: 11px;
+  margin-bottom: 25px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.popover-form {
+  padding: 7px 11px;
+}
+
+.popover-form input {
+  margin-bottom: 10px;
+}
+
+.popover-form-title {
+  display: block;
+  text-align: center;
+  font-size: 17px;
+  margin: 0 0 17px;
+}
+
+.popover-form-link {
+  display: block;
+  text-align: center;
+  margin: 20px 0 10px;
+  pointer-events: none;
+  text-decoration: line-through;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/**
+ * Tweak dimension and position based on state
+ */
+
+.popover.is-nav,
+.popover.is-customize {
+  top: 59px;
+  right: 7px;
+}
+
+.popover.is-nav .popover-arrow {
+  right: 9px;
+}
+
+.popover.is-customize .popover-arrow {
+  right: 50px;
+}
+
+.popover.is-customize .popover-scroll {
+  /* Kinda like: popover header + popover top position + some bottom spacing */
+  max-height: calc(100vh - 190px);
+}
+
+@media (--md-viewport) {
+  .popover.is-nav,
+  .popover.is-customize {
+    top: 71px;
+    right: 11px;
+  }
+
+  .popover.is-nav .popover-arrow {
+    right: 15px;
+  }
+
+  .popover.is-customize .popover-arrow {
+    right: 61px;
+  }
+
+  .popover.is-customize .popover-scroll {
+    max-height: calc(100vh - 141px);
+  }
+}

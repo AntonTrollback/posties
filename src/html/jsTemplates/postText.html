@@ -1,0 +1,33 @@
+<script type="text/ng-template" id="postText.html">
+  <div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
+    {{#editMode}}
+      <form class="post-content-pre" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
+        <ng-include src="'postOptions.html'"></ng-include>
+        <div ng-model="post.content"
+             class="post-editor"
+             medium-editor
+             ng-blur="updateTextBasedPost($event, post)"
+             options='{
+              "placeholder": "",
+              "forcePlainText": true,
+              "checkLinkFormat": true,
+              "cleanPastedHTML": false,
+              "buttonLabels": {
+                "bold": "<svg role=\"img\"><use xlink:href=\"#format-bold\"></use></svg>",
+                "italic": "<svg role=\"img\"><use xlink:href=\"#format-italic\"></use></svg>",
+                "anchor": "<svg role=\"img\"><use xlink:href=\"#format-link\"></use></svg>",
+                "justifyLeft": "<svg role=\"img\"><use xlink:href=\"#format-left\"></use></svg>",
+                "justifyCenter": "<svg role=\"img\"><use xlink:href=\"#format-center\"></use></svg>"
+              },
+              "buttons": ["bold", "italic", "anchor", "justifyLeft", "justifyCenter"]}'></div>
+      </form>
+    {{/editMode}}
+    {{#editMode}}
+      <div class="post-content-pre" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
+        <div ng-bind-html="post.html"></div>
+      </div>
+    {{/editMode}}
+  </div>
+</script>
+
+

@@ -1,0 +1,11 @@
+<script type="text/ng-template" id="postVideo.html">
+  <div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
+    <div class="post-content-block is-fixedratio">
+      {{#editMode}}
+        <ng-include src="'postOptions.html'"></ng-include>
+      {{/editMode}}
+
+      <iframe width="100%" height="360" ng-src="[[post.key | safeYoutubeUrl ]]" frameborder="0" allowfullscreen mozallowfullscreen webkitallowfullscreen onload="this.style.visibility='visible';"></iframe>
+    </div>
+  </div>
+</script>

@@ -1,0 +1,13 @@
+.form-error {
+  margin: 8px 0 0;
+  pointer-events: none;
+}
+
+@media (--md-viewport) {
+  .form-error {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    margin: 0;
+  }
+}
