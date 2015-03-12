@@ -32,7 +32,10 @@ function render (res, options) {
   res.render('layout', _.assign({
     assetUrl: app.get('assetUrl'),
     analyticsCode: app.get('analyticsCode'),
-    activeUser: isActive
+    fonts: app.get('fonts'),
+    production: app.get('production'),
+    activeUser: isActive,
+    filePickerKey: app.get('filePickerKey')
   }, options));
 }
 

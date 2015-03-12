@@ -33,7 +33,7 @@ module.exports = function(grunt) {
         separator: ';',
         stripBanners: true
       },
-      build: {
+      libs: {
         src: [
           'bower_components/svg4everybody/svg4everybody.js',
           'bower_components/jquery/dist/jquery.js',
@@ -46,14 +46,26 @@ module.exports = function(grunt) {
           'bower_components/Autolinker.js/dist/Autolinker.js',
           'bower_components/medium-editor/dist/js/medium-editor.js',
           'bower_components/imagesloaded/imagesloaded.pkgd.js',
+        ],
+        dest: 'dist/libs.js',
+      },
+      custom: {
+        src: [
           'src/js/util.js',
           'src/js/services.js',
           'src/js/directives.js',
           'src/js/filters.js',
           'src/js/controllers.js'
         ],
+        dest: 'dist/index.js',
+      },
+      combined: {
+        src: [
+          'dist/libs.js',
+          'dist/index.js'
+        ],
         dest: 'dist/posties.js',
-      }
+      },
     },
 
     ngAnnotate: {
@@ -88,13 +100,16 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'cssnext:build',
     'copy',
-    'concat'
+    'concat:libs',
+    'concat:custom'
   ]);
 
   grunt.registerTask('buildcompress', [
     'cssnext:buildcompress',
     'copy',
-    'concat',
+    'concat:libs',
+    'concat:custom',
+    'concat:combined',
     'ngAnnotate',
     'uglify'
   ]);

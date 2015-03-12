@@ -24,10 +24,12 @@ postiesApp.service('SettingsService', function($http, config, FontService) {
   this.isOpen = false;
 
   this.submitUpdate = function(userSettings) {
-    if (WEBSITE_DATA) {
-      if (!WEBSITE_DATA.user.is_authenticated) {
+    if (SITE_DATA) {
+      if (!SITE_DATA.user.is_authenticated) {
         return;
       };
+    } else {
+      return;
     }
 
     if (!angular.equals(this.currentSettings, userSettings)) {

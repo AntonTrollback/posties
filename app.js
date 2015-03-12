@@ -40,12 +40,15 @@ app.use(session({
 var production = env.get('env') === 'production';
 var revision = env.get('revision');
 var s3url = '//s3.' + env.get('region') + '.amazonaws.com/' + env.get('bucket') + '/assets/' + revision + '/';
+var fonts = ['Akkurat', 'Josefin Sans', 'Dosis', 'Karla', 'Archivo Narrow', 'Inconsolata', 'Anonymous Pro', 'Text Me One', 'Lora', 'Neuton', 'Old Standard TT', 'EB Garamond', 'Arvo', 'Fredoka One', 'VT323', 'Nova Cut', 'Reenie Beanie'];
 
 app.set('production', production);
 app.set('revision', revision);
 app.set('databaseUrl', env.get('databaseUrl'));
 app.set('assetUrl', production ? s3url : '/');
 app.set('analyticsCode', production ? 'UA-50858987-1' : false);
+app.set('fonts', fonts);
+app.set('filePickerKey', 'AB0n3LvCeQhusW_h15bE5z');
 
 app.use(require('./app/router'));
 

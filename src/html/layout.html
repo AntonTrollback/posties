@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html ng-app="posties" ng-controller="{{angular_controller}}" ng-style="{'background': userSettings.pagebackgroundcolor}">
+<html ng-app="posties"
+      ng-controller="{{#index}}IndexCtrl{{/index}}{{#userSite}}UserCtrl{{/userSite}}" ng-style="{'background': userSettings.pagebackgroundcolor}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -16,6 +17,7 @@
       <div ng-controller="EditorCtrl">
         {{#userSite}}
           {{#editMode}}
+            {{>welcome}}
           {{/editMode}}
         {{/userSite}}
 
@@ -26,10 +28,12 @@
         </ul>
 
         {{#editMode}}
+          {{>postTypes}}
         {{/editMode}}
       </div>
 
       {{#index}}
+        {{>signup}}
       {{/index}}
     </div>
 
@@ -46,12 +50,10 @@
 
     {{>symbols}}
 
-    <script src="{{{assetUrl}}}posties.js"></script>
-
     <script>
       var FONTS = [{{#fonts}}'{{{.}}}',{{/fonts}}];
-      {{#websiteData}}var SITE_DATA = {{{websiteData}}};{{/websiteData}}
-      {{^websiteData}}var SITE_DATA = false;{{/websiteData}}
+      {{#userSite}}var SITE_DATA = {{{userSite}}};{{/userSite}}
+      {{^userSite}}var SITE_DATA = false;{{/userSite}}
 
       // Trigger svg redraw (safari issue)
       document.addEventListener('DOMContentLoaded', function(){
@@ -73,5 +75,19 @@
       ga('send', 'pageview'); */
       {{/analyticsCode}}
     </script>
+
+    {{#production}}
+    <script src="{{{assetUrl}}}posties.js"></script>
+    {{/production}}
+    {{^production}}
+    <script src="{{{assetUrl}}}libs.js"></script>
+    <script src="{{{assetUrl}}}index.js"></script>
+    {{/production}}
+
+    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+    {{#editMode}}
+    <script src="//api.filepicker.io/v1/filepicker.js"></script>
+    <script>filepicker.setKey('{{filePickerKey}}');</script>
+    {{/editMode}}
   </body>
 </html>

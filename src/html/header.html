@@ -16,7 +16,7 @@
 
   {{#userSite}}
     {{#editMode}}
-      <span class="header-action is-link">{{{siteName}}}</span>
+      <span class="header-action is-link">{{{name}}}</span>
     {{/editMode}}
   {{/userSite}}
 </div>
@@ -24,6 +24,7 @@
 {{>accountSettings}}
 
 {{#editMode}}
+  {{>designSettings}}
 {{/editMode}}
 
 <div id="flash">

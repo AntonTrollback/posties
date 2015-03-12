@@ -22,7 +22,7 @@
               "buttons": ["bold", "italic", "anchor", "justifyLeft", "justifyCenter"]}'></div>
       </form>
     {{/editMode}}
-    {{#editMode}}
+    {{^editMode}}
       <div class="post-content-pre" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceparagraph, 'color': userSettings.posttextcolor }">
         <div ng-bind-html="post.html"></div>
       </div>

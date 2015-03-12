@@ -158,21 +158,21 @@ postiesApp.controller('UserCtrl', function(
   }
 
   // Get design and user data
-  var websiteData = WEBSITE_DATA;
+  var siteData = SITE_DATA;
 
   $scope.user = {
-    username: websiteData.user.username,
-    isAuthenticated: websiteData.user.is_authenticated,
+    username: siteData.user.username,
+    isAuthenticated: siteData.user.is_authenticated,
   };
 
-  $scope.userSettings = websiteData.settings;
+  $scope.userSettings = siteData.settings;
 
   // Load fonts used on website
-  $scope.fontService.load([websiteData.settings.typefaceparagraph, websiteData.settings.typefaceheadline]);
+  $scope.fontService.load([siteData.settings.typefaceparagraph, siteData.settings.typefaceheadline]);
 
   // Render posts
-  for (i = 0; i < websiteData.posts.length; i++) {
-    var post = websiteData.posts[i];
+  for (i = 0; i < siteData.posts.length; i++) {
+    var post = siteData.posts[i];
 
     switch (post.type) {
       case 0:
