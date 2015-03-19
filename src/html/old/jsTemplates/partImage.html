@@ -1,0 +1,10 @@
+<script type="text/ng-template" id="partImage.html">
+  <div class="part-inner" ng-class="siteOptions.boxes ? '' : 'is-unboxed'">
+    <div class="part-content-block">
+      {{#editMode}}
+        <ng-include src="'partOptions.html'"></ng-include>
+      {{/editMode}}
+      <img ng-src="[[part.key | fixImageUrl ]]">
+    </div>
+  </div>
+</script>

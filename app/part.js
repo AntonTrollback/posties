@@ -31,12 +31,15 @@ part.getAllComplete = function(siteId, callback) {
     var fixed = [];
 
     _(parts).forEach(function(partData) {
-      // Make data available
-      partData.contentString = JSON.stringify(partData.content);
-
       // Set types
       fixed.push(part.setType(partData));
+
+      // Clean up
+      delete partData.created;
+      delete partData.site_id;
+      delete partData.type;
     });
+
     // Sort
     fixed = _.sortBy(fixed, 'rank');
 

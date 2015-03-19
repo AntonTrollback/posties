@@ -1,0 +1,13 @@
+<script type="text/ng-template" id="partVideoInput.html">
+  <div class="part-inner" ng-class="siteOptions.boxes ? '' : 'is-unboxed'">
+    <div class="part-content-pre is-input" ng-show="!part.key" ng-style="{ 'background': siteOptions.boxes ? siteOptions.part_background_color : 'transparent', 'font-family': siteOptions.text_font, 'color': siteOptions.text_color }">
+      <ng-include src="'partOptions.html'"></ng-include>
+
+      <div ng-model="test"
+          class="part-editor"
+          medium-editor
+          options='{"placeholder": "[[part.helpText]]", "disableToolbar": true, "disableReturn": true, "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
+          ng-paste="validateVideo($event.originalEvent, part)"></div>
+    </div>
+  </div>
+</script>

@@ -1,0 +1,8 @@
+<script type="text/ng-template" id="partImageLoading.html">
+  <div class="part-inner" ng-class="siteOptions.boxes ? '' : 'is-unboxed'">
+    <div class="part-content-loading" image-loaded="imageLoaded(part)">
+      Adding your image: <span>Loading</span>
+      <img ng-src="[[part.key | fixImageUrl ]]" class="part-loading-image">
+    </div>
+  </div>
+</script>

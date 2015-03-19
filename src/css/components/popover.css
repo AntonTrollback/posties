@@ -4,6 +4,7 @@
 }
 
 .popover {
+  display: none;
   position: absolute;
   z-index: 10;
   background: #fff;
@@ -14,6 +15,11 @@
   width: 90%;
   max-width: 17em;
 }
+
+.popover.is-visible {
+  display: block;
+}
+
 
 @media (--md-viewport) {
   .popover {

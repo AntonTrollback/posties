@@ -1,0 +1,21 @@
+{{>header}}
+
+<div class="site-container">
+
+  {{!-- On index --}}
+
+  {{#if index}}
+    {{#with site}}
+      {{>part-loop}}
+    {{/with}}
+  {{/if}}
+
+  {{!-- On user site --}}
+
+  {{#if onSite}}
+    {{#with site}}
+      {{>part-loop}}
+    {{/with}}
+  {{/if}}
+
+</div>

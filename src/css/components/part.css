@@ -1,4 +1,8 @@
-.post {
+.parts {
+
+}
+
+.part {
   position: relative;
   box-sizing: border-box;
   margin: 5px 0;
@@ -7,37 +11,37 @@
 }
 
 @media (--lg-viewport) {
-  .post {
+  .part {
     font-size: 23px;
   }
 }
 
-.post:first-child {
+.part:first-child {
   margin-top: 0;
 }
 
-.post:last-child {
+.part:last-child {
   margin-bottom: 0;
 }
 
-.post:first-child .post-inner.is-unboxed {
+.parts.is-unboxed .part:first-child {
   margin-top: 13px;
 }
 
-.post p,
-.post h1 {
+.part p,
+.part h1 {
   margin: 0;
   font: inherit;
 }
 
-.post img,
-.post iframe {
+.part img,
+.part iframe {
   width: 100%;
   display: block;
 }
 
-.post pre,
-.post-editor {
+.part pre,
+.part-editor {
   width: 100%;
   display: block;
   border: 0;
@@ -50,7 +54,7 @@
   outline: 0;
 }
 
-.medium-editor-placeholder.post-editor:after {
+.medium-editor-placeholder.part-editor:after {
   position: absolute;
   top: 0;
   left: 0;
@@ -63,30 +67,30 @@
   color: var(--color-text-light);
 }
 
-.post a {
+.part a {
   text-decoration: underline;
   color: inherit;
 }
 
-.post a:active {
+.part a:active {
   opacity: 0.8;
 }
 
 /**
- * Post content types
+ * Part content types
  */
 
-.post-content-block {
+.part-content-block {
   user-select: none;
 }
 
-.post-content-block.is-fixedratio {
+.part-content-block.is-fixedratio {
   height: 0;
   padding-bottom: 56.25%; /* 16:9 */
   background: #000;
 }
 
-.post-content-block.is-fixedratio iframe {
+.part-content-block.is-fixedratio iframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -96,44 +100,44 @@
   visibility: hidden;
 }
 
-.post-content-pre {
+.part-content-text {
   box-sizing: border-box;
   line-height: 1.2;
   background: #fff;
   padding: 26px 20px;
 }
 
-.post-editor {
+.part-editor {
   padding: 26px 20px;
   margin: -26px -20px;
 }
 
-.medium-editor-placeholder.post-editor:after {
+.medium-editor-placeholder.part-editor:after {
   padding: 26px 0;
 }
 
-.post-content-pre.is-larger {
+.part-content-text.is-larger {
   font-size: 32px;
   padding: 22px 20px;
 }
 
-.post-content-pre.is-input {
+.part-content-text.is-input {
   text-align: center;
   font-size: 18px;
 }
 
-.post-content-pre.is-larger .post-editor {
+.part-content-text.is-larger .part-editor {
   padding: 22px 20px;
   margin: -22px -20px;
 }
 
 @media (--lg-viewport) {
-  .post-content-pre.is-larger {
+  .part-content-text.is-larger {
     font-size: 40px;
   }
 }
 
-.post-content-loading {
+.part-content-loading {
   font-size: 18px;
   font-weight: bold;
   overflow: hidden;
@@ -142,14 +146,14 @@
 }
 
 /* Hidden but leave it in the flow to be sure it's loaded */
-.post-loading-image {
+.part-loading-image {
   width: 1px;
   height: 1px;
   position: absolute;
   opacity: 0;
 }
 
-.post-content-loading span {
+.part-content-loading span {
   position: absolute;
   right: 20px;
   top: 50%;
@@ -161,102 +165,102 @@
 }
 
 /**
- * Tweak for unboxed posts
+ * Tweak for unboxed parts
  */
 
-.post-inner.is-unboxed .post-content-pre {
+.parts.is-unboxed .part-content-text {
   padding: 13px 10px;
 }
 
-.post-inner.is-unboxed .post-editor {
+.parts.is-unboxed .part-editor {
   padding: 13px 10px;
   margin: -13px -10px;
 }
 
-.post-inner.is-unboxed .medium-editor-placeholder.post-editor:after {
+.parts.is-unboxed .medium-editor-placeholder.part-editor:after {
   padding: 13px 0;
 }
 
-.post-inner.is-unboxed .post-content-pre.is-larger {
+.parts.is-unboxed .part-content-text.is-larger {
   padding: 9px 10px;
 }
 
-.post-inner.is-unboxed .post-content-pre.is-larger .post-editor {
+.parts.is-unboxed .part-content-text.is-larger .part-editor {
   padding: 9px 10px;
   margin: -9px -10px;
 }
 
-.post-inner.is-unboxed .post-content-block {
+.parts.is-unboxed .part-content-block {
   margin: 13px 10px;
 }
 
-.post-inner.is-unboxed .post-content-loading {
+.parts.is-unboxed .part-content-loading {
   padding: 20px 10px;
 }
 
-.post-inner.is-unboxed .post-content-loading span {
+.parts.is-unboxed .part-content-loading span {
   right: 10px;
 }
 
 @media (--md-viewport) {
-  .post-content-pre {
+  .part-content-text {
     padding: 34px 32px;
   }
 
-  .post-editor {
+  .part-editor {
     padding: 34px 32px;
     margin: -34px -32px;
   }
 
-  .medium-editor-placeholder.post-editor:after {
+  .medium-editor-placeholder.part-editor:after {
     padding: 34px 0;
   }
 
-  .post-content-pre.is-larger {
+  .part-content-text.is-larger {
     padding: 28px 32px;
   }
 
-  .post-content-pre.is-larger .post-editor {
+  .part-content-text.is-larger .part-editor {
     padding: 28px 32px;
     margin: -28px -32px;
   }
 
-  .post-content-loading {
+  .part-content-loading {
     padding: 28px 32px;
   }
 
-  .post-content-loading span {
+  .part-content-loading span {
     right: 32px;
   }
 
-  .post-inner.is-unboxed .post-content-pre {
+  .parts.is-unboxed .part-content-text {
     padding: 13px 32px;
   }
 
-  .post-inner.is-unboxed .post-editor {
+  .parts.is-unboxed .part-editor {
     padding: 13px 32px;
     margin: -13px -32px;
   }
 
-  .post-inner.is-unboxed .post-content-pre.is-larger {
+  .parts.is-unboxed .part-content-text.is-larger {
     padding: 9px 32px;
   }
 
-  .post-inner.is-unboxed .post-content-pre.is-larger .post-editor {
+  .parts.is-unboxed .part-content-text.is-larger .part-editor {
     padding: 9px 32px;
     margin: -9px -32px;
   }
 
-  .post-inner.is-unboxed .post-content-block {
+  .parts.is-unboxed .part-content-block {
     margin: 16px 32px;
   }
 }
 
 /**
- * Post options
+ * Part options
  */
 
-.post-option {
+.part-option {
   position: absolute;
   top: 0;
   right: 0;
@@ -265,11 +269,11 @@
   z-index: 2;
 }
 
-.post-inner.is-unboxed .post-option {
+.parts.is-unboxed .part-option {
   margin-top: -15px;
 }
 
-.post-option-action {
+.part-option-action {
   width: 15px;
   height: 15px;
   padding: 8px;
@@ -280,36 +284,36 @@
   color: var(--color-text);
 }
 
-.post-option-action:hover {
+.part-option-action:hover {
   color: var(--color-text-dark);
 }
 
-.post-inner.is-unboxed .post-option {
+.parts.is-unboxed .part-option {
   margin: -13px 10px 0 0;
 }
 
-.post-inner.is-unboxed .post-content-block .post-option {
+.parts.is-unboxed .part-content-block .part-option {
   margin-top: 0;
 }
 
-.post-option-action svg {
+.part-option-action svg {
   border-radius: 50%;
   padding: 4px;
   margin: -4px 0 0 -4px;
 }
 
 @media (--md-viewport) {
-  .post-inner.is-unboxed .post-option {
+  .parts.is-unboxed .part-option {
     margin-right: 32px;
   }
 }
 
-.post-content-block .post-option-action svg {
+.part-content-block .part-option-action svg {
   background: rgba(255, 255, 255, .5);
   stroke: #000;
 }
 
-.post:first-child .post-option-action.is-up,
-.post:last-child .post-option-action.is-down {
+.part:first-child .part-option-action.is-up,
+.part:last-child .part-option-action.is-down {
   display: none;
 }

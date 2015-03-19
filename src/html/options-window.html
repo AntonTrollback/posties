@@ -1,0 +1,103 @@
+<div class="popover is-customize updateSettings js-window" id="options">
+  <div class="popover-arrow">
+    <svg role="presentation"><use xlink:href="#popover-arrow"></use></svg>
+  </div>
+
+  <form class="panels js-options" method="post" novalidate>
+    <div class="panel is-active" id="panelPrimarySettings">
+      {{#with site.options}}
+        {{>shared/options-start}}
+      {{/with}}
+    </div>
+
+    <div class="panel" id="panelTextFont">
+      <div class="popover-header">
+        <button class="button" data-go-to-panel="panelPrimarySettings">
+          <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
+        </button>
+      </div>
+
+      <div class="popover-scroll js-list">
+        {{#each fonts}}
+          <a class="panel-item js-listItem js-textFontSelect" data-font="{{{.}}}" style="font-family: '{{{.}}}'">
+            <span class="panel-item-text is-larger">{{{.}}}</span>
+            <div class="js-listItemStatus{{#equal . ../site.options.text_font}}{{else}} u-isHidden{{/equal}}">
+              <div class="panel-item-icon is-transparent is-static">
+                <svg role="presentation"><use xlink:href="#check"></use></svg>
+              </div>
+            </div>
+          </a>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="panel" id="panelHeadlineFont">
+      <div class="popover-header">
+        <button class="button" data-go-to-panel="panelPrimarySettings">
+          <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
+        </button>
+      </div>
+
+      <div class="popover-scroll js-list">
+        {{#each fonts}}
+          <a class="panel-item js-listItem js-headingFontSelect" data-font="{{{.}}}" style="font-family: '{{{.}}}'">
+            <span class="panel-item-text is-larger">{{{.}}}</span>
+            <div class="js-listItemStatus{{#equal . ../site.options.heading_font}}{{else}} u-isHidden{{/equal}}">
+              <div class="panel-item-icon is-transparent is-static">
+                <svg role="presentation"><use xlink:href="#check"></use></svg>
+              </div>
+            </div>
+          </a>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="panel" id="panelBoxColor">
+      <div class="popover-header">
+        <button class="button" data-go-to-panel="panelPrimarySettings">
+          <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
+        </button>
+      </div>
+      <div class="popover-body">
+        {{#each colors.background}}
+        <div class="palette">
+          <button class="palette-item js-palletItem" style="background: {{{.}}}"></button>
+        </div>
+        {{/each}}
+        <input class="minicolors" maxlength="7" type="text" ng-model="siteOptions.part_background_color">
+        <input id="resultBoxColor" class="minicolors-result" type="hidden">
+      </div>
+    </div>
+
+    <div class="panel" id="panelTextColor">
+      <div class="popover-header">
+        <button class="button" data-go-to-panel="panelPrimarySettings">
+          <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
+        </button>
+      </div>
+      <div class="popover-body">
+        <div class="palette">
+          <button class="palette-item" ng-repeat="color in optionsService.getFontPalette()" ng-style="{ 'background': color }" ng-click="siteOptions.text_color = color"></button>
+        </div>
+        <input class="minicolors" maxlength="7" type="text" ng-model="siteOptions.text_color">
+        <input id="resultTextColor" class="minicolors-result" type="hidden">
+      </div>
+    </div>
+
+    <div class="panel" id="panelBackground">
+      <div class="popover-header">
+        <button class="button" data-go-to-panel="panelPrimarySettings">
+          <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
+        </button>
+      </div>
+      <div class="popover-body">
+        <div class="palette">
+          <button class="palette-item" ng-repeat="color in optionsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="siteOptions.background_color = color"></button>
+        </div>
+        <input class="minicolors" maxlength="7" type="text" ng-model="siteOptions.background_color">
+        <input id="resultBackground" class="minicolors-result" type="hidden">
+      </div>
+    </div>
+
+  </form>
+</div>

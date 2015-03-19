@@ -29,10 +29,12 @@ router.use(function(req, res, next) {
  */
 
 function render (res, options) {
-  res.render('layout', _.assign({
+  res.render('body', _.assign({
     assetUrl: app.get('assetUrl'),
     analyticsCode: app.get('analyticsCode'),
     fonts: app.get('fonts'),
+    colors: app.get('colors'),
+    colorsData: JSON.stringify(app.get('colors')),
     production: app.get('production'),
     activeUser: isActive,
     filePickerKey: app.get('filePickerKey')
@@ -89,9 +91,13 @@ app.get('/*', function (req, res, next){
  */
 
 router.get('/', function(req, res) {
+  var defaultSiteData = app.get('defaultSiteData');
+
   render(res, {
     index: true,
     editMode: true,
+    site: defaultSiteData,
+    siteData: JSON.stringify(defaultSiteData),
     title: 'Posti.es',
     description: 'Posti.es, instant one page website creator'
   });
@@ -117,10 +123,14 @@ router.get('/by/:name', function(req, res) {
     if (error) { return render505(error, res); }
     if (!siteData) { return render404(res); }
 
+    siteData.isAuthenticated = user.isActiveOwner(req, siteData.user_id);
+
     render(res, {
       title: name + ' · Posti.es',
-      userSite: siteData,
-      editMode: user.isActiveOwner(req, siteData.user_id)
+      onSite: true,
+      site: siteData,
+      siteData: JSON.stringify(siteData),
+      editMode: siteData.isAuthenticated
     });
   })
 });
@@ -129,6 +139,17 @@ router.get('/by/:name', function(req, res) {
 
 /**
  * API - sign in
+ */
+
+router.post('/api/signin', function (req, res) {
+  user.trySignin(req, req.body, false, function(error, id) {
+    if (error) { return sendError(error, res); }
+    send(res, {id: id});
+  });
+});
+
+/**
+ * API - sign in with websiteName
  */
 
 router.post('/api/signin', function (req, res) {
@@ -207,20 +228,6 @@ router.get('/database', function(req, res) {
 
   render(res, {
     title: 'Database setup'
-  });
-});
-
-router.get('/database/:table', function(req, res) {
-  var query = require('pg-query');
-  query.connectionParameters = app.get('databaseUrl');
-
-  query('SELECT * FROM ' + req.params.table, function(error, rows, results) {
-    if (error) { render505(error, res); return; }
-
-    render(res, {
-      title: 'Database dump',
-      dump: JSON.stringify(rows)
-    });
   });
 });
 

@@ -1,4 +1,4 @@
-<nav class="popover is-nav" ng-show="showNavigation" ng-cloak>
+<nav class="popover is-nav js-window js-account" id="account">
   <div class="popover-arrow"><svg role="presentation"><use xlink:href="#popover-arrow"></use></svg></div>
   <div class="panels">
     <div class="panel is-active" id="panelPrimaryNavigation">
@@ -14,10 +14,10 @@
         </div>
       {{/index}}
 
-      {{#userSite}}
+      {{#site}}
         {{#editMode}}
           <div class="popover-body">
-            <p class="popover-intro">You are currenty editing <strong>{{current_user.username}}</strong></p>
+            <p class="popover-intro">You are currenty editing <strong>{{name}}</strong></p>
           </div>
           <a class="panel-item is-first is-underlined" href="/logout">
             <span class="panel-item-text is-padded">Sign out</span>
@@ -34,14 +34,14 @@
             <div class="panel-item-icon"><svg role="presentation"><use xlink:href="#arrow-right"></use></svg></div>
           </a>
         {{/editMode}}
-      {{/userSite}}
+      {{/site}}
 
-      <a href="http://posti.es/by/posties" {{^userSite}}target="_blank"{{/userSite}} class="panel-item is-underlined {{#index}}is-first{{/index}}">
+      <a href="http://posti.es/by/posties" {{^site}}target="_blank"{{/site}} class="panel-item is-underlined {{#index}}is-first{{/index}}">
         <span class="panel-item-text is-padded">About Posti.es</span>
       </a>
     </div>
 
-    {{#userSite}}
+    {{#site}}
       {{^editMode}}
         <div class="panel" id="panelLogin">
           <div class="popover-header">
@@ -61,6 +61,6 @@
           </div>
         </div>
       {{/editMode}}
-    {{/userSite}}
+    {{/site}}
   </div>
 </nav>
