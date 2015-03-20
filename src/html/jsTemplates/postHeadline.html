@@ -1,12 +1,12 @@
-<script type="text/ng-template" id="partHeadline.html">
-  <div class="part-inner" ng-class="siteOptions.boxes ? '' : 'is-unboxed'">
+<script type="text/ng-template" id="postHeadline.html">
+  <div class="post-inner" ng-class="userSettings.showboxes ? '' : 'is-unboxed'">
     {{#editMode}}
-      <form class="part-content-pre is-larger" ng-style="{ 'background': siteOptions.boxes ? siteOptions.part_background_color : 'transparent', 'font-family': siteOptions.heading_font, 'color': siteOptions.text_color }">
-        <ng-include src="'partOptions.html'"></ng-include>
-        <div ng-model="part.content"
-             class="part-editor"
+      <form class="post-content-pre is-larger" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }">
+        <ng-include src="'postOptions.html'"></ng-include>
+        <div ng-model="post.content"
+             class="post-editor"
              medium-editor
-             ng-blur="updateTextBasedPart($event, part)"
+             ng-blur="updateTextBasedPost($event, post)"
              options='{
               "placeholder": "",
               "forcePlainText": true,
@@ -23,8 +23,8 @@
       </form>
     {{/editMode}}
     {{^editMode}}
-      <div class="part-content-pre is-larger" ng-style="{ 'background': siteOptions.boxes ? siteOptions.part_background_color : 'transparent', 'font-family': siteOptions.heading_font, 'color': siteOptions.text_color }">
-        <div ng-bind-html="part.html"></div>
+      <div class="post-content-pre is-larger" ng-style="{ 'background': userSettings.showboxes ? userSettings.postbackgroundcolor : 'transparent', 'font-family': userSettings.typefaceheadline, 'color': userSettings.posttextcolor }">
+        <div ng-bind-html="post.html"></div>
       </div>
     {{/editMode}}
   </div>

@@ -1,33 +1,33 @@
-<header class="header js-header">
+<div class="header">
 
-  <button type="button" class="header-action js-windowToggle" data-target="#account">
+  <button class="header-action" ng-class="showNavigation ? 'is-active' : ''" ng-click="showNavigation = !showNavigation">
     <span analytics-on="click" analytics-event="Toggle view" analytics-category="Account settings">
       <svg role="presentation"><use xlink:href="#logo"></use></svg>
     </span>
   </button>
 
-  {{#if editMode}}
-    <button type="button" class="header-action js-windowToggle" data-target="#options">
+  {{#editMode}}
+    <button class="header-action" ng-class="settingsService.isOpen ? 'is-active' : ''" ng-click="settingsService.open(); showNavigation = false">
       <span analytics-on="click" analytics-event="Show view" analytics-category="Website design settings">
         <svg role="presentation"><use xlink:href="#sliders"></use></svg>
       </span>
     </button>
-  {{/if}}
+  {{/editMode}}
 
-  {{#if onSite}}
-    {{#if editMode}}
-      <span class="header-action is-link">{{{site.name}}}</span>
-    {{/if}}
-  {{/if}}
-</header>
+  {{#userSite}}
+    {{#editMode}}
+      <span class="header-action is-link">{{{name}}}</span>
+    {{/editMode}}
+  {{/userSite}}
+</div>
 
-{{>account-window}}
+{{>accountSettings}}
 
-{{#if editMode}}
-  {{>options-window}}
-{{/if}}
+{{#editMode}}
+  {{>designSettings}}
+{{/editMode}}
 
-<!--<div id="flash">
+<div id="flash">
   <a class="close" ng-click="flashService.hide()">×</a>
   <pre>[[flashService.message]]</pre>
-</div>-->
+</div>

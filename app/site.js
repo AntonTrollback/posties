@@ -33,12 +33,6 @@ site.getComplete = function(name, callback) {
       if (error) { return callback(error, parts); }
 
       siteData.parts = parts;
-
-      // Clean up
-      delete siteData.user_id;
-      delete siteData.updated;
-      delete siteData.created;
-
       return callback(error, siteData);
     });
   });

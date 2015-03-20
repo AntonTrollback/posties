@@ -78,18 +78,18 @@
   text-indent: 0;
 }
 
-.partTypes {
+.postTypes {
   color: #8a8a8a;
   margin: 0;
   text-align: center;
   margin: 0 -15px;
 }
-.partTypes li {
+.postTypes li {
   display: inline-block;
   margin-right: 2rem;
 }
-.partTypes button,
-.button.addPartImage {
+.postTypes button,
+.button.addPostImage {
   padding: 0;
   width: 90px;
   padding-top: 49px;
@@ -99,7 +99,7 @@
   line-height: 1.7rem;
   margin-right: -14px;
 }
-.partTypes .item {
+.postTypes .item {
   display: inline-block;
   padding: 0 5em;
 }

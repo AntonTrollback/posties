@@ -35,28 +35,45 @@ module.exports = function(grunt) {
       },
       libs: {
         src: [
-          'bower_components/jquery/dist/jquery.js',
           'bower_components/svg4everybody/svg4everybody.js',
+          'bower_components/jquery/dist/jquery.js',
+          'bower_components/angular/angular.js',
+          'bower_components/angular-sanitize/angular-sanitize.js',
+          'bower_components/angular-route/angular-route.js',
+          'bower_components/angulartics/src/angulartics.js',
+          'bower_components/angulartics/src/angulartics-ga.js',
           'bower_components/jquery-minicolors/jquery.minicolors.js',
-          'node_modules/underscore/underscore.js',
-          'node_modules/handlebars/dist/handlebars.runtime.js'
+          'bower_components/Autolinker.js/dist/Autolinker.js',
+          'bower_components/medium-editor/dist/js/medium-editor.js',
+          'bower_components/imagesloaded/imagesloaded.pkgd.js',
         ],
         dest: 'dist/libs.js',
       },
       custom: {
         src: [
-          'src/js/index.js'
+          'src/js/util.js',
+          'src/js/services.js',
+          'src/js/directives.js',
+          'src/js/filters.js',
+          'src/js/controllers.js'
         ],
         dest: 'dist/index.js',
       },
       combined: {
         src: [
           'dist/libs.js',
-          'dist/templates.js',
           'dist/index.js'
         ],
         dest: 'dist/posties.js',
       },
+    },
+
+    ngAnnotate: {
+      dist: {
+        files: {
+          'dist/posties.js': 'dist/posties.js'
+        }
+      }
     },
 
     uglify: {
@@ -93,6 +110,7 @@ module.exports = function(grunt) {
     'concat:libs',
     'concat:custom',
     'concat:combined',
+    'ngAnnotate',
     'uglify'
   ]);
 

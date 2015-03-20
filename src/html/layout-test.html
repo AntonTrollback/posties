@@ -10,7 +10,7 @@
 description
 activeUser
 index
-site
+userSite
 parts
 editMode
 dump
@@ -103,7 +103,7 @@ analyticsCode
 {{/index}}
 
 
-{{#site}}
+{{#userSite}}
 {{#parts}}
   <form id="addPart" action="/api/update-part" method="post" style="outline: 0">
     <p>item type: {{{rank}}}</p>
@@ -127,7 +127,7 @@ analyticsCode
   <button type="submit">Add part</button>
 </form>
 {{/editMode}}
-{{/site}}
+{{/userSite}}
 
 
 {{#dump}}

@@ -1,17 +1,13 @@
 .clearfix:before,
-.clearfix:after,
-.u-cf:before,
-.u-cf:after {
+.clearfix:after {
   content: " ";
   display: table;
 }
 
-.clearfix:after,
-.u-cf:after {
+.clearfix:after {
   clear: both;
 }
 
-.hidden,
-.u-isHidden {
+.hidden {
   display: none;
 }
