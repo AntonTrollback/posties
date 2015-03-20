@@ -1,0 +1,28 @@
+<div class="block is-padded">
+  <button class="button is-large is-full" ng-click="showPartTypes = !showPartTypes" ng-show="!showPartTypes">
+    <span analytics-on="click" analytics-event="Show" analytics-category="Content boxes">
+      <svg role="presentation"><use xlink:href="#plus"></use></svg> Add content
+    </span>
+  </button>
+
+  <div class="button-group" ng-show="showPartTypes" ng-cloak>
+    <button class="button is-vertical" ng-click="addPart($event)" data-type="0" data-template="text.html" data-analytics-label="Body text">
+      <svg role="presentation"><use xlink:href="#content-text"></use></svg> Body text
+    </button>
+
+    <button class="button is-vertical" ng-click="addPart($event)" data-type="1" data-template="heading.html" data-analytics-label="Headline">
+      <svg role="presentation"><use xlink:href="#content-heading"></use></svg> Headline
+    </button>
+
+    <div class="button-group-break"></div>
+
+    <label class="button is-vertical" for="image-input" analytics-on="click" analytics-event="Add" analytics-category="Content boxes" analytics-label="Image">
+      <input class="hidden" id="image-input" type="file" accept="image/*" capture="camera" name="image" file-change="addPart($event, $files)" data-type="2" data-template="image.html">
+      <svg role="presentation"><use xlink:href="#content-image"></use></svg> Image
+    </label>
+
+    <button class="button is-vertical" ng-click="addPart($event)" data-type="3" data-template="video.html" data-analytics-label="Video">
+      <svg role="presentation"><use xlink:href="#content-video"></use></svg> Video
+    </button>
+  </div>
+</div>

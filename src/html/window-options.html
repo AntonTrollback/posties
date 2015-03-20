@@ -1,8 +1,8 @@
-<div id="closeOverlays" ng-show="settingsService.isOpen" ng-click="settingsService.submitUpdateAndClose(userSettings)"></div>
+<div id="closeOverlays" ng-show="optionsService.isOpen" ng-click="optionsService.submitUpdateAndClose(options)"></div>
 
-<div class="popover is-customize updateSettings" id="modalUpdateSettings" ng-show="settingsService.isOpen" ng-cloak>
+<div class="popover is-customize updateSettings" id="modalUpdateSettings" ng-show="optionsService.isOpen" ng-cloak>
   <div class="popover-arrow"><svg role="presentation"><use xlink:href="#popover-arrow"></use></svg></div>
-  <form class="panels" id="updateSettings" method="put" name="formSettings" ng-submit="settingsService.submitUpdate(userSettings)" novalidate>
+  <form class="panels" id="updateSettings" method="put" name="formSettings" ng-submit="optionsService.submitUpdate(options)" novalidate>
     <div class="panel is-active" id="panelPrimarySettings">
 
       <!-- Links to font panels -->
@@ -10,8 +10,8 @@
       <a class="panel-item" data-go-to-panel="panelTextFont" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Text font">
         <span class="panel-item-text">Text font</span>
         <div class="panel-item-preview">
-          <span class="panel-item-text is-larger" ng-model="userSettings.typefaceparagraph" style="font-family: '[[userSettings.typefaceparagraph]]'">
-            [[userSettings.typefaceparagraph]]
+          <span class="panel-item-text is-larger" ng-model="options.text_font" style="font-family: '[[options.text_font]]'">
+            [[options.text_font]]
           </span>
         </div>
         <div class="panel-item-icon"><svg role="presentation"><use xlink:href="#arrow-right"></use></svg></div>
@@ -20,8 +20,8 @@
       <a class="panel-item" data-go-to-panel="panelHeadlineFont" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Headline font">
         <span class="panel-item-text">Headline font</span>
         <div class="panel-item-preview">
-          <span class="panel-item-text is-larger" ng-model="userSettings.typefaceheadline" style="font-family: '[[userSettings.typefaceheadline]]'">
-            [[userSettings.typefaceheadline]]
+          <span class="panel-item-text is-larger" ng-model="options.heading_font" style="font-family: '[[options.heading_font]]'">
+            [[options.heading_font]]
           </span>
         </div>
         <div class="panel-item-icon"><svg role="presentation"><use xlink:href="#arrow-right"></use></svg></div>
@@ -29,11 +29,11 @@
 
       <!-- Inline show boxes -->
 
-      <label class="panel-item toggle-parent" for="showBoxes" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Toggle boxes">
+      <label class="panel-item toggle-parent" for="boxes" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Toggle boxes">
         <span class="panel-item-text">Use boxes</span>
         <span class="panel-item-preview">
           <span class="panel-item-toggle toggle">
-            <input id="showBoxes" type="checkbox" ng-checked="userSettings.showboxes" ng-model="userSettings.showboxes">
+            <input id="boxes" type="checkbox" ng-checked="options.boxes" ng-model="options.boxes">
             <span class="toggle-handle"></span>
           </span>
         </span>
@@ -41,46 +41,46 @@
 
       <!-- Links to color panels -->
 
-      <a class="panel-item" data-go-to-panel="panelBoxColor" ng-class="userSettings.showboxes ? '' : 'is-disabled'" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Box color">
+      <a class="panel-item" data-go-to-panel="panelBoxColor" ng-class="options.boxes ? '' : 'is-disabled'" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Box color">
         <span class="panel-item-text">Box color</span>
-        <span class="panel-item-preview" style="background-color: [[userSettings.postbackgroundcolor]]"></span>
+        <span class="panel-item-preview" style="background-color: [[options.part_background_color]]"></span>
         <div class="panel-item-icon is-transparent"><svg role="presentation"><use xlink:href="#arrow-right"></use></svg></div>
       </a>
 
       <a class="panel-item" data-go-to-panel="panelTextColor" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Text color">
         <span class="panel-item-text">Text color</span>
-        <span class="panel-item-preview" style="background-color: [[userSettings.posttextcolor]]"></span>
+        <span class="panel-item-preview" style="background-color: [[options.text_color]]"></span>
         <div class="panel-item-icon is-transparent"><svg role="presentation"><use xlink:href="#arrow-right"></use></svg></div>
       </a>
 
       <a class="panel-item" data-go-to-panel="panelBackground" analytics-on="click" analytics-event="Change" analytics-category="Website design settings" analytics-label="Background color">
         <span class="panel-item-text">Background</span>
-        <span class="panel-item-preview" style="background-color: [[userSettings.pagebackgroundcolor]]"></span>
+        <span class="panel-item-preview" style="background-color: [[options.background_color]]"></span>
         <div class="panel-item-icon is-transparent"><svg role="presentation"><use xlink:href="#arrow-right"></use></svg></div>
       </a>
 
       <!-- Reset and randomize -->
 
       <div class="popover-body">
-        <button class="button" ng-click="userSettings = settingsService.getDefault()"><span analytics-on="click" analytics-event="Reset" analytics-category="Website design settings">Reset</span></button>
-        <span style="margin-left: 0.5em;">or <a ng-click="userSettings = settingsService.getRandom()"><span analytics-on="click" analytics-event="Randomize" analytics-category="Website design settings">randomize</span></a>!</span>
-        <button id="saveUserSettings" class="button" style="display: none;">Save</button>
+        <button class="button" ng-click="options = optionsService.getDefault()"><span analytics-on="click" analytics-event="Reset" analytics-category="Website design settings">Reset</span></button>
+        <span style="margin-left: 0.5em;">or <a ng-click="options = optionsService.getRandom()"><span analytics-on="click" analytics-event="Randomize" analytics-category="Website design settings">randomize</span></a>!</span>
+        <button id="saveoptions" class="button" style="display: none;">Save</button>
       </div>
     </div>
 
 
     <div class="panel" id="panelTextFont">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="optionsService.submitUpdate(options)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>
 
       <div class="popover-scroll">
         {{#fonts}}
-          <a class="panel-item" style="font-family: '{{.}}'" ng-click="userSettings.typefaceparagraph = '{{font}}'">
+          <a class="panel-item" style="font-family: '{{.}}'" ng-click="options.text_font = '{{font}}'">
             <span class="panel-item-text is-larger">{{.}}</span>
-            <div class="panel-item-icon is-transparent is-static" ng-show="userSettings.typefaceparagraph === '{{font}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
+            <div class="panel-item-icon is-transparent is-static" ng-show="options.text_font === '{{font}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
           </a>
         {{/fonts}}
       </div>
@@ -88,16 +88,16 @@
 
     <div class="panel" id="panelHeadlineFont">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="optionsService.submitUpdate(options)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>
 
       <div class="popover-scroll">
         {{#fonts}}
-          <a class="panel-item" style="font-family: '{{{.}}}'" ng-click="userSettings.typefaceheadline = '{{font}}'">
+          <a class="panel-item" style="font-family: '{{{.}}}'" ng-click="options.heading_font = '{{font}}'">
             <span class="panel-item-text is-larger">{{{.}}}</span>
-            <div class="panel-item-icon is-transparent is-static" ng-show="userSettings.typefaceheadline === '{{font}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
+            <div class="panel-item-icon is-transparent is-static" ng-show="options.heading_font === '{{font}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
           </a>
         {{/fonts}}
       </div>
@@ -105,45 +105,45 @@
 
     <div class="panel" id="panelBoxColor">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="optionsService.submitUpdate(options)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>
       <div class="popover-body">
         <div class="palette">
-          <button class="palette-item" ng-repeat="color in settingsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="userSettings.postbackgroundcolor = color"></button>
+          <button class="palette-item" ng-repeat="color in optionsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="options.part_background_color = color"></button>
         </div>
-        <input class="minicolors" maxlength="7" type="text" ng-model="userSettings.postbackgroundcolor">
+        <input class="minicolors" maxlength="7" type="text" ng-model="options.part_background_color">
         <input id="resultBoxColor" class="minicolors-result" type="hidden">
       </div>
     </div>
 
     <div class="panel" id="panelTextColor">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="optionsService.submitUpdate(options)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>
       <div class="popover-body">
         <div class="palette">
-          <button class="palette-item" ng-repeat="color in settingsService.getFontPalette()" ng-style="{ 'background': color }" ng-click="userSettings.posttextcolor = color"></button>
+          <button class="palette-item" ng-repeat="color in optionsService.getFontPalette()" ng-style="{ 'background': color }" ng-click="options.text_color = color"></button>
         </div>
-        <input class="minicolors" maxlength="7" type="text" ng-model="userSettings.posttextcolor">
+        <input class="minicolors" maxlength="7" type="text" ng-model="options.text_color">
         <input id="resultTextColor" class="minicolors-result" type="hidden">
       </div>
     </div>
 
     <div class="panel" id="panelBackground">
       <div class="popover-header">
-        <button class="button" ng-click="settingsService.submitUpdate(userSettings)" data-go-to-panel="panelPrimarySettings">
+        <button class="button" ng-click="optionsService.submitUpdate(options)" data-go-to-panel="panelPrimarySettings">
           <svg role="presentation"><use xlink:href="#arrow-left"></use></svg> Settings
         </button>
       </div>
       <div class="popover-body">
         <div class="palette">
-          <button class="palette-item" ng-repeat="color in settingsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="userSettings.pagebackgroundcolor = color"></button>
+          <button class="palette-item" ng-repeat="color in optionsService.getBackgroundPalette()" ng-style="{ 'background': color }" ng-click="options.background_color = color"></button>
         </div>
-        <input class="minicolors" maxlength="7" type="text" ng-model="userSettings.pagebackgroundcolor">
+        <input class="minicolors" maxlength="7" type="text" ng-model="options.background_color">
         <input id="resultBackground" class="minicolors-result" type="hidden">
       </div>
     </div>

@@ -1,0 +1,11 @@
+<script type="text/ng-template" id="video.html">
+  <div class="part-inner" ng-class="options.boxes ? '' : 'is-unboxed'">
+    <div class="part-content-block is-fixedratio">
+      {{#editMode}}
+        <ng-include src="'options.html'"></ng-include>
+      {{/editMode}}
+
+      <iframe width="100%" height="360" ng-src="[[part.content.key | safeYoutubeUrl ]]" frameborder="0" allowfullscreen mozallowfullscreen webkitallowfullscreen onload="this.style.visibility='visible';"></iframe>
+    </div>
+  </div>
+</script>

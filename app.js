@@ -41,6 +41,10 @@ var production = env.get('env') === 'production';
 var revision = env.get('revision');
 var s3url = '//s3.' + env.get('region') + '.amazonaws.com/' + env.get('bucket') + '/assets/' + revision + '/';
 var fonts = ['Akkurat', 'Josefin Sans', 'Dosis', 'Karla', 'Archivo Narrow', 'Inconsolata', 'Anonymous Pro', 'Text Me One', 'Lora', 'Neuton', 'Old Standard TT', 'EB Garamond', 'Arvo', 'Fredoka One', 'VT323', 'Nova Cut', 'Reenie Beanie'];
+var colors = {
+  background: ['#f5f5f5', '#ffffff', '#000000', '#bbf8ff', '#405559', '#512d59', '#ff033e', '#ff8f8f'],
+  text: ['#000000', '#ffffff']
+}
 
 app.set('production', production);
 app.set('revision', revision);
@@ -48,7 +52,30 @@ app.set('databaseUrl', env.get('databaseUrl'));
 app.set('assetUrl', production ? s3url : '/');
 app.set('analyticsCode', production ? 'UA-50858987-1' : false);
 app.set('fonts', fonts);
+app.set('colors', colors);
 app.set('filePickerKey', 'AB0n3LvCeQhusW_h15bE5z');
+app.set('defaultSiteData', {
+  id: false,
+  name: false,
+  isAuthenticated: false,
+  options: {
+    boxes: true,
+    text_font: 'Akkurat',
+    text_color: '#141414',
+    heading_font: 'Akkurat',
+    background_color: '#f5f5f5',
+    part_background_color: '#ffffff'
+  },
+  parts: [{
+    id: false,
+    rank: 0,
+    type: 0,
+    //typeText: true,
+    content: {
+      text: "<p>Hello</p><p class=\"focus\">I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>"
+    }
+  }]
+});
 
 app.use(require('./app/router'));
 

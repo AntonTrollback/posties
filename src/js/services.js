@@ -17,13 +17,13 @@ postiesApp.constant('config', {
 });
 
 
-postiesApp.service('SettingsService', function($http, config, FontService) {
+postiesApp.service('optionsService', function($http, config, FontService) {
   // We hold the most recent settings object from the DB, so that we can check
   // incoming objects for equality - determining if a DB update is needed
   this.currentSettings = {};
   this.isOpen = false;
 
-  this.submitUpdate = function(userSettings) {
+  this.submitUpdate = function(options) {
     if (SITE_DATA) {
       if (!SITE_DATA.user.is_authenticated) {
         return;
@@ -32,14 +32,14 @@ postiesApp.service('SettingsService', function($http, config, FontService) {
       return;
     }
 
-    if (!angular.equals(this.currentSettings, userSettings)) {
+    if (!angular.equals(this.currentSettings, options)) {
       // Make a deep copy of the settings object, otherwise the equality check will always pass
-      this.currentSettings = jQuery.extend(true, {}, userSettings);
+      this.currentSettings = jQuery.extend(true, {}, options);
 
       var promise = $http({
         url: '/api/settings',
         method: 'put',
-        data: userSettings,
+        data: options,
         headers: config.headerJSON
       }).then(function(response) {
         return this.currentSettings;
@@ -51,8 +51,8 @@ postiesApp.service('SettingsService', function($http, config, FontService) {
     }
   };
 
-  this.submitUpdateAndClose = function(userSettings) {
-    this.submitUpdate(userSettings);
+  this.submitUpdateAndClose = function(options) {
+    this.submitUpdate(options);
     this.close();
   };
 
@@ -69,12 +69,12 @@ postiesApp.service('SettingsService', function($http, config, FontService) {
     return {
       created: new Date(),
       id: 0,
-      typefaceheadline: getRandomTypeface(),
-      typefaceparagraph: getRandomTypeface(),
-      showboxes: Math.random() < 0.5,
-      postbackgroundcolor: getRandomHex(),
-      pagebackgroundcolor: getRandomHex(),
-      posttextcolor: getRandomHex()
+      heading_font: getRandomTypeface(),
+      text_font: getRandomTypeface(),
+      boxes: Math.random() < 0.5,
+      part_background_color: getRandomHex(),
+      background_color: getRandomHex(),
+      text_color: getRandomHex()
     };
   };
 
@@ -82,12 +82,12 @@ postiesApp.service('SettingsService', function($http, config, FontService) {
     return {
       created: new Date(),
       id: 0,
-      pagebackgroundcolor: "#f5f5f5",
-      postbackgroundcolor: "#ffffff",
-      posttextcolor: "#141414",
-      showboxes: true,
-      typefaceheadline: "Akkurat",
-      typefaceparagraph: "Akkurat"
+      background_color: "#f5f5f5",
+      part_background_color: "#ffffff",
+      text_color: "#141414",
+      boxes: true,
+      heading_font: "Akkurat",
+      text_font: "Akkurat"
     }
   };
 

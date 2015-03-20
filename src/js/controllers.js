@@ -3,28 +3,22 @@
  */
 
 postiesApp.controller('IndexCtrl', function(
-  $scope, $http, $timeout, $analytics, config,
-  SettingsService, AuthService, FlashService) {
+  $scope, $http, $timeout, $analytics, $sce, config,
+  optionsService, AuthService, FlashService) {
 
-  $scope.settingsService = SettingsService;
+  $scope.optionsService = optionsService;
   $scope.flashService = FlashService;
   $scope.authService = AuthService;
 
-  // Setup default user stuff and post
-  $scope.user = {
-    username: false,
-    isAuthenticated: false
-  };
+  $scope.site = SITE_DATA;
+  $scope.options = $scope.site.options;
 
-  $scope.userSettings = $scope.settingsService.getDefault();
-
-  $scope.posts = [{
-    id: 0,
-    type: 0,
-    sortrank: 0,
-    content: "<p>Hello</p><p class=\"focus\">I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>",
-    template: 'postText.html'
-  }];
+  // Setup/render default part
+  $scope.parts = $scope.site.parts;
+  var part = $scope.site.parts[0];
+  part.content.html = $sce.trustAsHtml(part.content.text);
+  part.template = 'text.html';
+  $scope.site.parts[0] = part;
 
   /**
    * Create user
@@ -100,25 +94,24 @@ postiesApp.controller('IndexCtrl', function(
       email: $scope.user.email.toLowerCase(),
       username: $scope.user.username,
       password: $scope.user.password,
-      settings: $scope.userSettings,
-      posts: []
+      settings: $scope.options,
+      parts: []
     };
 
     data.settings.username = $scope.user.username;
 
-    // Remove invalid video posts and not yet uploaded images
-    for (var i in $scope.posts) {
-      if (($scope.posts[i].type === 3 && !$scope.posts[i].isValidVideo) ||
-          ($scope.posts[i].type === 2 && !$scope.posts[i].isUploaded)) {
+    // Remove invalid video parts and not yet uploaded images
+    for (var i in $scope.parts) {
+      if (($scope.parts[i].type === 3 && !$scope.parts[i].isValidVideo) ||
+          ($scope.parts[i].type === 2 && !$scope.parts[i].isUploaded)) {
         continue;
       } else {
         // Remove unnecessary data
-        var post = angular.copy($scope.posts[i]);
-        delete post['template'];
-        delete post['isUploaded'];
-        delete post['uploadProgress'];
-        delete post['helpText'];
-        data.posts.push(post);
+        var part = angular.copy($scope.parts[i]);
+        delete part['template'];
+        delete part['isUploaded'];
+        delete part['progress'];
+        data.parts.push(part);
       }
     }
 
@@ -141,69 +134,56 @@ postiesApp.controller('IndexCtrl', function(
 
 postiesApp.controller('UserCtrl', function(
   $scope, $http, $timeout, $filter, $analytics, $sce, config,
-  FontService, AuthService, FlashService, SettingsService) {
+  FontService, AuthService, FlashService, optionsService) {
 
   $scope.flashService = FlashService;
   $scope.fontService = FontService;
-  $scope.settingsService = SettingsService;
+  $scope.optionsService = optionsService;
   $scope.authService = AuthService;
 
-  $scope.posts = [];
+  $scope.site = SITE_DATA;
+  $scope.options = $scope.site.options;
 
   // First visit
+
   if (localStorage.getItem(config.keySettings + 'Welcome')) {
     $analytics.eventTrack('Success', {  category: 'Sign up' });
     $('.welcome').show();
     localStorage.removeItem(config.keySettings + 'Welcome');
   }
 
-  // Get design and user data
-  var siteData = SITE_DATA;
-
-  $scope.user = {
-    username: siteData.user.username,
-    isAuthenticated: siteData.user.is_authenticated,
-  };
-
-  $scope.userSettings = siteData.settings;
-
   // Load fonts used on website
-  $scope.fontService.load([siteData.settings.typefaceparagraph, siteData.settings.typefaceheadline]);
 
-  // Render posts
-  for (i = 0; i < siteData.posts.length; i++) {
-    var post = siteData.posts[i];
+  $scope.fontService.load([$scope.options.text_font, $scope.options.heading_font]);
 
-    switch (post.type) {
+  // Setup/render parts
+
+  $scope.parts = [];
+
+  for (i = 0; i < $scope.site.parts.length; i++) {
+    var part = $scope.site.parts[i];
+
+    switch (part.type) {
       case 0:
-        post.html = $sce.trustAsHtml(post.content);
-        post.template = 'postText.html';
+        part.content.html = $sce.trustAsHtml(part.content.text);
+        part.template = 'text.html';
         break;
       case 1:
-        post.html = $sce.trustAsHtml(post.content);
-        post.template = 'postHeadline.html';
+        part.content.html = $sce.trustAsHtml(part.content.text);
+        part.template = 'heading.html';
         break;
       case 2:
-        post.template = 'postImage.html';
-        post.isUploaded = true;
+        part.isUploaded = true;
+        part.template = 'image.html';
         break;
       case 3:
-        post.template = 'postVideo.html';
-        post.isValidVideo = true;
+        part.isValidVideo = true;
+        part.template = 'video.html';
         break;
     }
-    $scope.posts.push(post);
+
+    $scope.parts.push(part);
   }
-});
-
-
-/**
- * Error page controller
- * -----------------------------------------------------------------------------
- */
-
-postiesApp.controller('PageErrorCtrl', function() {
-
 });
 
 
@@ -217,150 +197,145 @@ postiesApp.controller('EditorCtrl', function(
   var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
   /**
-   * Add posts
+   * Add parts
    */
 
-  $scope.addPost = function($event, $data) {
+  $scope.addPart = function($event, $data) {
     // Send tracking data
     $analytics.eventTrack('Add', {
       category: 'Content boxes',
       label: $event.target.getAttribute('data-analytics-label')
     });
 
-    // Setup generic post data
-    var post = {
+    // Hide "add part" actions
+    $scope.showPartTypes = false;
+
+    // Setup generic part data
+    var part = {
       type: parseInt($event.target.getAttribute('data-type')),
-      sortrank: $scope.posts.length,
+      rank: $scope.parts.length,
+      content: {},
       template: $event.target.getAttribute('data-template')
     }
 
-    // Hide add post buttons
-    $scope.showPostTypes = false;
-
-    // Setup post types
-    switch (post.type) {
+    // Setup part types
+    switch (part.type) {
       case 0:
-        $scope.setupTextBasedPost(post);
+        $scope.setupTextBasedPart(part);
         break;
       case 1:
-        $scope.setupTextBasedPost(post);
+        $scope.setupTextBasedPart(part);
         break;
       case 2:
-        // Note: image is already selected
-        $scope.setupImage(post, $event.target, $data[0]);
+        var input = $event.target, file = $data[0];
+        $scope.setupImage(part, input, file);
         break;
       case 3:
-        $scope.setupVideo(post);
+        $scope.setupVideo(part);
         break;
     }
   }
 
   /**
-   * Setup text based posts (show and save)
+   * Setup text based parts (show and save)
    */
 
-  $scope.setupTextBasedPost = function(post) {
-    post.content = '';
-    $scope.posts.push(post);
+  $scope.setupTextBasedPart = function(part) {
+    part.content.text = '';
 
-    // Send to backend
-    $scope.send($scope.posts[post.sortrank], 'postText', function(response) {
-      $scope.posts[post.sortrank].id = response.data;
+    $scope.parts.push(part);
+
+    $scope.trySave($scope.parts[part.rank], 'partText', function(response) {
+      $scope.parts[part.rank].id = response.data;
     });
 
-    $scope.focusPostEditor(post.sortrank);
+    $scope.focusPart(part.rank);
   }
 
   /**
-   * Setup post image (upload, show, and send to backend)
+   * Setup part image (upload, show, and save to backend)
    */
 
-  $scope.setupImage = function(post, input, file) {
-    if (!file) {
+  $scope.setupImage = function(part, input, file) {
+    if (!file || !file.type.match(/image.*/)) {
+      alert("Not sure that's an image");
       return;
     }
 
-    post.isUploaded = false;
-    post.template = 'postImageUploading.html';
+    part.isUploaded = false;
+    part.template = 'image-uploading.html';
+    part.progress = 0;
 
-    post.uploadProgress = 0;
-    $scope.posts.push(post);
+    $scope.parts.push(part);
 
-    // Validate image
-    if (!file.type.match(/image.*/)) {
-      alert("Not sure that's an image")
-      return;
-    }
-
-    var storeOptions = {
+    var uploadOptions = {
       mimetypes: ['image/*'],
       location: 'S3',
       path: '/images/',
       access: 'public',
     };
 
-    var storeSuccess = function(blob) {
+    var uploadSuccess = function(blob) {
       $scope.$apply(function() {
-        post.key = blob.url;
-        post.isUploaded = true;
+        part.content.key = blob.url;
+        part.isUploaded = true;
 
         // Change to loading from uploading
-        post.template = 'postImageLoading.html';
+        part.template = 'image-loading.html';
       });
 
-      $scope.send($scope.posts[post.sortrank], 'postImage', function(response) {
-        $scope.posts[post.sortrank].id = response.data;
+      $scope.trySave($scope.parts[part.rank], 'partImage', function(response) {
+        $scope.parts[part.rank].id = response.data;
       });
     };
 
-    var storeError = function(FPError) {
+    var uploadError = function(FPError) {
       console.log(FPError.toString());
     };
 
-    var storeProgress = function(progress) {
+    var uploadProgress = function(progress) {
       $scope.$apply(function() {
         if (progress < 95) {
-          post.uploadProgress = progress + '%';
+          part.progress = progress + '%';
           return;
         }
 
         // Always stuck at 95% for a while. Let's make it look a bit better
         if (progress = 95) {
-          $timeout(function() { post.uploadProgress = '98%'; }, 300);
-          $timeout(function() { post.uploadProgress = '100%'; }, 600);
-          $timeout(function() { post.uploadProgress = 'Loading'; }, 900);
+          $timeout(function() { part.progress = '98%'; }, 300);
+          $timeout(function() { part.progress = '100%'; }, 600);
+          $timeout(function() { part.progress = 'Loading'; }, 900);
         }
       });
     };
 
     // Upload image
-    filepicker.store(input, storeOptions, storeSuccess, storeError, storeProgress);
+    filepicker.store(input, uploadOptions, uploadSuccess, uploadError, uploadProgress);
   };
 
   /**
    * Image loaded (and converted) event
    */
 
-  $scope.imageLoaded = function(post) {
-    post.template = 'postImage.html';
+  $scope.imageLoaded = function(part) {
+    part.template = 'image.html';
   };
 
   /**
-   * Setup post video (show)
+   * Setup part video (show)
    */
 
-  $scope.setupVideo = function(post) {
-    post.helpText = 'Paste your YouTube link here';
-    post.template = 'postVideoInput.html';
-    $scope.posts.push(post);
-    $scope.focusPostEditor(post.sortrank);
+  $scope.setupVideo = function(part) {
+    part.template = 'video-input.html';
+    $scope.parts.push(part);
+    $scope.focusPart(part.rank);
   };
 
   /**
-   * Validate video (and send to backend)
+   * Validate video (and save to backend) event
    */
 
-  $scope.validateVideo = function($event, post) {
+  $scope.validateVideo = function($event, part) {
     var clipboardData = $event.clipboardData.items[0];
 
     clipboardData.getAsString(function(data) {
@@ -374,75 +349,75 @@ postiesApp.controller('EditorCtrl', function(
       }
 
       $scope.$apply(function() {
-        post.key = videoSrc;
-        post.template = 'postVideo.html';
+        part.content.key = videoSrc;
+        part.template = 'video.html';
 
-        $scope.send($scope.posts[post.sortrank], 'postVideo', function(response) {
-          $scope.posts[post.sortrank].id = response.data;
+        $scope.trySave($scope.parts[part.rank], 'partVideo', function(response) {
+          $scope.parts[part.rank].id = response.data;
         });
       });
     });
   };
 
   /**
-   * Move post
+   * Move part
    */
 
-  $scope.movePost = function(currentIndex, newIndex) {
-    posties.util.swapItems($scope.posts, currentIndex, newIndex);
+  $scope.movePart = function(currentIndex, newIndex) {
+    posties.util.swapItems($scope.parts, currentIndex, newIndex);
     var data = [];
 
-    for (i = 0; i < $scope.posts.length; i++) {
-      var post = $scope.posts[i];
-      if (post.id) { // the posts save event might not have returned yet
-        data.push({id: post.id, sortrank: i});
+    for (i = 0; i < $scope.parts.length; i++) {
+      var part = $scope.parts[i];
+      if (part.id) { // the parts save event might not have returned yet
+        data.push({id: part.id, rank: i});
       }
     }
 
-    $scope.send(data, 'postrank');
+    $scope.trySave(data, 'partrank');
   };
 
   /**
-   * Delete post
+   * Delete part
    */
 
-  $scope.deletePost = function(currentIndex, post) {
-    $scope.posts.splice(currentIndex, 1);
+  $scope.deletePart = function(currentIndex, part) {
+    $scope.parts.splice(currentIndex, 1);
 
-    // The posts save event might not have returned yet.
+    // The parts save event might not have returned yet.
     // Todo: The video type could be unsaved (not yet pasted), this causes
-    // a bug: "un-pasted" video posts will not save the updated position
+    // a bug: "un-pasted" video parts will not save the updated position
     // when moving up and down
-    if (!post.id) {
+    if (!part.id) {
       return;
     }
 
-    $scope.send({ id: post.id }, 'posts', false, 'delete');
+    $scope.trySave({ id: part.id }, 'parts', false, 'delete');
   };
 
   /**
-   * Update posts
+   * Update parts
    */
 
-  $scope.updateTextBasedPost = function($event, post) {
+  $scope.updateTextBasedPart = function($event, part) {
     setTimeout(function() {
-      var content = Autolinker.link(post.content, {
+      var content = Autolinker.link(part.content.text, {
         truncate: false,
         stripPrefix: true
       });
 
-      $scope.send({ id: post.id, content: content }, 'postText', false, 'put');
+      $scope.trySave({ id: part.id, content: content }, 'partText', false, 'put');
     }, 250);
   };
 
   /**
-   * Focus post editor
+   * Focus part editor
    */
 
-  $scope.focusPostEditor = function(postIndex) {
+  $scope.focusPart = function(partIndex) {
     if (!iOS) {
       $timeout(function() {
-        var $el = $('.post').eq(postIndex).find('.post-editor');
+        var $el = $('.part').eq(partIndex).find('.part-editor');
         var $focusEl = $el.find('.focus');
         $el.focus();
 
@@ -455,11 +430,11 @@ postiesApp.controller('EditorCtrl', function(
   }
 
   /**
-   * Send to backend
+   * Save to backend
    */
 
-  $scope.send = function(data, endpoint, callback, method) {
-    if (!$scope.user.isAuthenticated) {
+  $scope.trySave = function(data, endpoint, callback, method) {
+    if (!$scope.site.isAuthenticated) {
       return;
     }
 
@@ -467,8 +442,7 @@ postiesApp.controller('EditorCtrl', function(
     var data = angular.copy(data);
     delete data['template'];
     delete data['isUploaded'];
-    delete data['uploadProgress'];
-    delete data['helpText'];
+    delete data['progress'];
 
     if (!method) {
       method = 'post';
@@ -490,6 +464,6 @@ postiesApp.controller('EditorCtrl', function(
     });
   }
 
-  // Focus first post
-  $scope.focusPostEditor(0);
+  // Focus first part
+  $scope.focusPart(0);
 });
