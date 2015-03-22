@@ -35,7 +35,6 @@ site.getComplete = function(name, callback) {
       siteData.parts = parts;
 
       // Clean up
-      delete siteData.user_id;
       delete siteData.updated;
       delete siteData.created;
 
@@ -84,8 +83,8 @@ site.create = function(siteInput, partsInput, callback) {
   var data = [siteInput.userId, siteInput.name, siteInput.options, date, date];
 
   query(sql, data, function(error, siteData) {
-    var id = _.isUndefined(siteData) ? null : siteData[0].id;
-    var name = _.isUndefined(siteData) ? null : siteData[0].name;
+    var id = _.isUndefined(siteData) && !error ? null : siteData[0].id;
+    var name = _.isUndefined(siteData) && !error ? null : siteData[0].name;
 
     if (partsInput.length > 0) {
       part.createAll(partsInput, id, function(error, success) {
@@ -95,6 +94,25 @@ site.create = function(siteInput, partsInput, callback) {
     } else {
       callback(error, id, name);
     }
+  });
+}
+
+/**
+ * Update site options
+ */
+
+site.setOptions = function(input, callback) {
+  validator.normalizeJSON(input.options, function(error, json) {
+    if (error) { return callback(error, null); }
+    input.options = json;
+  });
+
+  var sql = 'UPDATE sites SET options = ($1) WHERE id = ($2) RETURNING *';
+  var data = [input.options, input.id];
+
+  query(sql, data, function(error, rows) {
+    var id = _.isUndefined(rows) && !error ? null : true;
+    callback(error, true);
   });
 }
 

@@ -54,7 +54,7 @@ user.create = function(req, input, callback) {
   var data = [email, input.password, new Date()]
 
   query(sql, data, function(error, rows) {
-    var id = _.isUndefined(rows) ? null : rows[0].id;
+    var id = _.isUndefined(rows) && !error ? null : rows[0].id;
     user.signin(req, id);
     callback(error, id);
   });
@@ -69,26 +69,32 @@ user.trySignin = function(req, input, userData, callback) {
   var password = input.password;
 
   if (!validator.isEmail(email)) {
-    return callback(null, null);
+    return callback(null, null, null);
   }
 
   if (userData) {
     // Already got user from database
     if (userData.password !== password) {
-      return callback(null, null);
+      return callback(null, null, null);
     }
 
     user.signin(req, userData.id);
-    callback(null, userData.id);
+    callback(null, userData.id, null);
   } else {
-    // Got user from database
+    // Get user from database
     user.getByEmail(email, function(error, userData) {
       if (error || !userData || (userData.password !== password)) {
-        return callback(error, null);
+        return callback(error, null, null);
       }
 
-      user.signin(req, userData.id);
-      callback(error, userData.id);
+      site.getByUserId(userData.id, function(error, siteData) {
+        if (error || !siteData) {
+          return callback(error, null, null);
+        }
+
+        user.signin(req, userData.id);
+        callback(error, userData.id, siteData.name);
+      });
     });
   }
 }

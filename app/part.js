@@ -31,13 +31,13 @@ part.getAllComplete = function(siteId, callback) {
     var fixed = [];
 
     _(parts).forEach(function(partData) {
-      // Set types
-      //fixed.push(part.setType(partData));
-
       // Clean up
       delete partData.created;
       delete partData.site_id;
       //delete partData.type;
+
+      //fixed.push(part.setType(partData));
+      fixed.push(partData)
     });
 
     // Sort
@@ -78,7 +78,7 @@ part.create = function(input, callback) {
   var data = [input.siteId, input.type, input.rank, input.content, new Date()];
 
   query(sql, data, function(error, rows) {
-    var id = _.isUndefined(rows) ? null : rows[0].id;
+    var id = _.isUndefined(rows) && !error ? null : rows[0].id;
     callback(error, id);
   });
 }
@@ -118,7 +118,7 @@ part.setContent = function(input, callback) {
   var data = [input.content, input.id];
 
   query(sql, data, function(error, rows) {
-    var id = _.isUndefined(rows) ? null : rows[0].id;
+    var id = _.isUndefined(rows) && !error ? null : rows[0].id;
     callback(error, id);
   });
 }
@@ -129,10 +129,11 @@ part.setContent = function(input, callback) {
 
 part.setRank = function(inputArray, callback) {
   var count = 0;
+
   _(inputArray).forEach(function(item) {
     var sql = 'UPDATE parts SET rank = ($1) WHERE id = ($2) RETURNING *';
 
-    query(sql, [rank, id], function(error, rows) {
+    query(sql, [item.rank, item.id], function(error, rows) {
       if (error) {
         callback(error, false);
         return false; // break early
@@ -144,6 +145,18 @@ part.setRank = function(inputArray, callback) {
         callback(error, true);
       }
     });
+  });
+}
+
+/**
+ * Delete part
+ */
+
+part.delete = function(input, callback) {
+  var sql = 'DELETE FROM parts WHERE id = ($1) RETURNING *';
+  query(sql, [input.id], function(error, rows) {
+    if (error) { callback(error, false); }
+    callback(error, true);
   });
 }
 

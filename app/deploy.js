@@ -25,6 +25,8 @@ fileList.forEach(function (name) {
 });
 
 function upload (name) {
+  var mimeType = mime.lookup(distDir + name);
+
   var params = {
     ACL: 'public-read',
     Bucket: env.get('bucket'),
@@ -39,7 +41,7 @@ function upload (name) {
       console.log('Failed to upload ' + name);
       console.log(error);
     } else {
-      console.log('- ' + name);
+      console.log('- ' + name + ' (' + mimeType + ')');
     }
   });
 }

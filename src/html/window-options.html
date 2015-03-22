@@ -2,7 +2,7 @@
 
 <div class="popover is-customize updateSettings" id="modalUpdateSettings" ng-show="optionsService.isOpen" ng-cloak>
   <div class="popover-arrow"><svg role="presentation"><use xlink:href="#popover-arrow"></use></svg></div>
-  <form class="panels" id="updateSettings" method="put" name="formSettings" ng-submit="optionsService.submitUpdate(options)" novalidate>
+  <form class="panels" id="updateSettings" method="post" name="formSettings" ng-submit="optionsService.submitUpdate(options)" novalidate>
     <div class="panel is-active" id="panelPrimarySettings">
 
       <!-- Links to font panels -->
@@ -78,9 +78,9 @@
 
       <div class="popover-scroll">
         {{#fonts}}
-          <a class="panel-item" style="font-family: '{{.}}'" ng-click="options.text_font = '{{font}}'">
-            <span class="panel-item-text is-larger">{{.}}</span>
-            <div class="panel-item-icon is-transparent is-static" ng-show="options.text_font === '{{font}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
+          <a class="panel-item" style="font-family: '{{{.}}}'" ng-click="options.text_font = '{{{.}}}'">
+            <span class="panel-item-text is-larger">{{{.}}}</span>
+            <div class="panel-item-icon is-transparent is-static" ng-show="options.text_font === '{{{.}}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
           </a>
         {{/fonts}}
       </div>
@@ -95,9 +95,9 @@
 
       <div class="popover-scroll">
         {{#fonts}}
-          <a class="panel-item" style="font-family: '{{{.}}}'" ng-click="options.heading_font = '{{font}}'">
+          <a class="panel-item" style="font-family: '{{{.}}}'" ng-click="options.heading_font = '{{{.}}}'">
             <span class="panel-item-text is-larger">{{{.}}}</span>
-            <div class="panel-item-icon is-transparent is-static" ng-show="options.heading_font === '{{font}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
+            <div class="panel-item-icon is-transparent is-static" ng-show="options.heading_font === '{{{.}}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
           </a>
         {{/fonts}}
       </div>

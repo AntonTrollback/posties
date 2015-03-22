@@ -20,31 +20,38 @@ postiesApp.constant('config', {
 postiesApp.service('optionsService', function($http, config, FontService) {
   // We hold the most recent settings object from the DB, so that we can check
   // incoming objects for equality - determining if a DB update is needed
-  this.currentSettings = {};
+  if (typeof DEFAULT_SITE_DATA == "undefined") {
+    return;
+  }
+
+  this.currentOptions = {};
+  this.defaultOptions = DEFAULT_SITE_DATA.options;
   this.isOpen = false;
 
   this.submitUpdate = function(options) {
-    if (SITE_DATA) {
-      if (!SITE_DATA.user.is_authenticated) {
-        return;
-      };
-    } else {
+    console.log(options);
+    console.log(this.currentOptions)
+    if (!SITE_DATA || !SITE_DATA.isAuthenticated) {
       return;
     }
 
-    if (!angular.equals(this.currentSettings, options)) {
-      // Make a deep copy of the settings object, otherwise the equality check will always pass
-      this.currentSettings = jQuery.extend(true, {}, options);
+    if (!angular.equals(this.currentOptions, options)) {
+      // Make a deep copy of the settings object, otherwise the
+      // equality check will always pass
+      this.currentOptions = jQuery.extend(true, {}, options);
 
       var promise = $http({
-        url: '/api/settings',
-        method: 'put',
-        data: options,
+        url: '/api/update-options',
+        method: 'post',
+        data: {
+          id: SITE_DATA.id,
+          options: options
+        },
         headers: config.headerJSON
-      }).then(function(response) {
-        return this.currentSettings;
-      }, function(response) {
-        console.log(response);
+      }).then(function(resp) {
+        return this.currentOptions;
+      }, function(resp) {
+        console.log(resp);
       });
 
       return promise;
@@ -67,8 +74,6 @@ postiesApp.service('optionsService', function($http, config, FontService) {
 
   this.getRandom = function() {
     return {
-      created: new Date(),
-      id: 0,
       heading_font: getRandomTypeface(),
       text_font: getRandomTypeface(),
       boxes: Math.random() < 0.5,
@@ -79,16 +84,7 @@ postiesApp.service('optionsService', function($http, config, FontService) {
   };
 
   this.getDefault = function($event) {
-    return {
-      created: new Date(),
-      id: 0,
-      background_color: "#f5f5f5",
-      part_background_color: "#ffffff",
-      text_color: "#141414",
-      boxes: true,
-      heading_font: "Akkurat",
-      text_font: "Akkurat"
-    }
+    return this.defaultOptions;
   };
 
   this.getBackgroundPalette = function() {
@@ -119,28 +115,28 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
     $('.popover-form .button').attr('disabled', true).text('Loading…');
 
     var data = {
-      'username': $('[name=username]').val(),
+      'email': $('[name=email]').val(),
       'password': $('[name=password]').val()
     };
 
-    this.login(data).then(function(response) {
-      if (typeof response.data.username !== 'undefined') {
-        window.location = "/by/" + response.data.username;
-      } else {
-        FlashService.showMessage("Nope. Password seem to be incorrect");
+    this.login(data).then(function(resp) {
+      if (!resp.data.firstSite) {
+        FlashService.showMessage("Password or Email seem to be incorrect");
         $('.popover-form .button').attr('disabled', false).text('OK');
+      } else {
+        window.location = "/by/" + resp.data.firstSite;
       }
     });
   };
 
   this.login = function(data) {
     return $http({
-      url: '/login',
+      url: '/api/signin',
       method: 'post',
       data: data,
       headers: config.headerJSON
-    }).then(function(response) {
-      return response;
+    }).then(function(resp) {
+      return resp;
     }, function(error) {
       return error;
     });

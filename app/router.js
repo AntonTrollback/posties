@@ -35,6 +35,7 @@ function render (res, options) {
     fonts: app.get('fonts'),
     colors: app.get('colors'),
     colorsData: JSON.stringify(app.get('colors')),
+    defaultSiteDataString: JSON.stringify(app.get('defaultSiteData')),
     production: app.get('production'),
     activeUser: isActive,
     filePickerKey: app.get('filePickerKey')
@@ -91,13 +92,9 @@ app.get('/*', function (req, res, next){
  */
 
 router.get('/', function(req, res) {
-  var defaultSiteData = app.get('defaultSiteData');
-
   render(res, {
     index: true,
     editMode: true,
-    siteData: defaultSiteData,
-    siteDataString: JSON.stringify(defaultSiteData),
     title: 'Posti.es',
     description: 'Posti.es, instant one page website creator'
   });
@@ -142,22 +139,23 @@ router.get('/by/:name', function(req, res) {
  */
 
 router.post('/api/signin', function (req, res) {
-  user.trySignin(req, req.body, false, function(error, id) {
+  user.trySignin(req, req.body, false, function(error, id, firstSite) {
     if (error) { return sendError(error, res); }
-    send(res, {id: id});
+    send(res, {id: id, firstSite: firstSite});
   });
 });
 
 /**
- * API - sign in with websiteName
+ * API - sign in with website name
  */
-
+/*
 router.post('/api/signin', function (req, res) {
   user.trySignin(req, req.body, false, function(error, id) {
     if (error) { return sendError(error, res); }
     send(res, {id: id});
   });
 });
+*/
 
 /**
  * API - sign out
@@ -191,6 +189,17 @@ router.post('/api/publish-with-user', function (req, res) {
 });
 
 /**
+ * Update site options
+ */
+
+router.post('/api/update-options', function (req, res) {
+  site.setOptions(req.body, function(error, status) {
+    if (error) { return sendError(error, res); }
+    send(res, {status: status});
+  });
+});
+
+/**
  * Add part
  */
 
@@ -212,6 +221,28 @@ router.post('/api/update-part', function (req, res) {
   });
 });
 
+/**
+ * Move part
+ */
+
+router.post('/api/update-rank', function (req, res) {
+  part.setRank(req.body, function(error, status) {
+    if (error) { return sendError(error, res); }
+    send(res, {success: status});
+  });
+});
+
+/**
+ * Delete part
+ */
+
+router.delete('/api/delete-part', function (req, res) {
+  part.delete(req.body, function(error, status) {
+    if (error) { return sendError(error, res); }
+    send(res, {success: status});
+  });
+});
+
 /* -------------------------------------------------------------------------- */
 
 /**
@@ -219,16 +250,28 @@ router.post('/api/update-part', function (req, res) {
  */
 
 router.get('/database', function(req, res) {
-  var query = require('pg-query');
-  query.connectionParameters = app.get('databaseUrl');
+  if (app.get('production')) {
+    var query = require('pg-query');
+    query.connectionParameters = app.get('databaseUrl');
 
-  query('CREATE TABLE IF NOT EXISTS users(id serial primary key, email text, password text, created timestamptz)');
-  query('CREATE TABLE IF NOT EXISTS sites(id serial primary key, user_id serial, name text, options jsonb, updated timestamptz, created timestamptz)');
-  query('CREATE TABLE IF NOT EXISTS parts(id serial primary key, site_id serial, type smallint, rank integer, content jsonb, created timestamptz)');
+    query('CREATE TABLE IF NOT EXISTS users(id serial primary key, email text, password text, created timestamptz)');
+    query('CREATE TABLE IF NOT EXISTS sites(id serial primary key, user_id serial, name text, options jsonb, updated timestamptz, created timestamptz)');
+    query('CREATE TABLE IF NOT EXISTS parts(id serial primary key, site_id serial, type smallint, rank integer, content jsonb, created timestamptz)');
 
-  render(res, {
-    title: 'Database setup'
-  });
+    render(res, {
+      title: 'Database setup'
+    });
+  } else {
+    res.redirect('/');
+  }
+});
+
+router.get('/converter', function(req, res) {
+  if (!app.get('production')) {
+    res.render('converter');
+  } else {
+    res.redirect('/');
+  }
 });
 
 /**

@@ -10,7 +10,7 @@ postiesApp.controller('IndexCtrl', function(
   $scope.flashService = FlashService;
   $scope.authService = AuthService;
 
-  $scope.site = SITE_DATA;
+  $scope.site = DEFAULT_SITE_DATA;
   $scope.options = $scope.site.options;
 
   // Setup/render default part
@@ -57,8 +57,8 @@ postiesApp.controller('IndexCtrl', function(
       }
     } else {
       // Check if already used
-      $scope.checkUsername(function(response) {
-        if (response.data !== 'no match') {
+      $scope.checkUsername(function(resp) {
+        if (resp.data !== 'no match') {
           errors.push('username');
           $scope.formCreateUser.username.error = "Sorry, that website address is already taken";
         }
@@ -81,8 +81,8 @@ postiesApp.controller('IndexCtrl', function(
       params: {
         username: $scope.user.username
       }
-    }).then(callback, function(response) {
-      console.log(response);
+    }).then(callback, function(resp) {
+      console.log(resp);
     });
   };
 
@@ -120,7 +120,7 @@ postiesApp.controller('IndexCtrl', function(
       method: 'post',
       data: data,
       headers: config.headerJSON
-    }).then(function(response) {
+    }).then(function(resp) {
       localStorage.setItem(config.keySettings + 'Welcome', true);
       window.location = "/by/" + $scope.user.username.toLowerCase();
     });
@@ -212,6 +212,7 @@ postiesApp.controller('EditorCtrl', function(
 
     // Setup generic part data
     var part = {
+      siteId: $scope.site.id,
       type: parseInt($event.target.getAttribute('data-type')),
       rank: $scope.parts.length,
       content: {},
@@ -245,8 +246,8 @@ postiesApp.controller('EditorCtrl', function(
 
     $scope.parts.push(part);
 
-    $scope.trySave($scope.parts[part.rank], 'partText', function(response) {
-      $scope.parts[part.rank].id = response.data;
+    $scope.trySave($scope.parts[part.rank], '/api/add-part', function(resp) {
+      $scope.parts[part.rank].id = resp.data.id;
     });
 
     $scope.focusPart(part.rank);
@@ -284,8 +285,8 @@ postiesApp.controller('EditorCtrl', function(
         part.template = 'image-loading.html';
       });
 
-      $scope.trySave($scope.parts[part.rank], 'partImage', function(response) {
-        $scope.parts[part.rank].id = response.data;
+      $scope.trySave($scope.parts[part.rank], '/api/add-part', function(resp) {
+        $scope.parts[part.rank].id = resp.data.id;
       });
     };
 
@@ -352,8 +353,8 @@ postiesApp.controller('EditorCtrl', function(
         part.content.key = videoSrc;
         part.template = 'video.html';
 
-        $scope.trySave($scope.parts[part.rank], 'partVideo', function(response) {
-          $scope.parts[part.rank].id = response.data;
+        $scope.trySave($scope.parts[part.rank], '/api/add-part', function(resp) {
+          $scope.parts[part.rank].id = resp.data.id;
         });
       });
     });
@@ -374,7 +375,7 @@ postiesApp.controller('EditorCtrl', function(
       }
     }
 
-    $scope.trySave(data, 'partrank');
+    $scope.trySave(data, '/api/update-rank');
   };
 
   /**
@@ -392,7 +393,7 @@ postiesApp.controller('EditorCtrl', function(
       return;
     }
 
-    $scope.trySave({ id: part.id }, 'parts', false, 'delete');
+    $scope.trySave({ id: part.id }, '/api/delete-part', false, 'delete');
   };
 
   /**
@@ -401,12 +402,12 @@ postiesApp.controller('EditorCtrl', function(
 
   $scope.updateTextBasedPart = function($event, part) {
     setTimeout(function() {
-      var content = Autolinker.link(part.content.text, {
+      var text = Autolinker.link(part.content.text, {
         truncate: false,
         stripPrefix: true
       });
 
-      $scope.trySave({ id: part.id, content: content }, 'partText', false, 'put');
+      $scope.trySave({id: part.id, content: {text: text}}, '/api/update-part');
     }, 250);
   };
 
@@ -448,19 +449,19 @@ postiesApp.controller('EditorCtrl', function(
       method = 'post';
     }
 
-    console.log("Send '" + method + "' to 'api/" + endpoint + "' with:", data);
+    console.log("Send '" + method + "' to '" + endpoint + "' with:", data);
 
     $http({
-      url: '/api/' + endpoint,
+      url: endpoint,
       method: method,
       data: data,
       headers: config.headerJSON
-    }).then(function(response) {
+    }).then(function(resp) {
       if (callback) {
-        callback(response);
+        callback(resp);
       }
-    }, function(response) {
-      console.log(response);
+    }, function(resp) {
+      console.log(resp);
     });
   }
 

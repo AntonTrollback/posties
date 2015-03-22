@@ -4,9 +4,9 @@
     <div class="panel is-active" id="panelPrimaryNavigation">
       {{#index}}
         <div class="popover-body">
-          <form class="popover-form" name="formLogin" method="post" ng-submit="authService.submitLogin()">
+          <form class="popover-form" novalidate name="formLogin" method="post" ng-submit="authService.submitLogin()">
             <span class="popover-form-title">Sign in</span>
-            <input type="text" name="username" placeholder="Website address" required autocapitalize="off" autocorrect="off">
+            <input type="email" name="email" placeholder="Email" required autocapitalize="off" autocorrect="off">
             <input type="password" name="password" placeholder="Password" required autocapitalize="off" autocorrect="off">
             <button class="button is-full">OK</button>
             <a class="popover-form-link">Forgot password?</a>
@@ -17,9 +17,9 @@
       {{#onSite}}
         {{#editMode}}
           <div class="popover-body">
-            <p class="popover-intro">You are currenty editing <strong>{{current_user.username}}</strong></p>
+            <p class="popover-intro">You are currenty editing <strong>{{{siteData.name}}}</strong></p>
           </div>
-          <a class="panel-item is-first is-underlined" href="/logout">
+          <a class="panel-item is-first is-underlined" href="/signout">
             <span class="panel-item-text is-padded">Sign out</span>
           </a>
         {{/editMode}}
@@ -52,8 +52,11 @@
 
           <div class="popover-body">
             <form class="popover-form" name="formLogin" method="post" ng-submit="authService.submitLogin()">
+
               <span class="popover-form-title">Edit this website</span>
-              <input type="hidden" name="username" value="{{{name}}}">
+              {{#site}}
+              <input type="hidden" name="username" value="{{{siteData.name}}}">
+              {{/site}}
               <input type="password" name="password" placeholder="Password" required autocapitalize="off" autocorrect="off">
               <button class="button is-full">OK</button>
               <a class="popover-form-link">Forgot password?</a>

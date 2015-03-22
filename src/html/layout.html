@@ -52,7 +52,15 @@
 
     <script>
       var FONTS = [{{#fonts}}'{{{.}}}',{{/fonts}}];
+      {{#onSite}}
       var SITE_DATA = {{{siteDataString}}};
+      {{/onSite}}
+      {{^onSite}}
+      var SITE_DATA = false;
+      {{/onSite}}
+      {{#editMode}}
+      var DEFAULT_SITE_DATA = {{{defaultSiteDataString}}};
+      {{/editMode}}
 
       // Trigger svg redraw (safari issue)
       document.addEventListener('DOMContentLoaded', function(){
