@@ -468,3 +468,15 @@ postiesApp.controller('EditorCtrl', function(
   // Focus first part
   $scope.focusPart(0);
 });
+
+
+/**
+ * User page controller
+ * -----------------------------------------------------------------------------
+ */
+
+postiesApp.controller('StaticCtrl', function(
+  $scope, $http, $timeout, $analytics, $sce, config,
+  optionsService, AuthService, FlashService) {
+
+});

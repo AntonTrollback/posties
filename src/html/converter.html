@@ -2,7 +2,7 @@
 <html>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>Converter</title>
+<title>Database converter</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{{{assetUrl}}}posties.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -53,7 +53,7 @@
           id: i,
           email: old.email,
           password: old.password,
-          created: new Date(old.created.epoch_time * 1000)
+          created: new Date(old.created.epoch_time * 1000).toISOString()
         }
         users.push(fresh);
       }
@@ -68,8 +68,8 @@
           id: i,
           user_id: get_owner_id(old.username, users, 'user_id'),
           name: old.username,
-          updated: new Date(old.created.epoch_time * 1000),
-          created: new Date(old.created.epoch_time * 1000),
+          updated: new Date(old.created.epoch_time * 1000).toISOString(),
+          created: new Date(old.created.epoch_time * 1000).toISOString(),
           options: {
             boxes: old.showboxes,
             text_font: old.typefaceparagraph,
@@ -93,7 +93,7 @@
           type: old.type,
           rank: old.sortrank,
           content: get_content(old.type, old.content, old.key),
-          created: new Date(old.created.epoch_time * 1000)
+          created: new Date(old.created.epoch_time * 1000).toISOString()
         }
 
         if (fresh.site_id !== null) {
@@ -141,38 +141,46 @@
       console.log('\n\n')
     }
 
+    function fix_json(obj) {
+      string = JSON.stringify(obj)
+      return string.replace(/"/g, '""');
+    }
+
     function output () {
-      var userOutput = ['"id","email","password","created"'];
+      //var userOutput = ['"id","email","password","created"'];
+      var userOutput = [];
       for (var i = users.length - 1; i >= 0; i--) {
         userOutput.push(
           users[i].id + ',' +
           users[i].email + ',' +
           users[i].password + ',' +
-          users[i].created
+          '"' + users[i].created+ '"'
         )
       }
 
-      var siteOutput = ['"id","user_id","name","options","updated","created"'];
+      //var siteOutput = ['"id","user_id","name","options","updated","created"'];
+      var siteOutput = [];
       for (var i = sites.length - 1; i >= 0; i--) {
         siteOutput.push(
           sites[i].id + ',' +
           sites[i].user_id + ',' +
           sites[i].name + ',' +
-          JSON.stringify(sites[i].options) + ',' +
-          sites[i].updated + ',' +
-          sites[i].created
+          '"' + fix_json(sites[i].options) + '",' +
+          '"' + sites[i].updated + '",' +
+          '"' + sites[i].created+ '"'
         )
       }
 
-      var partOutput = ['"id","site_id","type","rank","content","created"'];
+      //var partOutput = ['"id","site_id","type","rank","content","created"'];
+      var partOutput = [];
       for (var i = parts.length - 1; i >= 0; i--) {
         partOutput.push(
           parts[i].id + ',' +
           parts[i].site_id + ',' +
           parts[i].type + ',' +
           parts[i].rank + ',' +
-          JSON.stringify(parts[i].content) + ',' +
-          parts[i].created
+          '"' + fix_json(parts[i].content) + '",' +
+          '"' + parts[i].created+ '"'
         )
       }
       console.log('users:', userOutput.length)

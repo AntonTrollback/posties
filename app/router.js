@@ -249,8 +249,8 @@ router.delete('/api/delete-part', function (req, res) {
  * Database setup
  */
 
-router.get('/database', function(req, res) {
-  if (app.get('production')) {
+router.get('/setup', function(req, res) {
+  if (!app.get('production')) {
     var query = require('pg-query');
     query.connectionParameters = app.get('databaseUrl');
 
@@ -265,6 +265,10 @@ router.get('/database', function(req, res) {
     res.redirect('/');
   }
 });
+
+/**
+ * Database convert helper
+ */
 
 router.get('/converter', function(req, res) {
   if (!app.get('production')) {

@@ -29,8 +29,6 @@ postiesApp.service('optionsService', function($http, config, FontService) {
   this.isOpen = false;
 
   this.submitUpdate = function(options) {
-    console.log(options);
-    console.log(this.currentOptions)
     if (!SITE_DATA || !SITE_DATA.isAuthenticated) {
       return;
     }

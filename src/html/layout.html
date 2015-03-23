@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="posties"
-      ng-controller="{{#index}}IndexCtrl{{/index}}{{#onSite}}UserCtrl{{/onSite}}" ng-style="{'background': options.background_color}">
+      ng-controller="{{#index}}IndexCtrl{{/index}}{{#onSite}}UserCtrl{{/onSite}}{{^index}}{{^onSite}}StaticCtrl{{/onSite}}{{/index}}" ng-style="{'background': options.background_color}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -14,6 +14,11 @@
     {{>header}}
 
     <div class="site-container">
+
+      {{^index}}{{^onSite}}
+        <h1 style="margin-top: 60px; text-align: center; font-size: 200%;">{{title}}</h1>
+      {{/onSite}}{{/index}}
+
       <div ng-controller="EditorCtrl">
         {{#onSite}}
           {{#editMode}}
