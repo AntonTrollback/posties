@@ -3,128 +3,203 @@
  */
 
 postiesApp.controller('IndexCtrl', function(
-  $scope, $http, $timeout, $analytics, $sce, config,
+  $scope, $http, $timeout, $analytics, $sce, $filter, config,
   optionsService, AuthService, FlashService) {
 
   $scope.optionsService = optionsService;
   $scope.flashService = FlashService;
   $scope.authService = AuthService;
 
+  // Get default data
+
   $scope.site = DEFAULT_SITE_DATA;
   $scope.options = $scope.site.options;
-
-  // Setup/render default part
   $scope.parts = $scope.site.parts;
+  $scope.user = {email: '', password: ''}
+
+  // Setup default part(s)
+
   var part = $scope.site.parts[0];
   part.content.html = $sce.trustAsHtml(part.content.text);
   part.template = 'text.html';
   $scope.site.parts[0] = part;
 
   /**
-   * Create user
+   * Publish website
    */
 
-  $scope.validateUserForm = function() {
-    // Reset error messages
-    var errors = [];
-    $scope.formCreateUser.username.error = "";
-    $scope.formCreateUser.email.error = "";
-    $scope.formCreateUser.password.error = "";
-
-    // Validate email
-    if ($scope.formCreateUser.email.$invalid) {
-      errors.push('email');
-      if ($scope.formCreateUser.email.$error.required) {
-        $scope.formCreateUser.email.error = "You're missing an email address";
-      } else {
-        $scope.formCreateUser.email.error = "We both know that's not a valid email";
-      }
-    }
-
-    // Validate password
-    if ($scope.formCreateUser.password.$invalid) {
-      errors.push('password');
-      $scope.formCreateUser.password.error = "Don't forget the password";
-    }
-
-    // Validate username
-    if ($scope.formCreateUser.username.$invalid) {
-      errors.push('username');
-      if ($scope.formCreateUser.username.$error.pattern) {
-        $scope.formCreateUser.username.error = "Sorry, no spaces or weird characters";
-      } else {
-        $scope.formCreateUser.username.error = "Don't forget the username";
-      }
-    } else {
-      // Check if already used
-      $scope.checkUsername(function(resp) {
-        if (resp.data !== 'no match') {
-          errors.push('username');
-          $scope.formCreateUser.username.error = "Sorry, that website address is already taken";
-        }
-
-        // Try submit
-        if (errors.length || $scope.formCreateUser.$invalid) {
-          console.log('Form is invalid')
-          return;
-        } else {
-          $scope.submitCreateUser();
-        }
-      });
-    }
+  $scope.togglePublish = function() {
+    $scope.publish.visible = !$scope.publish.visible;
   };
 
-  $scope.checkUsername = function(callback) {
-    $http({
-      url: '/api/users',
-      method: 'get',
-      params: {
-        username: $scope.user.username
-      }
-    }).then(callback, function(resp) {
-      console.log(resp);
+  $scope.validName = function() {
+    if (!$scope.publish.name.$dirty) { return; }
+
+    // Quick validate
+    $scope.site.name = $filter('fixName')($scope.site.name);
+    var name = $scope.site.name;
+    var valid = (!name || name.length < 1 || name.length > 150) ? false : true;
+
+    if (!valid) {
+      $scope.publish.nameValid = valid;
+      $scope.publish.nameInvalid = !valid;
+      $scope.publish.nameInvalidHelp = false;
+      $scope.publish.nameInUseHelp = false;
+      $scope.publish.prevName = $scope.site.name;
+      return;
+    }
+
+    // Stop if value hasn't changed
+    if ($scope.publish.prevName === $scope.site.name) { return; }
+    $scope.publish.prevName = $scope.site.name;
+
+    $scope.post('/api/available-name', {name: name}, function(data) {
+      // Reset help messages
+      $scope.publish.nameInvalidHelp = false;
+      $scope.publish.nameInUseHelp = false;
+
+      // Display backend validation
+      if (!data.valid) {
+        $scope.publish.nameInvalidHelp = true;
+        valid = false;
+      } else if (!data.available) {
+        $scope.publish.nameInUseHelp = true;
+        valid = false;
+      };
+
+      $scope.publish.nameValid = valid;
+      $scope.publish.nameInvalid = !valid;
     });
   };
 
-  $scope.submitCreateUser = function() {
-    $scope.formCreateUser.loading = true;
-    $scope.formCreateUser.loadingText = 'Loading…';
+  $scope.validEmail = function() {
+    if (!$scope.publish.email.$dirty) { return; }
 
-    var data = {
-      email: $scope.user.email.toLowerCase(),
-      username: $scope.user.username,
-      password: $scope.user.password,
-      settings: $scope.options,
-      parts: []
-    };
+    // Quick validate
+    if ($scope.user.email) { $scope.user.email.trim() };
+    var email = $scope.user.email;
+    var valid = (!email || email.length < 1 || email.length > 150) ? false : true;
 
-    data.settings.username = $scope.user.username;
-
-    // Remove invalid video parts and not yet uploaded images
-    for (var i in $scope.parts) {
-      if (($scope.parts[i].type === 3 && !$scope.parts[i].isValidVideo) ||
-          ($scope.parts[i].type === 2 && !$scope.parts[i].isUploaded)) {
-        continue;
-      } else {
-        // Remove unnecessary data
-        var part = angular.copy($scope.parts[i]);
-        delete part['template'];
-        delete part['isUploaded'];
-        delete part['progress'];
-        data.parts.push(part);
-      }
+    if (!valid) {
+      $scope.publish.emailValid = valid;
+      $scope.publish.emailInvalid = !valid;
+      $scope.publish.emailInvalidHelp = false;
+      $scope.publish.emailInUseHelp = false;
+      $scope.publish.prevEmail = $scope.user.email;
+      return;
     }
 
+    // Stop if value hasn't changed
+    if ($scope.publish.prevEmail === $scope.user.email) { return; }
+    $scope.publish.prevEmail = $scope.user.email;
+
+    $scope.post('/api/available-email', {email: email}, function(data) {
+      // Reset help messages
+      $scope.publish.emailInvalidHelp = false;
+      $scope.publish.emailInUseHelp = false;
+
+      // Display backend validation
+      if (!data.valid) {
+        $scope.publish.emailInvalidHelp = true;
+        valid = false;
+      } else if (!data.available) {
+        $scope.publish.emailInUseHelp = true;
+      };
+
+      $scope.publish.emailValid = valid;
+      $scope.publish.emailInvalid = !valid;
+    });
+  };
+
+  $scope.validPassword = function() {
+    if (!$scope.publish.password.$dirty) { return; }
+
+    var password = $scope.user.password;
+    var valid = (!password || password.length < 1 || password.length > 150) ? false : true;
+    $scope.publish.passwordValid = valid;
+  };
+
+  $scope.tryPublish = function() {
+    $scope.publish.passwordWrong = false;
+
+    if (!$scope.publish.name.$viewValue) {
+      return $scope.focusPublishInput('name');
+    };
+    if (!$scope.publish.email.$viewValue) {
+      return $scope.focusPublishInput('email');
+    };
+    if (!$scope.publish.password.$viewValue) {
+      return $scope.focusPublishInput('password');
+    };
+    if (!$scope.publish.nameValid) { return; };
+    if (!$scope.publish.emailValid) { return; };
+    if (!$scope.publish.passwordValid) { return; };
+
+    var data = {
+      user: $scope.user,
+      site: $scope.site,
+      parts: $scope.getFixedParts()
+    };
+
+    $scope.publish.loading = true;
+
+    $scope.post('/api/publish-with-user', data, function(data) {
+      if (data.success) {
+        $scope.publishSuccess(data);
+      } else {
+        $scope.publish.loading = false;
+        $scope.publishFail(data);
+      }
+    });
+  };
+
+  $scope.post = function(endpoint, data, callback) {
     $http({
-      url: '/api/users',
+      url: endpoint,
       method: 'post',
       data: data,
       headers: config.headerJSON
     }).then(function(resp) {
-      localStorage.setItem(config.keySettings + 'Welcome', true);
-      window.location = "/by/" + $scope.user.username.toLowerCase();
+      callback(resp.data);
     });
-  };
+  }
+
+  $scope.focusPublishInput = function(name) {
+    $('[name="publish"] [name="' + name + '"]').focus();
+  }
+
+  $scope.publishSuccess = function(data) {
+    localStorage.setItem(config.keySettings + 'Welcome', true);
+    window.location = "/by/" + data.name.toLowerCase();
+  }
+
+  $scope.publishFail = function(data) {
+    if ((data.validUser && data.validSite) && (!data.availableEmail && data.availableName)) {
+      $scope.publish.passwordWrong = true;
+    } else {
+      alert('Something went wrong... Sorry! Please check that you filled out the form correctly')
+    }
+  }
+
+  $scope.getFixedParts = function() {
+    var parts = [];
+
+    for (var i in $scope.parts) {
+      if (($scope.parts[i].type === 3 && !$scope.parts[i].isValidVideo) ||
+          ($scope.parts[i].type === 2 && !$scope.parts[i].isUploaded)) {
+        // Skip invalid video parts and images thats not finished uploading
+        continue;
+      } else {
+        var part = angular.copy($scope.parts[i]);
+        // Remove unnecessary data
+        delete part['template'];
+        delete part['isUploaded'];
+        delete part['progress'];
+        parts.push(part);
+      }
+    }
+    return parts;
+  }
 });
 
 /**
@@ -165,10 +240,12 @@ postiesApp.controller('UserCtrl', function(
 
     switch (part.type) {
       case 0:
+        part.prevText = part.content.text;
         part.content.html = $sce.trustAsHtml(part.content.text);
         part.template = 'text.html';
         break;
       case 1:
+        part.prevText = part.content.text;
         part.content.html = $sce.trustAsHtml(part.content.text);
         part.template = 'heading.html';
         break;
@@ -310,7 +387,7 @@ postiesApp.controller('EditorCtrl', function(
       });
     };
 
-    // Upload image
+    filepicker.setKey(FILEPICKER_KEY);
     filepicker.store(input, uploadOptions, uploadSuccess, uploadError, uploadProgress);
   };
 
@@ -402,6 +479,13 @@ postiesApp.controller('EditorCtrl', function(
 
   $scope.updateTextBasedPart = function($event, part) {
     setTimeout(function() {
+      if (!$scope.site.isAuthenticated) { return; }
+      if (!$scope.site.isAuthenticated || part.prevText === part.content.text) {
+        return;
+      }
+
+      part.prevText = part.content.text;
+
       var text = Autolinker.link(part.content.text, {
         truncate: false,
         stripPrefix: true

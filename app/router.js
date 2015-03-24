@@ -30,15 +30,16 @@ router.use(function(req, res, next) {
 
 function render (res, options) {
   res.render('layout', _.assign({
+    production: app.get('production'),
     assetUrl: app.get('assetUrl'),
     analyticsCode: app.get('analyticsCode'),
+    filePickerKey: app.get('filePickerKey')
+    angularCtrl: 'StaticCtrl',
+    activeUser: isActive,
     fonts: app.get('fonts'),
     colors: app.get('colors'),
     colorsData: JSON.stringify(app.get('colors')),
     defaultSiteDataString: JSON.stringify(app.get('defaultSiteData')),
-    production: app.get('production'),
-    activeUser: isActive,
-    filePickerKey: app.get('filePickerKey')
   }, options));
 }
 
@@ -64,6 +65,10 @@ function send (res, data) {
 function sendError (error, res) {
   console.trace(error);
   send(res, {error: 'Internal error'});
+}
+
+function sendBadInput (res) {
+  send(res, {error: 'Ivalid input'});
 }
 
 /**
@@ -95,6 +100,7 @@ router.get('/', function(req, res) {
   render(res, {
     index: true,
     editMode: true,
+    angularCtrl: 'IndexCtrl',
     title: 'Posti.es',
     description: 'Posti.es, instant one page website creator'
   });
@@ -125,6 +131,7 @@ router.get('/by/:name', function(req, res) {
     render(res, {
       title: name + ' · Posti.es',
       onSite: true,
+      angularCtrl: 'UserCtrl',
       siteData: siteData,
       siteDataString: JSON.stringify(siteData),
       editMode: siteData.isAuthenticated
@@ -139,23 +146,22 @@ router.get('/by/:name', function(req, res) {
  */
 
 router.post('/api/signin', function (req, res) {
-  user.trySignin(req, req.body, false, function(error, id, firstSite) {
+  user.trySignin(req, req.body, false, function(error, id, siteToGoTo) {
     if (error) { return sendError(error, res); }
-    send(res, {id: id, firstSite: firstSite});
+    send(res, {id: id, siteToGoTo: siteToGoTo});
   });
 });
 
 /**
  * API - sign in with website name
  */
-/*
-router.post('/api/signin', function (req, res) {
-  user.trySignin(req, req.body, false, function(error, id) {
+
+router.post('/api/signin-name', function (req, res) {
+  user.tryNameSignin(req, req.body, function(error, id, siteToGoTo) {
     if (error) { return sendError(error, res); }
-    send(res, {id: id});
+    send(res, {id: id, siteToGoTo: siteToGoTo});
   });
 });
-*/
 
 /**
  * API - sign out
@@ -171,11 +177,27 @@ router.get('/api/signout', function (req, res) {
  */
 
 router.post('/api/available-email', function (req, res) {
-  user.isValidAndAvailable(req.body.email, function (error, valid, available) {
+  if (_.isUndefined(req.body.email)) { return sendBadInput(res); };
+
+  user.isValidAndAvailable(req.body, function (error, valid, available) {
     if (error) { return sendError(error, res); }
     res.send({valid: valid, available: available});
   });
 });
+
+/**
+ * API - user name availability
+ */
+
+router.post('/api/available-name', function (req, res) {
+  if (_.isUndefined(req.body.name)) { return sendBadInput(res); };
+
+  site.isValidAndAvailable(req.body, function (error, valid, available) {
+    if (error) { return sendError(error, res); }
+    res.send({valid: valid, available: available});
+  });
+});
+
 
 /**
  * API - register and publish

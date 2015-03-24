@@ -1,15 +1,15 @@
 <div class="block is-padded">
-  <button class="button is-larger is-full" ng-click="showModalCreateUser = !showModalCreateUser">
+  <button class="button is-larger is-full" ng-click="showingPublish = !showingPublish">
     <span analytics-on="click" analytics-event="Enter sign up" analytics-category="Sign up">
       <svg role="presentation"><use xlink:href="#arrow-out"></use></svg> Publish this website
     </span>
   </button>
 
-  <div class="modal createUser" ng-show="showModalCreateUser" ng-cloak>
-    <p class="close" ng-click="showModalCreateUser = !showModalCreateUser"><a>×</a></p>
+  <div class="modal createUser" ng-show="showingPublish" ng-cloak>
+    <p class="close" ng-click="showingPublish = !showingPublish"><a>×</a></p>
     <h3>Just one more step...</h3>
 
-    <form name="formCreateUser" class="form" ng-submit="validateUserForm()" method="post" novalidate>
+    <form name="publish" class="form" ng-submit="validatePublish()" method="post" novalidate>
       <div class="block" style="position: relative;">
         <input type="text"
                name="username"
@@ -21,7 +21,7 @@
                autocapitalize="off"
                autocomplete="off"
                autocorrect="off">
-        <p ng-show="formCreateUser.username.error" class="form-error">[[formCreateUser.username.error]]</p>
+        <p ng-show="publish.username.error" class="form-error">[[publish.username.error]]</p>
         <span style="text-align: center; display: block; margin: 9px 0 0; color: #bababa">posti.es/by/<span ng-hide="user.username">something</span>[[user.username]]</span>
       </div>
 
@@ -34,7 +34,7 @@
               autocapitalize="off"
               autocomplete="off"
               autocorrect="off">
-        <p ng-show="formCreateUser.email.error" class="form-error">[[formCreateUser.email.error]]</p>
+        <p ng-show="publish.email.error" class="form-error">[[publish.email.error]]</p>
       </div>
 
       <div class="block" style="position: relative;">
@@ -47,15 +47,15 @@
                autocapitalize="off"
                autocomplete="off"
                autocorrect="off">
-        <p ng-show="formCreateUser.password.error" class="form-error">[[formCreateUser.password.error]]</p>
+        <p ng-show="publish.password.error" class="form-error">[[publish.password.error]]</p>
       </div>
 
       <div class="block is-padded" style="padding-top: 15px;">
-        <button class="button is-larger is-full" type="submit" ng-disabled="formCreateUser.loading" analytics-on="click" analytics-event="Try publish" analytics-category="Sign up">
-          <div ng-hide="formCreateUser.loading">
+        <button class="button is-larger is-full" type="submit" ng-disabled="publish.loading" analytics-on="click" analytics-event="Try publish" analytics-category="Sign up">
+          <div ng-hide="publish.loading">
             <svg role="presentation"><use xlink:href="#arrow-out"></use></svg> Publish now!
           </div>
-          <span ng-show="formCreateUser.loading">[[formCreateUser.loadingText]]</span>
+          <span ng-show="publish.loading">[[publish.loadingText]]</span>
         </button>
       </div>
     </form>

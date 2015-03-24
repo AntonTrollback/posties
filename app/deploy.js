@@ -36,10 +36,10 @@ function upload (name) {
     CacheControl: 'public, max-age=31377926' // a year
   };
 
-  s3.putObject(params, function(error, response) {
+  s3.putObject(params, function(error, resp) {
     if (error) {
       console.log('Failed to upload ' + name);
-      console.log(error);
+      console.trace(error);
     } else {
       console.log('- ' + name + ' (' + mimeType + ')');
     }

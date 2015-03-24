@@ -78,7 +78,7 @@ part.create = function(input, callback) {
   var data = [input.siteId, input.type, input.rank, input.content, new Date()];
 
   query(sql, data, function(error, rows) {
-    var id = _.isUndefined(rows) && !error ? null : rows[0].id;
+    var id = validator.getFirstRowValue(rows, 'id', error)
     callback(error, id);
   });
 }
@@ -118,7 +118,7 @@ part.setContent = function(input, callback) {
   var data = [input.content, input.id];
 
   query(sql, data, function(error, rows) {
-    var id = _.isUndefined(rows) && !error ? null : rows[0].id;
+    var id = validator.getFirstRowValue(rows, 'id', error);
     callback(error, id);
   });
 }

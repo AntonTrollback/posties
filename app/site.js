@@ -58,10 +58,12 @@ site.nameAvailability = function(name, callback) {
  */
 
 site.isValidAndAvailable = function(input, callback) {
-  validator.normalizeJSON(input.options, function(error, json) {
-    if (error) { return callback(error, false, null); }
-    input.options = json;
-  });
+  if (input.options) {
+    validator.normalizeJSON(input.options, function(error, json) {
+      if (error) { return callback(error, false, null); }
+      input.options = json;
+    });
+  };
 
   if (!validator.isName(input.name)) {
     return callback(null, false, null);
@@ -83,8 +85,8 @@ site.create = function(siteInput, partsInput, callback) {
   var data = [siteInput.userId, siteInput.name, siteInput.options, date, date];
 
   query(sql, data, function(error, siteData) {
-    var id = _.isUndefined(siteData) && !error ? null : siteData[0].id;
-    var name = _.isUndefined(siteData) && !error ? null : siteData[0].name;
+    var id = validator.getFirstRowValue(siteData, 'id', error)
+    var name = validator.getFirstRowValue(siteData, 'name', error)
 
     if (partsInput.length > 0) {
       part.createAll(partsInput, id, function(error, success) {
@@ -111,8 +113,8 @@ site.setOptions = function(input, callback) {
   var data = [input.options, input.id];
 
   query(sql, data, function(error, rows) {
-    var id = _.isUndefined(rows) && !error ? null : true;
-    callback(error, true);
+    var id = validator.getFirstRowValue(rows, 'id', error);
+    callback(error, id ? true : false);
   });
 }
 

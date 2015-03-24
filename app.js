@@ -55,8 +55,8 @@ app.set('fonts', fonts);
 app.set('colors', colors);
 app.set('filePickerKey', 'AB0n3LvCeQhusW_h15bE5z');
 app.set('defaultSiteData', {
-  id: false,
-  name: false,
+  id: null,
+  name: null,
   isAuthenticated: false,
   options: {
     boxes: true,
@@ -67,7 +67,7 @@ app.set('defaultSiteData', {
     part_background_color: '#ffffff'
   },
   parts: [{
-    id: false,
+    id: null,
     rank: 0,
     type: 0,
     //typeText: true,

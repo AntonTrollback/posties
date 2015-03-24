@@ -109,27 +109,43 @@ postiesApp.service('optionsService', function($http, config, FontService) {
 postiesApp.service('AuthService', function($http, config, FlashService) {
   this.user = false;
 
-  this.submitLogin = function() {
+  this.submitSignin = function() {
+    var that = this;
     $('.popover-form .button').attr('disabled', true).text('Loading…');
 
     var data = {
-      'email': $('[name=email]').val(),
-      'password': $('[name=password]').val()
+      email: $('[name="email"]').val(),
+      password: $('[name="password"]').val()
     };
 
-    this.login(data).then(function(resp) {
-      if (!resp.data.firstSite) {
-        FlashService.showMessage("Password or Email seem to be incorrect");
-        $('.popover-form .button').attr('disabled', false).text('OK');
-      } else {
-        window.location = "/by/" + resp.data.firstSite;
-      }
-    });
+    this.login(data, '/api/signin').then(that.signinSuccess);
   };
 
-  this.login = function(data) {
+  this.submitSiteSignin = function() {
+    var that = this;
+    $('.popover-form .button').attr('disabled', true).text('Loading…');
+
+    var data = {
+      name: $('[name="name"]').val(),
+      password: $('[name="password"]').val()
+    };
+
+    this.login(data, '/api/signin-name').then(that.signinSuccess);
+  };
+
+  this.signinSuccess = function(resp) {
+    console.log(resp.data)
+    if (resp.data.siteToGoTo && resp.data.id) {
+      window.location = "/by/" + resp.data.siteToGoTo;
+    } else {
+      FlashService.showMessage("Password or Email seem to be incorrect");
+      $('.popover-form .button').attr('disabled', false).text('OK');
+    }
+  }
+
+  this.login = function(data, endpoint) {
     return $http({
-      url: '/api/signin',
+      url: endpoint,
       method: 'post',
       data: data,
       headers: config.headerJSON

@@ -57,8 +57,6 @@ analyticsCode
         dataType: 'json',
         data: $form.is('#signup') ? signupData : data,
         success: function(data) {
-          console.log(data)
-
           if (($form.is('#signin')) && data.id) {
             location.reload();
           }

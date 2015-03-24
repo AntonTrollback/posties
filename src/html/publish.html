@@ -1,0 +1,79 @@
+<div class="Modal"
+     ng-class="{'is-visible': publish.visible}"
+     ng-click="togglePublish()">
+
+  <form class="Modal-window"
+        method="post"
+        name="publish"
+        ng-submit="tryPublish()"
+        stop-events novalidate>
+
+    <h3 class="Modal-title">Just one more step...</h3>
+
+    <div class="Control">
+      <input class="Control-field"
+             type="text"
+             name="name"
+             ng-model="site.name"
+             ng-blur="validName()"
+             ng-focus="publish.nameInvalid = false; publish.nameValid = false"
+             placeholder="Website name"
+             autocapitalize="off"
+             autocomplete="off"
+             autocorrect="off">
+      <span class="Control-status"
+            ng-show="publish.name.$dirty"
+            ng-class="{'is-good': publish.nameValid, 'is-bad': publish.nameInvalid}"></span>
+      <span ng-show="publish.nameInvalidHelp" class="Control-text">Sorry, that's not a valid name. Stick to letters, numbers, "_" and "-"</span>
+      <span ng-show="publish.nameInUseHelp" class="Control-text">Sorry, that name is already in use</span>
+    </div>
+
+    <div class="Control">
+      <input class="Control-field"
+             type="email"
+             name="email"
+             ng-model="user.email"
+             ng-blur="validEmail()"
+             ng-focus="publish.emailInvalid = false; publish.emailValid = false"
+             placeholder="Email"
+             autocapitalize="off"
+             autocomplete="off"
+             autocorrect="off">
+      <span class="Control-status"
+            ng-show="publish.email.$dirty"
+            ng-class="{'is-good': publish.emailValid, 'is-bad': publish.emailInvalid}"></span>
+      <span ng-show="publish.emailInvalidHelp" class="Control-text">We both now that's not a valid email</span>
+      <span ng-show="publish.emailInUseHelp" class="Control-text">You already have an account, please enter your password below</span>
+    </div>
+
+    <div class="Control">
+      <input class="Control-field"
+             type="password"
+             name="password"
+             ng-model="user.password"
+             ng-blur="validPassword()"
+             placeholder="Password"
+             autocapitalize="off"
+             autocomplete="off"
+             autocorrect="off">
+      <span class="Control-status"
+            ng-show="publish.password.$dirty"
+            ng-class="{'is-bad': publish.passwordInvalid}"></span>
+      <span ng-show="publish.passwordWrong" class="Control-text">Wrong password</span>
+    </div>
+
+    <div class="block is-padded">
+      <button class="button is-larger is-full"
+              type="submit"
+              ng-disabled="publish.loading"
+              analytics-on="click"
+              analytics-event="Try publish"
+              analytics-category="Sign up">
+        <div ng-hide="publish.loading">
+          <svg role="presentation"><use xlink:href="#arrow-out"></use></svg> Publish now!
+        </div>
+        <span ng-show="publish.loading">Loading…</span>
+      </button>
+    </div>
+  </form>
+</div>

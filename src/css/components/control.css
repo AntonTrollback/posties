@@ -1,0 +1,22 @@
+.Control {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.Control-status {
+  position: absolute;
+  top: 50%;
+  right: 17px;
+  margin-top: -10px;
+  font-size: 20px;
+}
+
+.Control-status.is-good:after {
+  content: "\2714";
+  color: var(--color-green);
+}
+
+.Control-status.is-bad:after {
+  content: "\2714";
+  color: var(--color-element-dark);
+}

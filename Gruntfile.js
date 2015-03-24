@@ -94,6 +94,23 @@ module.exports = function(grunt) {
           dest: 'dist/'
         }]
       }
+    },
+
+    watch: {
+      css: {
+        files: ['src/css/**/*.css'],
+        tasks: ['cssnext:build'],
+        options: {
+          spawn: false,
+        }
+      },
+      js: {
+        files: ['src/js/**/*.js'],
+        tasks: ['concat:libs', 'concat:custom'],
+        options: {
+          spawn: false
+        }
+      }
     }
   });
 

@@ -12,6 +12,7 @@
   --color-divider: #e8e9e9;
   --color-postit: #f7f5c7;
   --color-postit-highlight: #fcf9af;
+  --color-green: #68b42d;
   --spacing: 18px;
   --base-font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -44,6 +45,7 @@
 @import "components/colorpicker.css";
 @import "components/button.css";
 @import "components/toggle.css";
+@import "components/control.css";
 @import "components/palette.css";
 @import "components/block.css";
 @import "components/part.css";

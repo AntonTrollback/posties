@@ -4,7 +4,7 @@
     <div class="panel is-active" id="panelPrimaryNavigation">
       {{#index}}
         <div class="popover-body">
-          <form class="popover-form" novalidate name="formLogin" method="post" ng-submit="authService.submitLogin()">
+          <form class="popover-form" novalidate name="formLogin" method="post" ng-submit="authService.submitSignin()">
             <span class="popover-form-title">Sign in</span>
             <input type="email" name="email" placeholder="Email" required autocapitalize="off" autocorrect="off">
             <input type="password" name="password" placeholder="Password" required autocapitalize="off" autocorrect="off">
@@ -51,12 +51,10 @@
           </div>
 
           <div class="popover-body">
-            <form class="popover-form" name="formLogin" method="post" ng-submit="authService.submitLogin()">
+            <form class="popover-form" name="formLogin" method="post" ng-submit="authService.submitSiteSignin()">
 
               <span class="popover-form-title">Edit this website</span>
-              {{#site}}
-              <input type="hidden" name="username" value="{{{siteData.name}}}">
-              {{/site}}
+              <input type="hidden" name="name" value="{{{siteData.name}}}">
               <input type="password" name="password" placeholder="Password" required autocapitalize="off" autocorrect="off">
               <button class="button is-full">OK</button>
               <a class="popover-form-link">Forgot password?</a>

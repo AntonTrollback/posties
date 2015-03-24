@@ -24,14 +24,10 @@ user.getByEmail = function(email, callback) {
  */
 
 user.isValidAndAvailable = function(input, callback) {
-  var valid, email;
-
-  if (_.isObject(input)) {
-    email = input.email;
-    valid = validator.isEmail(email) && validator.isPassword(input.password);
+  if (input.password) {
+    var valid = validator.isEmail(input.email) && validator.isPassword(input.password);
   } else {
-    email = input;
-    valid = !validator.isEmail(email);
+    var valid = validator.isEmail(input.email);
   }
 
   if (!valid) {
@@ -39,7 +35,7 @@ user.isValidAndAvailable = function(input, callback) {
   }
 
   // check availability
-  user.getByEmail(email, function(error, userData) {
+  user.getByEmail(input.email, function(error, userData) {
     callback(error, true, !userData, userData);
   });
 }
@@ -52,9 +48,8 @@ user.create = function(req, input, callback) {
   var sql = 'INSERT INTO users(email, password, created) values($1, $2, $3) RETURNING *';
   var email = validator.normalizeEmail(input.email);
   var data = [email, input.password, new Date()]
-
   query(sql, data, function(error, rows) {
-    var id = _.isUndefined(rows) && !error ? null : rows[0].id;
+    var id = validator.getFirstRowValue(rows, 'id', error);
     user.signin(req, id);
     callback(error, id);
   });
@@ -68,12 +63,14 @@ user.trySignin = function(req, input, userData, callback) {
   var email = input.email;
   var password = input.password;
 
+
   if (!validator.isEmail(email)) {
     return callback(null, null, null);
   }
 
   if (userData) {
     // Already got user from database
+
     if (userData.password !== password) {
       return callback(null, null, null);
     }
@@ -97,6 +94,26 @@ user.trySignin = function(req, input, userData, callback) {
       });
     });
   }
+}
+
+/**
+ * Signin user with site name
+ */
+
+user.tryNameSignin = function(req, input, callback) {
+  site.getByName(input.name, function(error, siteData) {
+    var userId = validator.getFirstRowValue(siteData, 'user_id', error);
+    var name = validator.getFirstRowValue(siteData, 'name', error);
+
+    user.getById(userId, function(error, userData) {
+      input.email = validator.getFirstRowValue(userData, 'email', error);
+
+      user.trySignin(req, input, userData, function(error, userId) {
+
+        callback(error, userId, name);
+      });
+    });
+  });
 }
 
 user.signin = function(req, id) {
@@ -145,12 +162,16 @@ function handleSiteCreation(error, input, result, userId, callback) {
 
   site.create(input.site, input.parts, function(error, id, name) {
     result.name = name;
+    result.success = true;
     callback(error, result);
   });
 }
 
 user.createWithSiteAndParts = function(req, input, callback) {
   var result = {};
+  result.success = false;
+
+  console.log(input)
 
   // Check if user is valid and available
   user.isValidAndAvailable(input.user, function(error, validUser, availableEmail, userData) {
