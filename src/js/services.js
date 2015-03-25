@@ -179,9 +179,6 @@ postiesApp.service('FontService', function($http, config) {
   this.fontList = FONTS;
   this.fontListLoaded = false;
 
-  // Required by the typekit font loader
-  WebFontConfig = {};
-
   this.loadAll = function() {
     if (this.fontListLoaded) {
       return;

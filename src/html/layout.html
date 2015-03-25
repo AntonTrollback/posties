@@ -99,10 +99,12 @@
     <script src="{{{assetUrl}}}posties.js"></script>
     {{/production}}
     {{^production}}
-    <script src="{{{assetUrl}}}libs.js"></script>
-    <script src="{{{assetUrl}}}index.js"></script>
+    <script src="{{{assetUrl}}}posties.js"></script>
     {{/production}}
+
     <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+    <script>WebFontConfig = {};</script>
+
     {{#editMode}}
     <script src="//api.filepicker.io/v1/filepicker.js"></script>
     <script>filepicker.setKey('{{filePickerKey}}');</script>
