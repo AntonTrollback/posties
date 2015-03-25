@@ -2,6 +2,8 @@
  * Index page controller
  */
 
+
+
 postiesApp.controller('IndexCtrl', function(
   $scope, $http, $timeout, $analytics, $sce, $filter, config,
   optionsService, AuthService, FlashService) {
@@ -198,7 +200,13 @@ postiesApp.controller('IndexCtrl', function(
       data: data,
       headers: config.headerJSON
     }).then(function(resp) {
+      if (resp.data.error) {
+        return $scope.flashService.showMessage("Sorry, something went wrong. Posti.es is not working correctly at the moment");
+      }
       callback(resp.data);
+    }, function(resp) {
+      console.log(resp);
+      $scope.flashService.showMessage("Sorry, something went wrong. Posti.es is not working correctly at the moment");
     });
   };
 });
@@ -274,6 +282,7 @@ postiesApp.controller('EditorCtrl', function(
   $scope, $http, $timeout, $filter, $analytics, config, FlashService) {
   'use strict';
 
+  $scope.flashService = FlashService;
   var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
   /**
@@ -480,7 +489,7 @@ postiesApp.controller('EditorCtrl', function(
    */
 
   $scope.updateTextBasedPart = function($event, part) {
-    setTimeout(function() {
+    $timeout(function() {
       if (!$scope.site.isAuthenticated) { return; }
       if (!$scope.site.isAuthenticated || part.prevText === part.content.text) {
         return;
@@ -543,11 +552,15 @@ postiesApp.controller('EditorCtrl', function(
       data: data,
       headers: config.headerJSON
     }).then(function(resp) {
+      if (resp.data.error) {
+        return $scope.flashService.showMessage("Sorry, something went wrong. Posti.es is not working correctly at the moment");
+      }
       if (callback) {
         callback(resp);
       }
     }, function(resp) {
       console.log(resp);
+      $scope.flashService.showMessage("Sorry, something went wrong. Posti.es is not working correctly at the moment");
     });
   };
 

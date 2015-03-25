@@ -1,12 +1,12 @@
-/**
- * Primary site layout
- */
-
-.site {
+.Site {
   position: relative;
 }
 
-.site-container {
+.Site--withModal {
+  overflow: hidden;
+}
+
+.Site-container {
   box-sizing: border-box;
   width: 100%;
   margin: 0 auto;
@@ -16,13 +16,13 @@
 }
 
 @media (--md-viewport) {
-  .site-container {
+  .Site-container {
     padding-top: 75px;
   }
 }
 
 @media (--lg-viewport) {
-  .site-container {
+  .Site-container {
     max-width: 750px;
   }
 }

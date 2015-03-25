@@ -50,7 +50,7 @@ module.exports = function(grunt) {
           'bower_components/jquery/dist/jquery.js',
           'bower_components/angular/angular.js',
           'bower_components/angular-sanitize/angular-sanitize.js',
-          'bower_components/angular-route/angular-route.js',
+          //'bower_components/angular-route/angular-route.js',
           'bower_components/angulartics/src/angulartics.js',
           'bower_components/angulartics/src/angulartics-ga.js',
           'bower_components/jquery-minicolors/jquery.minicolors.js',
@@ -120,7 +120,7 @@ module.exports = function(grunt) {
     watch: {
       css: {
         files: ['src/css/**/*.css'],
-        tasks: ['cssnext:build'],
+        tasks: ['cssnext:build', 'replace'],
         options: {
           spawn: false,
         }

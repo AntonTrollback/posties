@@ -11,10 +11,10 @@
           content="width=device-width, initial-scale=1{{#editMode}}, maximum-scale=1{{/editMode}}">
     <link rel="stylesheet" href="{{{assetUrl}}}posties.css">
   </head>
-  <body class="site">
+  <body class="Site" ng-class="{'Site--withModal': publish.visible}">
     {{>header}}
 
-    <div class="site-container">
+    <div class="Site-container">
 
       {{^index}}{{^onSite}}
         <h1 style="margin-top: 60px; text-align: center; font-size: 200%;">{{title}}</h1>
