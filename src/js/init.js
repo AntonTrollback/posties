@@ -17,7 +17,6 @@
     headerJSON: {
       'Content-Type': 'application/json;charset=UTF-8'
     },
-    imagesUrl: IMAGES_URL,
     keySettings: 'postiesKeySettings'
   });
 

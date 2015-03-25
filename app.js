@@ -50,7 +50,6 @@ app.set('production', production);
 app.set('revision', revision);
 app.set('databaseUrl', env.get('databaseUrl'));
 app.set('assetUrl', production ? s3url + 'assets/' + revision + '/' : '/');
-app.set('imagesUrl', s3url + 'images/');
 app.set('analyticsCode', production ? 'UA-50858987-1' : false);
 app.set('fonts', fonts);
 app.set('colors', colors);

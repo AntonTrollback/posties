@@ -21,8 +21,9 @@ postiesApp.filter('fixImageUrl', ['$sce', function($sce) {
   return function(sourceId) {
     if (sourceId.indexOf('filepicker') > -1) {
       return sourceId + '/convert?cache=true&w=740&fit=max&rotate=exif&compress=true&quality=100';
-    } else {
-      return IMAGES_URL + sourceId;
     }
+
+    // Old images
+    return 'https://s3-eu-west-1.amazonaws.com/posties-images/' + sourceId;
   };
 }]);

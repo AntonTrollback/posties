@@ -32,7 +32,6 @@ function render (res, options) {
   res.render('layout', _.assign({
     production: app.get('production'),
     assetUrl: app.get('assetUrl'),
-    imagesUrl: app.get('imagesUrl'),
     analyticsCode: app.get('analyticsCode'),
     filePickerKey: app.get('filePickerKey'),
     angularCtrl: 'StaticCtrl',
