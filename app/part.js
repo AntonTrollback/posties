@@ -37,7 +37,7 @@ part.getAllComplete = function(siteId, callback) {
       //delete partData.type;
 
       //fixed.push(part.setType(partData));
-      fixed.push(partData)
+      fixed.push(partData);
     });
 
     // Sort

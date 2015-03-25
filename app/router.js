@@ -33,7 +33,7 @@ function render (res, options) {
     production: app.get('production'),
     assetUrl: app.get('assetUrl'),
     analyticsCode: app.get('analyticsCode'),
-    filePickerKey: app.get('filePickerKey')
+    filePickerKey: app.get('filePickerKey'),
     angularCtrl: 'StaticCtrl',
     activeUser: isActive,
     fonts: app.get('fonts'),

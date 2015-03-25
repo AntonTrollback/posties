@@ -68,6 +68,15 @@ module.exports = function(grunt) {
       },
     },
 
+    jshint: {
+      options: {
+        jshintrc: true
+      },
+      all: {
+        src: ['src/js/**/*.js'],
+      }
+    },
+
     ngAnnotate: {
       dist: {
         files: {
@@ -106,7 +115,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: ['src/js/**/*.js'],
-        tasks: ['concat:libs', 'concat:custom'],
+        tasks: ['jshint', 'concat:libs', 'concat:custom'],
         options: {
           spawn: false
         }
@@ -117,6 +126,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'cssnext:build',
     'copy',
+    'jshint',
     'concat:libs',
     'concat:custom'
   ]);

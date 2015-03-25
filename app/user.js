@@ -171,7 +171,7 @@ user.createWithSiteAndParts = function(req, input, callback) {
   var result = {};
   result.success = false;
 
-  console.log(input)
+  console.log(input);
 
   // Check if user is valid and available
   user.isValidAndAvailable(input.user, function(error, validUser, availableEmail, userData) {

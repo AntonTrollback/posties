@@ -18,7 +18,7 @@ var distDir = __dirname + '/../dist/';
 var s3dir = 'assets/' + revision + '/';
 var fileList = getFileList(distDir);
 
-console.log('Uploading to ' + env.get('bucket') + '/' + s3dir)
+console.log('Uploading to ' + env.get('bucket') + '/' + s3dir);
 
 fileList.forEach(function (name) {
   upload(name);
@@ -51,13 +51,13 @@ function getFileList(path) {
   var fileList = [];
   var filesFound = fs.readdirSync(path);
 
-  for (var i = 0; i < filesFound.length; i++) {
-    fileInfo = fs.lstatSync(path + filesFound[i]);
+  filesFound.forEach(function(item) {
+    fileInfo = fs.lstatSync(path + item);
 
     if (fileInfo.isFile()) {
-      fileList.push(filesFound[i]);
+      fileList.push(item);
     }
-  }
+  });
 
   return fileList;
 }
