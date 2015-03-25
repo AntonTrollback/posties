@@ -238,7 +238,6 @@ postiesApp.controller('UserCtrl', function(
   }
 
   // Load fonts used on website
-
   $scope.fontService.load([$scope.options.text_font, $scope.options.heading_font]);
 
   // Setup/render parts

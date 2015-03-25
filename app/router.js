@@ -53,7 +53,7 @@ function render404 (res) {
 function render505 (error, res) {
   console.trace(error);
   render(res, {
-    title: 'Posti.es',
+    title: 'Sorry, server error. We\'re on it!',
     serverError: true
   });
 }

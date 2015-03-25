@@ -19,7 +19,7 @@ validator.isPassword = function(password) {
 
 validator.isName = function(name) {
   if (!name) { return false; }
-  var regex = /^[a-zA-Z0-9_-]{1,150}$/;
+  var regex = /^[a-zA-Z0-9_+-]{1,150}$/;
   var validLength = validatorLib.isLength(name, 1, 150);
   var validChars = !_.isNull(name.match(regex));
   return validLength && validChars;

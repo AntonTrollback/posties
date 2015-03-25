@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS users(id serial primary key, email text, password text, created timestamptz);
+COPY users FROM STDIN DELIMITER ',' CSV;

@@ -193,8 +193,9 @@ postiesApp.service('FontService', function($http, config) {
 
     // Remove Akkurat, should already be loaded
     fonts.forEach(function(item) {
-      if (fonts[item] !== 'Akkurat' && fonts[item] !== 'sans-serif') {
-        cleanFonts.push(fonts[item] + '::latin');
+      if (item !== 'Akkurat' && item !== 'sans-serif') {
+        cleanFonts.push(item + '::latin');
+        console.log('yep');
       }
     });
 

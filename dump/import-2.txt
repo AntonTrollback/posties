@@ -1,0 +1,1 @@
+SELECT setval('users_id_seq',(SELECT GREATEST(MAX(id)+1,nextval('users_id_seq'))-1 FROM users))
