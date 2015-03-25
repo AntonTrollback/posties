@@ -28,6 +28,17 @@ module.exports = function(grunt) {
       }
     },
 
+    replace: {
+      css: {
+        src: ['dist/*.css'],
+        overwrite: true,
+        replacements: [{
+          from: /..\/static\//ig,
+          to: ''
+        }]
+      }
+    },
+
     concat: {
       options: {
         separator: ';',
@@ -126,6 +137,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'cssnext:build',
+    'replace',
     'copy',
     'jshint',
     'concat:libs',
