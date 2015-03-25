@@ -22,7 +22,7 @@ postiesApp.filter('fixImageUrl', ['$sce', function($sce) {
     if (sourceId.indexOf('filepicker') > -1) {
       return sourceId + '/convert?cache=true&w=740&fit=max&rotate=exif&compress=true&quality=100';
     } else {
-      return 'https://s3-eu-west-1.amazonaws.com/posties-images/' + sourceId;
+      return IMAGES_URL + sourceId;
     }
   };
 }]);

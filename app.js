@@ -39,7 +39,7 @@ app.use(session({
 // App settings
 var production = env.get('env') === 'production';
 var revision = env.get('revision');
-var s3url = '//s3.' + env.get('region') + '.amazonaws.com/' + env.get('bucket') + '/assets/' + revision + '/';
+var s3url = '//s3.' + env.get('region') + '.amazonaws.com/' + env.get('bucket') + '/';
 var fonts = ['Akkurat', 'Josefin Sans', 'Dosis', 'Karla', 'Archivo Narrow', 'Inconsolata', 'Anonymous Pro', 'Text Me One', 'Lora', 'Neuton', 'Old Standard TT', 'EB Garamond', 'Arvo', 'Fredoka One', 'VT323', 'Nova Cut', 'Reenie Beanie'];
 var colors = {
   background: ['#f5f5f5', '#ffffff', '#000000', '#bbf8ff', '#405559', '#512d59', '#ff033e', '#ff8f8f'],
@@ -49,7 +49,8 @@ var colors = {
 app.set('production', production);
 app.set('revision', revision);
 app.set('databaseUrl', env.get('databaseUrl'));
-app.set('assetUrl', production ? s3url : '/');
+app.set('assetUrl', production ? s3url + 'assets/' + revision + '/' : '/');
+app.set('imagesUrl', s3url + 'images/');
 app.set('analyticsCode', production ? 'UA-50858987-1' : false);
 app.set('fonts', fonts);
 app.set('colors', colors);

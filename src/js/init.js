@@ -17,7 +17,7 @@
     headerJSON: {
       'Content-Type': 'application/json;charset=UTF-8'
     },
-    S3URL: 'https://s3-eu-west-1.amazonaws.com/posties-images/',
+    imagesUrl: IMAGES_URL,
     keySettings: 'postiesKeySettings'
   });
 
