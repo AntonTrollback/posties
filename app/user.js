@@ -125,7 +125,9 @@ user.signin = function(req, id) {
  */
 
 user.signout = function(req) {
-  delete req.session.user_id;
+  req.session.destroy(function(error) {
+    if (error) { console.log(error); }
+  })
 }
 
 /**
@@ -170,8 +172,6 @@ function handleSiteCreation(error, input, result, userId, callback) {
 user.createWithSiteAndParts = function(req, input, callback) {
   var result = {};
   result.success = false;
-
-  console.log(input);
 
   // Check if user is valid and available
   user.isValidAndAvailable(input.user, function(error, validUser, availableEmail, userData) {

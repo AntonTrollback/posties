@@ -1,17 +1,18 @@
 var Habitat = require('habitat');
 var express = require('express');
+var redis = require('redis-url').connect();
 var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var mustacheExpress = require('mustache-express');
 var favicon = require('serve-favicon');
 var compression = require('compression');
 var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
 var methodOverride = require('method-override');
 
 Habitat.load();
 var env = new Habitat();
-
 var app = module.exports = express();
+
 app.set('port', process.env.PORT || 5000);
 
 app.use(express.static('dist'));
@@ -20,20 +21,21 @@ app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
 app.set('views', 'src/html');
 
+app.use(compression());
 app.use(favicon('./favicon.ico'));
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
-app.use(cookieParser());
 app.use(methodOverride('X-HTTP-Method-Override'));
 
-app.use(compression());
-
+// Setup session
 app.use(session({
+  store: new RedisStore(),
   secret: 'hurricane',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  maxAge: 7 * 24 * 60 * 60 * 1000 // one week
 }));
 
 // App settings
