@@ -32,14 +32,14 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 
 // Setup session
 app.use(session({
-  store: new RedisStore(),
+  store: new RedisStore({client: redis}),
   secret: 'hurricane',
   resave: false,
   saveUninitialized: true,
   maxAge: 7 * 24 * 60 * 60 * 1000 // one week
 }));
 
-console.log(new RedisStore())
+
 
 // App settings
 var production = env.get('env') === 'production';
