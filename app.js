@@ -1,6 +1,7 @@
-var Habitat = require('habitat');
+var Habitat = require('habitat').load();
+var env = new Habitat();
 var express = require('express');
-var redis = require('redis-url').connect();
+var redis = require('redis-url').connect(env.get('rediscloudUrl'));
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 var mustacheExpress = require('mustache-express');
