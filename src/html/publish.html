@@ -63,12 +63,7 @@
       </div>
 
       <div class="block is-padded">
-        <button class="button is-larger is-full"
-                type="submit"
-                ng-disabled="publish.loading"
-                analytics-on="click"
-                analytics-event="Try publish"
-                analytics-category="Sign up">
+        <button type="submit" class="button is-larger is-full" ng-disabled="publish.loading">
           <div ng-hide="publish.loading">
             <svg role="presentation"><use xlink:href="#arrow-out"></use></svg> Publish now!
           </div>

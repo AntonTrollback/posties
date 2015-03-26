@@ -123,6 +123,8 @@ postiesApp.controller('IndexCtrl', function(
   };
 
   $scope.tryPublish = function() {
+    $analytics.eventTrack('Try publish', {  category: 'Sign up' });
+
     $scope.publish.passwordWrong = false;
 
     if (!$scope.publish.name.$viewValue) {
@@ -166,6 +168,7 @@ postiesApp.controller('IndexCtrl', function(
   };
 
   $scope.publishFail = function(data) {
+    console.log(data)
     if ((data.validUser && data.validSite) && (!data.availableEmail && data.availableName)) {
       $scope.publish.passwordWrong = true;
     } else {
