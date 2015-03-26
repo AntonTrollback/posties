@@ -39,6 +39,8 @@ app.use(session({
   maxAge: 7 * 24 * 60 * 60 * 1000 // one week
 }));
 
+console.log(new RedisStore())
+
 // App settings
 var production = env.get('env') === 'production';
 var revision = env.get('revision');
@@ -85,5 +87,4 @@ app.use(require('./app/router'));
 // Start app
 app.listen(app.get('port'), function() {
   console.log('Running at localhost:' + app.get('port'));
-  console.log(env.get('rediscloudUrl'))
 });

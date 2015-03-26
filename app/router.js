@@ -97,6 +97,7 @@ function sendBadInput (res) {
  */
 
 router.get('/', function(req, res) {
+  console.log(req.session);
   render(res, {
     index: true,
     editMode: true,

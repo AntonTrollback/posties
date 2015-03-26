@@ -168,7 +168,6 @@ postiesApp.controller('IndexCtrl', function(
   };
 
   $scope.publishFail = function(data) {
-    console.log(data)
     if ((data.validUser && data.validSite) && (!data.availableEmail && data.availableName)) {
       $scope.publish.passwordWrong = true;
     } else {
