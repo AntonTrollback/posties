@@ -97,7 +97,6 @@ function sendBadInput (res) {
  */
 
 router.get('/', function(req, res) {
-  console.log(req.session);
   render(res, {
     index: true,
     editMode: true,
@@ -121,7 +120,6 @@ router.get('/signout', function (req, res) {
  */
 
 router.get('/by/:name', function(req, res) {
-  console.log('yo')
   var name = req.params.name;
 
   site.getComplete(name, function (error, siteData) {
