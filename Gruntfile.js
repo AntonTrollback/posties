@@ -106,17 +106,6 @@ module.exports = function(grunt) {
       }
     },
 
-    copy: {
-      build: {
-        files: [{
-          expand: true,
-          flatten: true,
-          src: ['src/img/*', 'src/font/*'],
-          dest: 'dist/'
-        }]
-      }
-    },
-
     watch: {
       css: {
         files: ['src/css/**/*.css'],
@@ -138,7 +127,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'cssnext:build',
     'replace',
-    'copy',
     'jshint',
     'concat:libs',
     'concat:custom'
@@ -146,7 +134,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('buildcompress', [
     'cssnext:buildcompress',
-    'copy',
     'concat:libs',
     'concat:custom',
     'concat:combined',

@@ -282,8 +282,8 @@
 }
 
 .minicolors-grid.minicolors-sprite {
-  background-image: url('colorwheel.png');
   background-size: 152px 152px;
   background-position: -1px -1px;
   background-repeat: no-repeat;
+  background-image: url('../static/colorwheel.png');
 }

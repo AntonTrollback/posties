@@ -16,7 +16,7 @@
     "watch": "grunt watch",
     "buildcompress": "grunt buildcompress",
     "deploybackend": "git push heroku master",
-    "deploy": "REV=\"$(date +%s)\"; npm run deploybackend; npm run buildcompress; node app/deploy.js $REV; heroku config:set REVISION=$REV"
+    "deploy": "REV=\"$(date +%s)\"; npm run deploybackend; npm run buildcompress; node app/deploy.js $REV; heroku config:set REVISION=$REV; grunt build"
   },
   "dependencies": {
     "body-parser": "^1.10.2",
@@ -40,7 +40,6 @@
     "aws-sdk": "^2.1.7",
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-jshint": "^0.11.1",
     "grunt-contrib-uglify": "^0.8.0",
     "grunt-contrib-watch": "^0.6.1",
