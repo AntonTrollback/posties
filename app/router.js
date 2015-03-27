@@ -72,7 +72,7 @@ function sendBadInput (res) {
 }
 
 /**
- * Remove "www" from requests
+ * Add "www" from requests
  */
 
 //app.get('/*', function (req, res, next){
@@ -121,6 +121,7 @@ router.get('/signout', function (req, res) {
  */
 
 router.get('/by/:name', function(req, res) {
+  console.log('yo')
   var name = req.params.name;
 
   site.getComplete(name, function (error, siteData) {
