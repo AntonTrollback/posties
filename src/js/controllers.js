@@ -457,10 +457,8 @@ postiesApp.controller('EditorCtrl', function(
   $scope.movePart = function(currentIndex, newIndex) {
     posties.util.swapItems($scope.parts, currentIndex, newIndex);
     var data = [];
-    var i = 0;
 
-    $scope.parts.forEach(function(part) {
-      // the parts save event might not have returned yet
+    $scope.parts.forEach(function (part, i) {
       if (part.id) { data.push({id: part.id, rank: i}); }
     });
 

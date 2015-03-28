@@ -130,19 +130,26 @@ part.setContent = function(input, callback) {
 part.setRank = function(inputArray, callback) {
   var count = 0;
 
+  console.log('inputArray: ', inputArray)
+
   _(inputArray).forEach(function(item) {
     var sql = 'UPDATE parts SET rank = ($1) WHERE id = ($2) RETURNING *';
+    console.log('Save item: ')
 
     query(sql, [item.rank, item.id], function(error, rows) {
       if (error) {
+        console.log('Error!')
         callback(error, false);
         return false; // break early
       }
+
+      console.log('succes for ', item.id)
 
       count++;
 
       if (count === inputArray.length) {
         callback(error, true);
+        console.log('where done here')
       }
     });
   });
