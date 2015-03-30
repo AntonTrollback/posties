@@ -14,6 +14,8 @@ postiesApp.controller('IndexCtrl', function(
 
   $scope.site = DEFAULT_SITE_DATA;
   $scope.options = DEFAULT_SITE_DATA.options;
+  $scope.defaultOptions = $.extend(true, {}, DEFAULT_SITE_DATA.options);
+  $scope.defaultOptions = $.extend(true, {}, DEFAULT_SITE_DATA.options);
   $scope.parts = DEFAULT_SITE_DATA.parts;
   $scope.user = {email: '', password: ''};
   $scope.isAuthenticated = false;
@@ -231,6 +233,7 @@ postiesApp.controller('UserCtrl', function(
   $scope.site = SITE_DATA;
   $scope.parts = SITE_DATA.parts;
   $scope.options = SITE_DATA.options;
+  $scope.defaultOptions = $.extend(true, {}, DEFAULT_SITE_DATA.options);
   $scope.isAuthenticated = SITE_DATA.isAuthenticated;
 
   // First visit
@@ -576,7 +579,6 @@ postiesApp.controller('OptionsCtrl', function(
 
   $scope.fontService = FontService;
   $scope.savedOptions = $.extend(true, {}, $scope.options);
-  $scope.defaultOptions = DEFAULT_SITE_DATA.options;
 
   $scope.$watch('optionsOpen', function(open) {
     if (open) {
