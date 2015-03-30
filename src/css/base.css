@@ -89,16 +89,6 @@ a:active {
 }
 
 /**
- * Angular.js helpers
- */
-
-[ng\:cloak],
-[ng-cloak],
-.ng-cloak {
-  display: none !important;
-}
-
-/**
  * Form elements
  */
 

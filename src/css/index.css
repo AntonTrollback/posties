@@ -40,6 +40,7 @@
 @import "base.css";
 @import "main.css";
 
+@import "components/angular.css";
 @import "components/site.css";
 @import "components/header.css";
 @import "components/colorpicker.css";
