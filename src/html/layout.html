@@ -85,10 +85,15 @@
       {{#unless onSite}}
       var SITE_DATA = false;
       {{/unless}}
+
       {{#if editMode}}
       var DEFAULT_SITE_DATA = {{{defaultSiteDataString}}};
       var FILEPICKER_KEY = '{{filePickerKey}}';
       {{/if}}
+
+      {{#unless editMode}}
+      var DEFAULT_SITE_DATA = false;
+      {{/unless}}
 
       // Trigger svg redraw (safari issue)
       document.addEventListener('DOMContentLoaded', function(){
