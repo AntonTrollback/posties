@@ -2,10 +2,8 @@
  * Index page controller
  */
 
-
-
 postiesApp.controller('IndexCtrl', function(
-  $scope, $http, $timeout, $analytics, $sce, $filter, config,
+  $scope, $http, $timeout, $analytics, $filter, config,
   optionsService, AuthService, FlashService) {
   'use strict';
 
@@ -17,15 +15,7 @@ postiesApp.controller('IndexCtrl', function(
 
   $scope.site = DEFAULT_SITE_DATA;
   $scope.options = $scope.site.options;
-  $scope.parts = $scope.site.parts;
   $scope.user = {email: '', password: ''};
-
-  // Setup default part(s)
-
-  var part = $scope.site.parts[0];
-  part.content.html = $sce.trustAsHtml(part.content.text);
-  part.template = 'text.html';
-  $scope.site.parts[0] = part;
 
   /**
    * Publish website
@@ -219,7 +209,7 @@ postiesApp.controller('IndexCtrl', function(
  */
 
 postiesApp.controller('UserCtrl', function(
-  $scope, $http, $timeout, $filter, $analytics, $sce, config,
+  $scope, $http, $timeout, $filter, $analytics, config,
   FontService, AuthService, FlashService, optionsService) {
   'use strict';
 
@@ -241,13 +231,28 @@ postiesApp.controller('UserCtrl', function(
 
   // Load fonts used on website
   $scope.fontService.load([$scope.options.text_font, $scope.options.heading_font]);
+});
 
-  // Setup/render parts
+/**
+ * Editor controller
+ * -----------------------------------------------------------------------------
+ */
+
+postiesApp.controller('EditorCtrl', function(
+  $scope, $http, $timeout, $filter, $sce, $analytics, config, FlashService) {
+  'use strict';
+
+  $scope.flashService = FlashService;
+
+  /**
+   * Setup parts
+   */
+
+  var parts = SITE_DATA.parts || DEFAULT_SITE_DATA.parts;
 
   $scope.parts = [];
-  var i = 0;
 
-  $scope.site.parts.forEach(function(part) {
+  parts.forEach(function(part) {
     switch (part.type) {
       case 0:
         part.prevText = part.content.text;
@@ -271,20 +276,6 @@ postiesApp.controller('UserCtrl', function(
 
     $scope.parts.push(part);
   });
-});
-
-
-/**
- * Editor controller
- * -----------------------------------------------------------------------------
- */
-
-postiesApp.controller('EditorCtrl', function(
-  $scope, $http, $timeout, $filter, $analytics, config, FlashService) {
-  'use strict';
-
-  $scope.flashService = FlashService;
-  var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
   /**
    * Add parts
@@ -510,9 +501,10 @@ postiesApp.controller('EditorCtrl', function(
    */
 
   $scope.focusPart = function(partIndex) {
+    var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
     if (!iOS) {
       $timeout(function() {
-        var $el = $('.part').eq(partIndex).find('.part-editor');
+        var $el = $('.part').eq(partIndex).find('.part-body');
         var $focusEl = $el.find('.focus');
         $el.focus();
 

@@ -1,3 +1,7 @@
+.parts {
+
+}
+
 .part {
   position: relative;
   box-sizing: border-box;
@@ -20,7 +24,7 @@
   margin-bottom: 0;
 }
 
-.part:first-child .part-inner.is-unboxed {
+.parts.is-unboxed .part:first-child .part-inner {
   margin-top: 13px;
 }
 
@@ -37,7 +41,7 @@
 }
 
 .part pre,
-.part-editor {
+.part-body {
   width: 100%;
   display: block;
   border: 0;
@@ -50,7 +54,7 @@
   outline: 0;
 }
 
-.medium-editor-placeholder.part-editor:after {
+.medium-editor-placeholder.part-body:after {
   position: absolute;
   top: 0;
   left: 0;
@@ -96,39 +100,39 @@
   visibility: hidden;
 }
 
-.part-content-pre {
+.part-content-text {
   box-sizing: border-box;
   line-height: 1.2;
   background: #fff;
   padding: 26px 20px;
 }
 
-.part-editor {
+.part-body {
   padding: 26px 20px;
   margin: -26px -20px;
 }
 
-.medium-editor-placeholder.part-editor:after {
+.medium-editor-placeholder.part-body:after {
   padding: 26px 0;
 }
 
-.part-content-pre.is-larger {
+.part-content-text.is-larger {
   font-size: 32px;
   padding: 22px 20px;
 }
 
-.part-content-pre.is-input {
+.part-content-text.is-input {
   text-align: center;
   font-size: 18px;
 }
 
-.part-content-pre.is-larger .part-editor {
+.part-content-text.is-larger .part-body {
   padding: 22px 20px;
   margin: -22px -20px;
 }
 
 @media (--lg-viewport) {
-  .part-content-pre.is-larger {
+  .part-content-text.is-larger {
     font-size: 40px;
   }
 }
@@ -164,59 +168,59 @@
  * Tweak for unboxed parts
  */
 
-.part-inner.is-unboxed .part-content-pre {
+.parts.is-unboxed .part-content-text {
   padding: 13px 10px;
 }
 
-.part-inner.is-unboxed .part-editor {
+.parts.is-unboxed .part-body {
   padding: 13px 10px;
   margin: -13px -10px;
 }
 
-.part-inner.is-unboxed .medium-editor-placeholder.part-editor:after {
+.parts.is-unboxed .medium-editor-placeholder.part-body:after {
   padding: 13px 0;
 }
 
-.part-inner.is-unboxed .part-content-pre.is-larger {
+.parts.is-unboxed .part-content-text.is-larger {
   padding: 9px 10px;
 }
 
-.part-inner.is-unboxed .part-content-pre.is-larger .part-editor {
+.parts.is-unboxed .part-content-text.is-larger .part-body {
   padding: 9px 10px;
   margin: -9px -10px;
 }
 
-.part-inner.is-unboxed .part-content-block {
+.parts.is-unboxed .part-content-block {
   margin: 13px 10px;
 }
 
-.part-inner.is-unboxed .part-content-loading {
+.parts.is-unboxed .part-content-loading {
   padding: 20px 10px;
 }
 
-.part-inner.is-unboxed .part-content-loading span {
+.parts.is-unboxed .part-content-loading span {
   right: 10px;
 }
 
 @media (--md-viewport) {
-  .part-content-pre {
+  .part-content-text {
     padding: 34px 32px;
   }
 
-  .part-editor {
+  .part-body {
     padding: 34px 32px;
     margin: -34px -32px;
   }
 
-  .medium-editor-placeholder.part-editor:after {
+  .medium-editor-placeholder.part-body:after {
     padding: 34px 0;
   }
 
-  .part-content-pre.is-larger {
+  .part-content-text.is-larger {
     padding: 28px 32px;
   }
 
-  .part-content-pre.is-larger .part-editor {
+  .part-content-text.is-larger .part-body {
     padding: 28px 32px;
     margin: -28px -32px;
   }
@@ -229,25 +233,25 @@
     right: 32px;
   }
 
-  .part-inner.is-unboxed .part-content-pre {
+  .parts.is-unboxed .part-content-text {
     padding: 13px 32px;
   }
 
-  .part-inner.is-unboxed .part-editor {
+  .parts.is-unboxed .part-body {
     padding: 13px 32px;
     margin: -13px -32px;
   }
 
-  .part-inner.is-unboxed .part-content-pre.is-larger {
+  .parts.is-unboxed .part-content-text.is-larger {
     padding: 9px 32px;
   }
 
-  .part-inner.is-unboxed .part-content-pre.is-larger .part-editor {
+  .parts.is-unboxed .part-content-text.is-larger .part-body {
     padding: 9px 32px;
     margin: -9px -32px;
   }
 
-  .part-inner.is-unboxed .part-content-block {
+  .parts.is-unboxed .part-content-block {
     margin: 16px 32px;
   }
 }
@@ -265,7 +269,7 @@
   z-index: 2;
 }
 
-.part-inner.is-unboxed .part-option {
+.parts.is-unboxed .part-option {
   margin-top: -15px;
 }
 
@@ -284,11 +288,11 @@
   color: var(--color-text-dark);
 }
 
-.part-inner.is-unboxed .part-option {
+.parts.is-unboxed .part-option {
   margin: -13px 10px 0 0;
 }
 
-.part-inner.is-unboxed .part-content-block .part-option {
+.parts.is-unboxed .part-content-block .part-option {
   margin-top: 0;
 }
 
@@ -299,7 +303,7 @@
 }
 
 @media (--md-viewport) {
-  .part-inner.is-unboxed .part-option {
+  .parts.is-unboxed .part-option {
     margin-right: 32px;
   }
 }

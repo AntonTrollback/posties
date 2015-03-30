@@ -4,7 +4,7 @@ var express = require('express');
 var redis = require('redis-url').connect(env.get('rediscloudUrl'));
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
-var mustacheExpress = require('mustache-express');
+var exphbr = require('express-handlebars');
 var favicon = require('serve-favicon');
 var compression = require('compression');
 var bodyParser = require('body-parser');
@@ -16,11 +16,32 @@ var app = module.exports = express();
 
 app.set('port', process.env.PORT || 5000);
 
-app.use(express.static('dist'));
+app.use(express.static('src'));
 
-app.engine('html', mustacheExpress());
-app.set('view engine', 'html');
+var handlebars = exphbr.create({
+  extname: '.html',
+  layoutsDir: 'src/html',
+  partialsDir: 'src/html',
+  defaultLayout: 'layout',
+  helpers: {
+    debug: function () {
+      console.log("Current Context");
+      console.log("====================");
+      console.log(this);
+    },
+    partial: function(partialName) {
+      return handlebars.partials[partialName];
+    }
+  }
+});
+
+handlebars.getPartials({precompiled: true}).then(function(partials) {
+  handlebars.partials = partials;
+});
+
+app.engine('html', handlebars.engine);
 app.set('views', 'src/html');
+app.set('view engine', 'html');
 
 app.use(compression());
 app.use(favicon('./favicon.ico'));
@@ -39,8 +60,6 @@ app.use(session({
   maxAge: 7 * 24 * 60 * 60 * 1000 // one week
 }));
 
-
-
 // App settings
 var production = env.get('env') === 'production';
 var revision = env.get('revision');
@@ -54,7 +73,7 @@ var colors = {
 app.set('production', production);
 app.set('revision', revision);
 app.set('databaseUrl', env.get('databaseUrl'));
-app.set('assetUrl', production ? s3url + 'assets/' + revision + '/' : '/');
+app.set('assetUrl', production ? s3url + 'assets/' + revision + '/' : '/dist/');
 app.set('analyticsCode', production ? 'UA-50858987-1' : false);
 app.set('fonts', fonts);
 app.set('colors', colors);

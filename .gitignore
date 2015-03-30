@@ -1,6 +1,6 @@
 .env
 dist
-old-data
+dump
 *.rdb
 npm-debug.log
 

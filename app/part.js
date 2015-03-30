@@ -34,13 +34,20 @@ part.getAllComplete = function(siteId, callback) {
       // Clean up
       delete partData.created;
       delete partData.site_id;
-      //delete partData.type;
 
-      //fixed.push(part.setType(partData));
+      // Add types
+      partData = part.setType(partData);
+
+      // Fix image urls
+      if (partData.typeImage) {
+        partData = part.normalizeImage(partData);
+      }
+
+      // Add to array of fixed parts
       fixed.push(partData);
     });
 
-    // Sort
+    // Sort parts by rank
     fixed = _.sortBy(fixed, 'rank');
 
     return callback(error, fixed);
@@ -52,15 +59,29 @@ part.getAllComplete = function(siteId, callback) {
  */
 
 part.setType = function(partData) {
-  if (partData.type === 1) {
+  if (partData.type === 0) {
     partData.typeText = true;
-  } else if (partData.type === 2) {
+  } else if (partData.type === 1) {
     partData.typeHeading = true;
-  } else if (partData.type === 3) {
+  } else if (partData.type === 2) {
     partData.typeImage = true;
-  } else if (partData.type === 4) {
+  } else if (partData.type === 3) {
     partData.typeVideo = true;
   }
+  return partData;
+}
+
+/**
+ * Normalize image urls
+ */
+
+part.normalizeImage = function(partData) {
+  var key = partData.content.key;
+  // Old images. Prepend bucket url and guard for /convert options (#)
+  if (key.indexOf('filepicker') < 0) {
+    partData.content.key = 'https://s3-eu-west-1.amazonaws.com/posties-images/' + key + '#';
+  }
+
   return partData;
 }
 
@@ -134,7 +155,6 @@ part.setRank = function(inputArray, callback) {
 
   _(inputArray).forEach(function(item) {
     var sql = 'UPDATE parts SET rank = ($1) WHERE id = ($2) RETURNING *';
-    console.log('Save item: ')
 
     query(sql, [item.rank, item.id], function(error, rows) {
       if (error) {
@@ -143,13 +163,10 @@ part.setRank = function(inputArray, callback) {
         return false; // break early
       }
 
-      console.log('succes for ', item.id)
-
       count++;
 
       if (count === inputArray.length) {
         callback(error, true);
-        console.log('where done here')
       }
     });
   });

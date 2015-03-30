@@ -13,7 +13,7 @@ module.exports = function(grunt) {
           compress: false
         },
         files: {
-          'dist/posties.css': 'src/css/index.css'
+          'src/dist/posties.css': 'src/css/index.css'
         }
       },
       buildcompress: {
@@ -23,19 +23,8 @@ module.exports = function(grunt) {
           compress: true
         },
         files: {
-          'dist/posties.css': 'src/css/index.css'
+          'src/dist/posties.css': 'src/css/index.css'
         }
-      }
-    },
-
-    replace: {
-      css: {
-        src: ['dist/*.css'],
-        overwrite: true,
-        replacements: [{
-          from: /..\/static\//ig,
-          to: ''
-        }]
       }
     },
 
@@ -58,7 +47,7 @@ module.exports = function(grunt) {
           'bower_components/medium-editor/dist/js/medium-editor.js',
           'bower_components/imagesloaded/imagesloaded.pkgd.js',
         ],
-        dest: 'dist/libs.js',
+        dest: 'src/dist/libs.js',
       },
       custom: {
         src: [
@@ -69,14 +58,14 @@ module.exports = function(grunt) {
           'src/js/filters.js',
           'src/js/controllers.js'
         ],
-        dest: 'dist/index.js',
+        dest: 'src/dist/index.js',
       },
       combined: {
         src: [
-          'dist/libs.js',
-          'dist/index.js'
+          'src/dist/libs.js',
+          'src/dist/index.js'
         ],
-        dest: 'dist/posties.js',
+        dest: 'src/dist/posties.js',
       },
     },
 
@@ -92,7 +81,7 @@ module.exports = function(grunt) {
     ngAnnotate: {
       dist: {
         files: {
-          'dist/posties.js': 'dist/posties.js'
+          'src/dist/posties.js': 'src/dist/posties.js'
         }
       }
     },
@@ -101,7 +90,7 @@ module.exports = function(grunt) {
       build: {
         preserveComments: false,
         files: {
-          'dist/posties.js': 'dist/posties.js'
+          'src/dist/posties.js': 'src/dist/posties.js'
         }
       }
     },
@@ -109,7 +98,7 @@ module.exports = function(grunt) {
     watch: {
       css: {
         files: ['src/css/**/*.css'],
-        tasks: ['cssnext:build', 'replace'],
+        tasks: ['cssnext:build'],
         options: {
           spawn: false,
         }
@@ -126,7 +115,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'cssnext:build',
-    'replace',
     'jshint',
     'concat:libs',
     'concat:custom'

@@ -14,16 +14,3 @@ postiesApp.filter('fixName', ['$sce', function($sce) {
     return sourceId.trim().replace(/ /g, '-');
   };
 }]);
-
-postiesApp.filter('fixImageUrl', ['$sce', function($sce) {
-  'use strict';
-
-  return function(sourceId) {
-    if (sourceId.indexOf('filepicker') > -1) {
-      return sourceId + '/convert?cache=true&w=740&fit=max&rotate=exif&compress=true&quality=100';
-    }
-
-    // Old images
-    return 'https://s3-eu-west-1.amazonaws.com/posties-images/' + sourceId;
-  };
-}]);

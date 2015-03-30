@@ -127,7 +127,6 @@ router.get('/by/:name', function(req, res) {
     if (!siteData) { return render404(res); }
 
     siteData.isAuthenticated = user.isActiveOwner(req, siteData.user_id);
-
     render(res, {
       title: name + ' · Posti.es',
       onSite: true,

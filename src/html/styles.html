@@ -1,0 +1,15 @@
+html {
+  background: {{{background_color}}};
+}
+
+.part-content-text,
+.part-content-block,
+.part-content-loading {
+  font-family: '{{{text_font}}}', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: {{{text_color}}};
+  {{#if boxes}}
+  background: {{{part_background_color}}};
+  {{else}}
+  background: transparent;
+  {{/if}}
+}

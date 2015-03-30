@@ -6,26 +6,26 @@
     </span>
   </button>
 
-  {{#editMode}}
+  {{#if editMode}}
     <button class="header-action" ng-class="optionsService.isOpen ? 'is-active' : ''" ng-click="optionsService.open(); showNavigation = false">
       <span analytics-on="click" analytics-event="Show view" analytics-category="Website design settings">
         <svg role="presentation"><use xlink:href="#sliders"></use></svg>
       </span>
     </button>
-  {{/editMode}}
+  {{/if}}
 
-  {{#onSite}}
-    {{#editMode}}
+  {{#if onSite}}
+    {{#if editMode}}
       <!--<span class="header-action is-link">{{{siteData.name}}}</span>-->
-    {{/editMode}}
-  {{/onSite}}
+    {{/if}}
+  {{/if}}
 </div>
 
 {{>window-account}}
 
-{{#editMode}}
+{{#if editMode}}
   {{>window-options}}
-{{/editMode}}
+{{/if}}
 
 <div id="flash">
   <a class="close" ng-click="flashService.hide()">×</a>

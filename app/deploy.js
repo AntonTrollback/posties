@@ -14,7 +14,7 @@ aws.config.update({
 });
 
 var s3 = new aws.S3({signatureVersion: 'v4'});
-var distDir = __dirname + '/../dist/';
+var distDir = __dirname + '/../src/dist/code';
 var s3dir = 'assets/' + revision + '/';
 var fileList = getFileList(distDir);
 
