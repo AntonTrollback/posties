@@ -11,7 +11,7 @@
           content="width=device-width, initial-scale=1{{#if editMode}}, maximum-scale=1{{/if}}">
     <link rel="stylesheet" href="{{{assetUrl}}}posties.css">
   </head>
-  <body class="Site" ng-class="{'Site--withModal': publish.visible}">
+  <body class="Site" ng-click="accountOpen = false; optionsOpen = false;" ng-class="{'Site--withModal': publish.visible}">
     {{>header}}
 
     <div class="Site-container">

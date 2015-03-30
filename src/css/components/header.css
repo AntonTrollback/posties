@@ -19,8 +19,8 @@
 }
 
 .header-action {
-  box-sizing: border-box;
   float: right;
+  box-sizing: border-box;
   width: 33px;
   height: 35px;
   margin-left: 8px;

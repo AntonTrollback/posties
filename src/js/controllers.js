@@ -3,19 +3,20 @@
  */
 
 postiesApp.controller('IndexCtrl', function(
-  $scope, $http, $timeout, $analytics, $filter, config,
-  optionsService, AuthService, FlashService) {
+  $scope, $http, $timeout, $analytics, $filter, config, AuthService, FlashService, FontService) {
   'use strict';
 
-  $scope.optionsService = optionsService;
   $scope.flashService = FlashService;
+  $scope.fontService = FontService;
   $scope.authService = AuthService;
 
   // Get default data
 
   $scope.site = DEFAULT_SITE_DATA;
-  $scope.options = $scope.site.options;
+  $scope.options = DEFAULT_SITE_DATA.options;
+  $scope.parts = DEFAULT_SITE_DATA.parts;
   $scope.user = {email: '', password: ''};
+  $scope.isAuthenticated = false;
 
   /**
    * Publish website
@@ -136,6 +137,8 @@ postiesApp.controller('IndexCtrl', function(
       parts: $scope.getFixedParts()
     };
 
+    data.site.options = $scope.options;
+
     $scope.publish.loading = true;
 
     $scope.post('/api/publish-with-user', data, function(data) {
@@ -167,21 +170,27 @@ postiesApp.controller('IndexCtrl', function(
 
   $scope.getFixedParts = function() {
     var parts = [];
-    var i = 0;
 
-    $scope.site.parts.forEach(function(part) {
-      var invalidVideo = part.type === 3 && !part.isValidVideo;
-      var invalidImage = part.type === 2 && !part.isUploaded;
+    $scope.parts.forEach(function(part) {
+      var fixedPart = angular.copy(part);
+      var invalidVideo = (fixedPart.type === 3 && !fixedPart.isValidVideo);
+      var invalidImage = (fixedPart.type === 2 && !fixedPart.isUploaded);
 
       if (!invalidVideo || !invalidImage) {
-        var fixedPart = angular.copy(part);
-        // Remove unnecessary data
-        delete part.template;
-        delete part.isUploaded;
-        delete part.progress;
         parts.push(fixedPart);
       }
     });
+
+    parts.forEach(function(part, i) {
+      // Remove unnecessary data
+      delete part.template;
+      delete part.isUploaded;
+      delete part.progress;
+
+      // Set rank
+      part.rank = i;
+    });
+
     return parts;
   };
 
@@ -212,16 +221,17 @@ postiesApp.controller('IndexCtrl', function(
 
 postiesApp.controller('UserCtrl', function(
   $scope, $http, $timeout, $filter, $analytics, config,
-  FontService, AuthService, FlashService, optionsService) {
+  FontService, AuthService, FlashService) {
   'use strict';
 
   $scope.flashService = FlashService;
   $scope.fontService = FontService;
-  $scope.optionsService = optionsService;
   $scope.authService = AuthService;
 
   $scope.site = SITE_DATA;
-  $scope.options = $scope.site.options;
+  $scope.parts = SITE_DATA.parts;
+  $scope.options = SITE_DATA.options;
+  $scope.isAuthenticated = SITE_DATA.isAuthenticated;
 
   // First visit
 
@@ -250,11 +260,7 @@ postiesApp.controller('EditorCtrl', function(
    * Setup parts
    */
 
-  var parts = SITE_DATA.parts || DEFAULT_SITE_DATA.parts;
-
-  $scope.parts = [];
-
-  parts.forEach(function(part) {
+  $scope.parts.forEach(function(part) {
     switch (part.type) {
       case 0:
         part.prevText = part.content.text;
@@ -275,8 +281,6 @@ postiesApp.controller('EditorCtrl', function(
         part.template = 'video';
         break;
     }
-
-    $scope.parts.push(part);
   });
 
   /**
@@ -561,6 +565,87 @@ postiesApp.controller('EditorCtrl', function(
   $scope.focusPart(0);
 });
 
+/**
+ * Site options controller
+ * -----------------------------------------------------------------------------
+ */
+
+postiesApp.controller('OptionsCtrl', function(
+  $scope, $http, config, FlashService, FontService) {
+  'use strict';
+
+  $scope.fontService = FontService;
+  $scope.savedOptions = $.extend(true, {}, $scope.options);
+  $scope.defaultOptions = DEFAULT_SITE_DATA.options;
+
+  $scope.$watch('optionsOpen', function(open) {
+    if (open) {
+      FontService.loadAll();
+    } else {
+      $scope.trySaveOptions();
+    }
+  });
+
+  $scope.trySaveOptions = function() {
+    if (!$scope.isAuthenticated) { return; }
+
+    if (!angular.equals($scope.savedOptions, $scope.options)) {
+      $scope.savedOptions = $.extend(true, {}, $scope.options);
+
+      var promise = $http({
+        url: '/api/update-options',
+        method: 'post',
+        data: {
+          id: SITE_DATA.id,
+          options: $scope.options
+        },
+        headers: config.headerJSON
+      }).then(function(resp) {
+        return $scope.options;
+      }, function(resp) {
+        console.log(resp);
+      });
+
+      return promise;
+    }
+  };
+
+  $scope.setRandom = function() {
+    $scope.options.heading_font = $scope.getRandomTypeface();
+    $scope.options.text_font = $scope.getRandomTypeface();
+    $scope.options.boxes = Math.random() < 0.5;
+    $scope.options.part_background_color = $scope.getRandomHex();
+    $scope.options.background_color = $scope.getRandomHex();
+    $scope.options.text_color = $scope.getRandomHex();
+  };
+
+  $scope.setDefault = function() {
+    $scope.options.heading_font = $scope.defaultOptions.heading_font;
+    $scope.options.text_font = $scope.defaultOptions.text_font;
+    $scope.options.boxes = $scope.defaultOptions.boxes;
+    $scope.options.part_background_color = $scope.defaultOptions.part_background_color;
+    $scope.options.background_color = $scope.defaultOptions.background_color;
+    $scope.options.text_color = $scope.defaultOptions.text_color;
+  };
+
+  $scope.getBackgroundPalette = function() {
+    return ['#f5f5f5', '#ffffff', '#000000', '#bbf8ff', '#405559', '#512d59', '#ff033e', '#ff8f8f'];
+  };
+
+  $scope.getFontPalette = function() {
+    return ['#000000', '#ffffff'];
+  };
+
+  $scope.getRandomHex = function() {
+    return '#' + (function lol(m, s, c) {
+      return s[m.floor(m.random() * s.length)] + (c && lol(m, s, c - 1));
+    })(Math, '0123456789ABCDEF', 4);
+  };
+
+  $scope.getRandomTypeface = function() {
+    return FontService.fontList[Math.floor(Math.random() * FontService.fontList.length)];
+  };
+});
 
 /**
  * User page controller
@@ -568,8 +653,7 @@ postiesApp.controller('EditorCtrl', function(
  */
 
 postiesApp.controller('StaticCtrl', function(
-  $scope, $http, $timeout, $analytics, $sce, config,
-  optionsService, AuthService, FlashService) {
+  $scope, $http, $timeout, $analytics, $sce, config, AuthService, FlashService) {
   'use strict';
 
 });

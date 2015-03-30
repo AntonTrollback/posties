@@ -94,7 +94,6 @@ app.set('defaultSiteData', {
     id: null,
     rank: 0,
     type: 0,
-    //typeText: true,
     content: {
       text: "<p>Hello</p><p class=\"focus\">I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>"
     }
