@@ -1,8 +1,6 @@
-<script type="text/ng-template" id="image-loading.html">
-  <div class="part-inner">
-    <div class="part-content-loading" image-loaded="imageLoaded(part)">
-      Adding your image: <span>Loading</span>
-      <img ng-src="[[part.content.key]]/convert?cache=true&w=740&fit=max&rotate=exif&compress=true&quality=100" class="part-loading-image">
-    </div>
+<div class="part-inner">
+  <div class="part-content-loading" image-loaded="imageLoaded(part)">
+    Adding your image: <span>Loading</span>
+    <img class="part-loading-image" ng-src="[[part.content.key]]/convert?cache=true&w=740&fit=max&rotate=exif&compress=true&quality=100">
   </div>
-</script>
+</div>

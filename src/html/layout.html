@@ -65,15 +65,15 @@
     </div>
 
     {{#if editMode}}
-      {{>part/options}}
-      {{>part/text}}
-      {{>part/heading}}
-      {{>part/image}}
-      {{>part/video}}
-      {{>part/image-uploading}}
-      {{>part/image-loading}}
-      {{>part/video-input}}
-    {{/if }}
+      <script type="text/ng-template" id="options">{{>part/options}}</script>
+      <script type="text/ng-template" id="text">{{>part/text}}</script>
+      <script type="text/ng-template" id="heading">{{>part/heading}}</script>
+      <script type="text/ng-template" id="image">{{>part/image}}</script>
+      <script type="text/ng-template" id="video">{{>part/video}}</script>
+      <script type="text/ng-template" id="image-uploading">{{>part/image-uploading}}</script>
+      <script type="text/ng-template" id="image-loading">{{>part/image-loading}}</script>
+      <script type="text/ng-template" id="video-input">{{>part/video-input}}</script>
+    {{/if}}
 
     {{>symbols}}
 

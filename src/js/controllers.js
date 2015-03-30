@@ -193,11 +193,13 @@ postiesApp.controller('IndexCtrl', function(
       headers: config.headerJSON
     }).then(function(resp) {
       if (resp.data.error) {
+        $scope.publish.loading = false;
         return $scope.flashService.showMessage("Sorry, something went wrong. Posti.es is not working correctly at the moment");
       }
       callback(resp.data);
     }, function(resp) {
       console.log(resp);
+      $scope.publish.loading = false;
       $scope.flashService.showMessage("Sorry, something went wrong. Posti.es is not working correctly at the moment");
     });
   };
@@ -257,20 +259,20 @@ postiesApp.controller('EditorCtrl', function(
       case 0:
         part.prevText = part.content.text;
         part.content.html = $sce.trustAsHtml(part.content.text);
-        part.template = 'text.html';
+        part.template = 'text';
         break;
       case 1:
         part.prevText = part.content.text;
         part.content.html = $sce.trustAsHtml(part.content.text);
-        part.template = 'heading.html';
+        part.template = 'heading';
         break;
       case 2:
         part.isUploaded = true;
-        part.template = 'image.html';
+        part.template = 'image';
         break;
       case 3:
         part.isValidVideo = true;
-        part.template = 'video.html';
+        part.template = 'video';
         break;
     }
 
@@ -345,7 +347,7 @@ postiesApp.controller('EditorCtrl', function(
     }
 
     part.isUploaded = false;
-    part.template = 'image-uploading.html';
+    part.template = 'image-uploading';
     part.progress = 0;
 
     $scope.parts.push(part);
@@ -363,7 +365,7 @@ postiesApp.controller('EditorCtrl', function(
         part.isUploaded = true;
 
         // Change to loading from uploading
-        part.template = 'image-loading.html';
+        part.template = 'image-loading';
       });
 
       $scope.trySave($scope.parts[part.rank], '/api/add-part', function(resp) {
@@ -400,7 +402,7 @@ postiesApp.controller('EditorCtrl', function(
    */
 
   $scope.imageLoaded = function(part) {
-    part.template = 'image.html';
+    part.template = 'image';
   };
 
   /**
@@ -408,7 +410,7 @@ postiesApp.controller('EditorCtrl', function(
    */
 
   $scope.setupVideo = function(part) {
-    part.template = 'video-input.html';
+    part.template = 'video-input';
     $scope.parts.push(part);
     $scope.focusPart(part.rank);
   };
@@ -432,7 +434,7 @@ postiesApp.controller('EditorCtrl', function(
 
       $scope.$apply(function() {
         part.content.key = videoSrc;
-        part.template = 'video.html';
+        part.template = 'video';
 
         $scope.trySave($scope.parts[part.rank], '/api/add-part', function(resp) {
           $scope.parts[part.rank].id = resp.data.id;

@@ -1,33 +1,22 @@
-<script type="text/ng-template" id="text.html">
-  <div class="part-inner">
-    {{#editMode}}
-      <form class="part-content-text" ng-style="{ 'background': options.boxes ? options.part_background_color : 'transparent', 'font-family': options.text_font, 'color': options.text_color }">
-        <ng-include src="'options.html'"></ng-include>
-        <div ng-model="part.content.text"
-             class="part-body"
-             medium-editor
-             ng-blur="updateTextBasedPart($event, part)"
-             options='{
-              "placeholder": "",
-              "forcePlainText": true,
-              "checkLinkFormat": true,
-              "cleanPastedHTML": false,
-              "buttonLabels": {
-                "bold": "<svg role=\"img\"><use xlink:href=\"#format-bold\"></use></svg>",
-                "italic": "<svg role=\"img\"><use xlink:href=\"#format-italic\"></use></svg>",
-                "anchor": "<svg role=\"img\"><use xlink:href=\"#format-link\"></use></svg>",
-                "justifyLeft": "<svg role=\"img\"><use xlink:href=\"#format-left\"></use></svg>",
-                "justifyCenter": "<svg role=\"img\"><use xlink:href=\"#format-center\"></use></svg>"
-              },
-              "buttons": ["bold", "italic", "anchor", "justifyLeft", "justifyCenter"]}'></div>
-      </form>
-    {{/editMode}}
-    {{^editMode}}
-      <div class="part-content-text" ng-style="{ 'background': options.boxes ? options.part_background_color : 'transparent', 'font-family': options.text_font, 'color': options.text_color }">
-        <div ng-bind-html="part.content.html"></div>
-      </div>
-    {{/editMode}}
-  </div>
-</script>
-
-
+<div class="part-inner">
+  <form class="part-content-text" ng-style="{ 'background': options.boxes ? options.part_background_color : 'transparent', 'font-family': options.text_font, 'color': options.text_color }">
+    <ng-include src="'options'"></ng-include>
+    <div ng-model="part.content.text"
+         class="part-body"
+         medium-editor
+         ng-blur="updateTextBasedPart($event, part)"
+         options='{
+          "placeholder": "",
+          "forcePlainText": true,
+          "checkLinkFormat": true,
+          "cleanPastedHTML": false,
+          "buttonLabels": {
+            "bold": "<svg role=\"img\"><use xlink:href=\"#format-bold\"></use></svg>",
+            "italic": "<svg role=\"img\"><use xlink:href=\"#format-italic\"></use></svg>",
+            "anchor": "<svg role=\"img\"><use xlink:href=\"#format-link\"></use></svg>",
+            "justifyLeft": "<svg role=\"img\"><use xlink:href=\"#format-left\"></use></svg>",
+            "justifyCenter": "<svg role=\"img\"><use xlink:href=\"#format-center\"></use></svg>"
+          },
+          "buttons": ["bold", "italic", "anchor", "justifyLeft", "justifyCenter"]}'></div>
+  </form>
+</div>
