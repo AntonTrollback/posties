@@ -11,7 +11,7 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "setup": "npm install; bower install --allow-root",
+    "setup": "npm install; bower install --allow-root; grunt build",
     "build": "grunt build",
     "watch": "grunt watch",
     "buildcompress": "grunt buildcompress",
