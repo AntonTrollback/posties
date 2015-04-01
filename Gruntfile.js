@@ -120,6 +120,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('buildcompress', [
     'cssnext:buildcompress',
+    'jshint',
     'concat:libs',
     'concat:custom',
     'concat:combined',
