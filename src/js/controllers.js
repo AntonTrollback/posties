@@ -7,6 +7,7 @@ postiesApp.controller('IndexCtrl', function(
   'use strict';
 
   $scope.flashService = FlashService;
+  $scope.authService = AuthService;
 
   // Get default data
 
@@ -218,8 +219,11 @@ postiesApp.controller('IndexCtrl', function(
  * -----------------------------------------------------------------------------
  */
 
-postiesApp.controller('UserCtrl', function($scope, $analytics, AuthService, FontService, config) {
+postiesApp.controller('UserCtrl', function($scope, $analytics, FlashService, AuthService, FontService, config) {
   'use strict';
+
+  $scope.flashService = FlashService;
+  $scope.authService = AuthService;
 
   $scope.site = SITE_DATA;
   $scope.parts = SITE_DATA.parts;
@@ -647,6 +651,9 @@ postiesApp.controller('OptionsCtrl', function($scope, $http, FontService, config
  * -----------------------------------------------------------------------------
  */
 
-postiesApp.controller('StaticCtrl', function($scope, AuthService, config) {
+postiesApp.controller('StaticCtrl', function($scope, AuthService, FlashService, config) {
   'use strict';
+
+  $scope.flashService = FlashService;
+  $scope.authService = AuthService;
 });
