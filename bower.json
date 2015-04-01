@@ -1,7 +1,7 @@
 {
   "name": "posties",
   "version": "0.0.1",
-  "homepage": "https://github.com/sunmer/posties",
+  "homepage": "https://github.com/antontrollback/posties",
   "authors": [
     "Posti.es"
   ],
@@ -13,7 +13,6 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular-route": "~1.2.24",
     "angular-sanitize": "~1.2.24",
     "angular": "~1.2.24",
     "jquery": "~2.1.1",
