@@ -146,7 +146,7 @@
 }
 
 /* Hidden but leave it in the flow to be sure it's loaded */
-.part-loading-image {
+.part-content-loading img {
   width: 1px;
   height: 1px;
   position: absolute;
