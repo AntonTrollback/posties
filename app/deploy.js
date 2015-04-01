@@ -1,16 +1,20 @@
 var fs = require('fs');
 var mime = require('mime');
 var aws = require('aws-sdk');
-var Habitat = require('habitat');
+var Habitat = require('habitat').load();
+
+var env = new Habitat();
 var revision = process.argv[2];
 
-Habitat.load();
-var env = new Habitat();
+var bucket = 'posties-stuff';
+var region = 'eu-west-1';
+var accessKeyId = env.get('accessKeyId');
+var secretAccessKey = env.get('secretAccessKey');
 
 aws.config.update({
-  accessKeyId: env.get('accessKeyId'),
-  secretAccessKey: env.get('secretAccessKey'),
-  region: env.get('region')
+  accessKeyId: accessKeyId,
+  secretAccessKey: secretAccessKey,
+  region: region
 });
 
 var s3 = new aws.S3({signatureVersion: 'v4'});
@@ -18,7 +22,7 @@ var distDir = __dirname + '/../src/dist/';
 var s3dir = 'assets/' + revision + '/';
 var fileList = getFileList(distDir);
 
-console.log('Uploading to ' + env.get('bucket') + '/' + s3dir);
+console.log('Uploading to ' + bucket + '/' + s3dir);
 
 fileList.forEach(function (name) {
   upload(name);
@@ -29,7 +33,7 @@ function upload (name) {
 
   var params = {
     ACL: 'public-read',
-    Bucket: env.get('bucket'),
+    Bucket: bucket,
     Key: s3dir + name,
     ContentType: mime.lookup(distDir + name),
     Body: fs.readFileSync(distDir + name, 'utf8'),

@@ -75,12 +75,10 @@
         </div>
 
         <div class="popover-scroll">
-          {{#each fonts}}
-            <a class="panel-item" style="font-family: '{{{.}}}'" ng-click="options.text_font = '{{{.}}}'">
-              <span class="panel-item-text is-larger">{{{.}}}</span>
-              <div class="panel-item-icon is-transparent is-static" ng-show="options.text_font === '{{{.}}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
-            </a>
-          {{/each}}
+          <a class="panel-item" ng-repeat="font in getFonts()" style="font-family: '[[font]]'" ng-click="options.text_font = font">
+            <span class="panel-item-text is-larger">[[font]]</span>
+            <div class="panel-item-icon is-transparent is-static" ng-show="options.text_font === font"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
+          </a>
         </div>
       </div>
 
@@ -92,12 +90,10 @@
         </div>
 
         <div class="popover-scroll">
-          {{#each fonts}}
-            <a class="panel-item" style="font-family: '{{{.}}}'" ng-click="options.heading_font = '{{{.}}}'">
-              <span class="panel-item-text is-larger">{{{.}}}</span>
-              <div class="panel-item-icon is-transparent is-static" ng-show="options.heading_font === '{{{.}}}'"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
-            </a>
-          {{/each}}
+          <a class="panel-item" ng-repeat="font in getFonts()" style="font-family: '[[font]]'" ng-click="options.heading_font = font">
+            <span class="panel-item-text is-larger">[[font]]</span>
+            <div class="panel-item-icon is-transparent is-static" ng-show="options.heading_font === font"><svg role="presentation"><use xlink:href="#check"></use></svg></div>
+          </a>
         </div>
       </div>
 

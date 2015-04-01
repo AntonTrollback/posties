@@ -85,16 +85,19 @@ postiesApp.service('FlashService', function($timeout) {
 postiesApp.service('FontService', function($http, config) {
   'use strict';
 
-  this.fontList = FONTS;
-  this.fontListLoaded = false;
+  this.loaded = false;
+
+  this.getFonts = function() {
+    return ['Akkurat', 'Josefin Sans', 'Dosis', 'Karla', 'Archivo Narrow', 'Inconsolata', 'Anonymous Pro', 'Text Me One', 'Lora', 'Neuton', 'Old Standard TT', 'EB Garamond', 'Arvo', 'Fredoka One', 'VT323', 'Nova Cut', 'Reenie Beanie'];
+  };
 
   this.loadAll = function() {
-    if (this.fontListLoaded) {
+    if (this.loaded) {
       return;
     }
 
-    this.load(this.fontList);
-    this.fontListLoaded = true;
+    this.load(this.getFonts());
+    this.loaded = true;
   };
 
   this.load = function(fonts) {

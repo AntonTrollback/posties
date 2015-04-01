@@ -29,10 +29,8 @@
     "WebFont": true,
     "WebFontConfig": true,
     "filepicker": true,
-    "FONTS": true,
     "SITE_DATA": true,
-    "DEFAULT_SITE_DATA": true,
-    "FILEPICKER_KEY": true
+    "DEFAULT_SITE_DATA": true
   },
   "-W015": true,
   "-W098": true,

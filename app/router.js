@@ -6,21 +6,27 @@ var site = require('./site');
 var part = require('./part');
 
 /**
- * Prepair requests
+ * Middleware
  */
 
-var isActive; // Logged in
+/* Detect if signed in */
+
+var isActive;
 
 router.use(function(req, res, next) {
   isActive = user.isActive(req);
   return next();
 });
 
+/* Log request */
+
 router.use(function(req, res, next) {
-  var suffix = isActive ? ' (active user)' : ' '
-  var log = req.method + ' ' + req.url + suffix;
-  while (log.length <= 56) { log += '='; }
-  console.log('\n==== ' + log);
+  if (!app.get('production')) {
+    var suffix = isActive ? ' (active user)' : ' '
+    var log = req.method + ' ' + req.url + suffix;
+    while (log.length <= 56) { log += '='; }
+    console.log('\n==== ' + log);
+  }
   return next();
 });
 
@@ -29,18 +35,15 @@ router.use(function(req, res, next) {
  */
 
 function render (res, options) {
-  res.render('layout', _.assign({
+  var always = {
     production: app.get('production'),
-    assetUrl: app.get('assetUrl'),
-    analyticsCode: app.get('analyticsCode'),
-    filePickerKey: app.get('filePickerKey'),
-    angularCtrl: 'StaticCtrl',
     activeUser: isActive,
-    fonts: app.get('fonts'),
-    colors: app.get('colors'),
-    colorsData: JSON.stringify(app.get('colors')),
-    defaultSiteDataString: JSON.stringify(app.get('defaultSiteData')),
-  }, options));
+    revision: app.get('revision'),
+    angularCtrl: 'StaticCtrl',
+    defaultSiteDataString: JSON.stringify(site.default)
+  };
+
+  res.render('layout', _.assign(always, options));
 }
 
 function render404 (res) {
@@ -70,27 +73,6 @@ function sendError (error, res) {
 function sendBadInput (res) {
   send(res, {error: 'Ivalid input'});
 }
-
-/**
- * Add "www" from requests
- */
-
-//app.get('/*', function (req, res, next){
-//  var protocol = 'http' + (req.connection.encrypted ? 's' : '') + '://';
-//  var host = req.headers.host;
-//  var href;
-//
-//  if (!/^www\./i.test(host)) {
-//    return next();
-//  }
-//
-//  host = host.replace(/^www\./i, '');
-//  href = protocol + host + req.url;
-//  res.statusCode = 301;
-//  res.setHeader('Location', href);
-//  res.write('Redirecting to ' + host + req.url + '');
-//  res.end();
-//});
 
 /**
  * Startpage
@@ -127,13 +109,14 @@ router.get('/by/:name', function(req, res) {
     if (!siteData) { return render404(res); }
 
     siteData.isAuthenticated = user.isActiveOwner(req, siteData.user_id);
+
     render(res, {
-      title: name + ' · Posti.es',
       onSite: true,
-      angularCtrl: 'UserCtrl',
+      editMode: siteData.isAuthenticated,
       siteData: siteData,
       siteDataString: JSON.stringify(siteData),
-      editMode: siteData.isAuthenticated
+      title: name + ' · Posti.es',
+      angularCtrl: 'UserCtrl'
     });
   })
 });
@@ -265,39 +248,6 @@ router.delete('/api/delete-part', function (req, res) {
 });
 
 /* -------------------------------------------------------------------------- */
-
-/**
- * Database setup
- */
-
-router.get('/setup', function(req, res) {
-  if (!app.get('production')) {
-    var query = require('pg-query');
-    query.connectionParameters = app.get('databaseUrl');
-
-    query('CREATE TABLE IF NOT EXISTS users(id serial primary key, email text, password text, created timestamptz)');
-    query('CREATE TABLE IF NOT EXISTS sites(id serial primary key, user_id serial, name text, options jsonb, updated timestamptz, created timestamptz)');
-    query('CREATE TABLE IF NOT EXISTS parts(id serial primary key, site_id serial, type smallint, rank integer, content jsonb, created timestamptz)');
-
-    render(res, {
-      title: 'Database setup'
-    });
-  } else {
-    res.redirect('/');
-  }
-});
-
-/**
- * Database convert helper
- */
-
-router.get('/converter', function(req, res) {
-  if (!app.get('production')) {
-    res.render('converter');
-  } else {
-    res.redirect('/');
-  }
-});
 
 /**
  * 404 responses

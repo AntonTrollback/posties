@@ -8,6 +8,32 @@ var site = {};
 query.connectionParameters = app.get('databaseUrl');
 
 /**
+ * Default site data
+ */
+
+site.default = {
+  id: null,
+  name: null,
+  isAuthenticated: false,
+  options: {
+    boxes: true,
+    text_font: 'Akkurat',
+    text_color: '#141414',
+    heading_font: 'Akkurat',
+    background_color: '#f5f5f5',
+    part_background_color: '#ffffff'
+  },
+  parts: [{
+    id: null,
+    rank: 0,
+    type: 0,
+    content: {
+      text: "<p>Hello</p><p class=\"focus\">I'm a text that you can edit</p><p><br></p><p>Add images and texts until you're happy.</p><p>Then publish your new website!</p><p><br></p><p>Customize your design by hitting the sliders in the top right corner.</p>"
+    }
+  }]
+}
+
+/**
  * Get site from database
  */
 

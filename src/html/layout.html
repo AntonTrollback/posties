@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html ng-app="posties"
-      ng-controller="{{{angularCtrl}}}"
+      ng-controller="{{angularCtrl}}"
       ng-style="{'background': options.background_color}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>{{title}}</title>
-    {{#if description}}<meta name="description" content="{{description}}">{{/if}}
+    {{#if description}}
+    <meta name="description" content="{{description}}">
+    {{/if}}
     <meta name="viewport"
           content="width=device-width, initial-scale=1{{#if editMode}}, maximum-scale=1{{/if}}">
-    <link rel="stylesheet" href="{{{assetUrl}}}posties.css">
+    {{#if production}}
+    <link rel="stylesheet" href="//s3-eu-west-1.amazonaws.com/posties-stuff/{{revision}}/posties.css">
+    {{else}}
+    <link rel="stylesheet" href="/dist/posties.css">
+    {{/if}}
   </head>
-  <body class="Site" ng-click="accountOpen = false; optionsOpen = false;" ng-class="{'Site--withModal': publish.visible}">
+  <body class="Site"
+        ng-class="{'Site--withModal': publish.visible}"
+        ng-click="accountOpen = false; optionsOpen = false;">
+
     {{>header}}
 
     <div class="Site-container">
@@ -26,8 +35,14 @@
             {{>welcome}}
           {{/if}}
 
-          <ul id="parts" class="parts" ng-class="options.boxes ? '' : 'is-unboxed'" ng-style="{ 'color': options.text_color }">
-            <li ng-repeat="part in parts" data-id="[[part.id]]" data-rank="[[part.rank]]" class="part">
+          <ul id="parts"
+              class="parts"
+              ng-class="options.boxes ? '' : 'is-unboxed'"
+              ng-style="{ 'color': options.text_color }">
+            <li class="part"
+                ng-repeat="part in parts"
+                data-id="[[part.id]]"
+                data-rank="[[part.rank]]">
               <ng-include src="part.template"></ng-include>
             </li>
           </ul>
@@ -78,22 +93,8 @@
     {{>symbols}}
 
     <script>
-      var FONTS = [{{#each fonts}}'{{{.}}}',{{/each}}];
-      {{#if onSite}}
-      var SITE_DATA = {{{siteDataString}}};
-      {{/if}}
-      {{#unless onSite}}
-      var SITE_DATA = false;
-      {{/unless}}
-
-      {{#if editMode}}
+      var SITE_DATA = {{#if onSite}}{{{siteDataString}}}{{else}}false{{/if}};
       var DEFAULT_SITE_DATA = {{{defaultSiteDataString}}};
-      var FILEPICKER_KEY = '{{filePickerKey}}';
-      {{/if}}
-
-      {{#unless editMode}}
-      var DEFAULT_SITE_DATA = false;
-      {{/unless}}
 
       // Trigger svg redraw (safari issue)
       document.addEventListener('DOMContentLoaded', function(){
@@ -104,30 +105,28 @@
         });
       });
 
-      {{#if analyticsCode}}
+      {{#if production}}
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', '{{{analyticsCode}}}', 'auto');
+      ga('create', 'UA-50858987-1', 'auto');
       ga('require', 'displayfeatures');
       {{/if}}
     </script>
 
     {{#if production}}
-    <script src="{{{assetUrl}}}posties.js"></script>
+    <script src="//s3-eu-west-1.amazonaws.com/posties-stuff/{{revision}}/posties.js"></script>
+    {{else}}
+    <script src="/dist/libs.js"></script>
+    <script src="/dist/index.js"></script>
     {{/if}}
-    {{#unless production}}
-    <script src="{{{assetUrl}}}libs.js"></script>
-    <script src="{{{assetUrl}}}index.js"></script>
-    {{/unless}}
 
     <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
     <script>WebFontConfig = {};</script>
 
     {{#if editMode}}
     <script src="//api.filepicker.io/v1/filepicker.js"></script>
-    <script>filepicker.setKey('{{{filePickerKey}}}');</script>
     {{/if}}
   </body>
 </html>

@@ -3,12 +3,10 @@
  */
 
 postiesApp.controller('IndexCtrl', function(
-  $scope, $http, $timeout, $analytics, $filter, config, AuthService, FlashService, FontService) {
+  $scope, $http, $analytics, $filter, AuthService, FlashService, config) {
   'use strict';
 
   $scope.flashService = FlashService;
-  $scope.fontService = FontService;
-  $scope.authService = AuthService;
 
   // Get default data
 
@@ -220,23 +218,16 @@ postiesApp.controller('IndexCtrl', function(
  * -----------------------------------------------------------------------------
  */
 
-postiesApp.controller('UserCtrl', function(
-  $scope, $http, $timeout, $filter, $analytics, config,
-  FontService, AuthService, FlashService) {
+postiesApp.controller('UserCtrl', function($scope, $analytics, AuthService, FontService, config) {
   'use strict';
-
-  $scope.flashService = FlashService;
-  $scope.fontService = FontService;
-  $scope.authService = AuthService;
 
   $scope.site = SITE_DATA;
   $scope.parts = SITE_DATA.parts;
   $scope.options = SITE_DATA.options;
-  $scope.defaultOptions = DEFAULT_SITE_DATA ? $.extend(true, {}, DEFAULT_SITE_DATA.options) : {};
+  $scope.defaultOptions = $.extend(true, {}, DEFAULT_SITE_DATA.options);
   $scope.isAuthenticated = SITE_DATA.isAuthenticated;
 
   // First visit
-
   if (localStorage.getItem(config.keySettings + 'Welcome')) {
     $analytics.eventTrack('Success', {  category: 'Sign up' });
     localStorage.removeItem(config.keySettings + 'Welcome');
@@ -244,7 +235,7 @@ postiesApp.controller('UserCtrl', function(
   }
 
   // Load fonts used on website
-  $scope.fontService.load([$scope.options.text_font, $scope.options.heading_font]);
+  FontService.load([$scope.options.text_font, $scope.options.heading_font]);
 });
 
 /**
@@ -253,7 +244,7 @@ postiesApp.controller('UserCtrl', function(
  */
 
 postiesApp.controller('EditorCtrl', function(
-  $scope, $http, $timeout, $filter, $sce, $analytics, config, FlashService) {
+  $scope, $http, $timeout, $sce, $analytics, FlashService, config) {
   'use strict';
 
   $scope.flashService = FlashService;
@@ -399,7 +390,7 @@ postiesApp.controller('EditorCtrl', function(
       });
     };
 
-    filepicker.setKey(FILEPICKER_KEY);
+    filepicker.setKey('AB0n3LvCeQhusW_h15bE5z');
     filepicker.store(input, uploadOptions, uploadSuccess, uploadError, uploadProgress);
   };
 
@@ -572,11 +563,9 @@ postiesApp.controller('EditorCtrl', function(
  * -----------------------------------------------------------------------------
  */
 
-postiesApp.controller('OptionsCtrl', function(
-  $scope, $http, config, FlashService, FontService) {
+postiesApp.controller('OptionsCtrl', function($scope, $http, FontService, config) {
   'use strict';
 
-  $scope.fontService = FontService;
   $scope.savedOptions = $.extend(true, {}, $scope.options);
 
   $scope.$watch('optionsOpen', function(open) {
@@ -612,8 +601,8 @@ postiesApp.controller('OptionsCtrl', function(
   };
 
   $scope.setRandom = function() {
-    $scope.options.heading_font = $scope.getRandomTypeface();
-    $scope.options.text_font = $scope.getRandomTypeface();
+    $scope.options.heading_font = $scope.getRandomFont();
+    $scope.options.text_font = $scope.getRandomFont();
     $scope.options.boxes = Math.random() < 0.5;
     $scope.options.part_background_color = $scope.getRandomHex();
     $scope.options.background_color = $scope.getRandomHex();
@@ -643,8 +632,13 @@ postiesApp.controller('OptionsCtrl', function(
     })(Math, '0123456789ABCDEF', 4);
   };
 
-  $scope.getRandomTypeface = function() {
-    return FontService.fontList[Math.floor(Math.random() * FontService.fontList.length)];
+  $scope.getFonts = function() {
+    return FontService.getFonts();
+  };
+
+  $scope.getRandomFont = function() {
+    var fonts = FontService.getFonts();
+    return fonts[Math.floor(Math.random() * fonts.length)];
   };
 });
 
@@ -653,8 +647,6 @@ postiesApp.controller('OptionsCtrl', function(
  * -----------------------------------------------------------------------------
  */
 
-postiesApp.controller('StaticCtrl', function(
-  $scope, $http, $timeout, $analytics, $sce, config, AuthService, FlashService) {
+postiesApp.controller('StaticCtrl', function($scope, AuthService, config) {
   'use strict';
-
 });
