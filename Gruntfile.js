@@ -1,10 +1,9 @@
-'use strict';
-
 module.exports = function(grunt) {
+  'use strict';
+
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
-
     cssnext: {
       build: {
         options: {
@@ -39,7 +38,6 @@ module.exports = function(grunt) {
           'bower_components/jquery/dist/jquery.js',
           'bower_components/angular/angular.js',
           'bower_components/angular-sanitize/angular-sanitize.js',
-          //'bower_components/angular-route/angular-route.js',
           'bower_components/angulartics/src/angulartics.js',
           'bower_components/angulartics/src/angulartics-ga.js',
           'bower_components/jquery-minicolors/jquery.minicolors.js',
@@ -130,5 +128,4 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('default', ['build']);
-
 };

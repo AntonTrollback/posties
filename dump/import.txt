@@ -1,1 +1,0 @@
-COPY sites FROM STDIN DELIMITER ',' CSV;

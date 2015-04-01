@@ -1,3 +1,0 @@
-CREATE TABLE IF NOT EXISTS users(id serial primary key, email text, password text, created timestamptz);
-CREATE TABLE IF NOT EXISTS sites(id serial primary key, user_id serial, name text, options jsonb, updated timestamptz, created timestamptz);
-CREATE TABLE IF NOT EXISTS parts(id serial primary key, site_id serial, type smallint, rank integer, content jsonb, created timestamptz);

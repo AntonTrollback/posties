@@ -1,13 +1,9 @@
 {
-  "verbose": false,
-  "ext": "js json html",
+  "ext": "js",
   "ignore": [
-    "dist",
-    "src/js",
-    ".git",
+    "src",
     "node_modules",
-    "bower_components",
-    "node_modules/**/node_modules"
+    "bower_components"
   ],
   "execMap": {
     "js": "node app.js"
