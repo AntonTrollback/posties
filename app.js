@@ -39,7 +39,7 @@ var hb = handlebars.create({
 });
 
 app.engine('html', hb.engine);
-app.enable('view cache');
+if (app.get('production')) { app.enable('view cache'); }
 
 /**
  * Setup sessions
