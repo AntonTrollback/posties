@@ -18,7 +18,7 @@
     "jquery": "~2.1.1",
     "Autolinker.js": "~0.17.1",
     "jquery-minicolors": "~2.1.11",
-    "medium-editor": "~4.2.0",
+    "medium-editor": "~1.9.4",
     "angulartics": "~0.17.0",
     "svg4everybody": "*",
     "imagesloaded": "~3.1.8"
