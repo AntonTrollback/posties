@@ -151,14 +151,11 @@ part.setContent = function(input, callback) {
 part.setRank = function(inputArray, callback) {
   var count = 0;
 
-  console.log('inputArray: ', inputArray)
-
   _(inputArray).forEach(function(item) {
     var sql = 'UPDATE parts SET rank = ($1) WHERE id = ($2) RETURNING *';
 
     query(sql, [item.rank, item.id], function(error, rows) {
       if (error) {
-        console.log('Error!')
         callback(error, false);
         return false; // break early
       }

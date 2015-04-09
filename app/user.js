@@ -126,7 +126,7 @@ user.signin = function(req, id) {
 
 user.signout = function(req) {
   req.session.destroy(function(error) {
-    if (error) { console.log(error); }
+    if (error) { console.trace(error); }
   })
 }
 
