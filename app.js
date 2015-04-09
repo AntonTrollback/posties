@@ -45,6 +45,8 @@ if (app.get('production')) { app.enable('view cache'); }
  * Setup sessions
  */
 
+var days = 30;
+
 app.use(session({
   store: new RedisStore({
     client: require('redis-url').connect(app.get('redisUrl'))
@@ -52,7 +54,7 @@ app.use(session({
   secret: 'hurricane',
   resave: false,
   saveUninitialized: true,
-  maxAge: 7 * 24 * 60 * 60 * 1000 // one week
+  maxAge: days * 24 * 60 * 60 * 1000
 }));
 
 /**
