@@ -420,27 +420,22 @@ postiesApp.controller('EditorCtrl', function(
    * Validate video (and save to backend) event
    */
 
-  $scope.validateVideo = function($event, part) {
-    var clipboardData = $event.clipboardData.items[0];
+  $scope.validateVideo = function(part) {
+    var input = part.content.tempKey;
+    var videoId = posties.util.getYouTubeVideoID(input);
 
-    clipboardData.getAsString(function(data) {
-      var videoSrc = posties.util.getYouTubeVideoID(data);
-
-      if (!videoSrc) {
-        $scope.$apply(function() {
-          $scope.flashService.showMessage("Sorry, doesn't look like a Youtube link");
-        });
-        return;
+    if (!videoId) {
+      if (input.length > 15) {
+        $scope.flashService.showMessage("Sorry, doesn't look like a Youtube link");
       }
+      return;
+    }
 
-      $scope.$apply(function() {
-        part.content.key = videoSrc;
-        part.template = 'video';
+    part.content.key = videoId;
+    part.template = 'video';
 
-        $scope.trySave($scope.parts[part.rank], '/api/add-part', function(resp) {
-          $scope.parts[part.rank].id = resp.data.id;
-        });
-      });
+    $scope.trySave($scope.parts[part.rank], '/api/add-part', function(resp) {
+      $scope.parts[part.rank].id = resp.data.id;
     });
   };
 
@@ -496,7 +491,7 @@ postiesApp.controller('EditorCtrl', function(
       });
 
       $scope.trySave({id: part.id, content: {text: text}}, '/api/update-part');
-    }, 250);
+    }, 150);
   };
 
   /**

@@ -1,10 +1,10 @@
 <div class="part-inner">
   <div class="part-content-text is-input" ng-show="!part.content.key" ng-style="{ 'background': options.boxes ? options.part_background_color : 'transparent', 'font-family': options.text_font, 'color': options.text_color }">
     <ng-include src="'options'"></ng-include>
-    <div ng-model="test"
-        class="part-body"
-        medium-editor
-        options='{"placeholder": "Paste your YouTube link here", "disableToolbar": true, "disableReturn": true, "forcePlainText": true, "checkLinkFormat": true, "cleanPastedHTML": false, "buttons": ["bold", "italic", "anchor"]}'
-        ng-paste="validateVideo($event.originalEvent, part)"></div>
+    <div ng-model="part.content.tempKey"
+         class="part-body"
+         medium-editor
+         options='{"placeholder": "Paste your YouTube link here", "disableToolbar": true, "disableReturn": true, "forcePlainText": true, "checkLinkFormat": false, "cleanPastedHTML": true}'
+         ng-change="validateVideo(part)"></div>
   </div>
 </div>
