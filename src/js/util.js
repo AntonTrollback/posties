@@ -18,11 +18,11 @@ posties.util = (function() {
       var url = this.stripTags(input);
       var match = url.match(regExp);
 
-      if (match && match[2].length == 11) {
+      if (match && match[2].length === 11) {
         return match[2];
       }
 
       return false;
     }
-  }
+  };
 }());
