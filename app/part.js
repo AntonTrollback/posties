@@ -38,6 +38,11 @@ part.getAllComplete = function(siteId, callback) {
       // Add types
       partData = part.setType(partData);
 
+      // Fix text markup
+      if (partData.typeText || partData.typeVideo) {
+        partData = part.cleanMarkup(partData);
+      }
+
       // Fix image urls
       if (partData.typeImage) {
         partData = part.normalizeImage(partData);
@@ -68,6 +73,16 @@ part.setType = function(partData) {
   } else if (partData.type === 3) {
     partData.typeVideo = true;
   }
+  return partData;
+}
+
+part.cleanMarkup = function(partData) {
+  var markup = partData.content.text;
+
+  // Remove hidden characters
+  var exp = new RegExp("\u2028|\u2029");
+  partData.content.text = markup.replace(exp, '');
+
   return partData;
 }
 
