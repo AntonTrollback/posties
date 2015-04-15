@@ -1,16 +1,17 @@
-<!DOCTYPE html>
-<html ng-app="posties"
+<!doctype html>
+<html {{#if index}}lang="en"{{/if}} ng-app="posties"
       ng-controller="{{angularCtrl}}"
       ng-style="{'background': options.background_color}">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>{{title}}</title>
     {{#if description}}
     <meta name="description" content="{{description}}">
     {{/if}}
     <meta name="viewport"
           content="width=device-width, initial-scale=1{{#if editMode}}, maximum-scale=1{{/if}}">
+    <link rel="apple-touch-icon" href="//s3-eu-west-1.amazonaws.com/posties-stuff/assets/static/apple-touch-icon.png">
     {{#if production}}
     <link rel="stylesheet" href="//s3-eu-west-1.amazonaws.com/posties-stuff/assets/{{revision}}/posties.css">
     {{else}}
