@@ -82,9 +82,7 @@ router.get('/', function(req, res) {
   render(res, {
     index: true,
     editMode: true,
-    angularCtrl: 'IndexCtrl',
-    title: 'Posti.es',
-    description: 'Posti.es, instant one page website creator'
+    angularCtrl: 'IndexCtrl'
   });
 });
 
@@ -115,7 +113,6 @@ router.get('/by/:name', function(req, res) {
       editMode: siteData.isAuthenticated,
       siteData: siteData,
       siteDataString: JSON.stringify(siteData),
-      title: name + ' · Posti.es',
       angularCtrl: 'UserCtrl'
     });
   })
