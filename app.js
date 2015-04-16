@@ -7,6 +7,7 @@ var favicon = require('serve-favicon');
 var compression = require('compression');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+//var renderMinified = require('./app/minify');
 
 var env = new Habitat();
 var app = module.exports = express();
@@ -21,6 +22,7 @@ app.set('view engine', 'html');
 
 app.use(express.static('src'));
 app.use(compression());
+//app.use(renderMinified);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
