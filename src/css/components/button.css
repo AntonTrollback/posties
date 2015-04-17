@@ -69,7 +69,7 @@
  */
 
 .button.is-large {
-  font-size: 23px;
+  font-size: 21px;
   padding: 14px 15px;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .button.is-larger {
-  font-size: 23px;
+  font-size: 21px;
   padding: 27px 22px 33px;
 }
 
@@ -102,6 +102,14 @@
   padding: 10px;
   margin: -10px;
 }
+
+@media (--md-viewport) {
+  .button.is-large,
+  .button.is-larger {
+    font-size: 23px;
+  }
+}
+
 
 /**
  * Icons

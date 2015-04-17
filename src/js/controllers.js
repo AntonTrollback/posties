@@ -157,7 +157,12 @@ postiesApp.controller('IndexCtrl', function(
 
   $scope.publishSuccess = function(data) {
     localStorage.setItem(config.keySettings + 'Welcome', true);
-    window.location = "/by/" + data.name.toLowerCase();
+
+    if (window.location.hostname === 'localhost') {
+      window.location = 'http://' + data.name.toLowerCase() + 'localhost:5000';
+    } else {
+      window.location = 'http://' + data.name.toLowerCase() + 'posti.es';
+    }
   };
 
   $scope.publishFail = function(data) {

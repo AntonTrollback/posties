@@ -96,8 +96,8 @@ input {
   box-sizing: border-box !important;
   display: block;
   width: 100%;
-  padding: 16px 18px;
-  font-size: 18px;
+  padding: 12px 13px;
+  font-size: 16px;
   letter-spacing: -.3px;
   line-height: normal;
   font-family: inherit;
@@ -123,4 +123,11 @@ input::-webkit-input-placeholder {
 
 input::-moz-input-placeholder {
   font-style: italic;
+}
+
+@media (--md-viewport) {
+  input {
+    padding: 16px 18px;
+    font-size: 18px;
+  }
 }

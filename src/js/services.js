@@ -30,7 +30,11 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
   this.signinSuccess = function(resp) {
     console.log(resp.data);
     if (resp.data.siteToGoTo && resp.data.id) {
-      window.location = "/by/" + resp.data.siteToGoTo;
+      if (window.location.hostname === 'localhost') {
+        window.location = 'http://' + resp.data.siteToGoTo + 'localhost:5000';
+      } else {
+        window.location = 'http://' + resp.data.siteToGoTo + 'posti.es';
+      }
     } else {
       FlashService.showMessage("Password or Email seem to be incorrect");
       $('.popover-form .button').attr('disabled', false).text('OK');

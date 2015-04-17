@@ -1,14 +1,27 @@
 .Control {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+}
+
+.Control-text {
+  font-size: 13px;
+  display: block;
+  margin: 9px 0 0;
 }
 
 .Control-status {
   position: absolute;
-  top: 50%;
-  right: 17px;
+  top: 21px;
+  right: 13px;
   margin-top: -10px;
   font-size: 20px;
+}
+
+@media (--md-viewport) {
+  .Control-status {
+    top: 27px;
+    right: 17px;
+  }
 }
 
 .Control-status.is-good:after {
@@ -16,7 +29,13 @@
   color: var(--color-green);
 }
 
+.Control-status.is-bad {
+  font-size: 24px;
+  margin-top: -11px;
+  margin-right: 1px;
+}
+
 .Control-status.is-bad:after {
-  content: "\2714";
+  content: "\2718";
   color: var(--color-element-dark);
 }

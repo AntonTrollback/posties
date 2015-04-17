@@ -35,7 +35,7 @@
 }
 
 .Modal-content {
-  padding: 30px;
+  padding: 20px;
   margin: 0 8px;
   background: #fff;
   box-shadow: 2px 2px 25px rgba(0, 0, 0, .2);
@@ -47,13 +47,20 @@
   }
 }
 
-@media (--md-viewport) {
-  .Modal-content {
-    margin: 0 30px;
-  }
-}
-
 .Modal-title {
   text-align: center;
   font-size: inherit;
+  margin: 5px 0 17px;
+}
+
+@media (--md-viewport) {
+  .Modal-content {
+    margin: 0 30px;
+    padding: 30px;
+  }
+
+  .Modal-title {
+    font-size: 19px;
+    margin: 3px 0 25px;
+  }
 }

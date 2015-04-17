@@ -14,7 +14,7 @@ var part = require('./part');
 
 var isActive;
 
-router.use(require('express-subdomain-handler')({ baseUrl: app.get('domain'), prefix: 'by', logger: false}));
+router.use(require('express-subdomain-handler')({ baseUrl: app.get('domain'), prefix: 'site', logger: false}));
 
 router.use(function(req, res, next) {
   isActive = user.isActive(req);
@@ -102,18 +102,18 @@ router.get('/signout', function (req, res) {
  * Sites
  */
 
-router.get('/lol/:name', function(req, res) {
+router.get('/by/:name', function(req, res) {
   var name = req.params.name.trim();
   var port = app.get('production') ? '' : ':' + app.get('port');
 
   if (validator.isName(name)) {
-    res.redirect('http://' + app.get('domain') + port + '/by/' + name);
+    res.redirect('http://' + app.get('domain') + port + '/site/' + name);
   } else {
     res.redirect('http://' + name +  '.' + app.get('domain') + port);
   }
 });
 
-router.get('/by/:name', function(req, res) {
+router.get('/site/:name', function(req, res) {
   var name = req.params.name;
 
   site.getComplete(name, function (error, siteData) {
