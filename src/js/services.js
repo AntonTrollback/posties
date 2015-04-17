@@ -31,9 +31,9 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
     console.log(resp.data);
     if (resp.data.siteToGoTo && resp.data.id) {
       if (window.location.hostname === 'localhost') {
-        window.location = 'http://' + resp.data.siteToGoTo + 'localhost:5000';
+        window.location = 'http://' + resp.data.siteToGoTo + '.localhost:5000';
       } else {
-        window.location = 'http://' + resp.data.siteToGoTo + 'posti.es';
+        window.location = 'http://' + resp.data.siteToGoTo + '.posti.es';
       }
     } else {
       FlashService.showMessage("Password or Email seem to be incorrect");
