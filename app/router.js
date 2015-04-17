@@ -13,6 +13,8 @@ var part = require('./part');
 
 var isActive;
 
+router.use(require('express-subdomain-handler')({ baseUrl: 'localhost', prefix: 'by', logger: false}));
+
 router.use(function(req, res, next) {
   isActive = user.isActive(req);
   return next();
