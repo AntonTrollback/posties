@@ -42,21 +42,18 @@ site.getByUserId = function(id, callback) {
 }
 
 site.getByName = function(name, callback) {
-  query.first('SELECT * FROM "sites" WHERE lower(name) = $1', name.toLowerCase(), callback);
+  query.first('SELECT * FROM "sites" WHERE lower(name) = $1', name, callback);
 }
 
 /**
  * Get site with parts
  */
-
 site.getComplete = function(name, callback) {
-  var name = name.toLowerCase();
+  var name = validator.simpleNormalizeName(name);
 
   // Get the site
   site.getByName(name, function(error, siteData) {
     if (error || !siteData) { return callback(error, siteData); }
-
-    siteData.name = siteData.name.toLowerCase()
 
     // Get all the parts
     part.getAllComplete(siteData.id, function(error, parts) {
@@ -88,6 +85,8 @@ site.nameAvailability = function(name, callback) {
  */
 
 site.isValidAndAvailable = function(input, callback) {
+  var name = validator.normalizeName(input.name);
+
   if (input.options) {
     validator.normalizeJSON(input.options, function(error, json) {
       if (error) { return callback(error, false, null); }
@@ -95,12 +94,12 @@ site.isValidAndAvailable = function(input, callback) {
     });
   };
 
-  if (!validator.isName(input.name)) {
+  if (!validator.isName(name)) {
     return callback(null, false, null);
   }
 
   // check availability
-  site.getByName(input.name, function(error, siteData) {
+  site.getByName(name, function(error, siteData) {
     callback(error, true, !siteData);
   });
 }
@@ -112,7 +111,8 @@ site.isValidAndAvailable = function(input, callback) {
 site.create = function(siteInput, partsInput, callback) {
   var sql = 'INSERT INTO sites(user_id, name, options, updated, created) values($1, $2, $3, $4, $5) RETURNING *';
   var date = new Date();
-  var data = [siteInput.userId, siteInput.name.toLowerCase(), siteInput.options, date, date];
+  var inputName = validator.normalizeName(siteInput.name);
+  var data = [siteInput.userId, inputName, siteInput.options, date, date];
 
   query(sql, data, function(error, siteData) {
     var id = validator.getFirstRowValue(siteData, 'id', error)

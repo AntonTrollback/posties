@@ -12,6 +12,7 @@ var methodOverride = require('method-override');
 var env = new Habitat();
 var app = module.exports = express();
 
+app.set('domain', env.get('domain'));
 app.set('port', env.get('port'));
 app.set('databaseUrl', env.get('databaseUrl'));
 app.set('redisUrl', env.get('rediscloudUrl'));
@@ -66,5 +67,5 @@ app.use(session({
 app.use(require('./app/router'));
 
 app.listen(app.get('port'), function() {
-  console.log('Running at localhost:' + app.get('port'));
+  console.log('Running at ' + app.get('domain') + ' (' + app.get('port') + ')');
 });

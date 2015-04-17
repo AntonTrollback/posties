@@ -32,7 +32,7 @@ postiesApp.controller('IndexCtrl', function(
     // Quick validate
     $scope.site.name = $filter('fixName')($scope.site.name);
     var name = $scope.site.name;
-    var valid = (!name || name.length < 1 || name.length > 150) ? false : true;
+    var valid = (!name || name.length < 1 || name.length > 60) ? false : true;
 
     if (!valid) {
       $scope.publish.nameValid = valid;

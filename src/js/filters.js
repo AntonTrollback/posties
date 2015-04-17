@@ -3,7 +3,11 @@ postiesApp.filter('fixName', ['$sce', function($sce) {
 
   return function(sourceId) {
     if (!sourceId) { return ''; }
-    return sourceId.trim().toLowerCase().replace(/ /g, '-');
+    return sourceId.trim()
+                   .toLowerCase()
+                   .replace(/[ _+]/g, '-') // replace stuff with hyphens
+                   .replace(/^[-]+|[-]+$/g, '') // strip trailing hyphens
+                   .replace(/[^a-zA-Z0-9-]/g, ''); // strip disallowed chars
   };
 }]);
 

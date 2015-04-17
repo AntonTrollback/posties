@@ -8,7 +8,6 @@ var validator = {};
 
 validator.isEmail = function(email) {
   if (!email) { return false; }
-  var email = validatorLib.normalizeEmail(email);
   return validatorLib.isEmail(email);
 }
 
@@ -18,11 +17,11 @@ validator.isPassword = function(password) {
 }
 
 validator.isName = function(name) {
+  // Subdomain restrictions
+  var regex = /^(?:[A-Za-z0-9][A-Za-z0-9\-]{0,60}[A-Za-z0-9]|[A-Za-z0-9])$/;
+
   if (!name) { return false; }
-  var regex = /^[a-zA-Z0-9-]{1,150}$/;
-  var validLength = validatorLib.isLength(name, 1, 150);
-  var validChars = !_.isNull(name.match(regex));
-  return validLength && validChars;
+  return !_.isNull(name.trim().match(regex));
 }
 
 /**
@@ -31,7 +30,22 @@ validator.isName = function(name) {
 
 validator.normalizeEmail = function(email) {
   if (!email) { return false; }
-  return validatorLib.normalizeEmail(email);
+  return validatorLib.normalizeEmail(email.toLowerCase());
+}
+
+validator.simpleNormalizeName = function(name) {
+  if (!name) { return false; }
+  return name.toLowerCase().trim();
+}
+
+validator.normalizeName = function(name) {
+  if (!name) { return false; }
+
+  return name.trim()
+             .toLowerCase()
+             .replace(/[ _+]/g, '-') // replace stuff with hyphens
+             .replace(/^[-]+|[-]+$/g, '') // strip trailing hyphens
+             .replace(/[^a-zA-Z0-9-]/g, ''); // strip disallowed chars
 }
 
 validator.normalizeJSON = function(json, callback) {
@@ -45,6 +59,10 @@ validator.normalizeJSON = function(json, callback) {
     return callback(error, null);
   }
 }
+
+/**
+ * Misc helpers
+ */
 
 validator.getFirstRowValue = function(rows, key, error) {
   if (error || !key || !rows) { return null; }
