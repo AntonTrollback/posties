@@ -50,6 +50,8 @@ site.getByName = function(name, callback) {
  */
 
 site.getComplete = function(name, callback) {
+  var name = name.toLowerCase();
+
   // Get the site
   site.getByName(name, function(error, siteData) {
     if (error || !siteData) { return callback(error, siteData); }
