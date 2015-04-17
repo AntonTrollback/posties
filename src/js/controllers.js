@@ -159,9 +159,9 @@ postiesApp.controller('IndexCtrl', function(
     localStorage.setItem(config.keySettings + 'Welcome', true);
 
     if (window.location.hostname === 'localhost') {
-      window.location = 'http://' + data.name.toLowerCase() + 'localhost:5000';
+      window.location = 'http://' + data.name.trim().toLowerCase() + '.localhost:5000';
     } else {
-      window.location = 'http://' + data.name.toLowerCase() + 'posti.es';
+      window.location = 'http://' + data.name.trim().toLowerCase() + '.posti.es';
     }
   };
 
