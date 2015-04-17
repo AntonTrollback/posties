@@ -42,7 +42,7 @@ site.getByUserId = function(id, callback) {
 }
 
 site.getByName = function(name, callback) {
-  query.first('SELECT * FROM "sites" WHERE lower(name) = $1', name, callback);
+  query.first('SELECT * FROM "sites" WHERE lower(name) = $1', name.toLowerCase(), callback);
 }
 
 /**
@@ -55,6 +55,8 @@ site.getComplete = function(name, callback) {
   // Get the site
   site.getByName(name, function(error, siteData) {
     if (error || !siteData) { return callback(error, siteData); }
+
+    siteData.name = siteData.name.toLowerCase()
 
     // Get all the parts
     part.getAllComplete(siteData.id, function(error, parts) {
