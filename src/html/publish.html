@@ -26,6 +26,9 @@
               ng-class="{'is-good': publish.nameValid, 'is-bad': publish.nameInvalid}"></span>
         <span ng-show="publish.nameInvalidHelp" class="Control-text">Sorry, that's not a valid name. Stick to letters, numbers, and "-"</span>
         <span ng-show="publish.nameInUseHelp" class="Control-text">Sorry, that name is already in use</span>
+        <span ng-show="!publish.nameInUseHelp && !publish.nameInvalidHelp" class="Control-text">
+          <span ng-show="!publish.nameInUseHelp && !publish.nameInvalidHelp && !site.name">website-name</span>[[site.name | fixName]].posti.es
+        </span>
       </div>
 
       <div class="Control">
