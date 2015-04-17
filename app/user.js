@@ -16,7 +16,7 @@ user.getById = function(id, callback) {
 }
 
 user.getByEmail = function(email, callback) {
-  query.first('SELECT * FROM "users" WHERE email = $1', email, callback);
+  query.first('SELECT * FROM "users" WHERE lower(email) = $1', email, callback);
 }
 
 /**
@@ -47,7 +47,7 @@ user.isValidAndAvailable = function(input, callback) {
 user.create = function(req, input, callback) {
   var sql = 'INSERT INTO users(email, password, created) values($1, $2, $3) RETURNING *';
   var email = validator.normalizeEmail(input.email);
-  var data = [email, input.password, new Date()]
+  var data = [email.toLowerCase(), input.password, new Date()]
   query(sql, data, function(error, rows) {
     var id = validator.getFirstRowValue(rows, 'id', error);
     user.signin(req, id);

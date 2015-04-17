@@ -42,7 +42,7 @@ site.getByUserId = function(id, callback) {
 }
 
 site.getByName = function(name, callback) {
-  query.first('SELECT * FROM "sites" WHERE name = $1', name, callback);
+  query.first('SELECT * FROM "sites" WHERE lower(name) = $1', name, callback);
 }
 
 /**
@@ -110,7 +110,7 @@ site.isValidAndAvailable = function(input, callback) {
 site.create = function(siteInput, partsInput, callback) {
   var sql = 'INSERT INTO sites(user_id, name, options, updated, created) values($1, $2, $3, $4, $5) RETURNING *';
   var date = new Date();
-  var data = [siteInput.userId, siteInput.name, siteInput.options, date, date];
+  var data = [siteInput.userId, siteInput.name.toLowerCase(), siteInput.options, date, date];
 
   query(sql, data, function(error, siteData) {
     var id = validator.getFirstRowValue(siteData, 'id', error)

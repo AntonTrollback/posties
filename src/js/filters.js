@@ -3,7 +3,7 @@ postiesApp.filter('fixName', ['$sce', function($sce) {
 
   return function(sourceId) {
     if (!sourceId) { return ''; }
-    return sourceId.trim().replace(/ /g, '-');
+    return sourceId.trim().toLowerCase().replace(/ /g, '-');
   };
 }]);
 
