@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var cors = require('cors');
 var router = require('express').Router();
 var bcrypt = require('bcrypt');
 var app = require('./../app');
@@ -11,11 +12,19 @@ var part = require('./part');
  * Middleware
  */
 
+router.use(cors({
+  credentials: true,
+  origin: true
+}));
+router.use(require('express-subdomain-handler')({
+  baseUrl: app.get('domain'),
+  prefix: 'site',
+  logger: false
+}));
+
 /* Detect if signed in */
 
 var isActive;
-
-router.use(require('express-subdomain-handler')({ baseUrl: app.get('domain'), prefix: 'site', logger: false}));
 
 router.use(function(req, res, next) {
   isActive = user.isActive(req);
@@ -108,9 +117,10 @@ router.get('/by/:name', function(req, res) {
   var port = app.get('production') ? '' : ':' + app.get('port');
 
   if (validator.isName(name)) {
-    res.redirect('http://' + app.get('domain') + port + '/site/' + name);
+    //res.redirect('http://' + name +  '.' + app.get('domain') + port);
+    res.redirect(301, 'http://www.' + app.get('domain') + port + '/site/' + name);
   } else {
-    res.redirect('http://' + name +  '.' + app.get('domain') + port);
+    res.redirect(301, 'http://www.' + app.get('domain') + port + '/site/' + name);
   }
 });
 
@@ -283,6 +293,12 @@ router.get('/fixpasswordsplsdontuse', function(req, res) {
 });
 
 /* -------------------------------------------------------------------------- */
+
+/**
+ * Pre-flight/promise requests
+ */
+
+router.options('*', cors());
 
 /**
  * 404 responses

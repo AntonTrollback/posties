@@ -6,8 +6,6 @@ var handlebars = require('express-handlebars');
 var favicon = require('serve-favicon');
 var compression = require('compression');
 var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
-//var renderMinified = require('./app/minify');
 
 var env = new Habitat();
 var app = module.exports = express();
@@ -27,7 +25,6 @@ app.use(compression());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
-app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(favicon('./favicon.ico'));
 
 /**
@@ -56,8 +53,14 @@ app.use(session({
   }),
   secret: 'hurricane',
   resave: false,
-  saveUninitialized: true,
-  maxAge: days * 24 * 60 * 60 * 1000
+  saveUninitialized: false,
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    secure: false, // todo ssl
+    domain: app.get('domain'),
+    maxAge: days * 24 * 60 * 60 * 1000
+  }
 }));
 
 /**

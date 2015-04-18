@@ -4,7 +4,6 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
   this.user = false;
 
   this.submitSignin = function() {
-    var that = this;
     $('.popover-form .button').attr('disabled', true).text('Loading…');
 
     var data = {
@@ -12,11 +11,10 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
       password: $('[name="password"]').val()
     };
 
-    this.login(data, '/api/signin').then(that.signinSuccess);
+    this.login(data, '/api/signin');
   };
 
   this.submitSiteSignin = function() {
-    var that = this;
     $('.popover-form .button').attr('disabled', true).text('Loading…');
 
     var data = {
@@ -24,16 +22,12 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
       password: $('[name="password"]').val()
     };
 
-    this.login(data, '/api/signin-name').then(that.signinSuccess);
+    this.login(data, '/api/signin-name');
   };
 
   this.signinSuccess = function(resp) {
     if (resp.data.siteToGoTo && resp.data.id) {
-      if (window.location.hostname === 'localhost') {
-        window.location = 'http://' + resp.data.siteToGoTo + '.localhost:5000';
-      } else {
-        window.location = 'http://' + resp.data.siteToGoTo + '.posti.es';
-      }
+      window.location = 'http://' + config.domain + '/by/' + resp.data.siteToGoTo;
     } else {
       FlashService.showMessage("Sorry, incorrect password");
       $('.popover-form .button').attr('disabled', false).text('OK');
@@ -42,15 +36,12 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
 
   this.login = function(data, endpoint) {
     return $http({
-      url: endpoint,
+      url: 'http://' + config.domain + endpoint,
       method: 'post',
       data: data,
-      headers: config.headerJSON
-    }).then(function(resp) {
-      return resp;
-    }, function(error) {
-      return error;
-    });
+      headers: config.headerJSON,
+      withCredentials: true
+    }).then(this.signinSuccess, function(error) { return error; });
   };
 
   return this;

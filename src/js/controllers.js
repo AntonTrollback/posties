@@ -157,12 +157,7 @@ postiesApp.controller('IndexCtrl', function(
 
   $scope.publishSuccess = function(data) {
     localStorage.setItem(config.keySettings + 'Welcome', true);
-
-    if (window.location.hostname === 'localhost') {
-      window.location = 'http://' + data.name.trim().toLowerCase() + '.localhost:5000';
-    } else {
-      window.location = 'http://' + data.name.trim().toLowerCase() + '.posti.es';
-    }
+    window.location = 'http://' + data.name.trim().toLowerCase() + '.' + config.domain;
   };
 
   $scope.publishFail = function(data) {
@@ -201,10 +196,11 @@ postiesApp.controller('IndexCtrl', function(
 
   $scope.post = function(endpoint, data, callback) {
     $http({
-      url: endpoint,
+      url: 'http://' + config.domain + endpoint,
       method: 'post',
       data: data,
-      headers: config.headerJSON
+      headers: config.headerJSON,
+      withCredentials: true
     }).then(function(resp) {
       if (resp.data.error) {
         $scope.publish.loading = false;
@@ -541,10 +537,11 @@ postiesApp.controller('EditorCtrl', function(
     console.log("Send '" + method + "' to '" + endpoint + "' with:", data);
 
     $http({
-      url: endpoint,
+      url: 'http://' + config.domain + endpoint,
       method: method,
       data: data,
-      headers: config.headerJSON
+      headers: config.headerJSON,
+      withCredentials: true
     }).then(function(resp) {
       if (resp.data.error) {
         return $scope.flashService.showMessage("Sorry, something went wrong. Posti.es is not working correctly at the moment");
@@ -587,13 +584,14 @@ postiesApp.controller('OptionsCtrl', function($scope, $http, FontService, config
       $scope.savedOptions = $.extend(true, {}, $scope.options);
 
       var promise = $http({
-        url: '/api/update-options',
+        url: 'http://' + config.domain + '/api/update-options',
         method: 'post',
         data: {
           id: SITE_DATA.id,
           options: $scope.options
         },
-        headers: config.headerJSON
+        headers: config.headerJSON,
+        withCredentials: true
       }).then(function(resp) {
         return $scope.options;
       }, function(resp) {
