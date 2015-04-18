@@ -39,7 +39,7 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
       url: 'http://www.' + config.domain + endpoint,
       method: 'post',
       data: data,
-      //withCredentials: true,
+      withCredentials: true,
       headers: config.headerJSON
     }).then(this.signinSuccess, function(error) { return error; });
   };

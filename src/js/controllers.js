@@ -199,7 +199,7 @@ postiesApp.controller('IndexCtrl', function(
       url: 'http://www.' + config.domain + endpoint,
       method: 'post',
       data: data,
-      //withCredentials: true,
+      withCredentials: true,
       headers: config.headerJSON
     }).then(function(resp) {
       if (resp.data.error) {
@@ -540,7 +540,7 @@ postiesApp.controller('EditorCtrl', function(
       url: 'http://www.' + config.domain + endpoint,
       method: method,
       data: data,
-      //withCredentials: true,
+      withCredentials: true,
       headers: config.headerJSON
     }).then(function(resp) {
       if (resp.data.error) {
@@ -590,7 +590,7 @@ postiesApp.controller('OptionsCtrl', function($scope, $http, FontService, config
           id: SITE_DATA.id,
           options: $scope.options
         },
-        //withCredentials: true,
+        withCredentials: true,
         headers: config.headerJSON
       }).then(function(resp) {
         return $scope.options;

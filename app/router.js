@@ -12,7 +12,7 @@ var part = require('./part');
  * Middleware
  */
 
-router.use(cors({origin: '*'}));
+router.use(cors({credentials: true, origin: true}));
 
 router.use(require('express-subdomain-handler')({
   baseUrl: app.get('domain'),
@@ -296,7 +296,7 @@ router.get('/fixpasswordsplsdontuse', function(req, res) {
  * Pre-flight/promise requests
  */
 
-router.options('*', cors({origin: '*'}));
+router.options('*', cors({credentials: true, origin: true}));
 
 /**
  * 404 responses
