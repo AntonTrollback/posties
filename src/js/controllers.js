@@ -196,7 +196,7 @@ postiesApp.controller('IndexCtrl', function(
 
   $scope.post = function(endpoint, data, callback) {
     $http({
-      url: 'http://' + config.domain + endpoint,
+      url: 'http://www.' + config.domain + endpoint,
       method: 'post',
       data: data,
       headers: config.headerJSON,
@@ -537,7 +537,7 @@ postiesApp.controller('EditorCtrl', function(
     console.log("Send '" + method + "' to '" + endpoint + "' with:", data);
 
     $http({
-      url: 'http://' + config.domain + endpoint,
+      url: 'http://www.' + config.domain + endpoint,
       method: method,
       data: data,
       headers: config.headerJSON,
@@ -584,7 +584,7 @@ postiesApp.controller('OptionsCtrl', function($scope, $http, FontService, config
       $scope.savedOptions = $.extend(true, {}, $scope.options);
 
       var promise = $http({
-        url: 'http://' + config.domain + '/api/update-options',
+        url: 'http://www.' + config.domain + '/api/update-options',
         method: 'post',
         data: {
           id: SITE_DATA.id,
