@@ -199,8 +199,8 @@ postiesApp.controller('IndexCtrl', function(
       url: 'http://www.' + config.domain + endpoint,
       method: 'post',
       data: data,
-      headers: config.headerJSON,
-      withCredentials: true
+      //withCredentials: true,
+      headers: config.headerJSON
     }).then(function(resp) {
       if (resp.data.error) {
         $scope.publish.loading = false;
@@ -540,8 +540,8 @@ postiesApp.controller('EditorCtrl', function(
       url: 'http://www.' + config.domain + endpoint,
       method: method,
       data: data,
-      headers: config.headerJSON,
-      withCredentials: true
+      //withCredentials: true,
+      headers: config.headerJSON
     }).then(function(resp) {
       if (resp.data.error) {
         return $scope.flashService.showMessage("Sorry, something went wrong. Posti.es is not working correctly at the moment");
@@ -590,8 +590,8 @@ postiesApp.controller('OptionsCtrl', function($scope, $http, FontService, config
           id: SITE_DATA.id,
           options: $scope.options
         },
-        headers: config.headerJSON,
-        withCredentials: true
+        //withCredentials: true,
+        headers: config.headerJSON
       }).then(function(resp) {
         return $scope.options;
       }, function(resp) {
