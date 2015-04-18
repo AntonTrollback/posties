@@ -12,10 +12,8 @@ var part = require('./part');
  * Middleware
  */
 
-router.use(cors({
-  credentials: true,
-  origin: true
-}));
+router.use(cors({credentials: true}));
+
 router.use(require('express-subdomain-handler')({
   baseUrl: app.get('domain'),
   prefix: 'site',
@@ -117,8 +115,8 @@ router.get('/by/:name', function(req, res) {
   var port = app.get('production') ? '' : ':' + app.get('port');
 
   if (validator.isName(name)) {
-    //res.redirect('http://' + name +  '.' + app.get('domain') + port);
-    res.redirect(301, 'http://www.' + app.get('domain') + port + '/site/' + name);
+    res.redirect(301, 'http://' + name +  '.' + app.get('domain') + port);
+    //res.redirect(301, 'http://www.' + app.get('domain') + port + '/site/' + name);
   } else {
     res.redirect(301, 'http://www.' + app.get('domain') + port + '/site/' + name);
   }
@@ -298,7 +296,7 @@ router.get('/fixpasswordsplsdontuse', function(req, res) {
  * Pre-flight/promise requests
  */
 
-router.options('*', cors());
+router.options('*', cors({credentials: true}));
 
 /**
  * 404 responses
