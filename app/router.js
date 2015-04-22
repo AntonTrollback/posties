@@ -93,6 +93,7 @@ router.get('/', function(req, res) {
   render(res, {
     index: true,
     editMode: true,
+    defaultSiteData: site.default,
     angularCtrl: 'IndexCtrl'
   });
 });

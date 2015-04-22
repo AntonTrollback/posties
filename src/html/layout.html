@@ -21,6 +21,20 @@
             {{>welcome}}
           {{/if}}
 
+          {{#if index}}
+            <div ng-if="beforeLoad" style="margin-top: -5px;">
+              {{#with defaultSiteData.options}}
+                <style>
+                  {{>styles}}
+                </style>
+              {{/with}}
+              <h1 class="temp">Posti.es &middot; Create instant one-page websites on your phone, tablet or computer.</h1>
+              {{#each defaultSiteData.parts}}
+                {{> part-static/text}}
+              {{/each}}
+            </div>
+          {{/if}}
+
           <ul id="parts"
               class="parts"
               ng-class="options.boxes ? '' : 'is-unboxed'"

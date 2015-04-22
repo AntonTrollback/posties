@@ -18,6 +18,10 @@ postiesApp.controller('IndexCtrl', function(
   $scope.user = {email: '', password: ''};
   $scope.isAuthenticated = false;
 
+  // Hide temp content
+
+  $scope.beforeLoad = false;
+
   /**
    * Publish website
    */

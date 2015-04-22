@@ -1,3 +1,15 @@
+
+{{>window-account}}
+
+{{#if editMode}}
+  {{>window-options}}
+{{/if}}
+
+<div id="flash">
+  <a class="close" ng-click="flashService.hide()">×</a>
+  <pre>[[flashService.message]]</pre>
+</div>
+
 {{>symbols}}
 
 <script>
