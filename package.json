@@ -19,6 +19,7 @@
     "deploy": "REV=\"$(date +%s)\"; npm run deploybackend; npm run buildcompress; node app/deploy.js $REV; heroku config:set REVISION=$REV; grunt build"
   },
   "dependencies": {
+    "bcrypt": "^0.8.2",
     "body-parser": "^1.10.2",
     "bower": "^1.3.12",
     "compression": "^1.3.0",
