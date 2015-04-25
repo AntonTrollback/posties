@@ -10,7 +10,7 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
       email: $('.popover-form [name="email"]').val(),
       password: $('.popover-form [name="password"]').val()
     };
-g
+
     this.login(data, '/api/signin');
   };
 
