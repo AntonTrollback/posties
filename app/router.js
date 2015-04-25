@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var router = require('express').Router();
+var bcrypt = require('bcrypt');
 var app = require('./../app');
 var validator = require('./validator');
 var user = require('./user');
@@ -256,6 +257,29 @@ router.delete('/api/delete-part', function (req, res) {
     if (error) { return sendError(error, res); }
     send(res, {success: status});
   });
+});
+
+/**
+ * Dev tool
+ */
+
+router.get('/fixpasswordsplsdontuse', function(req, res) {  
+  var query = require('pg-query');
+  query.connectionParameters = app.get('databaseUrl');
+
+  query('SELECT * FROM users', function(error, rows) {
+    rows.forEach(function (user) {
+      var salt = bcrypt.genSaltSync(10);
+      var hash = bcrypt.hashSync(user.password, salt);
+
+      query('UPDATE users SET password = ($1) WHERE id = ($2)', [hash, user.id]);     
+    });
+  });
+
+  render(res, {
+    title: 'fixpasswords'
+  });
+
 });
 
 /* -------------------------------------------------------------------------- */

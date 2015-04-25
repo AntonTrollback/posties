@@ -1,8 +1,10 @@
 var _ = require('lodash');
 var query = require('pg-query');
+var bcrypt = require('bcrypt');
 var app = require('./../app');
 var validator = require('./validator');
 var site = require('./site');
+
 var user = {};
 
 query.connectionParameters = app.get('databaseUrl');
@@ -49,7 +51,11 @@ user.isValidAndAvailable = function(input, callback) {
 user.create = function(req, input, callback) {
   var sql = 'INSERT INTO users(email, password, created) values($1, $2, $3) RETURNING *';
   var email = validator.normalizeEmail(input.email);
-  var data = [email, input.password, new Date()];
+  
+  var pass = input.password;
+  var salt = bcrypt.genSaltSync(10);
+  var hashed = bcrypt.hashSync(pass, salt);
+  var data = [email, hashed, new Date()];
 
   query(sql, data, function(error, rows) {
     var id = validator.getFirstRowValue(rows, 'id', error);
@@ -82,7 +88,9 @@ user.trySignin = function(req, input, userData, callback) {
   } else {
     // Get user from database
     user.getByEmail(email, function(error, userData) {
-      if (error || !userData || (userData.password !== password)) {
+      var hashMatch = bcrypt.compareSync(password, userData.password);
+
+      if (error || !userData || !hashMatch) {
         return callback(error, null, null);
       }
 
