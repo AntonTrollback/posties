@@ -7,10 +7,10 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
     $('.popover-form .button').attr('disabled', true).text('Loading…');
 
     var data = {
-      email: $('[name="email"]').val(),
-      password: $('[name="password"]').val()
+      email: $('.popover-form [name="email"]').val(),
+      password: $('.popover-form [name="password"]').val()
     };
-
+g
     this.login(data, '/api/signin');
   };
 
@@ -18,8 +18,8 @@ postiesApp.service('AuthService', function($http, config, FlashService) {
     $('.popover-form .button').attr('disabled', true).text('Loading…');
 
     var data = {
-      name: $('[name="name"]').val(),
-      password: $('[name="password"]').val()
+      name: $('.popover-form [name="name"]').val(),
+      password: $('.popover-form [name="password"]').val()
     };
 
     this.login(data, '/api/signin-name');
