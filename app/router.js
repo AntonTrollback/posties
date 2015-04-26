@@ -268,29 +268,6 @@ router.delete('/api/delete-part', function (req, res) {
   });
 });
 
-/**
- * Dev tool
- */
-
-router.get('/fixpasswordsplsdontuse', function(req, res) {  
-  var query = require('pg-query');
-  query.connectionParameters = app.get('databaseUrl');
-
-  query('SELECT * FROM users', function(error, rows) {
-    rows.forEach(function (user) {
-      var salt = bcrypt.genSaltSync(10);
-      var hash = bcrypt.hashSync(user.password, salt);
-
-      query('UPDATE users SET password = ($1) WHERE id = ($2)', [hash, user.id]);     
-    });
-  });
-
-  render(res, {
-    title: 'fixpasswords'
-  });
-
-});
-
 /* -------------------------------------------------------------------------- */
 
 /**

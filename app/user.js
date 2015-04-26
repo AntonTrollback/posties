@@ -51,7 +51,7 @@ user.isValidAndAvailable = function(input, callback) {
 user.create = function(req, input, callback) {
   var sql = 'INSERT INTO users(email, password, created) values($1, $2, $3) RETURNING *';
   var email = validator.normalizeEmail(input.email);
-  
+
   var pass = input.password;
   var salt = bcrypt.genSaltSync(10);
   var hashed = bcrypt.hashSync(pass, salt);
@@ -79,14 +79,18 @@ user.trySignin = function(req, input, userData, callback) {
   if (userData) {
     // Already got user from database
 
-    if (userData.password !== password) {
+    var hashMatch = bcrypt.compareSync(password, userData.password);
+
+    if (!hashMatch) {
       return callback(null, null, null);
     }
 
     user.signin(req, userData.id);
     callback(null, userData.id, null);
+
   } else {
     // Get user from database
+
     user.getByEmail(email, function(error, userData) {
       var hashMatch = bcrypt.compareSync(password, userData.password);
 
