@@ -2,20 +2,24 @@ var _ = require('lodash');
 var cors = require('cors');
 var router = require('express').Router();
 var bcrypt = require('bcrypt');
-var app = require('./../app');
 var validator = require('./validator');
 var user = require('./user');
 var site = require('./site');
 var part = require('./part');
+var config = require('./config');
 
 /**
  * Middleware
  */
 
+/* Fix cors */
+
 router.use(cors({credentials: true, origin: true}));
 
+/* Setup subdomain helper */
+
 router.use(require('express-subdomain-handler')({
-  baseUrl: app.get('domain'),
+  baseUrl: config.domain,
   prefix: 'site',
   logger: false
 }));
@@ -29,10 +33,10 @@ router.use(function(req, res, next) {
   return next();
 });
 
-/* Log request */
+/* Log requests */
 
 router.use(function(req, res, next) {
-  if (!app.get('production')) {
+  if (!config.prod) {
     var suffix = isActive ? ' (active user)' : ' '
     var log = req.method + ' ' + req.url + suffix;
     while (log.length <= 56) { log += '='; }
@@ -47,9 +51,9 @@ router.use(function(req, res, next) {
 
 function render (res, options) {
   var always = {
-    production: app.get('production'),
+    prod: config.prod,
     activeUser: isActive,
-    revision: app.get('revision'),
+    revision: config.revision,
     angularCtrl: 'StaticCtrl',
     defaultSiteDataString: JSON.stringify(site.default)
   };
@@ -113,13 +117,13 @@ router.get('/signout', function (req, res) {
 
 router.get('/by/:name', function(req, res) {
   var name = req.params.name.trim();
-  var port = app.get('production') ? '' : ':' + app.get('port');
+  var port = config.prod ? '' : ':' + config.port;
 
   if (validator.isName(name)) {
-    res.redirect(301, 'http://' + name +  '.' + app.get('domain') + port);
-    //res.redirect(301, 'http://www.' + app.get('domain') + port + '/site/' + name);
+    res.redirect(301, 'http://' + name +  '.' + config.domain + port);
+    //res.redirect(301, 'http://www.' + config.domain + port + '/site/' + name);
   } else {
-    res.redirect(301, 'http://www.' + app.get('domain') + port + '/site/' + name);
+    res.redirect(301, 'http://www.' + config.domain + port + '/site/' + name);
   }
 });
 

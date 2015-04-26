@@ -1,28 +1,26 @@
 var fs = require('fs');
 var mime = require('mime');
 var aws = require('aws-sdk');
-var Habitat = require('habitat').load();
 
-var env = new Habitat();
-var revision = process.argv[2];
+var configFile = fs.readFileSync('s3config.json', 'utf8');
+var config = configFile ? JSON.parse(configFile) : false;
 
-var bucket = 'posties-stuff';
-var region = 'eu-west-1';
-var accessKeyId = env.get('accessKeyId');
-var secretAccessKey = env.get('secretAccessKey');
+if (!config) {
+  return console.log('The S3 config file is missing');
+}
 
 aws.config.update({
-  accessKeyId: accessKeyId,
-  secretAccessKey: secretAccessKey,
-  region: region
+  accessKeyId: config.accessKeyId,
+  secretAccessKey: config.secretAccessKey,
+  region: config.region
 });
 
 var s3 = new aws.S3({signatureVersion: 'v4'});
 var distDir = __dirname + '/../src/dist/';
-var s3dir = 'assets/' + revision + '/';
+var s3dir = 'assets/' + process.argv[2] + '/';
 var fileList = getFileList(distDir);
 
-console.log('Uploading to ' + bucket + '/' + s3dir);
+console.log('Uploading to ' + config.bucket + '/' + s3dir);
 
 fileList.forEach(function (name) {
   upload(name);
@@ -33,7 +31,7 @@ function upload (name) {
 
   var params = {
     ACL: 'public-read',
-    Bucket: bucket,
+    Bucket: config.bucket,
     Key: s3dir + name,
     ContentType: mime.lookup(distDir + name),
     Body: fs.readFileSync(distDir + name, 'utf8'),

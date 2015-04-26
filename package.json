@@ -29,8 +29,6 @@
     "express-handlebars": "^2.0.0",
     "express-session": "^1.10.1",
     "express-subdomain-handler": "^0.1.0",
-    "habitat": "^3.1.2",
-    "html-minifier": "^0.7.2",
     "lodash": "^2.4.1",
     "method-override": "^2.3.1",
     "mustache-express": "^1.2.1",

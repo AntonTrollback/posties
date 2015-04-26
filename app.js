@@ -1,32 +1,23 @@
-var Habitat = require('habitat');
 var express = require('express');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 var handlebars = require('express-handlebars');
-var favicon = require('serve-favicon');
 var compression = require('compression');
+var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
+var config = require('./app/config');
 
-var env = new Habitat();
-Habitat.load('.env');
 var app = module.exports = express();
 
-app.set('domain', env.get('domain'));
-app.set('port', env.get('port'));
-app.set('databaseUrl', env.get('databaseUrl'));
-app.set('redisUrl', env.get('rediscloudUrl'));
-app.set('production', env.get('env') === 'production');
-app.set('revision', env.get('revision'));
 app.set('views', 'src/html');
 app.set('view engine', 'html');
 
 app.use(express.static('src'));
 app.use(compression());
-//app.use(renderMinified);
+app.use(favicon('./favicon.ico'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
-app.use(favicon('./favicon.ico'));
 
 /**
  * Setup Handlebars view engine
@@ -40,18 +31,18 @@ var hb = handlebars.create({
 });
 
 app.engine('html', hb.engine);
-if (app.get('production')) { app.enable('view cache'); }
 
 /**
  * Setup sessions
  */
 
 var days = 30;
+var store = new RedisStore({
+  client: require('redis-url').connect(config.redisUrl)
+});
 
 app.use(session({
-  store: new RedisStore({
-    client: require('redis-url').connect(app.get('redisUrl'))
-  }),
+  store: store,
   secret: 'hurricane',
   resave: false,
   saveUninitialized: false,
@@ -59,7 +50,7 @@ app.use(session({
     path: '/',
     httpOnly: true,
     secure: false, // todo ssl
-    domain: app.get('domain'),
+    domain: config.domain,
     maxAge: days * 24 * 60 * 60 * 1000
   }
 }));
@@ -70,6 +61,6 @@ app.use(session({
 
 app.use(require('./app/router'));
 
-app.listen(app.get('port'), function() {
-  console.log('Running at ' + app.get('domain') + ' (' + app.get('port') + ')');
+app.listen(config.port, function() {
+  console.log('Running at ' + config.domain + ' (' + config.port + ')');
 });

@@ -1,13 +1,13 @@
 var _ = require('lodash');
 var query = require('pg-query');
 var bcrypt = require('bcrypt');
-var app = require('./../app');
+var config = require('./config');
 var validator = require('./validator');
 var site = require('./site');
 
 var user = {};
 
-query.connectionParameters = app.get('databaseUrl');
+query.connectionParameters = config.psqlUrl;
 
 /**
  * Get user from database
