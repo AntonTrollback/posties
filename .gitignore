@@ -1,15 +1,7 @@
-.env
-
-dist
 node_modules
 bower_components
 
 *.rdb
 *.log
-
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
+dist
+.env
