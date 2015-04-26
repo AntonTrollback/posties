@@ -1,4 +1,4 @@
-var Habitat = require('habitat').load();
+var Habitat = require('habitat');
 var express = require('express');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
@@ -8,6 +8,7 @@ var compression = require('compression');
 var bodyParser = require('body-parser');
 
 var env = new Habitat();
+Habitat.load('.env');
 var app = module.exports = express();
 
 app.set('domain', env.get('domain'));
