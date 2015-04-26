@@ -8,7 +8,7 @@
     "url": "https://github.com/antontrollback/posties"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "0.12.x"
   },
   "scripts": {
     "setup": "npm install; bower install --allow-root; grunt build",
