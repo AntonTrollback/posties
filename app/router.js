@@ -52,6 +52,7 @@ router.use(function(req, res, next) {
 function render (res, options) {
   var always = {
     prod: config.prod,
+    domain: config.url,
     activeUser: isActive,
     revision: config.revision,
     angularCtrl: 'StaticCtrl',
@@ -121,7 +122,6 @@ router.get('/by/:name', function(req, res) {
 
   if (validator.isName(name)) {
     res.redirect(301, 'http://' + name +  '.' + config.domain + port);
-    //res.redirect(301, 'http://www.' + config.domain + port + '/site/' + name);
   } else {
     res.redirect(301, 'http://www.' + config.domain + port + '/site/' + name);
   }
