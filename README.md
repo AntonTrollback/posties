@@ -2,5 +2,5 @@
 - Postgres
 - Redis
 - Node
-- Edit & rename `.env-example`
+- Host file (subdomains)
 - Run `npm run setup`
