@@ -17,13 +17,14 @@ var config = require('./config');
 router.use(cors({credentials: true, origin: true}));
 
 /* Redirect to https */
-
+/*
 router.use(function(req, res, next) {
   if (!req.secure && config.prod) {
     return res.redirect('https://' + req.get('host') + req.url);
   }
   return next();
 });
+*/
 
 /* Setup subdomain helper */
 
