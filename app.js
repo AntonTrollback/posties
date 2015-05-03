@@ -49,8 +49,8 @@ app.use(session({
   cookie: {
     path: '/',
     httpOnly: true,
-    secure: false, // todo ssl
-    domain: config.domain,
+    secure: config.prod,
+    domain: config.domainAndPort,
     maxAge: days * 24 * 60 * 60 * 1000
   }
 }));
@@ -62,5 +62,5 @@ app.use(session({
 app.use(require('./app/router'));
 
 app.listen(config.port, function() {
-  console.log('Running at ' + config.domain + ' (' + config.port + ')');
+  console.log('Running at ' + config.domainAndPort);
 });

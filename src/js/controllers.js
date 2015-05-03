@@ -161,7 +161,7 @@ postiesApp.controller('IndexCtrl', function(
 
   $scope.publishSuccess = function(data) {
     localStorage.setItem(config.keySettings + 'Welcome', true);
-    window.location = 'http://' + data.name.trim().toLowerCase() + '.' + config.domain;
+    window.location = '//' + data.name.trim().toLowerCase() + '.' + config.domainAndPort;
   };
 
   $scope.publishFail = function(data) {
@@ -200,7 +200,7 @@ postiesApp.controller('IndexCtrl', function(
 
   $scope.post = function(endpoint, data, callback) {
     $http({
-      url: 'http://www.' + config.domain + endpoint,
+      url: '//www.' + config.domainAndPort + endpoint,
       method: 'post',
       data: data,
       withCredentials: true,
@@ -541,7 +541,7 @@ postiesApp.controller('EditorCtrl', function(
     console.log("Send '" + method + "' to '" + endpoint + "' with:", data);
 
     $http({
-      url: 'http://www.' + config.domain + endpoint,
+      url: '//www.' + config.domainAndPort + endpoint,
       method: method,
       data: data,
       withCredentials: true,
@@ -588,7 +588,7 @@ postiesApp.controller('OptionsCtrl', function($scope, $http, FontService, config
       $scope.savedOptions = $.extend(true, {}, $scope.options);
 
       var promise = $http({
-        url: 'http://www.' + config.domain + '/api/update-options',
+        url: '//www.' + config.domainAndPort + '/api/update-options',
         method: 'post',
         data: {
           id: SITE_DATA.id,

@@ -16,10 +16,19 @@ var config = require('./config');
 
 router.use(cors({credentials: true, origin: true}));
 
+/* Redirect to https */
+
+router.use(function(req, res, next) {
+  if (!req.secure && config.prod) {
+    return res.redirect('https://' + req.get('host') + req.url);
+  }
+  return next();
+});
+
 /* Setup subdomain helper */
 
 router.use(require('express-subdomain-handler')({
-  baseUrl: config.domain,
+  baseUrl: config.domainAndPort,
   prefix: 'site',
   logger: false
 }));
@@ -52,7 +61,7 @@ router.use(function(req, res, next) {
 function render (res, options) {
   var always = {
     prod: config.prod,
-    domain: config.url,
+    domain: config.domainAndPort,
     activeUser: isActive,
     revision: config.revision,
     angularCtrl: 'StaticCtrl',
@@ -118,12 +127,11 @@ router.get('/signout', function (req, res) {
 
 router.get('/by/:name', function(req, res) {
   var name = req.params.name.trim();
-  var port = config.prod ? '' : ':' + config.port;
 
   if (validator.isName(name)) {
-    res.redirect(301, 'http://' + name +  '.' + config.domain + port);
+    res.redirect(301, config.protocolPrefix + name +  '.' + config.domainAndPort);
   } else {
-    res.redirect(301, 'http://www.' + config.domain + port + '/site/' + name);
+    res.redirect(301, config.protocolPrefix + 'www.' + config.domainAndPort + '/site/' + name);
   }
 });
 
