@@ -12,6 +12,15 @@ var config = require('./config');
  * Middleware
  */
 
+/* Detect if signed in */
+
+var isActive = false;
+
+router.use(function(req, res, next) {
+  isActive = user.isActive(req);
+  return next();
+});
+
 /* Fix cors */
 
 router.use(cors({credentials: true, origin: true}));
@@ -34,26 +43,18 @@ router.use(require('express-subdomain-handler')({
   logger: false
 }));
 
-/* Detect if signed in */
-
-var isActive;
-
-router.use(function(req, res, next) {
-  isActive = user.isActive(req);
-  return next();
-});
-
 /* Log requests */
 
-router.use(function(req, res, next) {
-  if (!config.prod) {
+if (!config.prod) {
+  router.use(function(req, res, next) {
     var suffix = isActive ? ' (active user)' : ' '
     var log = req.method + ' ' + req.url + suffix;
     while (log.length <= 56) { log += '='; }
     console.log('\n==== ' + log);
-  }
-  return next();
-});
+
+    return next();
+  });
+}
 
 /**
  * Render helpers
