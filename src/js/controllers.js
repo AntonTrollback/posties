@@ -48,7 +48,6 @@ postiesApp.controller('IndexCtrl', function(
     }
 
     // Stop if value hasn't changed
-    if ($scope.publish.prevName === $scope.site.name) { return; }
     $scope.publish.prevName = $scope.site.name;
 
     $scope.post('/api/available-name', {name: name}, function(data) {
