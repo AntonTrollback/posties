@@ -36,10 +36,8 @@ router.use(require('express-subdomain-handler')({
 /* Redirect to https */
 
 router.use(function(req, res, next) {
-  console.log(req.protocol)
-  if (req.protocol === 'http' && config.prod) {
-    console.log('redirect')
-    //return res.redirect('https://' + req.get('host') + req.url);
+  if (!req.secure && config.prod) {
+    return res.redirect('https://' + req.get('host') + req.url);
   }
   return next();
 });

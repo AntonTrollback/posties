@@ -10,6 +10,8 @@ var app = module.exports = express();
 app.set('views', 'src/html');
 app.set('view engine', 'html');
 
+app.enable('trust proxy');
+
 app.use(express.static('src'));
 app.use(compression());
 app.use(favicon('./favicon.ico'));
