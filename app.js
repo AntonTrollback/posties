@@ -1,6 +1,4 @@
 var express = require('express');
-var session = require('express-session');
-var RedisStore = require('connect-redis')(session);
 var handlebars = require('express-handlebars');
 var compression = require('compression');
 var favicon = require('serve-favicon');
@@ -36,13 +34,13 @@ app.engine('html', hb.engine);
  * Setup sessions
  */
 
-var days = 30;
-var store = new RedisStore({
-  client: require('redis-url').connect(config.redisUrl)
-});
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 
 app.use(session({
-  store: store,
+  store: new RedisStore({
+    client: require('redis-url').connect(config.redisUrl)
+  }),
   secret: 'hurricane',
   resave: false,
   saveUninitialized: false,
@@ -50,8 +48,8 @@ app.use(session({
     path: '/',
     httpOnly: true,
     secure: config.prod,
-    domain: config.domainAndPort,
-    maxAge: days * 24 * 60 * 60 * 1000
+    domain: '.' + config.domain,
+    maxAge: 30 * 24 * 60 * 60 * 1000
   }
 }));
 

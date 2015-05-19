@@ -38,7 +38,7 @@ router.use(function(req, res, next) {
 /* Setup subdomain helper */
 
 router.use(require('express-subdomain-handler')({
-  baseUrl: config.domainAndPort,
+  baseUrl: config.domain,
   prefix: 'site',
   logger: false
 }));

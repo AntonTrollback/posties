@@ -14,7 +14,7 @@
   });
 
   postiesApp.constant('config', {
-    domainAndPort: window.location.hostname.indexOf('posti.es') > -1 ? 'posti.es' : 'localhost:5000',
+    domainAndPort: window.location.hostname.indexOf('posti.es') > -1 ? 'posti.es' : 'posties.dev:5000',
     headerJSON: {
       'Content-Type': 'application/json;charset=UTF-8'
     },
