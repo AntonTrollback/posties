@@ -134,6 +134,10 @@ router.get('/by/:name', function(req, res) {
   }
 });
 
+router.get('/by/:name/*', function(req, res) {
+  res.redirect('/by/' + req.params.name);
+});
+
 router.get('/site/:name', function(req, res) {
   var name = req.params.name;
 
@@ -151,6 +155,10 @@ router.get('/site/:name', function(req, res) {
       angularCtrl: 'UserCtrl'
     });
   })
+});
+
+router.get('/site/:name/*', function(req, res) {
+  res.redirect('/site/' + req.params.name);
 });
 
 /* -------------------------------------------------------------------------- */
