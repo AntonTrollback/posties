@@ -26,8 +26,10 @@ router.use(function(req, res, next) {
 router.use(cors({credentials: true, origin: true}));
 
 router.use(function(req, res, next) {
+  console.log('sec?: ', req.secure)
+  console.log('prod?: ', config.prod)
   if (!req.secure && config.prod) {
-    return res.redirect('https://' + req.get('host') + req.url);
+    //return res.redirect('https://' + req.get('host') + req.url);
   }
   return next();
 });
