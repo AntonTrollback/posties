@@ -160,7 +160,7 @@ router.get('/site/:name', function(req, res) {
 });
 
 router.get('/site/:name/*', function(req, res) {
-  res.redirect('/site/' + req.params.name);
+  return res.redirect(config.protocolPrefix + req.get('host'));
 });
 
 /* -------------------------------------------------------------------------- */
