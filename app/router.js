@@ -25,13 +25,6 @@ router.use(function(req, res, next) {
 
 router.use(cors({credentials: true, origin: true}));
 
-router.use(function(req, res, next) {
-  if (req.protocol === 'http' && config.prod) {
-    return res.redirect('https://' + req.get('host') + req.url);
-  }
-  return next();
-});
-
 /* Setup subdomain helper */
 
 router.use(require('express-subdomain-handler')({
@@ -39,6 +32,17 @@ router.use(require('express-subdomain-handler')({
   prefix: 'site',
   logger: false
 }));
+
+/* Redirect to https */
+
+router.use(function(req, res, next) {
+  console.log(req.protocol)
+  if (req.protocol === 'http' && config.prod) {
+    console.log('redirect')
+    //return res.redirect('https://' + req.get('host') + req.url);
+  }
+  return next();
+});
 
 /* Log requests */
 
