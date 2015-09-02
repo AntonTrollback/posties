@@ -78,13 +78,13 @@ part.setType = function(partData) {
 
 part.cleanMarkup = function(partData) {
   var markup = partData.content.text;
+  var exp = new RegExp("\u2028|\u2029/g");
 
   if (!partData.content.text) {
     return partData;
   }
 
-  // Remove hidden characters
-  var exp = new RegExp("\u2028|\u2029");
+  // Remove hidden zero-width characters
   partData.content.text = markup.replace(exp, '');
 
   return partData;
