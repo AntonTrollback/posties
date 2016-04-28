@@ -222,7 +222,6 @@ router.post('/api/available-name', function (req, res) {
   });
 });
 
-
 /**
  * API - register and publish
  */
@@ -287,6 +286,14 @@ router.delete('/api/delete-part', function (req, res) {
     if (error) { return sendError(error, res); }
     send(res, {success: status});
   });
+});
+
+/**
+ * File for Let's Encrypt
+ */
+
+router.get('/.well-known/acme-challenge/H1VLsl1X-8yRSFK1_hCEtde2SZBVB5uoemjHmtybZwA', function (req, res) {
+  send(res, 'H1VLsl1X-8yRSFK1_hCEtde2SZBVB5uoemjHmtybZwA.XbQxKZF37gnB_cjPaUlNmo-Hs2B_5RTX3VdtegIVyjw');
 });
 
 /* -------------------------------------------------------------------------- */
