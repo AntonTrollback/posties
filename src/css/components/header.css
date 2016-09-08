@@ -1,20 +1,21 @@
 .header {
   position: absolute;
   right: 0;
-  top: 0;
+  top: 51px;
   margin: 12px 14px 0 0;
   user-select: none;
 }
 
 @media (--md-viewport) {
   .header {
+    top: 34px;
     margin: 20px 24px 0 0;
   }
 }
 
 @media (--xl-viewport) {
   .header {
-    position: fixed;
+
   }
 }
 

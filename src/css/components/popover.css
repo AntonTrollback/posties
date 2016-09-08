@@ -21,12 +21,6 @@
   }
 }
 
-@media (--xl-viewport) {
-  .popover {
-    position: fixed;
-  }
-}
-
 .popover-arrow {
   content: "";
   position: absolute;
@@ -112,7 +106,7 @@
 
 .popover.is-nav,
 .popover.is-customize {
-  top: 59px;
+  top: 106px;
   right: 7px;
 }
 
@@ -126,13 +120,13 @@
 
 .popover.is-customize .popover-scroll {
   /* Kinda like: popover header + popover top position + some bottom spacing */
-  max-height: calc(100vh - 190px);
+  max-height: calc(100vh - 171px);
 }
 
 @media (--md-viewport) {
   .popover.is-nav,
   .popover.is-customize {
-    top: 71px;
+    top: 96px;
     right: 11px;
   }
 
@@ -145,6 +139,6 @@
   }
 
   .popover.is-customize .popover-scroll {
-    max-height: calc(100vh - 141px);
+    max-height: calc(100vh - 171px);
   }
 }

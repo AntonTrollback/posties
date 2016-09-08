@@ -81,6 +81,11 @@
 .button.is-larger {
   font-size: 21px;
   padding: 27px 22px 33px;
+
+  text-decoration: line-through;
+  cursor: not-allowed;
+  pointer-events: none;
+  color: rgba(132, 132, 131, 0.51);
 }
 
 .button.is-larger span {
