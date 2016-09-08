@@ -112,8 +112,8 @@ router.get('/', function(req, res) {
   render(res, {
     index: true,
     editMode: true,
-    notOnByePage: false,
-    onByePage: true,
+    notOnByePage: true,
+    onByePage: false,
     defaultSiteData: site.default,
     angularCtrl: 'IndexCtrl'
   });
