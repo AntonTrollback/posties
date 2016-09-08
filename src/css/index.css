@@ -61,22 +61,23 @@
 
 
 .close-banner {
-  padding: 6px 10px 4px;
-  background: #cacaca;
+  padding: 13px 10px 11px;
+  background: #f7f5c7;
   text-align: center;
   cursor: default;
+  box-shadow: 2px 1px 12px rgba(0, 0, 0, 0.1);
 }
 
 .close-banner p {
   padding: 0;
   margin: 0;
-  color: #141414;
+  color: #525252;
   font-size: 14px;
 }
 
 .close-banner img {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   vertical-align: middle;
   position: relative;
   top: -2px;
