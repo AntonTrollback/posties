@@ -126,7 +126,7 @@
 @media (--md-viewport) {
   .popover.is-nav,
   .popover.is-customize {
-    top: 96px;
+    top: 120px;
     right: 11px;
   }
 

@@ -76,7 +76,8 @@ function render404 (res) {
   render(res, {
     title: '404 - Posti.es',
     notFound: true,
-    notOnByePage: true
+    notOnByePage: true,
+    onByePage: false
   });
 }
 
@@ -85,7 +86,8 @@ function render505 (error, res) {
   render(res, {
     title: 'Sorry, server error. We\'re on it!',
     serverError: true,
-    notOnByePage: true
+    notOnByePage: true,
+    onByePage: false
   });
 }
 
@@ -110,7 +112,8 @@ router.get('/', function(req, res) {
   render(res, {
     index: true,
     editMode: true,
-    notOnByePage: true,
+    notOnByePage: false,
+    onByePage: true,
     defaultSiteData: site.default,
     angularCtrl: 'IndexCtrl'
   });
@@ -160,7 +163,8 @@ router.get('/site/:name', function(req, res) {
       siteData: siteData,
       siteDataString: JSON.stringify(siteData),
       angularCtrl: 'UserCtrl',
-      notOnByePage: notOnByePage
+      notOnByePage: notOnByePage,
+      onByePage: !notOnByePage
     });
   })
 });

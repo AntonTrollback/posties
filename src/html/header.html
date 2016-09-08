@@ -4,6 +4,28 @@
 </div>
 {{/if}}
 
+{{#if onByePage}}
+  <style>
+    .header-action {
+      margin-top: 12px !important;
+    }
+
+    .popover.is-nav, .popover.is-customize {
+      top: 66px !important;
+    }
+
+    @media (min-width: 568px) {
+      .header-action {
+        margin-left: 0 !important;
+      }
+
+      .popover.is-nav, .popover.is-customize {
+        top: 66px !important;
+      }
+    }
+  </style>
+{{/if}}
+
 <div class="header">
   <button class="header-action" ng-class="accountOpen ? 'is-active' : ''" ng-click="accountOpen = !accountOpen; optionsOpen = false" stop-events>
     <span analytics-on="click" analytics-event="Toggle view" analytics-category="Account settings">
