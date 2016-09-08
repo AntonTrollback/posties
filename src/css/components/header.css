@@ -1,15 +1,11 @@
 .header {
-  position: absolute;
-  right: 0;
-  top: 51px;
-  margin: 12px 14px 0 0;
+  margin: 12px 14px -12px 0;
   user-select: none;
 }
 
 @media (--md-viewport) {
   .header {
-    top: 34px;
-    margin: 20px 24px 0 0;
+    margin: 22px 24px 0 0;
   }
 }
 

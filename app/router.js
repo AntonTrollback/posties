@@ -75,7 +75,8 @@ function render (res, options) {
 function render404 (res) {
   render(res, {
     title: '404 - Posti.es',
-    notFound: true
+    notFound: true,
+    notOnByePage: true
   });
 }
 
@@ -83,7 +84,8 @@ function render505 (error, res) {
   console.trace(error);
   render(res, {
     title: 'Sorry, server error. We\'re on it!',
-    serverError: true
+    serverError: true,
+    notOnByePage: true
   });
 }
 
@@ -108,6 +110,7 @@ router.get('/', function(req, res) {
   render(res, {
     index: true,
     editMode: true,
+    notOnByePage: true,
     defaultSiteData: site.default,
     angularCtrl: 'IndexCtrl'
   });
@@ -149,12 +152,15 @@ router.get('/site/:name', function(req, res) {
 
     siteData.isAuthenticated = user.isActiveOwner(req, siteData.user_id);
 
+    var notOnByePage = (name !== 'bye') ? true : false;
+
     render(res, {
       onSite: true,
       editMode: siteData.isAuthenticated,
       siteData: siteData,
       siteDataString: JSON.stringify(siteData),
-      angularCtrl: 'UserCtrl'
+      angularCtrl: 'UserCtrl',
+      notOnByePage: notOnByePage
     });
   })
 });
